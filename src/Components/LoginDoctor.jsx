@@ -32,12 +32,30 @@ export default function LoginDoctor() {
           }
         );
 
+        const user = response.data.result.user;
+
+        // Saving TOken
+        await localStorage.setItem("token", response.data.result.token);
+
+        const doctor = await axios.get(
+          `https://healthbackend-3xh2.onrender.com/doctor/${user._id}`,
+          
+          {
+            headers: {
+              "Content-Type": "application/json",
+               Authorization: response.data.result.token,
+            },
+          }
+        );
+
+        
+
         // Store the token securely
         await localStorage.setItem(
-          "userinfo",
-          JSON.stringify(response.data.result.user)
+          "docInfo",
+          JSON.stringify(doctor.data.result.doctor)
         );
-        await localStorage.setItem("token", response.data.result.token);
+        
 
         // setLoading(false);
         // setIsLoggedIn(true);

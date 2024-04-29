@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +6,8 @@ import Reschedule from "./Components/popups/Reschedule";
 import Pagination from "./Components/Pagination";
 import { FaBusinessTime } from "react-icons/fa";
 import { FaCalendarAlt, FaSave, FaTimes } from "react-icons/fa";
+import axios from "axios";
+import { OrderState } from "./Contexts";
 
 // DashBoard
 export default function Dashboard() {
@@ -14,11 +16,12 @@ export default function Dashboard() {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [appointments, setAppointments] = useState([]);
 
- 
+
   const isRescheduleEnabled = (patient) => {
     const patientDateTime = new Date(`${patient.date} ${patient.time}`);
-   
+
 
     const differenceInMinutes = (patientDateTime - currentTime) / (1000 * 60);
 
@@ -52,6 +55,39 @@ export default function Dashboard() {
     const roomId = uuidv4();
     navigate(`/room/${roomId}`);
   };
+
+  // Api Calling 
+
+
+
+
+// Past data
+  const getAllAppointments = async (id, isAuthenticated,past) => {
+    try {
+      const data = await axios.post(
+        "https://healthbackend-3xh2.onrender.com/appointment/appointments",
+        {
+          doctorId: id,
+          past: past,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+
+            // "Authorization":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjE5MmU0MzRmMGRjMjQ3MjJhZGM2ZDkiLCJlbWFpbCI6ImRvY3RvcjNAZ21haWwuY29tIiwiaWF0IjoxNzEyOTI5MTc2LCJleHAiOjE3MTMwMTU1NzZ9.F3sIqBUGYcArItg4t7sQGDObuEcig5NvfSwQx2L4wpQ",
+            Authorization: isAuthenticated,
+          },
+        }
+      );
+
+      setAppointments(data.data.result);
+      console.log(data.data.result);
+      // console.log(appointments);
+    } catch (error) {
+      console.log(error); 
+    }
+  };
+
 
 
   const patients = [
@@ -170,6 +206,12 @@ export default function Dashboard() {
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  useEffect(() => {
+    const doctorInfo = JSON.parse(localStorage.getItem('docInfo'));
+    const isAuthenticated = localStorage.getItem("token");
+    getAllAppointments(doctorInfo._id, isAuthenticated,true);
+  }, [])
 
 
   return (
@@ -392,7 +434,7 @@ export default function Dashboard() {
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    {currentItems.map((patient, index) => (
+                                    {appointments.map((patient, index) => (
                                       <tr>
                                         <td>
                                           <h2 className="table-avatar">
@@ -406,14 +448,18 @@ export default function Dashboard() {
                                               />
                                             </a>
                                             <a href="patient-profile.html">
-                                              {patient.name} <span>{patient.id}</span>
+                                              {patient.patient.userId.name} <span>{patient.patient.userId._id}</span>
                                             </a>
                                           </h2>
                                         </td>
                                         <td>
-                                          {patient.date}{" "}
+                                          {patient.date
+                                            ? new Date(patient.date).toLocaleDateString("en-US")
+                                            : "Date not available"}{" "}
                                           <span className="d-block text-info">
-                                            {patient.time}
+                                            {patient.date
+                                              ? new Date(patient.date).toLocaleTimeString("en-US")
+                                              : "Time not available"}
                                           </span>
                                         </td>
 
@@ -433,8 +479,10 @@ export default function Dashboard() {
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#appt_details"
                                                 disabled={isRescheduleEnabled(patient)}
-                                                onClick={()=>{ setSelectedDate(patient.date)
-                                                  setSelectedTime(patient.time)}}
+                                                onClick={() => {
+                                                  setSelectedDate(patient.date)
+                                                  setSelectedTime(patient.time)
+                                                }}
                                               >
                                                 <i className="fas fa-calendar-alt" /> Reschedule
                                               </button>
@@ -610,7 +658,7 @@ export default function Dashboard() {
 
                                         <td style={{ textAlign: "center" }}>
                                           <div className="table-action" style={{ display: "flex", gap: "1rem" }}>
-                                           
+
 
                                             <div>
                                               <a
