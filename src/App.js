@@ -13,8 +13,6 @@ import ScheduleTime from "./Components/ScheduleTimings";
 import Accounts from "./Components/Accounts";
 import Room from "./Components/meet/Room";
 
-// adding comment
-
 function App() {
   const location = useLocation();
 
