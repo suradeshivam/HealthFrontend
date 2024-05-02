@@ -8,6 +8,7 @@ import { FaBusinessTime } from "react-icons/fa";
 import { FaCalendarAlt, FaSave, FaTimes } from "react-icons/fa";
 import axios from "axios";
 import { OrderState } from "./Contexts";
+import Appointment from "./Components/Appointment";
 
 // DashBoard
 export default function Dashboard() {
@@ -17,7 +18,15 @@ export default function Dashboard() {
   const [selectedTime, setSelectedTime] = useState("");
   const [currentTime, setCurrentTime] = useState(new Date());
   const [appointments, setAppointments] = useState([]);
+  const [upcoming, setUpcoming] = useState([]);
+  const [today, setToday] = useState([]);
+  // const [selectedPatient, setSelectedPatient] = useState([]);
+  const { setselectedPatient} = OrderState();
+  const [doctorInfo, setDoctorInfo] = useState('');
+const [isAuthenticated, setIsAuthenticated] = useState('');
 
+ 
+console.log(upcoming)
 
   const isRescheduleEnabled = (patient) => {
     const patientDateTime = new Date(`${patient.date} ${patient.time}`);
@@ -56,6 +65,12 @@ export default function Dashboard() {
     navigate(`/room/${roomId}`);
   };
 
+  const handleViewAppointment = (e,patientData) => {
+    e.preventDefault();
+    // setSelectedPatientValue(true);
+    setselectedPatient(patientData);
+  };
+
   // Api Calling 
 
 
@@ -80,8 +95,41 @@ export default function Dashboard() {
         }
       );
 
+
+      if(past === false){
+        const datastore = data.data.result;
+
+        const todayDate = new Date().toLocaleDateString("en-US");
+
+        let upcomingArray = [];
+        let todayArray = [];
+
+        datastore.forEach((data) => {
+          // console.log(new Date(data.date).toLocaleDateString("en-US"))
+          // console.log(new Date().toLocaleDateString("en-US"))
+          const appointmentDate = new Date(data.date).toLocaleDateString("en-US");
+          if(todayDate === appointmentDate){
+            // console.log(data)
+            todayArray.push(data)
+            // setToday((prevToday) => [...prevToday, data])
+            // console.log(today)
+          }else{
+            console.log(appointmentDate);
+            upcomingArray.push(data)
+            // setUpcoming((prevUpcoming) => [...prevUpcoming, data]);
+            }
+
+            setUpcoming(upcomingArray)
+            setToday(todayArray)
+      })
+
+      }else{
+
       setAppointments(data.data.result);
-      console.log(data.data.result);
+    }
+    console.log(data.data.result);
+    console.log(today)
+    console.log(upcoming)
       // console.log(appointments);
     } catch (error) {
       console.log(error); 
@@ -207,10 +255,14 @@ export default function Dashboard() {
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  
+
   useEffect(() => {
     const doctorInfo = JSON.parse(localStorage.getItem('docInfo'));
     const isAuthenticated = localStorage.getItem("token");
-    getAllAppointments(doctorInfo._id, isAuthenticated,true);
+    setDoctorInfo(doctorInfo);
+    setIsAuthenticated(isAuthenticated);
+    getAllAppointments(doctorInfo._id, isAuthenticated,false);
   }, [])
 
 
@@ -411,7 +463,9 @@ export default function Dashboard() {
                           <a
                             className="nav-link"
                             href="#history-appointments"
-                            data-bs-toggle="tab">
+                            data-bs-toggle="tab"
+                            onClick={()=>getAllAppointments(doctorInfo._id, isAuthenticated,true)}
+                            >
                             History
                           </a>
                         </li>
@@ -434,7 +488,7 @@ export default function Dashboard() {
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    {appointments.map((patient, index) => (
+                                    {today.map((patient, index) => (
                                       <tr>
                                         <td>
                                           <h2 className="table-avatar">
@@ -486,19 +540,20 @@ export default function Dashboard() {
                                               >
                                                 <i className="fas fa-calendar-alt" /> Reschedule
                                               </button>
-                                              {/* <button
-                                              onClick={() => setShowModal(true)}
-                                              className="btn btn-sm bg-danger-light">
-                                              <i className="fas fa-calendar-alt" /> Reschedule
-                                            </button> */}
-                                              {/* {showModal && <Reschedule closeModal={closeModal} />} */}
+                                             
                                             </div>
                                             <div>
+                                            <Link to="/appointment" >
                                               <a
-                                                href="javascript:void(0);"
-                                                className="btn btn-sm bg-info-light">
+                                                className="btn btn-sm bg-info-light"
+                                                onClick={() => {
+                                                                 setselectedPatient(patient);
+                                                }
+                                                }
+                                                >
                                                 <i className="far fa-eye" /> View
                                               </a>
+                                              </Link>
 
                                             </div>
                                           </div>
@@ -507,7 +562,7 @@ export default function Dashboard() {
 
                                       </tr>
                                     ))}
-
+                                    {/* {selectedPatientValue && <Appointment selectedPatient={selectedPatient} />} */}
                                   </tbody>
                                 </table>
 
@@ -516,7 +571,7 @@ export default function Dashboard() {
                           </div>
                           <Pagination
                             itemsPerPage={itemsPerPage}
-                            totalItems={patients.length}
+                            totalItems={today.length}
                             paginate={paginate}
                           />
                         </div>
@@ -536,7 +591,7 @@ export default function Dashboard() {
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    {currentItems.map((patient, index) => (
+                                    {upcoming.map((patient, index) => (
                                       <tr>
                                         <td>
                                           <h2 className="table-avatar">
@@ -555,9 +610,13 @@ export default function Dashboard() {
                                           </h2>
                                         </td>
                                         <td>
-                                          {patient.date}{" "}
+                                          {patient.date
+                                            ? new Date(patient.date).toLocaleDateString("en-US")
+                                            : "Date not available"}{" "}
                                           <span className="d-block text-info">
-                                            {patient.time}
+                                            {patient.date
+                                              ? new Date(patient.date).toLocaleTimeString("en-US")
+                                              : "Time not available"}
                                           </span>
                                         </td>
 
@@ -611,7 +670,7 @@ export default function Dashboard() {
                           </div>
                           <Pagination
                             itemsPerPage={itemsPerPage}
-                            totalItems={patients.length}
+                            totalItems={upcoming.length}
                             paginate={paginate}
                           />
                         </div>
@@ -631,7 +690,7 @@ export default function Dashboard() {
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    {currentItems.map((patient, index) => (
+                                    {appointments.map((patient, index) => (
                                       <tr>
                                         <td>
                                           <h2 className="table-avatar">
@@ -650,9 +709,13 @@ export default function Dashboard() {
                                           </h2>
                                         </td>
                                         <td>
-                                          {patient.date}{" "}
+                                          {patient.date
+                                            ? new Date(patient.date).toLocaleDateString("en-US")
+                                            : "Date not available"}{" "}
                                           <span className="d-block text-info">
-                                            {patient.time}
+                                            {patient.date
+                                              ? new Date(patient.date).toLocaleTimeString("en-US")
+                                              : "Time not available"}
                                           </span>
                                         </td>
 
@@ -661,19 +724,21 @@ export default function Dashboard() {
 
 
                                             <div>
+                                              <Link to="/appointment">
                                               <a
-                                                href="javascript:void(0);"
-                                                className="btn btn-sm bg-info-light">
+                                                className="btn btn-sm bg-info-light"
+                                                
+                                                >
                                                 <i className="far fa-eye" /> View
                                               </a>
+                                              </Link>
 
                                             </div>
                                           </div>
                                         </td>
                                       </tr>
                                     ))}
-
-
+                                    
                                   </tbody>
                                 </table>
 
@@ -682,7 +747,7 @@ export default function Dashboard() {
                           </div>
                           <Pagination
                             itemsPerPage={itemsPerPage}
-                            totalItems={patients.length}
+                            totalItems={appointments.length}
                             paginate={paginate}
                           />
                         </div>
