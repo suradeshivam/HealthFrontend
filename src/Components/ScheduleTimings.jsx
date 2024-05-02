@@ -393,7 +393,7 @@ export default function ScheduleTime() {
       className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['monday']?.includes(timeSlot) ? '' : ''}`}
       key={index}
       onClick={() => handleSlotClick('monday', timeSlot)}
-      style={{ backgroundColor: selectedSlots['monday']?.some((s)=>s.time === timeSlot) ? 'green' : '' }}
+      style={{borderColor: selectedSlots['monday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '',color: selectedSlots['monday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '' }}
     >
       {timeSlot}
     </button>

@@ -1,10 +1,34 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function DoctorProfile() {
-  const [education, setEducation] = useState([
-    { degree: "", institute: "", year: "" },
+
+  const [doctorInfo, setDoctorInfo] = useState({});
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [gender, setGender] = useState("");
+  const [dob, setDOB] = useState("");
+  const [fees, setFees] = useState("");
+  const [aboutMe, setAboutMe] = useState("");
+  const [clinicName, setClinicName] = useState("");
+  const [clinicAddress, setClinicAddress] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [country, setCountry] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [specialization, setSpecialization] = useState("");
+  const [yearOfExperience, setYearOfExperience] = useState("");
+  const [education, setEducation] = useState([]);
+  const [awardsNAchievements, setAwardsNAchievements] = useState([
+    { awards: "", year: "" },
   ]);
+  const [licenceNumber,setLicenceNumber] = useState("");
+  const [yearLicenceNumber,setYearLicenceNumber] = useState("");
+
+
 
   const [fileName, setFileName] = useState("");
   const [filePreview, setFilePreview] = useState("");
@@ -95,6 +119,68 @@ export default function DoctorProfile() {
       setMemberships(updatedMemberships);
     }
   };
+
+  const getDocInfo = async() =>{
+
+    const isAuthenticated = localStorage.getItem("token");
+    const docInfo = JSON.parse(localStorage.getItem('docInfo'));
+    const userId = docInfo.userId._id;
+    try {
+      const response = await axios.get(
+        `https://healthbackend-3xh2.onrender.com/doctor/${userId}`,{
+          headers:{
+            Authorization:isAuthenticated,
+          },
+        }
+      );
+
+      const result = response.data.result.doctor;
+      console.log(result)
+      setDoctorInfo(result);
+
+      
+  setUserName(docInfo.userId?.name || '')
+  setEmail(docInfo.userId?.email || '')
+  setPhone(docInfo.userId?.mobileNumber || '')
+  setGender(result?.gender || '')
+  setEducation(result.educationDetails || '')
+  // setFees()
+  // setAboutMe()
+  // setClinicName()
+  // setClinicAddress()
+  // setAddress()
+  // setCity()
+  // setCountry()
+  //  setPostalCode()
+  // setSpecialization()
+  // setYearOfExperience()
+  setDOB(result?.dob || ''); 
+  setFees(result?.fees || ''); 
+  setAboutMe(result?.aboutMe || ''); 
+    setClinicName(result?.clinicName || '');
+    setClinicAddress(result?.clinicAddress || '');
+    setAddress(result?.addressLine1 || ''); 
+    setCity(result?.city || '');
+    setCountry(result?.contry || ''); 
+    setPostalCode(result?.zip || ''); 
+    setSpecialization(result?.specialization || '');
+    setYearOfExperience(result?.yearOfExperience || '');
+
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useState (()=>{
+   
+    getDocInfo();
+  },[])
+
+  useState (()=>{
+   
+    console.log(doctorInfo);
+  },[doctorInfo])
 
   return (
     <div className="main-wrapper">
@@ -231,6 +317,8 @@ export default function DoctorProfile() {
                         </label>
                         <input
                           type="text"
+                          onChange={(e) => setUserName(e.target.value)}
+                          value={userName}
                           className="form-control"
                           readOnly=""
                         />
@@ -243,6 +331,8 @@ export default function DoctorProfile() {
                         </label>
                         <input
                           type="email"
+                          onChange={(e) => setEmail(e.target.value)}
+                          value={email}
                           className="form-control"
                           readOnly=""
                         />
@@ -254,7 +344,10 @@ export default function DoctorProfile() {
                         <label className="mb-2">
                           Phone Number<span className="text-danger"> *</span>
                         </label>
-                        <input type="text" className="form-control" />
+                        <input type="text"
+                        onChange={(e) => setPhone(e.target.value)}
+                        value={`+91 ${phone}`}
+                        className="form-control" />
                       </div>
                     </div>
                     <div className="col-md-6">
@@ -262,7 +355,12 @@ export default function DoctorProfile() {
                         <label className="mb-2">
                           Gender<span className="text-danger"> *</span>
                         </label>
-                        <select className="form-select form-control">
+                        <select
+                        onChange={(e) => setGender(e.target.value)}
+                        value={gender}
+                        
+                        className="form-select form-control">
+                          {console.log(gender)}
                           <option>Select</option>
                           <option>Male</option>
                           <option>Female</option>
@@ -274,7 +372,10 @@ export default function DoctorProfile() {
                         <label className="mb-2">
                           Date of Birth<span className="text-danger"> *</span>
                         </label>
-                        <input type="text" className="form-control" />
+                        <input type="text"
+                        onChange={(e) => setDOB(e.target.value)}
+                        value={new Date(dob).toLocaleDateString("en-US")}
+                        className="form-control" />
                       </div>
                     </div>
                     <div className="col-md-6">
@@ -282,7 +383,10 @@ export default function DoctorProfile() {
                         <label className="mb-2">
                           Fees<span className="text-danger"> *</span>
                         </label>
-                        <input type="number" className="form-control" />
+                        <input type="number"
+                        onChange={(e) => setFees(e.target.value)}
+                        value={fees}
+                        className="form-control" />
                       </div>
                     </div>
                   </div>
@@ -295,6 +399,8 @@ export default function DoctorProfile() {
                     <label className="mb-2">Biography</label>
                     <textarea
                       className="form-control"
+                      onChange={(e) => setAboutMe(e.target.value)}
+                      value={aboutMe}
                       rows={5}
                       defaultValue={""}
                     />
@@ -308,13 +414,19 @@ export default function DoctorProfile() {
                     <div className="col-md-6">
                       <div className="mb-3">
                         <label className="mb-2">Clinic Name</label>
-                        <input type="text" className="form-control" />
+                        <input type="text"
+                        onChange={(e) => setClinicName(e.target.value)}
+                        value={clinicName}
+                        className="form-control" />
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="mb-3">
                         <label className="mb-2">Clinic Address</label>
-                        <input type="text" className="form-control" />
+                        <input type="text"
+                        onChange={(e) => setClinicAddress(e.target.value)}
+                        value={clinicAddress}
+                        className="form-control" />
                       </div>
                     </div>
                   </div>
@@ -329,7 +441,10 @@ export default function DoctorProfile() {
                         <label className="mb-2">
                           Address Line 1<span className="text-danger"> *</span>
                         </label>
-                        <input type="text" className="form-control" />
+                        <input type="text"
+                        onChange={(e) => setAddress(e.target.value)}
+                        value={address}
+                        className="form-control" />
                       </div>
                     </div>
                     <div className="col-md-6">
@@ -343,7 +458,10 @@ export default function DoctorProfile() {
                         <label className="control-label">
                           City<span className="text-danger"> *</span>
                         </label>
-                        <input type="text" className="form-control" />
+                        <input type="text"
+                        onChange={(e) => setCity(e.target.value)}
+                        value={city}
+                        className="form-control" />
                       </div>
                     </div>
                     <div className="col-md-6">
@@ -352,7 +470,10 @@ export default function DoctorProfile() {
                           State / Province
                           <span className="text-danger"> *</span>
                         </label>
-                        <input type="text" className="form-control" />
+                        <input type="text"
+                        onChange={(e) => setState(e.target.value)}
+                        value={state}
+                        className="form-control" />
                       </div>
                     </div>
                     <div className="col-md-6">
@@ -360,7 +481,10 @@ export default function DoctorProfile() {
                         <label className="control-label">
                           Country<span className="text-danger"> *</span>
                         </label>
-                        <input type="text" className="form-control" />
+                        <input type="text"
+                        onChange={(e) => setCountry(e.target.value)}
+                        value={country}
+                        className="form-control" />
                       </div>
                     </div>
                     <div className="col-md-6">
@@ -368,7 +492,10 @@ export default function DoctorProfile() {
                         <label className="control-label">
                           Postal Code<span className="text-danger"> *</span>
                         </label>
-                        <input type="text" className="form-control" />
+                        <input type="text"
+                        onChange={(e) => setPostalCode(e.target.value)}
+                        value={postalCode}
+                        className="form-control" />
                       </div>
                     </div>
                   </div>
@@ -387,6 +514,8 @@ export default function DoctorProfile() {
                       placeholder="Enter Specialization"
                       name="specialist"
                       id="specialist"
+                      onChange={(e) => setSpecialization(e.target.value)}
+                      value={specialization}
                     />
                   </div>
                 </div>
@@ -402,13 +531,13 @@ export default function DoctorProfile() {
                             <div className="col-12 col-md-6 col-lg-4">
                               <div className="mb-3">
                                 <label className="mb-2">
-                                  Degree<span className="text-danger"> *</span>
+                                  Qualification<span className="text-danger"> *</span>
                                 </label>
                                 <input
                                   type="text"
                                   className="form-control"
                                   name="degree"
-                                  value={edu.degree}
+                                  value={edu.qualification}
                                   onChange={(e) => handleInputChange(index, e)}
                                 />
                               </div>
@@ -423,7 +552,7 @@ export default function DoctorProfile() {
                                   type="text"
                                   className="form-control"
                                   name="institute"
-                                  value={edu.institute}
+                                  value={edu.collegeName}
                                   onChange={(e) => handleInputChange(index, e)}
                                 />
                               </div>
@@ -438,7 +567,7 @@ export default function DoctorProfile() {
                                   type="text"
                                   className="form-control"
                                   name="year"
-                                  value={edu.year}
+                                  value={edu.yearOfCompletion}
                                   onChange={(e) => handleInputChange(index, e)}
                                 />
                               </div>
@@ -466,8 +595,8 @@ export default function DoctorProfile() {
               <div className="card">
                 <div className="card-body">
                   <h4 className="card-title">Experience</h4>
-                  {experiences.map((experience, index) => (
-                    <div className="experience-info" key={experience.id}>
+                  {/* {experiences.map((experience, index) => ( */}
+                    <div className="experience-info" >
                       <div className="row experience-cont">
                         <div className="col-12 col-md-10 col-lg-11">
                           <div className="row">
@@ -481,10 +610,11 @@ export default function DoctorProfile() {
                                   type="text"
                                   className="form-control"
                                   name="hospitalName"
-                                  value={experience.hospitalName}
-                                  onChange={(event) =>
-                                    handleInputChange(index, event)
-                                  }
+                                  value={yearOfExperience}
+                                  onChange={(e) => setYearOfExperience(e.target.value)}
+                                  // onChange={(event) =>
+                                  //   handleInputChange(index, event)
+                                  // }
                                 />
                               </div>
                             </div>
@@ -492,7 +622,7 @@ export default function DoctorProfile() {
                         </div>
                       </div>
                     </div>
-                  ))}
+                  {/* ))} */}
                 </div>
               </div>
 
@@ -566,7 +696,10 @@ export default function DoctorProfile() {
                             Licence number
                             <span className="text-danger"> *</span>
                           </label>
-                          <input type="text" className="form-control" />
+                          <input type="text"
+                          onChange={(e) => setLicenceNumber(e.target.value)}
+                          value={licenceNumber}
+                          className="form-control" />
                         </div>
                       </div>
                       <div className="col-12 col-md-5">
@@ -574,7 +707,10 @@ export default function DoctorProfile() {
                           <label className="mb-2">
                             Year of issue<span className="text-danger"> *</span>
                           </label>
-                          <input type="text" className="form-control" />
+                          <input type="text" 
+                          onChange={(e) => setYearLicenceNumber(e.target.value)}
+                          value={yearLicenceNumber}
+                          className="form-control" />
                         </div>
                       </div>
                     </div>
