@@ -1,7 +1,101 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function DoctorProfile() {
+  const [education, setEducation] = useState([
+    { degree: "", institute: "", year: "" },
+  ]);
+
+  const [fileName, setFileName] = useState("");
+  const [filePreview, setFilePreview] = useState("");
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setFileName(file.name);
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFilePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setFileName("");
+      setFilePreview("");
+    }
+  };
+
+  const handleInputChange = (index, event) => {
+    const { name, value } = event.target;
+    const list = [...education];
+    list[index][name] = value;
+    setEducation(list);
+    const newExperiences = [...experiences];
+    newExperiences[index][name] = value;
+    setExperiences(newExperiences);
+    const updatedAwards = [...awards];
+    updatedAwards[index][name] = value;
+    setAwards(updatedAwards);
+    const updatedMemberships = [...memberships];
+    updatedMemberships[index].name = value;
+    setMemberships(updatedMemberships);
+  };
+
+  const handleAddEducation = () => {
+    setEducation([...education, { degree: "", institute: "", year: "" }]);
+  };
+
+  const handleRemoveEducation = (index) => {
+    const list = [...education];
+    list.splice(index, 1);
+    setEducation(list);
+  };
+  // State to manage multiple experience entries
+  const [experiences, setExperiences] = useState([
+    { id: 1, hospitalName: "", from: "", to: "", designation: "" },
+  ]);
+
+  // Function to add a new experience entry
+  const handleAddExperience = () => {
+    const newId =
+      experiences.length > 0 ? experiences[experiences.length - 1].id + 1 : 1;
+    setExperiences([
+      ...experiences,
+      { id: newId, hospitalName: "", from: "", to: "", designation: "" },
+    ]);
+  };
+
+  // Function to remove an experience entry
+  const handleRemoveExperience = (index) => {
+    const newExperiences = experiences.filter((_, i) => i !== index);
+    setExperiences(newExperiences);
+  };
+
+  const [awards, setAwards] = useState([{ name: "", year: "" }]);
+
+  const handleAddAward = () => {
+    setAwards([...awards, { name: "", year: "" }]);
+  };
+
+  const handleRemoveAward = (index) => {
+    const updatedAwards = awards.filter((award, i) => i !== index);
+    setAwards(updatedAwards);
+  };
+
+  const [memberships, setMemberships] = useState([{ name: "" }]);
+
+  const handleAddMembership = () => {
+    setMemberships([...memberships, { name: "" }]);
+  };
+
+  const handleRemoveMembership = (index) => {
+    if (index !== 0) {
+      const updatedMemberships = [...memberships];
+      updatedMemberships.splice(index, 1);
+      setMemberships(updatedMemberships);
+    }
+  };
+
   return (
     <div className="main-wrapper">
       <div className="breadcrumb-bar-two">
@@ -154,10 +248,11 @@ export default function DoctorProfile() {
                         />
                       </div>
                     </div>
+
                     <div className="col-md-6">
                       <div className="mb-3">
                         <label className="mb-2">
-                          First Name <span className="text-danger">*</span>
+                          Phone Number<span className="text-danger"> *</span>
                         </label>
                         <input type="text" className="form-control" />
                       </div>
@@ -165,20 +260,8 @@ export default function DoctorProfile() {
                     <div className="col-md-6">
                       <div className="mb-3">
                         <label className="mb-2">
-                          Last Name <span className="text-danger">*</span>
+                          Gender<span className="text-danger"> *</span>
                         </label>
-                        <input type="text" className="form-control" />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="mb-3">
-                        <label className="mb-2">Phone Number</label>
-                        <input type="text" className="form-control" />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="mb-3">
-                        <label className="mb-2">Gender</label>
                         <select className="form-select form-control">
                           <option>Select</option>
                           <option>Male</option>
@@ -188,8 +271,18 @@ export default function DoctorProfile() {
                     </div>
                     <div className="col-md-6">
                       <div className="mb-0">
-                        <label className="mb-2">Date of Birth</label>
+                        <label className="mb-2">
+                          Date of Birth<span className="text-danger"> *</span>
+                        </label>
                         <input type="text" className="form-control" />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="mb-0">
+                        <label className="mb-2">
+                          Fees<span className="text-danger"> *</span>
+                        </label>
+                        <input type="number" className="form-control" />
                       </div>
                     </div>
                   </div>
@@ -224,46 +317,18 @@ export default function DoctorProfile() {
                         <input type="text" className="form-control" />
                       </div>
                     </div>
-                    <div className="col-md-12">
-                      <div className="mb-3">
-                        <label className="mb-2">Clinic Images</label>
-                        <form action="#" className="dropzone" />
-                      </div>
-                      <div className="upload-wrap">
-                        <div className="upload-images">
-                          <img
-                            src="assets/img/features/feature-01.jpg"
-                            alt="Upload Image"
-                          />
-                          <a
-                            href="javascript:void(0);"
-                            className="btn btn-icon btn-danger btn-sm">
-                            <i className="far fa-trash-alt" />
-                          </a>
-                        </div>
-                        <div className="upload-images">
-                          <img
-                            src="assets/img/features/feature-02.jpg"
-                            alt="Upload Image"
-                          />
-                          <a
-                            href="javascript:void(0);"
-                            className="btn btn-icon btn-danger btn-sm">
-                            <i className="far fa-trash-alt" />
-                          </a>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
               <div className="card ">
                 <div className="card-body">
-                  <h4 className="card-title">Contact Details</h4>
+                  <h4 className="card-title">Address</h4>
                   <div className="row">
                     <div className="col-md-6">
                       <div className="mb-3">
-                        <label className="mb-2">Address Line 1</label>
+                        <label className="mb-2">
+                          Address Line 1<span className="text-danger"> *</span>
+                        </label>
                         <input type="text" className="form-control" />
                       </div>
                     </div>
@@ -275,7 +340,9 @@ export default function DoctorProfile() {
                     </div>
                     <div className="col-md-6">
                       <div className="mb-3">
-                        <label className="control-label">City</label>
+                        <label className="control-label">
+                          City<span className="text-danger"> *</span>
+                        </label>
                         <input type="text" className="form-control" />
                       </div>
                     </div>
@@ -283,267 +350,288 @@ export default function DoctorProfile() {
                       <div className="mb-3">
                         <label className="control-label">
                           State / Province
+                          <span className="text-danger"> *</span>
                         </label>
                         <input type="text" className="form-control" />
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="mb-3">
-                        <label className="control-label">Country</label>
+                        <label className="control-label">
+                          Country<span className="text-danger"> *</span>
+                        </label>
                         <input type="text" className="form-control" />
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="mb-3">
-                        <label className="control-label">Postal Code</label>
+                        <label className="control-label">
+                          Postal Code<span className="text-danger"> *</span>
+                        </label>
                         <input type="text" className="form-control" />
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="card">
-                <div className="card-body">
-                  <h4 className="card-title">Pricing</h4>
-                  <div className="mb-0">
-                    <div id="pricing_select">
-                      <div className="custom-control form-check custom-control-inline">
-                        <input
-                          type="radio"
-                          id="price_free"
-                          name="rating_option"
-                          className="form-check-input"
-                          defaultValue="price_free"
-                          defaultChecked=""
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="price_free">
-                          Free
-                        </label>
-                      </div>
-                      <div className="custom-control form-check custom-control-inline">
-                        <input
-                          type="radio"
-                          id="price_custom"
-                          name="rating_option"
-                          defaultValue="custom_price"
-                          className="form-check-input"
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="price_custom">
-                          Custom Price (per hour)
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className="row custom_price_cont"
-                    id="custom_price_cont"
-                    style={{ display: "none" }}>
-                    <div className="col-md-4">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="custom_rating_input"
-                        name="custom_rating_count"
-                        defaultValue=""
-                        placeholder={20}
-                      />
-                      <small className="form-text text-muted">
-                        Custom price you can add
-                      </small>
-                    </div>
-                  </div>
-                </div>
-              </div>
+
               <div className="card services-card">
                 <div className="card-body">
-                  <h4 className="card-title">Services and Specialization</h4>
-                  <div className="mb-3">
-                    <label className="mb-2">Services</label>
-                    <input
-                      type="text"
-                      data-role="tagsinput"
-                      className="input-tags form-control"
-                      placeholder="Enter Services"
-                      name="services"
-                      defaultValue="Tooth cleaning "
-                      id="services"
-                    />
-                    <small className="form-text text-muted">
-                      Note : Type &amp; Press enter to add new services
-                    </small>
-                  </div>
+                  <h4 className="card-title">Specialization</h4>
+
                   <div className="mb-0">
-                    <label className="mb-2">Specialization </label>
                     <input
                       className="input-tags form-control"
                       type="text"
                       data-role="tagsinput"
                       placeholder="Enter Specialization"
                       name="specialist"
-                      defaultValue="Children Care,Dental Care"
                       id="specialist"
                     />
-                    <small className="form-text text-muted">
-                      Note : Type &amp; Press enter to add new specialization
-                    </small>
                   </div>
                 </div>
               </div>
               <div className="card">
                 <div className="card-body">
                   <h4 className="card-title">Education</h4>
-                  <div className="education-info">
-                    <div className="row education-cont">
-                      <div className="col-12 col-md-10 col-lg-11">
-                        <div className="row">
-                          <div className="col-12 col-md-6 col-lg-4">
-                            <div className="mb-3">
-                              <label className="mb-2">Degree</label>
-                              <input type="text" className="form-control" />
+                  {education.map((edu, index) => (
+                    <div className="education-info" key={index}>
+                      <div className="row education-cont">
+                        <div className="col-12 col-md-10 col-lg-11">
+                          <div className="row">
+                            <div className="col-12 col-md-6 col-lg-4">
+                              <div className="mb-3">
+                                <label className="mb-2">
+                                  Degree<span className="text-danger"> *</span>
+                                </label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  name="degree"
+                                  value={edu.degree}
+                                  onChange={(e) => handleInputChange(index, e)}
+                                />
+                              </div>
                             </div>
-                          </div>
-                          <div className="col-12 col-md-6 col-lg-4">
-                            <div className="mb-3">
-                              <label className="mb-2">College/Institute</label>
-                              <input type="text" className="form-control" />
+                            <div className="col-12 col-md-6 col-lg-4">
+                              <div className="mb-3">
+                                <label className="mb-2">
+                                  College/Institute
+                                  <span className="text-danger"> *</span>
+                                </label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  name="institute"
+                                  value={edu.institute}
+                                  onChange={(e) => handleInputChange(index, e)}
+                                />
+                              </div>
                             </div>
-                          </div>
-                          <div className="col-12 col-md-6 col-lg-4">
-                            <div className="mb-3">
-                              <label className="mb-2">Year of Completion</label>
-                              <input type="text" className="form-control" />
+                            <div className="col-12 col-md-6 col-lg-4">
+                              <div className="mb-3">
+                                <label className="mb-2">
+                                  Year of Completion
+                                  <span className="text-danger"> *</span>
+                                </label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  name="year"
+                                  value={edu.year}
+                                  onChange={(e) => handleInputChange(index, e)}
+                                />
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
+                      {index !== 0 && ( // Condition to render the Remove button only for slots after the first one
+                        <div className="remove-education">
+                          <a onClick={() => handleRemoveEducation(index)}>
+                            <i className="fa fa-minus-circle" /> Remove
+                          </a>
+                        </div>
+                      )}
                     </div>
-                  </div>
-                  <div className="add-more">
-                    <a href="javascript:void(0);" className="add-education">
+                  ))}
+                  <div className="add-more mt-2">
+                    <a className="add-education" onClick={handleAddEducation}>
                       <i className="fa fa-plus-circle" /> Add More
                     </a>
                   </div>
                 </div>
               </div>
+
               <div className="card">
                 <div className="card-body">
                   <h4 className="card-title">Experience</h4>
-                  <div className="experience-info">
-                    <div className="row experience-cont">
-                      <div className="col-12 col-md-10 col-lg-11">
+                  {experiences.map((experience, index) => (
+                    <div className="experience-info" key={experience.id}>
+                      <div className="row experience-cont">
+                        <div className="col-12 col-md-10 col-lg-11">
+                          <div className="row">
+                            <div className="col-12 col-md-6 col-lg-4">
+                              <div className="mb-3">
+                                <label className="mb-2">
+                                  Years of Experience
+                                  <span className="text-danger"> *</span>
+                                </label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  name="hospitalName"
+                                  value={experience.hospitalName}
+                                  onChange={(event) =>
+                                    handleInputChange(index, event)
+                                  }
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="card">
+                <div className="card-body">
+                  <h4 className="card-title">Awards & Achievements</h4>
+                  {awards.map((award, index) => (
+                    <div key={index} className="awards-info">
+                      <div className="row awards-cont">
+                        <div className="col-12 col-md-5">
+                          <div className="mb-3">
+                            <label className="mb-2">Awards</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="name"
+                              value={award.name}
+                              onChange={(event) =>
+                                handleInputChange(index, event)
+                              }
+                            />
+                          </div>
+                        </div>
+                        <div className="col-12 col-md-5">
+                          <div className="mb-3">
+                            <label className="mb-2">Year</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="year"
+                              value={award.year}
+                              onChange={(event) =>
+                                handleInputChange(index, event)
+                              }
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      {index !== 0 && (
                         <div className="row">
-                          <div className="col-12 col-md-6 col-lg-4">
+                          <div className="col-12">
                             <div className="mb-3">
-                              <label className="mb-2">Hospital Name</label>
-                              <input type="text" className="form-control" />
-                            </div>
-                          </div>
-                          <div className="col-12 col-md-6 col-lg-4">
-                            <div className="mb-3">
-                              <label className="mb-2">From</label>
-                              <input type="text" className="form-control" />
-                            </div>
-                          </div>
-                          <div className="col-12 col-md-6 col-lg-4">
-                            <div className="mb-3">
-                              <label className="mb-2">To</label>
-                              <input type="text" className="form-control" />
-                            </div>
-                          </div>
-                          <div className="col-12 col-md-6 col-lg-4">
-                            <div className="mb-3">
-                              <label className="mb-2">Designation</label>
-                              <input type="text" className="form-control" />
+                              <a onClick={() => handleRemoveAward(index)}>
+                                <i className="fa fa-minus-circle" /> Remove
+                              </a>
                             </div>
                           </div>
                         </div>
-                      </div>
+                      )}
                     </div>
-                  </div>
+                  ))}
                   <div className="add-more">
-                    <a href="javascript:void(0);" className="add-experience">
+                    <a
+                      href="javascript:void(0);"
+                      className="add-experience"
+                      onClick={handleAddAward}>
                       <i className="fa fa-plus-circle" /> Add More
                     </a>
                   </div>
                 </div>
               </div>
+
               <div className="card">
                 <div className="card-body">
-                  <h4 className="card-title">Awards</h4>
-                  <div className="awards-info">
-                    <div className="row awards-cont">
-                      <div className="col-12 col-md-5">
-                        <div className="mb-3">
-                          <label className="mb-2">Awards</label>
-                          <input type="text" className="form-control" />
-                        </div>
-                      </div>
-                      <div className="col-12 col-md-5">
-                        <div className="mb-3">
-                          <label className="mb-2">Year</label>
-                          <input type="text" className="form-control" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="add-more">
-                    <a href="javascript:void(0);" className="add-award">
-                      <i className="fa fa-plus-circle" /> Add More
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div className="card">
-                <div className="card-body">
-                  <h4 className="card-title">Memberships</h4>
-                  <div className="membership-info">
-                    <div className="row membership-cont">
-                      <div className="col-12 col-md-10 col-lg-5">
-                        <div className="mb-3">
-                          <label className="mb-2">Memberships</label>
-                          <input type="text" className="form-control" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="add-more">
-                    <a href="javascript:void(0);" className="add-membership">
-                      <i className="fa fa-plus-circle" /> Add More
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div className="card">
-                <div className="card-body">
-                  <h4 className="card-title">Registrations</h4>
+                  <h4 className="card-title">Licence </h4>
                   <div className="registrations-info">
                     <div className="row reg-cont">
                       <div className="col-12 col-md-5">
                         <div className="mb-3">
-                          <label className="mb-2">Registrations</label>
+                          <label className="mb-2">
+                            Licence number
+                            <span className="text-danger"> *</span>
+                          </label>
                           <input type="text" className="form-control" />
                         </div>
                       </div>
                       <div className="col-12 col-md-5">
                         <div className="mb-3">
-                          <label className="mb-2">Year</label>
+                          <label className="mb-2">
+                            Year of issue<span className="text-danger"> *</span>
+                          </label>
                           <input type="text" className="form-control" />
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="add-more">
-                    <a href="javascript:void(0);" className="add-reg">
-                      <i className="fa fa-plus-circle" />
-                      Add More
-                    </a>
-                  </div>
                 </div>
               </div>
+              <div className="card">
+                <div className="card-body">
+                  <h4 className="card-title">
+                    Certificate<span className="text-danger"> *</span>
+                  </h4>
+                  <div className="row">
+                    <div className="col-lg-12">
+                      <div className="mb-3">
+                        <div className="relative-form">
+                          <label htmlFor="certificateUpload">
+                            Upload Certificate Here
+                          </label>
+                          <div className="relative-file-upload">
+                            <input
+                              type="file"
+                              id="certificateUpload"
+                              onChange={handleFileChange}
+                              accept=".pdf, image/*"
+                            />
+                            <span>
+                              {fileName
+                                ? `Selected File: ${fileName}`
+                                : "Choose File"}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {filePreview && (
+                    <div>
+                      <h5>Preview</h5>
+                      {fileName.toLowerCase().endsWith(".pdf") ? (
+                        <embed
+                          src={filePreview}
+                          type="application/pdf"
+                          width="100%"
+                          height="500px"
+                        />
+                      ) : (
+                        <img
+                          src={filePreview}
+                          alt="Preview"
+                          style={{ maxWidth: "100%" }}
+                        />
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+
               <div className="submit-section submit-btn-bottom">
                 <button type="submit" className="btn btn-primary prime-btn">
                   Save Changes
