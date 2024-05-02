@@ -1,7 +1,72 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import { Bounce, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function ChangePassword() {
+  const {
+    register,
+    formState: { errors },
+  } = useForm();
+  const [showPassword, setShowPassword] = useState();
+  const [showConfirmPassword, setShowConfirmPassword] = useState();
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showOldPassword, setShowOldPassword] = useState();
+  const docInfo = JSON.parse(localStorage.getItem("docInfo"));
+  const userId = docInfo.userId._id;
+  const isAuthenticated = localStorage.getItem("token");
+
+  const handleSubmit = async () => {
+    if (newPassword.length < 3) {
+      toast.error("Password must contain at least 8 characters", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      toast.error("Password doesn't match", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      return;
+    }
+
+    const result = await axios.put(
+      `https://healthbackend-3xh2.onrender.com/doctor/${userId}/updatePassword`,
+      {
+        oldPassword,
+        newPassword,
+      },
+      {
+        headers: {
+          authorization: isAuthenticated,
+        },
+      }
+    );
+
+    toast(result.data.result);
+  };
+
   return (
     <div className="main-wrapper">
       <div className="breadcrumb-bar-two">
@@ -24,6 +89,7 @@ export default function ChangePassword() {
         </div>
       </div>
       <div className="content">
+        <ToastContainer />
         <div className="container">
           <div className="row">
             <div className="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
@@ -107,27 +173,120 @@ export default function ChangePassword() {
                 <div className="card-body">
                   <div className="row">
                     <div className="col-md-12 col-lg-6">
-                      <form>
-                        <div className="mb-3">
-                          <label className="mb-2">Old Password</label>
-                          <input type="password" className="form-control" />
-                        </div>
-                        <div className="mb-3">
-                          <label className="mb-2">New Password</label>
-                          <input type="password" className="form-control" />
-                        </div>
-                        <div className="mb-3">
-                          <label className="mb-2">Confirm Password</label>
-                          <input type="password" className="form-control" />
-                        </div>
-                        <div className="submit-section">
+                      <div className="mb-3">
+                        <label className="mb-2">Old Password</label>
+                        <div className="d-flex">
+                          <input
+                            value={oldPassword}
+                            type={showOldPassword ? "text" : "password"}
+                            {...register("oldPassword", {
+                              required: "Password is required",
+                              pattern: {
+                                value:
+                                  /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9]).{8,}$/,
+                                message:
+                                  "Password must contain at least 8 characters, one uppercase letter, one number, and one special character",
+                              },
+                            })}
+                            onChange={(e) => setOldPassword(e.target.value)}
+                            className="form-control"
+                          />
                           <button
-                            type="submit"
-                            className="btn btn-primary submit-btn">
-                            Save Changes
+                            type="button"
+                            onClick={() => setShowOldPassword(!showOldPassword)}
+                            className="">
+                            {showOldPassword ? (
+                              <FiEyeOff className="text-gray-500" />
+                            ) : (
+                              <FiEye className="text-gray-500" />
+                            )}
                           </button>
+                          {errors.password && (
+                            <p className="text-red-500 text-xs italic">
+                              {errors.password.message}
+                            </p>
+                          )}
                         </div>
-                      </form>
+                      </div>
+                      <div className="mb-3">
+                        <label className="mb-2">New Password</label>
+                        <div className="d-flex">
+                          <input
+                            value={newPassword}
+                            type={showPassword ? "text" : "password"}
+                            {...register("newPassword", {
+                              required: "Password is required",
+                              pattern: {
+                                value:
+                                  /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9]).{8,}$/,
+                                message:
+                                  "Password must contain at least 8 characters, one uppercase letter, one number, and one special character",
+                              },
+                            })}
+                            onChange={(e) => setNewPassword(e.target.value)}
+                            className="form-control"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="">
+                            {showPassword ? (
+                              <FiEyeOff className="text-gray-500" />
+                            ) : (
+                              <FiEye className="text-gray-500" />
+                            )}
+                          </button>
+                          {errors.password && (
+                            <p className="text-red-500 text-xs italic">
+                              {errors.password.message}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="mb-3">
+                        <label className="mb-2">Confirm Password</label>
+                        <div className="d-flex">
+                          <input
+                            value={confirmPassword}
+                            type={showConfirmPassword ? "text" : "password"}
+                            {...register("confirmPassword", {
+                              required: "Password is required",
+                              pattern: {
+                                value:
+                                  /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9]).{8,}$/,
+                                message:
+                                  "Password must contain at least 8 characters, one uppercase letter, one number, and one special character",
+                              },
+                            })}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            className="form-control"
+                          />
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setShowConfirmPassword(!showConfirmPassword)
+                            }
+                            className="">
+                            {showConfirmPassword ? (
+                              <FiEyeOff className="text-gray-500" />
+                            ) : (
+                              <FiEye className="text-gray-500" />
+                            )}
+                          </button>
+                          {errors.password && (
+                            <p className="text-red-500 text-xs italic">
+                              {errors.password.message}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="submit-section">
+                        <button
+                          onClick={handleSubmit}
+                          className="btn btn-primary submit-btn">
+                          Save Changes
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>

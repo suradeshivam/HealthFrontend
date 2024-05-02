@@ -39,23 +39,20 @@ export default function LoginDoctor() {
 
         const doctor = await axios.get(
           `https://healthbackend-3xh2.onrender.com/doctor/${user._id}`,
-          
+
           {
             headers: {
               "Content-Type": "application/json",
-               Authorization: response.data.result.token,
+              Authorization: response.data.result.token,
             },
           }
         );
-
-        
 
         // Store the token securely
         await localStorage.setItem(
           "docInfo",
           JSON.stringify(doctor.data.result.doctor)
         );
-        
 
         // setLoading(false);
         // setIsLoggedIn(true);
@@ -132,8 +129,6 @@ export default function LoginDoctor() {
                             {...register("password", {
                               required: "Password is required",
                               pattern: {
-                                value:
-                                  /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9]).{8,}$/,
                                 message:
                                   "Password must contain at least 8 characters, one uppercase letter, one number, and one special character",
                               },
