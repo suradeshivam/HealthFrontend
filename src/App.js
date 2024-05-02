@@ -12,6 +12,7 @@ import Reviews from "./Components/Reviews";
 import ScheduleTime from "./Components/ScheduleTimings";
 import Accounts from "./Components/Accounts";
 import Room from "./Components/meet/Room";
+import Appointment from "./Components/Appointment";
 
 // App changed
 function App() {
@@ -33,6 +34,7 @@ function App() {
         <Route path="schedule" element={<ScheduleTime />} />
         <Route path="accounts" element={<Accounts />} />
         <Route path="room/:roomID" element={<Room />} />
+        <Route path="appointment" element={<Appointment  />}/>
       </Routes>
       {shouldShowNavbarAndFooter && <Footer />}
     </div>

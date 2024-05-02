@@ -1,7 +1,149 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Swal from 'sweetalert2';
+
+
+const generateTimeSlots = () =>{
+  const slots = [];
+  const startTime = new Date().setHours(0, 0, 0, 0); // Start time at 00:00 AM
+  const endTime = new Date().setHours(23, 59, 59, 999); // End time at 11:59 PM
+
+  for (let time = startTime; time <= endTime; time += 30 * 60 * 1000) {
+    const startTimeString = new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+    const endTimeString = new Date(time + 30 * 60 * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+    slots.push(`${startTimeString} to ${endTimeString}`);
+  }
+
+  return slots;
+}
 
 export default function ScheduleTime() {
+  const [slotDuration, setSlotDuration] = useState('30 mins');
+  const [copyToAllDays, setCopyToAllDays] = useState(false);
+    const [schedule, setSchedule] = useState({});
+  const [selectedSlots, setSelectedSlots] = useState({
+    sunday: [],
+    monday: [],
+    tuesday: [],
+    wednesday: [],
+    thursday: [],
+    friday: [],
+    saturday: []
+  });
+
+  // console.log(selectedSlots)
+
+  const handleSlotClick = (day, slot) => {
+
+    const newSlot = {
+      time: slot,
+      isBooked: false,
+    };
+  
+    const isSelected = selectedSlots[day].some((selectedSlot) => selectedSlot.time === newSlot.time);
+  
+    if (isSelected) {
+      setSelectedSlots({
+        ...selectedSlots,
+        [day]: selectedSlots[day].filter((selectedSlot) => selectedSlot.time !== newSlot.time)
+      });
+    } else {
+      setSelectedSlots({
+        ...selectedSlots,
+        [day]: [...selectedSlots[day], newSlot]
+      });
+    }
+  };
+
+  
+
+  const handleCopySlotsToAllDays = () => {
+    if (copyToAllDays) {
+      const mondaySlots = selectedSlots.monday;
+      const updatedTimeSlots = { ...selectedSlots };
+      Object.keys(updatedTimeSlots).forEach(day => {
+        if (day !== 'monday' && day !== 'sunday') {
+          updatedTimeSlots[day] = [...mondaySlots];
+        }
+      });
+      setSelectedSlots(updatedTimeSlots);
+    } else {
+      const mondaySlots = selectedSlots.monday;
+      const updatedTimeSlots = { ...selectedSlots };
+      console.log(updatedTimeSlots)
+      Object.keys(updatedTimeSlots).forEach(day => {
+        if (day !== 'monday' && day !== 'sunday') {
+          updatedTimeSlots[day] = [...mondaySlots];
+        }
+      });
+      setSelectedSlots(updatedTimeSlots);
+    }
+    setCopyToAllDays(prevState => !prevState);
+  };
+  
+
+  const handleSubmit = async () =>{
+
+    const isAuthenticated = localStorage.getItem("token");
+
+    try {
+      const response = await axios.put(`https://healthbackend-3xh2.onrender.com/doctor/${schedule.userId._id}/update`,
+      {
+        schedules:selectedSlots,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: isAuthenticated,
+        },
+      }
+      );
+
+
+      // console.log(response); 
+
+      Swal.fire({
+        icon: 'success',
+      title: 'Success!',
+      text: 'Time slots updated successfully.',
+      })
+
+      const doctor = await axios.get(
+        `https://healthbackend-3xh2.onrender.com/doctor/${schedule.userId._id}`,
+        
+        {
+          headers: {
+            "Content-Type": "application/json",
+             Authorization: isAuthenticated,
+          },
+        }
+      );
+      // Store the token securely
+      await localStorage.setItem(
+        "docInfo",
+        JSON.stringify(doctor.data.result.doctor)
+      );
+
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'Failed to update time slots. Please try again later.',
+      });
+    }
+
+  }
+
+ 
+
+  useEffect (()=>{
+    const t = JSON.parse(localStorage.getItem('docInfo'))
+    setSchedule(t)
+    setSelectedSlots(t.schedules);
+  },[])
+
+
   return (
     <>
       <div className="main-wrapper">
@@ -113,20 +255,28 @@ export default function ScheduleTime() {
                         <div className="profile-box">
                           <div className="row">
                             <div className="col-lg-4">
-                              <div className="mb-3">
+                              {/* <div className="mb-3">
                                 <label className="durations">
                                   Timing Slot Duration
                                 </label>
-                                <select className="form-select form-control">
+                                <select 
+                                value={slotDuration}
+                                onChange={(event) => setSlotDuration(event.target.value)}
+                                className="form-select form-control">
                                   <option>-</option>
                                   <option>15 mins</option>
                                   <option selected="selected">30 mins</option>
                                   <option>45 mins</option>
                                   <option>1 Hour</option>
                                 </select>
-                              </div>
+                              </div> */}
                             </div>
                           </div>
+                          <input
+              type="checkbox"
+              checked={copyToAllDays}
+              onChange={handleCopySlotsToAllDays}
+            /> Copy Monday slots to all days except Sunday
                           <div className="row">
                             <div className="col-md-12">
                               <div className="card schedule-widget mb-0">
@@ -198,150 +348,188 @@ export default function ScheduleTime() {
                                     className="tab-pane fade">
                                     <h4 className="card-title d-flex justify-content-between">
                                       <span>Time Slots</span>
-                                      <a
+                                      {/* <a
                                         className="edit-link"
                                         data-bs-toggle="modal"
                                         href="#add_time_slot">
                                         <i className="fa fa-plus-circle" /> Add
                                         Slot
-                                      </a>
+                                      </a> */}
                                     </h4>
-                                    <p className="text-muted mb-0">
-                                      Not Available
-                                    </p>
+
+                                
+     <div className="doc-times" style={{ gap: '1px' }}>
+  {generateTimeSlots().map((timeSlot, index) => (
+    <button
+      className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['sunday']?.includes(timeSlot) ? '' : ''}`} 
+      key={index}
+      onClick={() => handleSlotClick('sunday', timeSlot)}
+      style={{ backgroundColor: selectedSlots['sunday']?.some((s)=>s.time === timeSlot) ? 'green' : '' }}
+    >
+      {timeSlot}
+    </button>
+  ))}
+</div>
+                                    
                                   </div>
                                   <div
                                     id="slot_monday"
                                     className="tab-pane fade show active">
                                     <h4 className="card-title d-flex justify-content-between">
                                       <span>Time Slots</span>
-                                      <a
+                                      {/* <a
                                         className="edit-link"
                                         data-bs-toggle="modal"
-                                        href="#edit_time_slot">
-                                        <i className="fa fa-edit me-1" />
-                                        Edit
-                                      </a>
+                                        href="#add_time_slot_monday">
+                                        <i className="fa fa-plus-circle" /> Add
+                                        Slot
+                                      </a> */}
                                     </h4>
-                                    <div className="doc-times">
-                                      <div className="doc-slot-list">
-                                        8:00 pm - 11:30 pm
-                                        <a
-                                          href="javascript:void(0)"
-                                          className="delete_schedule">
-                                          <i className="fa fa-times" />
-                                        </a>
-                                      </div>
-                                      <div className="doc-slot-list">
-                                        11:30 pm - 1:30 pm
-                                        <a
-                                          href="javascript:void(0)"
-                                          className="delete_schedule">
-                                          <i className="fa fa-times" />
-                                        </a>
-                                      </div>
-                                      <div className="doc-slot-list">
-                                        3:00 pm - 5:00 pm
-                                        <a
-                                          href="javascript:void(0)"
-                                          className="delete_schedule">
-                                          <i className="fa fa-times" />
-                                        </a>
-                                      </div>
-                                      <div className="doc-slot-list">
-                                        6:00 pm - 11:00 pm
-                                        <a
-                                          href="javascript:void(0)"
-                                          className="delete_schedule">
-                                          <i className="fa fa-times" />
-                                        </a>
-                                      </div>
-                                    </div>
+
+                                 
+                                <div className="doc-times gap-lg-1">
+  {generateTimeSlots().map((timeSlot, index) => (
+    <button
+      className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['monday']?.includes(timeSlot) ? '' : ''}`}
+      key={index}
+      onClick={() => handleSlotClick('monday', timeSlot)}
+      style={{ backgroundColor: selectedSlots['monday']?.some((s)=>s.time === timeSlot) ? 'green' : '' }}
+    >
+      {timeSlot}
+    </button>
+  ))}
+</div>
+
                                   </div>
                                   <div
                                     id="slot_tuesday"
                                     className="tab-pane fade">
                                     <h4 className="card-title d-flex justify-content-between">
                                       <span>Time Slots</span>
-                                      <a
+                                      {/* <a
                                         className="edit-link"
                                         data-bs-toggle="modal"
-                                        href="#add_time_slot">
+                                        href="#add_time_slot_tuesday">
                                         <i className="fa fa-plus-circle" /> Add
                                         Slot
-                                      </a>
+                                      </a> */}
                                     </h4>
-                                    <p className="text-muted mb-0">
-                                      Not Available
-                                    </p>
+                                    <div className="doc-times gap-lg-1">
+  {generateTimeSlots().map((timeSlot, index) => (
+    <button
+      className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['tuesday']?.includes(timeSlot) ? '' : ''}`}
+      key={index}
+      onClick={() => handleSlotClick('tuesday', timeSlot)}
+      style={{ backgroundColor: selectedSlots['tuesday']?.some((s)=>s.time === timeSlot) ? 'green' : '' }}
+    >
+      {timeSlot}
+    </button>
+  ))}
+</div>
                                   </div>
                                   <div
                                     id="slot_wednesday"
                                     className="tab-pane fade">
                                     <h4 className="card-title d-flex justify-content-between">
                                       <span>Time Slots</span>
-                                      <a
+                                      {/* <a
                                         className="edit-link"
                                         data-bs-toggle="modal"
-                                        href="#add_time_slot">
+                                        href="#add_time_slot_wednesday">
                                         <i className="fa fa-plus-circle" /> Add
                                         Slot
-                                      </a>
+                                      </a> */}
                                     </h4>
-                                    <p className="text-muted mb-0">
-                                      Not Available
-                                    </p>
+                                    <div className="doc-times gap-lg-1">
+  {generateTimeSlots().map((timeSlot, index) => (
+    <button
+      className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['wednesday']?.includes(timeSlot) ? '' : ''}`}
+      key={index}
+      onClick={() => handleSlotClick('wednesday', timeSlot)}
+      style={{ backgroundColor: selectedSlots['wednesday']?.some((s)=>s.time === timeSlot) ? 'green' : '' }}
+    >
+      {timeSlot}
+    </button>
+  ))}
+</div>
                                   </div>
                                   <div
                                     id="slot_thursday"
                                     className="tab-pane fade">
                                     <h4 className="card-title d-flex justify-content-between">
                                       <span>Time Slots</span>
-                                      <a
+                                      {/* <a
                                         className="edit-link"
                                         data-bs-toggle="modal"
-                                        href="#add_time_slot">
+                                        href="#add_time_slot_thursday">
                                         <i className="fa fa-plus-circle" /> Add
                                         Slot
-                                      </a>
+                                      </a> */}
                                     </h4>
-                                    <p className="text-muted mb-0">
-                                      Not Available
-                                    </p>
+                                    <div className="doc-times gap-lg-1">
+  {generateTimeSlots().map((timeSlot, index) => (
+    <button
+      className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['thursday']?.includes(timeSlot) ? '' : ''}`}
+      key={index}
+      onClick={() => handleSlotClick('thursday', timeSlot)}
+      style={{ backgroundColor: selectedSlots['thursday']?.some((s)=>s.time === timeSlot) ? 'green' : '' }}
+    >
+      {timeSlot}
+    </button>
+  ))}
+</div>
                                   </div>
                                   <div
                                     id="slot_friday"
                                     className="tab-pane fade">
                                     <h4 className="card-title d-flex justify-content-between">
                                       <span>Time Slots</span>
-                                      <a
+                                      {/* <a
                                         className="edit-link"
                                         data-bs-toggle="modal"
-                                        href="#add_time_slot">
+                                        href="#add_time_slot_friday">
                                         <i className="fa fa-plus-circle" /> Add
                                         Slot
-                                      </a>
+                                      </a> */}
                                     </h4>
-                                    <p className="text-muted mb-0">
-                                      Not Available
-                                    </p>
+                                    <div className="doc-times gap-lg-1">
+  {generateTimeSlots().map((timeSlot, index) => (
+    <button
+      className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['friday']?.includes(timeSlot) ? '' : ''}`}
+      key={index}
+      onClick={() => handleSlotClick('friday', timeSlot)}
+      style={{ backgroundColor: selectedSlots['friday']?.some((s)=>s.time === timeSlot) ? 'green' : '' }}
+    >
+      {timeSlot}
+    </button>
+  ))}
+</div>
                                   </div>
                                   <div
                                     id="slot_saturday"
                                     className="tab-pane fade">
                                     <h4 className="card-title d-flex justify-content-between">
                                       <span>Time Slots</span>
-                                      <a
+                                      {/* <a
                                         className="edit-link"
                                         data-bs-toggle="modal"
-                                        href="#add_time_slot">
+                                        href="#add_time_slot_saturday">
                                         <i className="fa fa-plus-circle" /> Add
                                         Slot
-                                      </a>
+                                      </a> */}
                                     </h4>
-                                    <p className="text-muted mb-0">
-                                      Not Available
-                                    </p>
+                                    <div className="doc-times gap-lg-1">
+  {generateTimeSlots().map((timeSlot, index) => (
+    <button
+      className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['saturday']?.includes(timeSlot) ? '' : ''}`}
+      key={index}
+      onClick={() => handleSlotClick('saturday', timeSlot)}
+      style={{ backgroundColor: selectedSlots['saturday']?.some((s)=>s.time === timeSlot) ? 'green' : '' }}
+    >
+      {timeSlot}
+    </button>
+  ))}
+</div>
                                   </div>
                                 </div>
                               </div>
@@ -349,6 +537,11 @@ export default function ScheduleTime() {
                           </div>
                         </div>
                       </div>
+                      <div className=" text-center">
+    <button type="submit"   className="btn btn-primary" onClick={()=>handleSubmit()}>
+      Save The Changes
+    </button>
+  </div>
                     </div>
                   </div>
                 </div>
@@ -357,202 +550,8 @@ export default function ScheduleTime() {
           </div>
         </div>
       </div>
-      <div className="modal fade custom-modal" id="add_time_slot">
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Add Time Slots</h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"></button>
-            </div>
-            <div className="modal-body">
-              <form>
-                <div className="hours-info">
-                  <div className="row hours-cont">
-                    <div className="col-12 col-md-10">
-                      <div className="row">
-                        <div className="col-12 col-md-6">
-                          <div className="mb-3">
-                            <label className="mb-2">Start Time</label>
-                            <select className="form-select form-control">
-                              <option>-</option>
-                              <option>12.00 am</option>
-                              <option>12.30 am</option>
-                              <option>1.00 am</option>
-                              <option>1.30 am</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div className="col-12 col-md-6">
-                          <div className="mb-3">
-                            <label className="mb-2">End Time</label>
-                            <select className="form-select form-control">
-                              <option>-</option>
-                              <option>12.00 am</option>
-                              <option>12.30 am</option>
-                              <option>1.00 am</option>
-                              <option>1.30 am</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="add-more mb-3">
-                  <a href="javascript:void(0);" className="add-hours">
-                    <i className="fa fa-plus-circle" /> Add More
-                  </a>
-                </div>
-                <div className="submit-section text-center">
-                  <button type="submit" className="btn btn-primary submit-btn">
-                    Save
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="modal fade custom-modal" id="edit_time_slot">
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Edit Time Slots</h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"></button>
-            </div>
-            <div className="modal-body">
-              <form>
-                <div className="hours-info">
-                  <div className="row hours-cont">
-                    <div className="col-12 col-md-10">
-                      <div className="row">
-                        <div className="col-12 col-md-6">
-                          <div className="mb-3">
-                            <label className="mb-2">Start Time</label>
-                            <select className="form-select form-control">
-                              <option>-</option>
-                              <option selected="">12.00 am</option>
-                              <option>12.30 am</option>
-                              <option>1.00 am</option>
-                              <option>1.30 am</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div className="col-12 col-md-6">
-                          <div className="mb-3">
-                            <label className="mb-2">End Time</label>
-                            <select className="form-select form-control">
-                              <option>-</option>
-                              <option>12.00 am</option>
-                              <option selected="">12.30 am</option>
-                              <option>1.00 am</option>
-                              <option>1.30 am</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row hours-cont">
-                    <div className="col-12 col-md-10">
-                      <div className="row">
-                        <div className="col-12 col-md-6">
-                          <div className="mb-3">
-                            <label className="mb-2">Start Time</label>
-                            <select className="form-select form-control">
-                              <option>-</option>
-                              <option>12.00 am</option>
-                              <option selected="">12.30 am</option>
-                              <option>1.00 am</option>
-                              <option>1.30 am</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div className="col-12 col-md-6">
-                          <div className="mb-3">
-                            <label className="mb-2">End Time</label>
-                            <select className="form-select form-control">
-                              <option>-</option>
-                              <option>12.00 am</option>
-                              <option>12.30 am</option>
-                              <option selected="">1.00 am</option>
-                              <option>1.30 am</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-12 col-md-2">
-                      <label className="d-md-block d-sm-none d-none">
-                        &nbsp;
-                      </label>
-                      <a href="#" className="btn btn-danger trash">
-                        <i className="far fa-trash-alt" />
-                      </a>
-                    </div>
-                  </div>
-                  <div className="row hours-cont">
-                    <div className="col-12 col-md-10">
-                      <div className="row">
-                        <div className="col-12 col-md-6">
-                          <div className="mb-3">
-                            <label className="mb-2">Start Time</label>
-                            <select className="form-select form-control">
-                              <option>-</option>
-                              <option>12.00 am</option>
-                              <option>12.30 am</option>
-                              <option selected="">1.00 am</option>
-                              <option>1.30 am</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div className="col-12 col-md-6">
-                          <div className="mb-3">
-                            <label className="mb-2">End Time</label>
-                            <select className="form-select form-control">
-                              <option>-</option>
-                              <option>12.00 am</option>
-                              <option>12.30 am</option>
-                              <option>1.00 am</option>
-                              <option selected="">1.30 am</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-12 col-md-2">
-                      <label className="d-md-block d-sm-none d-none">
-                        &nbsp;
-                      </label>
-                      <a href="#" className="btn btn-danger trash">
-                        <i className="far fa-trash-alt" />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div className="add-more mb-3">
-                  <a href="javascript:void(0);" className="add-hours">
-                    <i className="fa fa-plus-circle" /> Add More
-                  </a>
-                </div>
-                <div className="submit-section text-center">
-                  <button type="submit" className="btn btn-primary submit-btn">
-                    Save
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
+
+     
     </>
   );
 }
