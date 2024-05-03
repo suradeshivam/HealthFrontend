@@ -12,7 +12,6 @@ import Appointment from "./Components/Appointment";
 
 // DashBoard
 export default function Dashboard() {
-
   const [showModal, setShowModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
@@ -21,27 +20,37 @@ export default function Dashboard() {
   const [upcoming, setUpcoming] = useState([]);
   const [today, setToday] = useState([]);
   // const [selectedPatient, setSelectedPatient] = useState([]);
-  const { setselectedPatient} = OrderState();
-  const [doctorInfo, setDoctorInfo] = useState('');
-const [isAuthenticated, setIsAuthenticated] = useState('');
+  const { setselectedPatient } = OrderState();
+  const [doctorInfo, setDoctorInfo] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState("");
 
- 
-console.log(upcoming)
+  console.log(upcoming);
+
+  const handleLogout = () => {
+    const userInfo = localStorage.getItem("userInfo");
+    if (userInfo) {
+      localStorage.removeItem("userInfo");
+    }
+    const token = localStorage.getItem("token");
+    if (userInfo) {
+      localStorage.removeItem("token");
+    }
+    const docInfo = localStorage.getItem("docInfo");
+    if (userInfo) {
+      localStorage.removeItem("docInfo");
+    }
+  };
 
   const isRescheduleEnabled = (patient) => {
     const patientDateTime = new Date(`${patient.date} ${patient.time}`);
 
-
     const differenceInMinutes = (patientDateTime - currentTime) / (1000 * 60);
-
-
 
     return (
       patientDateTime.toDateString() === currentTime.toDateString() &&
       differenceInMinutes < 60
     );
   };
-
 
   const navigate = useNavigate();
 
@@ -65,19 +74,16 @@ console.log(upcoming)
     navigate(`/room/${roomId}`);
   };
 
-  const handleViewAppointment = (e,patientData) => {
+  const handleViewAppointment = (e, patientData) => {
     e.preventDefault();
     // setSelectedPatientValue(true);
     setselectedPatient(patientData);
   };
 
-  // Api Calling 
+  // Api Calling
 
-
-
-
-// Past data
-  const getAllAppointments = async (id, isAuthenticated,past) => {
+  // Past data
+  const getAllAppointments = async (id, isAuthenticated, past) => {
     try {
       const data = await axios.post(
         "https://healthbackend-3xh2.onrender.com/appointment/appointments",
@@ -95,8 +101,7 @@ console.log(upcoming)
         }
       );
 
-
-      if(past === false){
+      if (past === false) {
         const datastore = data.data.result;
 
         const todayDate = new Date().toLocaleDateString("en-US");
@@ -107,36 +112,34 @@ console.log(upcoming)
         datastore.forEach((data) => {
           // console.log(new Date(data.date).toLocaleDateString("en-US"))
           // console.log(new Date().toLocaleDateString("en-US"))
-          const appointmentDate = new Date(data.date).toLocaleDateString("en-US");
-          if(todayDate === appointmentDate){
+          const appointmentDate = new Date(data.date).toLocaleDateString(
+            "en-US"
+          );
+          if (todayDate === appointmentDate) {
             // console.log(data)
-            todayArray.push(data)
+            todayArray.push(data);
             // setToday((prevToday) => [...prevToday, data])
             // console.log(today)
-          }else{
+          } else {
             console.log(appointmentDate);
-            upcomingArray.push(data)
+            upcomingArray.push(data);
             // setUpcoming((prevUpcoming) => [...prevUpcoming, data]);
-            }
+          }
 
-            setUpcoming(upcomingArray)
-            setToday(todayArray)
-      })
-
-      }else{
-
-      setAppointments(data.data.result);
-    }
-    console.log(data.data.result);
-    console.log(today)
-    console.log(upcoming)
+          setUpcoming(upcomingArray);
+          setToday(todayArray);
+        });
+      } else {
+        setAppointments(data.data.result);
+      }
+      console.log(data.data.result);
+      console.log(today);
+      console.log(upcoming);
       // console.log(appointments);
     } catch (error) {
-      console.log(error); 
+      console.log(error);
     }
   };
-
-
 
   const patients = [
     {
@@ -241,7 +244,7 @@ console.log(upcoming)
       date: "2024-04-29",
       time: "14:00",
     },
-  ]
+  ];
 
   // Pagination Logic
   const [currentPage, setCurrentPage] = useState(1);
@@ -255,16 +258,13 @@ console.log(upcoming)
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  
-
   useEffect(() => {
-    const doctorInfo = JSON.parse(localStorage.getItem('docInfo'));
+    const doctorInfo = JSON.parse(localStorage.getItem("docInfo"));
     const isAuthenticated = localStorage.getItem("token");
     setDoctorInfo(doctorInfo);
     setIsAuthenticated(isAuthenticated);
-    getAllAppointments(doctorInfo._id, isAuthenticated,false);
-  }, [])
-
+    getAllAppointments(doctorInfo._id, isAuthenticated, false);
+  }, []);
 
   return (
     <div>
@@ -357,7 +357,7 @@ console.log(upcoming)
                           </Link>
                         </li>
                         <li>
-                          <Link to="/login">
+                          <Link to="/login" onClick={handleLogout}>
                             <i className="fas fa-sign-out-alt" />
                             <span>Logout</span>
                           </Link>
@@ -367,7 +367,6 @@ console.log(upcoming)
                   </div>
                 </div>
               </div>
-
 
               {/* 1 */}
               <div className="col-md-7 col-lg-8 col-xl-9">
@@ -379,7 +378,9 @@ console.log(upcoming)
                           <div className="col-md-12 col-lg-4">
                             <div className="dash-widget dct-border-rht">
                               <div className="circle-bar circle-bar1">
-                                <div className="circle-graph1" data-percent={75}>
+                                <div
+                                  className="circle-graph1"
+                                  data-percent={75}>
                                   <img
                                     src="assets/img/icon-01.png"
                                     className="img-fluid"
@@ -397,7 +398,9 @@ console.log(upcoming)
                           <div className="col-md-12 col-lg-4">
                             <div className="dash-widget dct-border-rht">
                               <div className="circle-bar circle-bar2">
-                                <div className="circle-graph2" data-percent={65}>
+                                <div
+                                  className="circle-graph2"
+                                  data-percent={65}>
                                   <img
                                     src="assets/img/icon-02.png"
                                     className="img-fluid"
@@ -415,7 +418,9 @@ console.log(upcoming)
                           <div className="col-md-12 col-lg-4">
                             <div className="dash-widget">
                               <div className="circle-bar circle-bar3">
-                                <div className="circle-graph3" data-percent={50}>
+                                <div
+                                  className="circle-graph3"
+                                  data-percent={50}>
                                   <img
                                     src="assets/img/icon-03.png"
                                     className="img-fluid"
@@ -435,7 +440,6 @@ console.log(upcoming)
                     </div>
                   </div>
                 </div>
-
 
                 {/* 2 */}
                 <div className="row">
@@ -464,14 +468,18 @@ console.log(upcoming)
                             className="nav-link"
                             href="#history-appointments"
                             data-bs-toggle="tab"
-                            onClick={()=>getAllAppointments(doctorInfo._id, isAuthenticated,true)}
-                            >
+                            onClick={() =>
+                              getAllAppointments(
+                                doctorInfo._id,
+                                isAuthenticated,
+                                true
+                              )
+                            }>
                             History
                           </a>
                         </li>
                       </ul>
                       <div className="tab-content">
-
                         {/* Today Appointment Section */}
                         <div
                           className="tab-pane show active"
@@ -502,28 +510,42 @@ console.log(upcoming)
                                               />
                                             </a>
                                             <a href="patient-profile.html">
-                                              {patient.patient.userId.name} <span>{patient.patient.userId._id}</span>
+                                              {patient.patient.userId.name}{" "}
+                                              <span>
+                                                {patient.patient.userId._id}
+                                              </span>
                                             </a>
                                           </h2>
                                         </td>
                                         <td>
                                           {patient.date
-                                            ? new Date(patient.date).toLocaleDateString("en-US")
+                                            ? new Date(
+                                                patient.date
+                                              ).toLocaleDateString("en-US")
                                             : "Date not available"}{" "}
                                           <span className="d-block text-info">
                                             {patient.date
-                                              ? new Date(patient.date).toLocaleTimeString("en-US")
+                                              ? new Date(
+                                                  patient.date
+                                                ).toLocaleTimeString("en-US")
                                               : "Time not available"}
                                           </span>
                                         </td>
 
                                         <td style={{ textAlign: "center" }}>
-                                          <div className="table-action" style={{ display: "flex", gap: "1rem" }}>
+                                          <div
+                                            className="table-action"
+                                            style={{
+                                              display: "flex",
+                                              gap: "1rem",
+                                            }}>
                                             <div>
-                                              <form onSubmit={submitCode} className="">
-                                                <button
-                                                  className="btn btn-sm bg-success-light">
-                                                  <i className="fas fa-check" /> Join
+                                              <form
+                                                onSubmit={submitCode}
+                                                className="">
+                                                <button className="btn btn-sm bg-success-light">
+                                                  <i className="fas fa-check" />{" "}
+                                                  Join
                                                 </button>
                                               </form>
                                             </div>
@@ -532,40 +554,36 @@ console.log(upcoming)
                                                 className="btn btn-sm bg-danger-light"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#appt_details"
-                                                disabled={isRescheduleEnabled(patient)}
+                                                disabled={isRescheduleEnabled(
+                                                  patient
+                                                )}
                                                 onClick={() => {
-                                                  setSelectedDate(patient.date)
-                                                  setSelectedTime(patient.time)
-                                                }}
-                                              >
-                                                <i className="fas fa-calendar-alt" /> Reschedule
+                                                  setSelectedDate(patient.date);
+                                                  setSelectedTime(patient.time);
+                                                }}>
+                                                <i className="fas fa-calendar-alt" />{" "}
+                                                Reschedule
                                               </button>
-                                             
                                             </div>
                                             <div>
-                                            <Link to="/appointment" >
-                                              <a
-                                                className="btn btn-sm bg-info-light"
-                                                onClick={() => {
-                                                                 setselectedPatient(patient);
-                                                }
-                                                }
-                                                >
-                                                <i className="far fa-eye" /> View
-                                              </a>
+                                              <Link to="/appointment">
+                                                <a
+                                                  className="btn btn-sm bg-info-light"
+                                                  onClick={() => {
+                                                    setselectedPatient(patient);
+                                                  }}>
+                                                  <i className="far fa-eye" />{" "}
+                                                  View
+                                                </a>
                                               </Link>
-
                                             </div>
                                           </div>
                                         </td>
-
-
                                       </tr>
                                     ))}
                                     {/* {selectedPatientValue && <Appointment selectedPatient={selectedPatient} />} */}
                                   </tbody>
                                 </table>
-
                               </div>
                             </div>
                           </div>
@@ -605,23 +623,33 @@ console.log(upcoming)
                                               />
                                             </a>
                                             <a href="patient-profile.html">
-                                              {patient.name} <span>{patient.id}</span>
+                                              {patient.name}{" "}
+                                              <span>{patient.id}</span>
                                             </a>
                                           </h2>
                                         </td>
                                         <td>
                                           {patient.date
-                                            ? new Date(patient.date).toLocaleDateString("en-US")
+                                            ? new Date(
+                                                patient.date
+                                              ).toLocaleDateString("en-US")
                                             : "Date not available"}{" "}
                                           <span className="d-block text-info">
                                             {patient.date
-                                              ? new Date(patient.date).toLocaleTimeString("en-US")
+                                              ? new Date(
+                                                  patient.date
+                                                ).toLocaleTimeString("en-US")
                                               : "Time not available"}
                                           </span>
                                         </td>
 
                                         <td style={{ textAlign: "center" }}>
-                                          <div className="table-action" style={{ display: "flex", gap: "1rem" }}>
+                                          <div
+                                            className="table-action"
+                                            style={{
+                                              display: "flex",
+                                              gap: "1rem",
+                                            }}>
                                             {/* <div>
                                               <form onSubmit={submitCode} className="">
                                                 <button
@@ -631,14 +659,15 @@ console.log(upcoming)
                                               </form>
                                             </div> */}
                                             <div className="appointment-action">
-
                                               <button
                                                 className="btn btn-sm bg-danger-light"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#appt_details"
-                                                disabled={isRescheduleEnabled(patient)}
-                                              >
-                                                <i className="fas fa-calendar-alt" /> Reschedule
+                                                disabled={isRescheduleEnabled(
+                                                  patient
+                                                )}>
+                                                <i className="fas fa-calendar-alt" />{" "}
+                                                Reschedule
                                               </button>
 
                                               {/* <button
@@ -646,25 +675,26 @@ console.log(upcoming)
                                           className="btn btn-sm bg-danger-light">
                                           <i className="fas fa-calendar-alt" /> Reschedule
                                         </button> */}
-                                              {showModal && <Reschedule closeModal={closeModal} />}
+                                              {showModal && (
+                                                <Reschedule
+                                                  closeModal={closeModal}
+                                                />
+                                              )}
                                             </div>
                                             <div>
                                               <a
                                                 href="javascript:void(0);"
                                                 className="btn btn-sm bg-info-light">
-                                                <i className="far fa-eye" /> View
+                                                <i className="far fa-eye" />{" "}
+                                                View
                                               </a>
-
                                             </div>
                                           </div>
                                         </td>
                                       </tr>
                                     ))}
-
-
                                   </tbody>
                                 </table>
-
                               </div>
                             </div>
                           </div>
@@ -704,44 +734,47 @@ console.log(upcoming)
                                               />
                                             </a>
                                             <a href="patient-profile.html">
-                                              {patient.name} <span>{patient.id}</span>
+                                              {patient.name}{" "}
+                                              <span>{patient.id}</span>
                                             </a>
                                           </h2>
                                         </td>
                                         <td>
                                           {patient.date
-                                            ? new Date(patient.date).toLocaleDateString("en-US")
+                                            ? new Date(
+                                                patient.date
+                                              ).toLocaleDateString("en-US")
                                             : "Date not available"}{" "}
                                           <span className="d-block text-info">
                                             {patient.date
-                                              ? new Date(patient.date).toLocaleTimeString("en-US")
+                                              ? new Date(
+                                                  patient.date
+                                                ).toLocaleTimeString("en-US")
                                               : "Time not available"}
                                           </span>
                                         </td>
 
                                         <td style={{ textAlign: "center" }}>
-                                          <div className="table-action" style={{ display: "flex", gap: "1rem" }}>
-
-
+                                          <div
+                                            className="table-action"
+                                            style={{
+                                              display: "flex",
+                                              gap: "1rem",
+                                            }}>
                                             <div>
                                               <Link to="/appointment">
-                                              <a
-                                                className="btn btn-sm bg-info-light"
-                                                
-                                                >
-                                                <i className="far fa-eye" /> View
-                                              </a>
+                                                <a className="btn btn-sm bg-info-light">
+                                                  <i className="far fa-eye" />{" "}
+                                                  View
+                                                </a>
                                               </Link>
-
                                             </div>
                                           </div>
                                         </td>
                                       </tr>
                                     ))}
-                                    
                                   </tbody>
                                 </table>
-
                               </div>
                             </div>
                           </div>
@@ -753,16 +786,10 @@ console.log(upcoming)
                         </div>
                       </div>
                     </div>
-
-
                   </div>
-
                 </div>
-
               </div>
             </div>
-
-
           </div>
         </div>
       </div>
@@ -770,7 +797,18 @@ console.log(upcoming)
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">  <FaBusinessTime style={{ color: "#48BB78", fontSize: "2rem", marginBottom: "0rem", marginRight: "0.5rem" }} />Reschedule</h5>
+              <h5 className="modal-title">
+                {" "}
+                <FaBusinessTime
+                  style={{
+                    color: "#48BB78",
+                    fontSize: "2rem",
+                    marginBottom: "0rem",
+                    marginRight: "0.5rem",
+                  }}
+                />
+                Reschedule
+              </h5>
               <button
                 type="button"
                 className="btn-close"
@@ -778,9 +816,15 @@ console.log(upcoming)
                 aria-label="Close"></button>
             </div>
             <div className="modal-body">
-              <div >
-                <div >
-                  <label htmlFor="date" style={{ display: "block", color: "#4A5568", fontWeight: "bold" }}>
+              <div>
+                <div>
+                  <label
+                    htmlFor="date"
+                    style={{
+                      display: "block",
+                      color: "#4A5568",
+                      fontWeight: "bold",
+                    }}>
                     Date:
                   </label>
                   <input
@@ -794,21 +838,27 @@ console.log(upcoming)
                       border: "1px solid #E2E8F0",
                       borderRadius: "0.25rem",
                       outline: "none",
-                      transition: "border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out",
+                      transition:
+                        "border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out",
                       "&:focus": {
                         borderColor: "#38A169",
                       },
                     }}
                   />
                   <div style={{ marginBottom: "1rem" }}>
-                    <label htmlFor="time" style={{ display: "block", color: "#4A5568", fontWeight: "bold" }}>
+                    <label
+                      htmlFor="time"
+                      style={{
+                        display: "block",
+                        color: "#4A5568",
+                        fontWeight: "bold",
+                      }}>
                       Time:
                     </label>
                     <input
                       id="time"
                       type="time"
                       value={selectedTime}
-
                       onChange={(e) => setSelectedTime(e.target.value)}
                       style={{
                         width: "100%",
@@ -816,28 +866,23 @@ console.log(upcoming)
                         border: "1px solid #E2E8F0",
                         borderRadius: "0.25rem",
                         outline: "none",
-                        transition: "border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out",
+                        transition:
+                          "border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out",
                         "&:focus": {
                           borderColor: "#38A169",
                         },
                       }}
                     />
-
                   </div>
                 </div>
                 {/* <DatePicker value={value} onChange={setValue} /> */}
                 <div style={{ display: "flex", gap: "1rem" }}>
-
                   <button
                     className="btn btn-sm bg-success-light"
                     style={{ margin: "auto" }}
-                    onClick={handleConfirm}
-                  >
+                    onClick={handleConfirm}>
                     <i className="fas fa-check" /> Confirm
                   </button>
-
-
-
                 </div>
               </div>
             </div>
