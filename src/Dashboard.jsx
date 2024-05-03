@@ -271,7 +271,10 @@ export default function Dashboard() {
     const isAuthenticated = localStorage.getItem("token");
     setDoctorInfo(doctorInfo);
     setIsAuthenticated(isAuthenticated);
+    // Error in _id
+    if(doctorInfo){
     getAllAppointments(doctorInfo._id, isAuthenticated, false);
+    }
   }, []);
 
   return (
@@ -296,6 +299,7 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
+        
         <div className="content">
           <div className="container">
             <div className="row">
@@ -377,11 +381,13 @@ export default function Dashboard() {
               </div>
 
               {/* 1 */}
+             
               <div className="col-md-7 col-lg-8 col-xl-9">
                 <div className="row">
                   <div className="col-md-12">
                     <div className="card dash-card">
                       <div className="card-body">
+                        {doctorInfo ?
                         <div className="row">
                           <div className="col-md-12 col-lg-4">
                             <div className="dash-widget dct-border-rht">
@@ -444,12 +450,18 @@ export default function Dashboard() {
                             </div>
                           </div>
                         </div>
+                        :<>
+                        <h1 className="mx-auto text-center">Your Analytics and Appointments will be Shown Here !</h1><br/>
+                        <h1 className="mx-auto text-center">Please Create Your Profile !</h1>
+                        </>
+                        }
                       </div>
                     </div>
                   </div>
                 </div>
-
+               
                 {/* 2 */}
+                {doctorInfo &&
                 <div className="row">
                   <div className="col-md-12">
                     <h4 className="mb-4">Patient Appoinment</h4>
@@ -803,7 +815,8 @@ export default function Dashboard() {
                       </div>
                     </div>
                   </div>
-                </div>
+                </div>}
+               
               </div>
             </div>
           </div>

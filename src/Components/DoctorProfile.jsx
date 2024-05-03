@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function DoctorProfile() {
@@ -14,7 +14,8 @@ export default function DoctorProfile() {
   const [aboutMe, setAboutMe] = useState("");
   const [clinicName, setClinicName] = useState("");
   const [clinicAddress, setClinicAddress] = useState("");
-  const [address, setAddress] = useState("");
+  const [address1, setAddress1] = useState("");
+  const [address2, setAddress2] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [country, setCountry] = useState("");
@@ -25,10 +26,14 @@ export default function DoctorProfile() {
   const [awardsNAchievements, setAwardsNAchievements] = useState([
     { awards: "", year: "" },
   ]);
+  const [licence, setLicence] = useState([
+
+    { licenseNumber: "", yearOfIssued: "" },
+  ]);
+
   const [licenceNumber,setLicenceNumber] = useState("");
   const [yearLicenceNumber,setYearLicenceNumber] = useState("");
-
-
+  
 
   const [fileName, setFileName] = useState("");
   const [filePreview, setFilePreview] = useState("");
@@ -66,7 +71,7 @@ export default function DoctorProfile() {
   };
 
   const handleAddEducation = () => {
-    setEducation([...education, { degree: "", institute: "", year: "" }]);
+    setEducation([...education, { qualification: "", collegeName: "", yearOfCompletion: "" }]);
   };
 
   const handleRemoveEducation = (index) => {
@@ -120,67 +125,138 @@ export default function DoctorProfile() {
     }
   };
 
-  const getDocInfo = async() =>{
+  const getDocInfo = async () => {
 
     const isAuthenticated = localStorage.getItem("token");
     const docInfo = JSON.parse(localStorage.getItem('docInfo'));
-    const userId = docInfo.userId._id;
-    try {
-      const response = await axios.get(
-        `https://healthbackend-3xh2.onrender.com/doctor/${userId}`,{
-          headers:{
-            Authorization:isAuthenticated,
+
+    if (docInfo) {
+      const userId = docInfo.userId._id;
+      try {
+        const response = await axios.get(
+          `https://healthbackend-3xh2.onrender.com/doctor/${userId}`, {
+          headers: {
+            Authorization: isAuthenticated,
           },
         }
-      );
+        );
 
-      const result = response.data.result.doctor;
-      console.log(result)
-      setDoctorInfo(result);
+        const result = response.data.result.doctor;
+        console.log(result)
+        setDoctorInfo(result);
 
-      
-  setUserName(docInfo.userId?.name || '')
-  setEmail(docInfo.userId?.email || '')
-  setPhone(docInfo.userId?.mobileNumber || '')
-  setGender(result?.gender || '')
-  setEducation(result.educationDetails || '')
-  // setFees()
-  // setAboutMe()
-  // setClinicName()
-  // setClinicAddress()
-  // setAddress()
-  // setCity()
-  // setCountry()
-  //  setPostalCode()
-  // setSpecialization()
-  // setYearOfExperience()
-  setDOB(result?.dob || ''); 
-  setFees(result?.fees || ''); 
-  setAboutMe(result?.aboutMe || ''); 
-    setClinicName(result?.clinicName || '');
-    setClinicAddress(result?.clinicAddress || '');
-    setAddress(result?.addressLine1 || ''); 
-    setCity(result?.city || '');
-    setCountry(result?.contry || ''); 
-    setPostalCode(result?.zip || ''); 
-    setSpecialization(result?.specialization || '');
-    setYearOfExperience(result?.yearOfExperience || '');
 
-      
-    } catch (error) {
-      console.log(error);
+        setUserName(docInfo.userId?.name || '')
+        setEmail(docInfo.userId?.email || '')
+        setPhone(docInfo.userId?.mobileNumber || '')
+        setGender(result?.gender || '')
+        setEducation(result.educationDetails || '')
+        // setFees()
+        // setAboutMe()
+        // setClinicName()
+        // setClinicAddress()
+        // setAddress()
+        // setCity()
+        // setCountry()
+        //  setPostalCode()
+        // setSpecialization()
+        // setYearOfExperience()
+        setDOB(result?.dob || '');
+        setFees(result?.fees || '');
+        setAboutMe(result?.aboutMe || '');
+        setClinicName(result?.clinicName || '');
+        setClinicAddress(result?.clinicAddress || '');
+        setAddress1(result?.addressLine1 || '');
+        setCity(result?.city || '');
+        setCountry(result?.contry || '');
+        setPostalCode(result?.zip || '');
+        setSpecialization(result?.specialization || '');
+        setYearOfExperience(result?.yearOfExperience || '');
+
+
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 
-  useState (()=>{
-   
-    getDocInfo();
-  },[])
+  const handleSubmit = async () => {
 
-  useState (()=>{
-   
-    console.log(doctorInfo);
-  },[doctorInfo])
+    const isAuthenticated = localStorage.getItem("token");
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+
+    licence[0].licenseNumber = licenceNumber;
+    licence[0].yearOfIssued = yearLicenceNumber;
+
+    console.log( userInfo._id,
+          userName,
+             yearOfExperience,
+            fees,
+            dob,
+           aboutMe,
+          specialization,
+           state,
+           awardsNAchievements,
+            licence,
+             address1,
+             address2,
+            city,
+          postalCode,
+             country,
+            education,
+            clinicName,
+             clinicAddress,
+             gender)
+
+    try {
+      
+    
+    const user = await axios.post(`https://healthbackend-3xh2.onrender.com/doctor/create`,
+      {
+        userId: userInfo._id,
+        name: userName,
+        yearsOfExperience: yearOfExperience,
+        fees: fees,
+        dob: dob,
+        about:aboutMe,
+        specialization:specialization,
+        state:state,
+        achivement:awardsNAchievements,
+        license:licence,
+        addressLine1: address1,
+        addressLine2: address2,
+        city: city,
+        zip: postalCode,
+        contry: country,
+        educationDetails: education,
+        clinicName: clinicName,
+        clinicAddress: clinicAddress,
+        gender: gender,
+        
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: isAuthenticated,
+        },
+      }
+    )
+
+    console.log(user);
+  } catch (error) {
+      
+  }
+  }
+
+  useEffect(() => {
+
+    getDocInfo();
+  }, [])
+
+  // useState (()=>{
+
+  //   console.log(doctorInfo);
+  // },[doctorInfo])
 
   return (
     <div className="main-wrapper">
@@ -345,9 +421,9 @@ export default function DoctorProfile() {
                           Phone Number<span className="text-danger"> *</span>
                         </label>
                         <input type="text"
-                        onChange={(e) => setPhone(e.target.value)}
-                        value={`+91 ${phone}`}
-                        className="form-control" />
+                          onChange={(e) => setPhone(e.target.value)}
+                          value={`+91 ${phone}`}
+                          className="form-control" />
                       </div>
                     </div>
                     <div className="col-md-6">
@@ -356,10 +432,10 @@ export default function DoctorProfile() {
                           Gender<span className="text-danger"> *</span>
                         </label>
                         <select
-                        onChange={(e) => setGender(e.target.value)}
-                        value={gender}
-                        
-                        className="form-select form-control">
+                          onChange={(e) => setGender(e.target.value)}
+                          value={gender}
+
+                          className="form-select form-control">
                           {console.log(gender)}
                           <option>Select</option>
                           <option>Male</option>
@@ -372,10 +448,10 @@ export default function DoctorProfile() {
                         <label className="mb-2">
                           Date of Birth<span className="text-danger"> *</span>
                         </label>
-                        <input type="text"
-                        onChange={(e) => setDOB(e.target.value)}
-                        value={new Date(dob).toLocaleDateString("en-US")}
-                        className="form-control" />
+                        <input type="date"
+                          onChange={(e) => setDOB(e.target.value)}
+                          value={dob}
+                          className="form-control" />
                       </div>
                     </div>
                     <div className="col-md-6">
@@ -384,9 +460,9 @@ export default function DoctorProfile() {
                           Fees<span className="text-danger"> *</span>
                         </label>
                         <input type="number"
-                        onChange={(e) => setFees(e.target.value)}
-                        value={fees}
-                        className="form-control" />
+                          onChange={(e) => setFees(e.target.value)}
+                          value={fees}
+                          className="form-control" />
                       </div>
                     </div>
                   </div>
@@ -415,18 +491,18 @@ export default function DoctorProfile() {
                       <div className="mb-3">
                         <label className="mb-2">Clinic Name</label>
                         <input type="text"
-                        onChange={(e) => setClinicName(e.target.value)}
-                        value={clinicName}
-                        className="form-control" />
+                          onChange={(e) => setClinicName(e.target.value)}
+                          value={clinicName}
+                          className="form-control" />
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="mb-3">
                         <label className="mb-2">Clinic Address</label>
                         <input type="text"
-                        onChange={(e) => setClinicAddress(e.target.value)}
-                        value={clinicAddress}
-                        className="form-control" />
+                          onChange={(e) => setClinicAddress(e.target.value)}
+                          value={clinicAddress}
+                          className="form-control" />
                       </div>
                     </div>
                   </div>
@@ -442,15 +518,18 @@ export default function DoctorProfile() {
                           Address Line 1<span className="text-danger"> *</span>
                         </label>
                         <input type="text"
-                        onChange={(e) => setAddress(e.target.value)}
-                        value={address}
-                        className="form-control" />
+                          onChange={(e) => setAddress1(e.target.value)}
+                          value={address1}
+                          className="form-control" />
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="mb-3">
                         <label className="control-label">Address Line 2</label>
-                        <input type="text" className="form-control" />
+                        <input type="text"
+                        onChange={(e) => setAddress2(e.target.value)}
+                        value={address2}
+                        className="form-control" />
                       </div>
                     </div>
                     <div className="col-md-6">
@@ -459,9 +538,9 @@ export default function DoctorProfile() {
                           City<span className="text-danger"> *</span>
                         </label>
                         <input type="text"
-                        onChange={(e) => setCity(e.target.value)}
-                        value={city}
-                        className="form-control" />
+                          onChange={(e) => setCity(e.target.value)}
+                          value={city}
+                          className="form-control" />
                       </div>
                     </div>
                     <div className="col-md-6">
@@ -471,9 +550,9 @@ export default function DoctorProfile() {
                           <span className="text-danger"> *</span>
                         </label>
                         <input type="text"
-                        onChange={(e) => setState(e.target.value)}
-                        value={state}
-                        className="form-control" />
+                          onChange={(e) => setState(e.target.value)}
+                          value={state}
+                          className="form-control" />
                       </div>
                     </div>
                     <div className="col-md-6">
@@ -482,9 +561,9 @@ export default function DoctorProfile() {
                           Country<span className="text-danger"> *</span>
                         </label>
                         <input type="text"
-                        onChange={(e) => setCountry(e.target.value)}
-                        value={country}
-                        className="form-control" />
+                          onChange={(e) => setCountry(e.target.value)}
+                          value={country}
+                          className="form-control" />
                       </div>
                     </div>
                     <div className="col-md-6">
@@ -493,9 +572,9 @@ export default function DoctorProfile() {
                           Postal Code<span className="text-danger"> *</span>
                         </label>
                         <input type="text"
-                        onChange={(e) => setPostalCode(e.target.value)}
-                        value={postalCode}
-                        className="form-control" />
+                          onChange={(e) => setPostalCode(e.target.value)}
+                          value={postalCode}
+                          className="form-control" />
                       </div>
                     </div>
                   </div>
@@ -536,7 +615,7 @@ export default function DoctorProfile() {
                                 <input
                                   type="text"
                                   className="form-control"
-                                  name="degree"
+                                  name="qualification"
                                   value={edu.qualification}
                                   onChange={(e) => handleInputChange(index, e)}
                                 />
@@ -551,7 +630,7 @@ export default function DoctorProfile() {
                                 <input
                                   type="text"
                                   className="form-control"
-                                  name="institute"
+                                  name="collegeName"
                                   value={edu.collegeName}
                                   onChange={(e) => handleInputChange(index, e)}
                                 />
@@ -566,7 +645,7 @@ export default function DoctorProfile() {
                                 <input
                                   type="text"
                                   className="form-control"
-                                  name="year"
+                                  name="yearOfCompletion"
                                   value={edu.yearOfCompletion}
                                   onChange={(e) => handleInputChange(index, e)}
                                 />
@@ -596,32 +675,32 @@ export default function DoctorProfile() {
                 <div className="card-body">
                   <h4 className="card-title">Experience</h4>
                   {/* {experiences.map((experience, index) => ( */}
-                    <div className="experience-info" >
-                      <div className="row experience-cont">
-                        <div className="col-12 col-md-10 col-lg-11">
-                          <div className="row">
-                            <div className="col-12 col-md-6 col-lg-4">
-                              <div className="mb-3">
-                                <label className="mb-2">
-                                  Years of Experience
-                                  <span className="text-danger"> *</span>
-                                </label>
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  name="hospitalName"
-                                  value={yearOfExperience}
-                                  onChange={(e) => setYearOfExperience(e.target.value)}
-                                  // onChange={(event) =>
-                                  //   handleInputChange(index, event)
-                                  // }
-                                />
-                              </div>
+                  <div className="experience-info" >
+                    <div className="row experience-cont">
+                      <div className="col-12 col-md-10 col-lg-11">
+                        <div className="row">
+                          <div className="col-12 col-md-6 col-lg-4">
+                            <div className="mb-3">
+                              <label className="mb-2">
+                                Years of Experience
+                                <span className="text-danger"> *</span>
+                              </label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="hospitalName"
+                                value={yearOfExperience}
+                                onChange={(e) => setYearOfExperience(e.target.value)}
+                              // onChange={(event) =>
+                              //   handleInputChange(index, event)
+                              // }
+                              />
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
+                  </div>
                   {/* ))} */}
                 </div>
               </div>
@@ -697,9 +776,9 @@ export default function DoctorProfile() {
                             <span className="text-danger"> *</span>
                           </label>
                           <input type="text"
-                          onChange={(e) => setLicenceNumber(e.target.value)}
-                          value={licenceNumber}
-                          className="form-control" />
+                            onChange={(e) => setLicenceNumber(e.target.value)}
+                            value={licenceNumber}
+                            className="form-control" />
                         </div>
                       </div>
                       <div className="col-12 col-md-5">
@@ -707,10 +786,10 @@ export default function DoctorProfile() {
                           <label className="mb-2">
                             Year of issue<span className="text-danger"> *</span>
                           </label>
-                          <input type="text" 
-                          onChange={(e) => setYearLicenceNumber(e.target.value)}
-                          value={yearLicenceNumber}
-                          className="form-control" />
+                          <input type="text"
+                            onChange={(e) => setYearLicenceNumber(e.target.value)}
+                            value={yearLicenceNumber}
+                            className="form-control" />
                         </div>
                       </div>
                     </div>
@@ -769,7 +848,9 @@ export default function DoctorProfile() {
               </div>
 
               <div className="submit-section submit-btn-bottom">
-                <button type="submit" className="btn btn-primary prime-btn">
+                <button type="submit"
+                  onClick={handleSubmit}
+                  className="btn btn-primary prime-btn">
                   Save Changes
                 </button>
               </div>
