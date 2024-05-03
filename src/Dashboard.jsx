@@ -19,24 +19,25 @@ export default function Dashboard() {
   const [appointments, setAppointments] = useState([]);
   const [upcoming, setUpcoming] = useState([]);
   const [today, setToday] = useState([]);
-  // const [selectedPatient, setSelectedPatient] = useState([]);
   const { setselectedPatient } = OrderState();
   const [doctorInfo, setDoctorInfo] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState("");
 
-  console.log(upcoming);
+  const [patientSelect, setPatientSelect] = useState(null);
+  // console.log(upcoming)
 
   const handleLogout = () => {
+    console.log("in here");
     const userInfo = localStorage.getItem("userInfo");
     if (userInfo) {
       localStorage.removeItem("userInfo");
     }
     const token = localStorage.getItem("token");
-    if (userInfo) {
+    if (token) {
       localStorage.removeItem("token");
     }
     const docInfo = localStorage.getItem("docInfo");
-    if (userInfo) {
+    if (docInfo) {
       localStorage.removeItem("docInfo");
     }
   };
@@ -77,7 +78,7 @@ export default function Dashboard() {
   const handleViewAppointment = (e, patientData) => {
     e.preventDefault();
     // setSelectedPatientValue(true);
-    setselectedPatient(patientData);
+    //setSelectedPatient(patientData);
   };
 
   // Api Calling
@@ -132,9 +133,9 @@ export default function Dashboard() {
       } else {
         setAppointments(data.data.result);
       }
-      console.log(data.data.result);
-      console.log(today);
-      console.log(upcoming);
+      // console.log(data.data.result);
+      // console.log(today)
+      // console.log(upcoming)
       // console.log(appointments);
     } catch (error) {
       console.log(error);
@@ -257,6 +258,13 @@ export default function Dashboard() {
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const handlePatientSelect = (patient) => {
+    // console.log(patient)
+    // setPatientSelect(patient)
+    navigate("/appointment", { state: { patient } });
+    // console.log(selectedPatient)
+  };
 
   useEffect(() => {
     const doctorInfo = JSON.parse(localStorage.getItem("docInfo"));
@@ -623,8 +631,10 @@ export default function Dashboard() {
                                               />
                                             </a>
                                             <a href="patient-profile.html">
-                                              {patient.name}{" "}
-                                              <span>{patient.id}</span>
+                                              {patient.patient.userId.name}{" "}
+                                              <span>
+                                                {patient.patient.userId._id}
+                                              </span>
                                             </a>
                                           </h2>
                                         </td>
@@ -721,7 +731,7 @@ export default function Dashboard() {
                                   </thead>
                                   <tbody>
                                     {appointments.map((patient, index) => (
-                                      <tr>
+                                      <tr key={index}>
                                         <td>
                                           <h2 className="table-avatar">
                                             <a
@@ -734,8 +744,10 @@ export default function Dashboard() {
                                               />
                                             </a>
                                             <a href="patient-profile.html">
-                                              {patient.name}{" "}
-                                              <span>{patient.id}</span>
+                                              {patient.patient.userId.name}{" "}
+                                              <span>
+                                                {patient.patient.userId._id}
+                                              </span>
                                             </a>
                                           </h2>
                                         </td>
@@ -753,7 +765,6 @@ export default function Dashboard() {
                                               : "Time not available"}
                                           </span>
                                         </td>
-
                                         <td style={{ textAlign: "center" }}>
                                           <div
                                             className="table-action"
@@ -762,17 +773,22 @@ export default function Dashboard() {
                                               gap: "1rem",
                                             }}>
                                             <div>
-                                              <Link to="/appointment">
-                                                <a className="btn btn-sm bg-info-light">
-                                                  <i className="far fa-eye" />{" "}
-                                                  View
-                                                </a>
-                                              </Link>
+                                              <button
+                                                className="btn btn-sm bg-info-light"
+                                                onClick={() =>
+                                                  handlePatientSelect(patient)
+                                                }>
+                                                <i className="far fa-eye" />{" "}
+                                                View
+                                              </button>
                                             </div>
                                           </div>
                                         </td>
                                       </tr>
                                     ))}
+                                    {patientSelect && (
+                                      <Appointment patient={patientSelect} />
+                                    )}
                                   </tbody>
                                 </table>
                               </div>

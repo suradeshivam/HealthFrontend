@@ -25,6 +25,7 @@ import { FiSend } from "react-icons/fi";
 import { MdOutlineSaveAlt } from "react-icons/md";
 import { MdAddCircleOutline } from "react-icons/md";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 const Appointment = () => {
   const { selectedPatient, prescriptions, setPrescriptions,setselectedPatient, updatedObservations, setUpdatedObservations } = OrderState();
@@ -49,7 +50,10 @@ const Appointment = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [] = useState([]);
 
-  console.log(selectedPatient)
+  const location = useLocation();
+  const patient = location.state?.patient;
+
+  console.log(patient)
 
   const closeModal = () => setpopupprescription(false);
 
@@ -341,6 +345,23 @@ const generateText = async prompt => {
 
   return (
     <>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+    {patient &&(
+       <div>
+       <h2>Appointment Details</h2>
+       {/* <p>Name: {patient.patient.userId.name}</p>
+       <p>Date: {patient.date}</p> */}
+       {/* Add more details as needed */}
+     </div>
+    )}
     
       {selectedPatient === null ? <h1>Data not Available</h1> :
         <div className="bg-white overflow-auto shadow  text-black  flex justify-between  rounded-md m-2 p-4 ">
