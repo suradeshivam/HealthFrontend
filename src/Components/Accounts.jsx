@@ -1,7 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Accounts() {
+  const [accountName, setAccountName] = useState('Dr. Darren Elder');
+  const [bankName, setBankName] = useState('Sbi');
+  const [upiId, setUpiId] = useState();
+  const [upiIdError, setUpiIdError] = useState();
+
+  const handleUpiIdChange = (e) => {
+    const upiIdValue = e.target.value;
+  
+    
+    if (upiIdValue.trim() === '') {
+      setUpiId(upiIdValue); 
+      setUpiIdError(''); 
+    } else {
+      
+      if (/^[0-9A-Za-z.-]{2,256}@[A-Za-z]{2,64}$/.test(upiIdValue)) {
+        setUpiId(upiIdValue); 
+        setUpiIdError(''); 
+      } else {
+        setUpiId(upiIdValue); 
+        setUpiIdError('Invalid UPI ID format'); 
+      }
+    }
+  };
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  
+    
+    if (/^[0-9A-Za-z.-]{2,256}@[A-Za-z]{2,64}$/.test(upiId)) {
+      console.log('Account Name:', accountName);
+      console.log('Bank Name:', bankName);
+      console.log('UPI ID:', upiId);
+  
+      
+      // const modal = document.getElementById('account_modal');
+      // const bootstrapModal = bootstrap.Modal.getInstance(modal);
+      // bootstrapModal.hide();
+    } else {
+      
+      setUpiIdError('Invalid UPI ID format');
+    }
+  };
+  
+
   return (
     <>
       <div className="main-wrapper">
@@ -56,12 +100,12 @@ export default function Accounts() {
                             <span>Dashboard</span>
                           </Link>
                         </li>
-                        <li>
+                        {/* <li>
                           <Link to="/appointments">
                             <i className="fas fa-calendar-check" />
                             <span>Appointments</span>
                           </Link>
-                        </li>
+                        </li> */}
                         <li>
                           <Link to="/schedule">
                             <i className="fas fa-hourglass-start" />
@@ -126,40 +170,42 @@ export default function Accounts() {
                         </div>
                       </div>
                       <div className="card-body">
+
+                        {/* accounts */}
                         <div className="profile-view-bottom">
-                          <div className="row">
-                            <div className="col-lg-6">
+                          <div className="row ">
+                            <div className="col-xl-6 ">
+                              <div className="info-list">
+                                <div className="title">Account Name</div>
+                                <div className="text" id="account_name">
+                                {accountName}
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-xl-6 ">
                               <div className="info-list">
                                 <div className="title">Bank Name</div>
                                 <div className="text" id="bank_name">
-                                  Wells Fargo &amp; Co
+                                  {bankName}
                                 </div>
                               </div>
                             </div>
-                            <div className="col-lg-6">
+                             <div className="col-lg-6">
                               <div className="info-list">
-                                <div className="title">Branch Name</div>
-                                <div className="text" id="branch_name">
-                                  Lenexa
-                                </div>
-                              </div>
-                            </div>
-                            <div className="col-lg-6">
-                              <div className="info-list">
-                                <div className="title">Account Number</div>
+                                <div className="title">UPI id</div>
                                 <div className="text" id="account_no">
-                                  5396 5250 1908 3838
+                                {upiId}
                                 </div>
                               </div>
                             </div>
-                            <div className="col-lg-6">
+                            {/* <div className="col-lg-6">
                               <div className="info-list">
                                 <div className="title">Account Name</div>
                                 <div className="text" id="account_name">
                                   Dr. Darren Elder
                                 </div>
                               </div>
-                            </div>
+                            </div>  */}
                           </div>
                         </div>
                       </div>
@@ -955,92 +1001,71 @@ export default function Accounts() {
           </div>
         </div>
       </div>
-      <div
-        className="modal fade custom-modal"
-        id="account_modal"
-        role="dialog"
-        aria-hidden="true">
-        <div className="modal-dialog modal-dialog-centered" role="document">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h3 className="modal-title">Account Details</h3>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              />
-            </div>
-            <div className="modal-body">
-              <form id="accounts_form" method="post">
-                <div className="row">
-                  <div className="col-md-12">
-                    <div className="mb-3">
-                      <label className="control-label mb-2">Bank Name</label>
-                      <input
-                        type="text"
-                        name="bank_name"
-                        className="form-control bank_name"
-                        defaultValue="Wells Fargo & Co"
-                      />
-                      <span className="help-block" />
-                    </div>
+      <div className="modal fade custom-modal" id="account_modal" role="dialog" aria-hidden="true">
+      <div className="modal-dialog modal-dialog-centered" role="document">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h3 className="modal-title">Account Details</h3>
+            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" />
+          </div>
+          <div className="modal-body">
+            <form id="accounts_form" method="post" onSubmit={handleSubmit}>
+              <div className="row">
+                <div className="col-md-12">
+                  <div className="mb-3">
+                    <label className="control-label mb-2">Account Name</label>
+                    <input
+                      type="text"
+                      name="account_name"
+                      className="form-control acc_name"
+                      value={accountName}
+                      onChange={(e) => setAccountName(e.target.value)}
+                    />
+                    <span className="help-block" />
                   </div>
                 </div>
-                <div className="row">
-                  <div className="col-md-12">
-                    <div className="mb-3">
-                      <label className="control-label mb-2">Branch Name</label>
-                      <input
-                        type="text"
-                        name="branch_name"
-                        className="form-control branch_name"
-                        defaultValue="Lenexa"
-                      />
-                      <span className="help-block" />
-                    </div>
+              </div>
+
+              <div className="col-md-12">
+                <div className="mb-3">
+                  <label className="control-label mb-2">Bank Name</label>
+                  <input
+                    type="text"
+                    name="bank_name"
+                    className="form-control bank_name"
+                    value={bankName}
+                    onChange={(e) => setBankName(e.target.value)}
+                  />
+                  <span className="help-block" />
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col-md-12">
+                  <div className="mb-3">
+                    <label className="control-label mb-2">UPI id</label>
+                    <input
+                      type="text"
+                      name="account_no"
+                      className="form-control account_no"
+                      value={upiId}
+                      onChange={handleUpiIdChange}
+                      placeholder="example123@okbankname"
+                    />
+                    {upiIdError && <span className="help-block">{upiIdError}</span>}
                   </div>
                 </div>
-                <div className="row">
-                  <div className="col-md-12">
-                    <div className="mb-3">
-                      <label className="control-label mb-2">
-                        Account Number
-                      </label>
-                      <input
-                        type="text"
-                        name="account_no"
-                        className="form-control account_no"
-                        defaultValue="5396 5250 1908 3838"
-                      />
-                      <span className="help-block" />
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-12">
-                    <div className="mb-3">
-                      <label className="control-label mb-2">Account Name</label>
-                      <input
-                        type="text"
-                        name="account_name"
-                        className="form-control acc_name"
-                        defaultValue="Dr. Darren Elder"
-                      />
-                      <span className="help-block" />
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-            <div className="modal-footer text-center">
-              <button type="submit" id="acc_btn" className="btn btn-primary">
-                Save
-              </button>
-            </div>
+              </div>
+              <div className="modal-footer text-center">
+                <button type="submit" id="acc_btn" data-bs-dismiss="modal" className="btn btn-primary">
+                  Save
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
+    </div>
     </>
   );
 }

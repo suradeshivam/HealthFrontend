@@ -121,12 +121,12 @@ export default function ChangePassword() {
                           <span>Dashboard</span>
                         </Link>
                       </li>
-                      <li>
+                      {/* <li>
                         <Link to="/appointments">
                           <i className="fas fa-calendar-check" />
                           <span>Appointments</span>
                         </Link>
-                      </li>
+                      </li> */}
                       <li>
                         <Link to="/schedule">
                           <i className="fas fa-hourglass-start" />

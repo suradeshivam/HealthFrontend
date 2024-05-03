@@ -13,6 +13,7 @@ import ScheduleTime from "./Components/ScheduleTimings";
 import Accounts from "./Components/Accounts";
 import Room from "./Components/meet/Room";
 import Appointment from "./Components/Appointment";
+import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
 
 // App changed
 function App() {
@@ -24,17 +25,19 @@ function App() {
     <div className="m-0 p-0 bg-neutral-100">
       {shouldShowNavbarAndFooter && <Navbar />}
       <Routes>
-        <Route path="doctor" element={<Dashboard />} />
-        <Route path="appointments" element={<Appointments />} />
-        <Route path="changepassword" element={<ChangePassword />} />
-        <Route path="profile" element={<DoctorProfile />} />
         <Route path="signup" element={<DoctorRegister />} />
         <Route path="login" element={<LoginDoctor />} />
+      <Route element={<ProtectedRoute />}>
+        <Route path="doctor" element={<Dashboard />} />
+        {/* <Route path="appointments" element={<Appointments />} /> */}
+        <Route path="changepassword" element={<ChangePassword />} />
+        <Route path="profile" element={<DoctorProfile />} />
         <Route path="reviews" element={<Reviews />} />
         <Route path="schedule" element={<ScheduleTime />} />
         <Route path="accounts" element={<Accounts />} />
         <Route path="room/:roomID" element={<Room />} />
         <Route path="appointment" element={<Appointment  />}/>
+        </Route>
       </Routes>
       {shouldShowNavbarAndFooter && <Footer />}
     </div>

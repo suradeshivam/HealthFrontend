@@ -139,8 +139,10 @@ export default function ScheduleTime() {
 
   useEffect (()=>{
     const t = JSON.parse(localStorage.getItem('docInfo'))
+    if(t){
     setSchedule(t)
     setSelectedSlots(t.schedules);
+    }
   },[])
 
 
@@ -199,12 +201,12 @@ export default function ScheduleTime() {
                             <span>Dashboard</span>
                           </Link>
                         </li>
-                        <li>
+                        {/* <li>
                           <Link to="/appointments">
                             <i className="fas fa-calendar-check" />
                             <span>Appointments</span>
                           </Link>
-                        </li>
+                        </li> */}
                         <li className="active">
                           <Link to="/schedule">
                             <i className="fas fa-hourglass-start" />

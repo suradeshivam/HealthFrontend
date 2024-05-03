@@ -38,6 +38,21 @@ export default function DoctorProfile() {
   const [fileName, setFileName] = useState("");
   const [filePreview, setFilePreview] = useState("");
 
+  const countWords = (text) => {
+    const wordArray = text.trim().split(/\s+/);
+    return wordArray.length;
+  };
+
+  const handleAboutRemainingChange = (e) => {
+    const inputValue = e.target.value;
+    if (countWords(inputValue) <= 250) {
+      setAboutMe(inputValue); // Update the input if within limit
+    }
+  };
+
+  // Calculate the remaining words
+  const remainingWords = 250 - countWords(aboutMe);
+
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -150,7 +165,9 @@ export default function DoctorProfile() {
         setEmail(docInfo.userId?.email || '')
         setPhone(docInfo.userId?.mobileNumber || '')
         setGender(result?.gender || '')
-        setEducation(result.educationDetails || '')
+        setEducation(result?.educationDetails || '')
+        // setAwardsNAchievements(result?.)
+        setLicence(result?.license)
         // setFees()
         // setAboutMe()
         // setClinicName()
@@ -161,12 +178,21 @@ export default function DoctorProfile() {
         //  setPostalCode()
         // setSpecialization()
         // setYearOfExperience()
-        setDOB(result?.dob || '');
+        const dobDate = new Date(result?.dob);
+        const day = dobDate.getDate().toString().padStart(2, "0");
+        const month = (dobDate.getMonth() + 1).toString().padStart(2, "0");
+        const year = dobDate.getFullYear();
+        const formattedDate = `${day}-${month}-${year}`;
+        console.log(formattedDate)
+        // setDOB(result?.dob || '');
+        setDOB(formattedDate);
         setFees(result?.fees || '');
-        setAboutMe(result?.aboutMe || '');
+        setAboutMe(result?.about || '');
         setClinicName(result?.clinicName || '');
         setClinicAddress(result?.clinicAddress || '');
         setAddress1(result?.addressLine1 || '');
+        setAddress2(result?.addressLine2 || '');
+        setState(result?.state)
         setCity(result?.city || '');
         setCountry(result?.contry || '');
         setPostalCode(result?.zip || '');
@@ -209,6 +235,43 @@ export default function DoctorProfile() {
              gender)
 
     try {
+
+      if (userInfo?.createdProfile) {
+        console.log("1")
+        const updatedDoctor = await axios.put(
+          `https://healthbackend-3xh2.onrender.com/doctor/${userInfo._id}/update`,
+          {
+            userId: userInfo._id,
+        name: userName,
+        yearsOfExperience: yearOfExperience,
+        fees: fees,
+        dob: dob,
+        about:aboutMe,
+        specialization:specialization,
+        state:state,
+        achivement:awardsNAchievements,
+        license:licence,
+        addressLine1: address1,
+        addressLine2: address2,
+        city: city,
+        zip: postalCode,
+        contry: country,
+        educationDetails: education,
+        clinicName: clinicName,
+        clinicAddress: clinicAddress,
+        gender: gender,
+          },
+          {
+            headers: {
+              authorization: isAuthenticated,
+            },
+          }
+        );
+        console.log(updatedDoctor);
+        // setDoctorInfo(updatedDoctor.data.result);
+        // console.log(doctorInfo);
+        console.log("doctor updated success navigatingto docprofile");
+      }else{
       
     
     const user = await axios.post(`https://healthbackend-3xh2.onrender.com/doctor/create`,
@@ -243,6 +306,7 @@ export default function DoctorProfile() {
     )
 
     console.log(user);
+      }
   } catch (error) {
       
   }
@@ -311,12 +375,12 @@ export default function DoctorProfile() {
                           <span>Dashboard</span>
                         </Link>
                       </li>
-                      <li>
+                      {/* <li>
                         <Link to="/appointments">
                           <i className="fas fa-calendar-check" />
                           <span>Appointments</span>
                         </Link>
-                      </li>
+                      </li> */}
                       <li>
                         <Link to="/schedule">
                           <i className="fas fa-hourglass-start" />
@@ -472,15 +536,15 @@ export default function DoctorProfile() {
                 <div className="card-body">
                   <h4 className="card-title">About Me</h4>
                   <div className="mb-0">
-                    <label className="mb-2">Biography</label>
-                    <textarea
-                      className="form-control"
-                      onChange={(e) => setAboutMe(e.target.value)}
-                      value={aboutMe}
-                      rows={5}
-                      defaultValue={""}
-                    />
-                  </div>
+      <label className="mb-2">Biography</label>
+      <textarea
+        className="form-control"
+        onChange={handleAboutRemainingChange}
+        value={aboutMe}
+        rows={5}
+      />
+      <p>Words remaining: {remainingWords}</p>
+    </div>
                 </div>
               </div>
               <div className="card">
@@ -571,7 +635,7 @@ export default function DoctorProfile() {
                         <label className="control-label">
                           Postal Code<span className="text-danger"> *</span>
                         </label>
-                        <input type="text"
+                        <input type="number"
                           onChange={(e) => setPostalCode(e.target.value)}
                           value={postalCode}
                           className="form-control" />
@@ -686,7 +750,7 @@ export default function DoctorProfile() {
                                 <span className="text-danger"> *</span>
                               </label>
                               <input
-                                type="text"
+                                type="number"
                                 className="form-control"
                                 name="hospitalName"
                                 value={yearOfExperience}
@@ -764,6 +828,7 @@ export default function DoctorProfile() {
                 </div>
               </div>
 
+              {licence.map((license, index) => (
               <div className="card">
                 <div className="card-body">
                   <h4 className="card-title">Licence </h4>
@@ -777,7 +842,7 @@ export default function DoctorProfile() {
                           </label>
                           <input type="text"
                             onChange={(e) => setLicenceNumber(e.target.value)}
-                            value={licenceNumber}
+                            value={license?.licenseNumber}  
                             className="form-control" />
                         </div>
                       </div>
@@ -788,7 +853,7 @@ export default function DoctorProfile() {
                           </label>
                           <input type="text"
                             onChange={(e) => setYearLicenceNumber(e.target.value)}
-                            value={yearLicenceNumber}
+                            value={license?.yearOfIssued}
                             className="form-control" />
                         </div>
                       </div>
@@ -796,6 +861,7 @@ export default function DoctorProfile() {
                   </div>
                 </div>
               </div>
+              ))}
               <div className="card">
                 <div className="card-body">
                   <h4 className="card-title">

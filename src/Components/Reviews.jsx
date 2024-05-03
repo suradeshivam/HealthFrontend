@@ -2,6 +2,74 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export default function Reviews() {
+  const commentData = [
+    {
+      imageUrl: 'assets/img/patients/patient2.jpg',
+      author: 'Travis Trimble',
+      reviewDate: 'Reviewed 4 Days ago',
+      reviewCount: 5,
+      comment: `Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+      sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+      Ut enim ad minim veniam, quis nostrud exercitation. Curabitur non nulla sit amet nisl tempus`,
+    },
+    {
+      imageUrl: 'assets/img/patients/patient3.jpg',
+      author: 'Carl Kelly',
+      reviewDate: 'Reviewed 5 Days ago',
+      reviewCount: 4,
+      comment: `Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+      sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+      Ut enim ad minim veniam, quis nostrud exercitation. Curabitur non nulla sit amet nisl tempus`,
+    },
+    {
+      imageUrl: 'assets/img/patients/patient4.jpg',
+      author: 'Michelle Fairfax',
+      reviewDate: 'Reviewed 6 Days ago',
+      reviewCount: 4,
+      comment: `Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+      sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+      Ut enim ad minim veniam, quis nostrud exercitation. Curabitur non nulla sit amet nisl tempus`,
+    },
+    {
+      imageUrl: 'assets/img/patients/patient5.jpg',
+      author: 'Gina Moore',
+      reviewDate: 'Reviewed 1 Week ago',
+      reviewCount: 5,
+      comment: `Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+      sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+      Ut enim ad minim veniam, quis nostrud exercitation. Curabitur non nulla sit amet nisl tempus`,
+    },
+    {
+      imageUrl: 'assets/img/patients/patient9.jpg',
+      author: 'Walter Roberson',
+      reviewDate: 'Reviewed 1 Week ago',
+      reviewCount: 5,
+      comment: `Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+      sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+      Ut enim ad minim veniam, quis nostrud exercitation. Curabitur non nulla sit amet nisl tempus`,
+    },
+    {
+      imageUrl: 'assets/img/patients/patient8.jpg',
+      author: 'Daniel Griffing',
+      reviewDate: 'Reviewed on 1 Nov 2023',
+      reviewCount: 1,
+      comment: `Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+      sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+      Ut enim ad minim veniam, quis nostrud exercitation. Curabitur non nulla sit amet nisl tempus`,
+    },
+  ];
+
+  // Function to render stars based on review count
+  const renderStars = (count) => {
+    const stars = [];
+    for (let i = 0; i < count; i++) {
+      stars.push(<i key={i} className="fas fa-star filled" />);
+    }
+    for (let i = count; i < 5; i++) {
+      stars.push(<i key={i} className="fas fa-star" />);
+    }
+    return stars;
+  };
   return (
     <div className="main-wrapper">
       <div className="breadcrumb-bar-two">
@@ -55,12 +123,12 @@ export default function Reviews() {
                           <span>Dashboard</span>
                         </Link>
                       </li>
-                      <li>
+                      {/* <li>
                         <Link to="/appointments">
                           <i className="fas fa-calendar-check" />
                           <span>Appointments</span>
                         </Link>
-                      </li>
+                      </li> */}
                       <li>
                         <Link to="/schedule">
                           <i className="fas fa-hourglass-start" />
@@ -104,365 +172,29 @@ export default function Reviews() {
             </div>
             <div className="col-md-7 col-lg-8 col-xl-9">
               <div className="doc-review review-listing">
-                <ul className="comments-list">
-                  <li>
-                    <div className="comment">
-                      <img
-                        className="avatar rounded-circle"
-                        alt="User Image"
-                        src="assets/img/patients/patient.jpg"
-                      />
-                      <div className="comment-body">
-                        <div className="meta-data">
-                          <span className="comment-author">Richard Wilson</span>
-                          <span className="comment-date">
-                            Reviewed 2 Days ago
-                          </span>
-                          <div className="review-count rating">
-                            <i className="fas fa-star filled" />
-                            <i className="fas fa-star filled" />
-                            <i className="fas fa-star filled" />
-                            <i className="fas fa-star filled" />
-                            <i className="fas fa-star" />
-                          </div>
-                        </div>
-                        <p className="recommended">
-                          <i className="far fa-thumbs-up" /> I recommend the
-                          doctor
-                        </p>
-                        <p className="comment-content">
-                          Lorem ipsum dolor sit amet, consectetur adipisicing
-                          elit, sed do eiusmod tempor incididunt ut labore et
-                          dolore magna aliqua. Ut enim ad minim veniam, quis
-                          nostrud exercitation. Curabitur non nulla sit amet
-                          nisl tempus
-                        </p>
-                        <div className="comment-reply">
-                          <a className="comment-btn" href="#">
-                            <i className="fas fa-reply" /> Reply
-                          </a>
-                          <p className="recommend-btn">
-                            <span>Recommend?</span>
-                            <a href="#" className="like-btn">
-                              <i className="far fa-thumbs-up" /> Yes
-                            </a>
-                            <a href="#" className="dislike-btn">
-                              <i className="far fa-thumbs-down" /> No
-                            </a>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <ul className="comments-reply">
-                      <li>
-                        <div className="comment">
-                          <img
-                            className="avatar rounded-circle"
-                            alt="User Image"
-                            src="assets/img/doctors/doctor-thumb-02.jpg"
-                          />
-                          <div className="comment-body">
-                            <div className="meta-data">
-                              <span className="comment-author">
-                                Dr. Darren Elder
-                              </span>
-                              <span className="comment-date">
-                                Reviewed 3 Days ago
-                              </span>
-                            </div>
-                            <p className="comment-content">
-                              Lorem ipsum dolor sit amet, consectetur
-                              adipisicing elit, sed do eiusmod tempor incididunt
-                              ut labore et dolore magna aliqua. Ut enim ad minim
-                              veniam. Curabitur non nulla sit amet nisl tempus
-                            </p>
-                            <div className="comment-reply">
-                              <a className="comment-btn" href="#">
-                                <i className="fas fa-reply" /> Reply
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <div className="comment">
-                      <img
-                        className="avatar rounded-circle"
-                        alt="User Image"
-                        src="assets/img/patients/patient2.jpg"
-                      />
-                      <div className="comment-body">
-                        <div className="meta-data">
-                          <span className="comment-author">Travis Trimble</span>
-                          <span className="comment-date">
-                            Reviewed 4 Days ago
-                          </span>
-                          <div className="review-count rating">
-                            <i className="fas fa-star filled" />
-                            <i className="fas fa-star filled" />
-                            <i className="fas fa-star filled" />
-                            <i className="fas fa-star filled" />
-                            <i className="fas fa-star filled" />
-                          </div>
-                        </div>
-                        <p className="comment-content">
-                          Lorem ipsum dolor sit amet, consectetur adipisicing
-                          elit, sed do eiusmod tempor incididunt ut labore et
-                          dolore magna aliqua. Ut enim ad minim veniam, quis
-                          nostrud exercitation. Curabitur non nulla sit amet
-                          nisl tempus
-                        </p>
-                        <div className="comment-reply">
-                          <a className="comment-btn" href="#">
-                            <i className="fas fa-reply" /> Reply
-                          </a>
-                          <p className="recommend-btn">
-                            <span>Recommend?</span>
-                            <a href="#" className="like-btn">
-                              <i className="far fa-thumbs-up" /> Yes
-                            </a>
-                            <a href="#" className="dislike-btn">
-                              <i className="far fa-thumbs-down" /> No
-                            </a>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div className="comment">
-                      <img
-                        className="avatar rounded-circle"
-                        alt="User Image"
-                        src="assets/img/patients/patient3.jpg"
-                      />
-                      <div className="comment-body">
-                        <div className="meta-data">
-                          <span className="comment-author">Carl Kelly</span>
-                          <span className="comment-date">
-                            Reviewed 5 Days ago
-                          </span>
-                          <div className="review-count rating">
-                            <i className="fas fa-star filled" />
-                            <i className="fas fa-star filled" />
-                            <i className="fas fa-star filled" />
-                            <i className="fas fa-star filled" />
-                            <i className="fas fa-star filled" />
-                          </div>
-                        </div>
-                        <p className="comment-content">
-                          Lorem ipsum dolor sit amet, consectetur adipisicing
-                          elit, sed do eiusmod tempor incididunt ut labore et
-                          dolore magna aliqua. Ut enim ad minim veniam, quis
-                          nostrud exercitation. Curabitur non nulla sit amet
-                          nisl tempus
-                        </p>
-                        <div className="comment-reply">
-                          <a className="comment-btn" href="#">
-                            <i className="fas fa-reply" /> Reply
-                          </a>
-                          <p className="recommend-btn">
-                            <span>Recommend?</span>
-                            <a href="#" className="like-btn">
-                              <i className="far fa-thumbs-up" /> Yes
-                            </a>
-                            <a href="#" className="dislike-btn">
-                              <i className="far fa-thumbs-down" /> No
-                            </a>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div className="comment">
-                      <img
-                        className="avatar rounded-circle"
-                        alt="User Image"
-                        src="assets/img/patients/patient4.jpg"
-                      />
-                      <div className="comment-body">
-                        <div className="meta-data">
-                          <span className="comment-author">
-                            Michelle Fairfax
-                          </span>
-                          <span className="comment-date">
-                            Reviewed 6 Days ago
-                          </span>
-                          <div className="review-count rating">
-                            <i className="fas fa-star filled" />
-                            <i className="fas fa-star filled" />
-                            <i className="fas fa-star filled" />
-                            <i className="fas fa-star filled" />
-                            <i className="fas fa-star filled" />
-                          </div>
-                        </div>
-                        <p className="comment-content">
-                          Lorem ipsum dolor sit amet, consectetur adipisicing
-                          elit, sed do eiusmod tempor incididunt ut labore et
-                          dolore magna aliqua. Ut enim ad minim veniam, quis
-                          nostrud exercitation. Curabitur non nulla sit amet
-                          nisl tempus
-                        </p>
-                        <div className="comment-reply">
-                          <a className="comment-btn" href="#">
-                            <i className="fas fa-reply" /> Reply
-                          </a>
-                          <p className="recommend-btn">
-                            <span>Recommend?</span>
-                            <a href="#" className="like-btn">
-                              <i className="far fa-thumbs-up" /> Yes
-                            </a>
-                            <a href="#" className="dislike-btn">
-                              <i className="far fa-thumbs-down" /> No
-                            </a>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div className="comment">
-                      <img
-                        className="avatar rounded-circle"
-                        alt="User Image"
-                        src="assets/img/patients/patient5.jpg"
-                      />
-                      <div className="comment-body">
-                        <div className="meta-data">
-                          <span className="comment-author">Gina Moore</span>
-                          <span className="comment-date">
-                            Reviewed 1 Week ago
-                          </span>
-                          <div className="review-count rating">
-                            <i className="fas fa-star filled" />
-                            <i className="fas fa-star filled" />
-                            <i className="fas fa-star filled" />
-                            <i className="fas fa-star filled" />
-                            <i className="fas fa-star filled" />
-                          </div>
-                        </div>
-                        <p className="comment-content">
-                          Lorem ipsum dolor sit amet, consectetur adipisicing
-                          elit, sed do eiusmod tempor incididunt ut labore et
-                          dolore magna aliqua. Ut enim ad minim veniam, quis
-                          nostrud exercitation. Curabitur non nulla sit amet
-                          nisl tempus
-                        </p>
-                        <div className="comment-reply">
-                          <a className="comment-btn" href="#">
-                            <i className="fas fa-reply" /> Reply
-                          </a>
-                          <p className="recommend-btn">
-                            <span>Recommend?</span>
-                            <a href="#" className="like-btn">
-                              <i className="far fa-thumbs-up" /> Yes
-                            </a>
-                            <a href="#" className="dislike-btn">
-                              <i className="far fa-thumbs-down" /> No
-                            </a>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div className="comment">
-                      <img
-                        className="avatar rounded-circle"
-                        alt="User Image"
-                        src="assets/img/patients/patient9.jpg"
-                      />
-                      <div className="comment-body">
-                        <div className="meta-data">
-                          <span className="comment-author">
-                            Walter Roberson
-                          </span>
-                          <span className="comment-date">
-                            Reviewed 1 Week ago
-                          </span>
-                          <div className="review-count rating">
-                            <i className="fas fa-star filled" />
-                            <i className="fas fa-star filled" />
-                            <i className="fas fa-star filled" />
-                            <i className="fas fa-star filled" />
-                            <i className="fas fa-star filled" />
-                          </div>
-                        </div>
-                        <p className="comment-content">
-                          Lorem ipsum dolor sit amet, consectetur adipisicing
-                          elit, sed do eiusmod tempor incididunt ut labore et
-                          dolore magna aliqua. Ut enim ad minim veniam, quis
-                          nostrud exercitation. Curabitur non nulla sit amet
-                          nisl tempus
-                        </p>
-                        <div className="comment-reply">
-                          <a className="comment-btn" href="#">
-                            <i className="fas fa-reply" /> Reply
-                          </a>
-                          <p className="recommend-btn">
-                            <span>Recommend?</span>
-                            <a href="#" className="like-btn">
-                              <i className="far fa-thumbs-up" /> Yes
-                            </a>
-                            <a href="#" className="dislike-btn">
-                              <i className="far fa-thumbs-down" /> No
-                            </a>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div className="comment">
-                      <img
-                        className="avatar rounded-circle"
-                        alt="User Image"
-                        src="assets/img/patients/patient8.jpg"
-                      />
-                      <div className="comment-body">
-                        <div className="meta-data">
-                          <span className="comment-author">
-                            Daniel Griffing
-                          </span>
-                          <span className="comment-date">
-                            Reviewed on 1 Nov 2023
-                          </span>
-                          <div className="review-count rating">
-                            <i className="fas fa-star filled" />
-                            <i className="fas fa-star filled" />
-                            <i className="fas fa-star filled" />
-                            <i className="fas fa-star filled" />
-                            <i className="fas fa-star filled" />
-                          </div>
-                        </div>
-                        <p className="comment-content">
-                          Lorem ipsum dolor sit amet, consectetur adipisicing
-                          elit, sed do eiusmod tempor incididunt ut labore et
-                          dolore magna aliqua. Ut enim ad minim veniam, quis
-                          nostrud exercitation. Curabitur non nulla sit amet
-                          nisl tempus
-                        </p>
-                        <div className="comment-reply">
-                          <a className="comment-btn" href="#">
-                            <i className="fas fa-reply" /> Reply
-                          </a>
-                          <p className="recommend-btn">
-                            <span>Recommend?</span>
-                            <a href="#" className="like-btn">
-                              <i className="far fa-thumbs-up" /> Yes
-                            </a>
-                            <a href="#" className="dislike-btn">
-                              <i className="far fa-thumbs-down" /> No
-                            </a>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
+              <ul className="comment-list">
+      {commentData.map((comment, index) => (
+        <li key={index}>
+          <div className="comment">
+            <img
+              className="avatar rounded-circle"
+              alt="User Image"
+              src={comment.imageUrl}
+            />
+            <div className="comment-body">
+              <div className="meta-data">
+                <span className="comment-author">{comment.author}</span>
+                <span className="comment-date">{comment.reviewDate}</span>
+                <div className="review-count rating">
+                  {renderStars(comment.reviewCount)}
+                </div>
+              </div>
+              <p className="comment-content">{comment.comment}</p>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ul>
               </div>
             </div>
           </div>
