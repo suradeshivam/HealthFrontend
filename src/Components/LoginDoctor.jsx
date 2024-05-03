@@ -37,30 +37,34 @@ export default function LoginDoctor() {
         // Saving TOken
         await localStorage.setItem("token", response.data.result.token);
 
-        const doctor = await axios.get(
-          `https://healthbackend-3xh2.onrender.com/doctor/${user._id}`,
+        if (user.createdProfile) {
+          const doctor = await axios.get(
+            `https://healthbackend-3xh2.onrender.com/doctor/${user._id}`,
 
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: response.data.result.token,
-            },
-          }
-        );
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: response.data.result.token,
+              },
+            }
+          );
 
-        // Store the token securely
-        await localStorage.setItem(
-          "docInfo",
-          JSON.stringify(doctor.data.result.doctor)
-        );
+          // Store the token securely
+          await localStorage.setItem(
+            "docInfo",
+            JSON.stringify(doctor.data.result.doctor)
+          );
+        } else {
+          await localStorage.setItem("userInfo", JSON.stringify(user));
+        }
 
         // setLoading(false);
         // setIsLoggedIn(true);
 
-        console.log("Token ", response.data.result.token);
+        // console.log("Token ", response.data.result.token);
 
         // Check the role from the response data
-        const role = response.data.result.user.role;
+        const role = user.role;
         // console.log(role)
 
         // Redirect user based on the role
