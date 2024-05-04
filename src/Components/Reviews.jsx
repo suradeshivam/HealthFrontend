@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Reviews() {
@@ -59,6 +59,8 @@ export default function Reviews() {
     },
   ];
 
+  const [review, setReview] = useState([]);
+
   // Function to render stars based on review count
   const renderStars = (count) => {
     const stars = [];
@@ -70,6 +72,31 @@ export default function Reviews() {
     }
     return stars;
   };
+
+  function generateRandomDate() {
+    var currentDate = new Date();
+    var startDate = new Date(currentDate.getFullYear() - 10, 0, 1); // 10 years ago from today
+    var endDate = currentDate; // Today
+  
+    // Convert start and end date to milliseconds
+    var startMillis = startDate.getTime();
+    var endMillis = endDate.getTime();
+  
+    // Generate a random number between start and end date milliseconds
+    var randomMillis = startMillis + Math.random() * (endMillis - startMillis);
+  
+    // Create a new Date object using the random milliseconds
+    var randomDate = new Date(randomMillis);
+  
+    // Return the random date
+    return randomDate;
+  }
+
+  useEffect(()=>{
+    const docInfo = JSON.parse(localStorage.getItem('docInfo'));
+    setReview(docInfo?.reviews);
+  })
+
   return (
     <div className="main-wrapper">
       <div className="breadcrumb-bar-two">
@@ -173,23 +200,23 @@ export default function Reviews() {
             <div className="col-md-7 col-lg-8 col-xl-9">
               <div className="doc-review review-listing">
               <ul className="comment-list">
-      {commentData.map((comment, index) => (
+      {review.map((comment, index) => (
         <li key={index}>
           <div className="comment">
             <img
               className="avatar rounded-circle"
               alt="User Image"
-              src={comment.imageUrl}
+              src={'assets/img/patients/patient8.jpg'}
             />
-            <div className="comment-body">
-              <div className="meta-data">
-                <span className="comment-author">{comment.author}</span>
-                <span className="comment-date">{comment.reviewDate}</span>
+            <div className="comment-body"style={{width:"100%"}}>
+              <div className="meta-data" >
+                <span className="comment-author">{comment.patientName}</span>
                 <div className="review-count rating">
-                  {renderStars(comment.reviewCount)}
+                  {renderStars(comment.rating)}
                 </div>
+                <span className="comment-date">Reviewed 1 Week ago</span>
               </div>
-              <p className="comment-content">{comment.comment}</p>
+              <p className="comment-content">{comment.description}</p>
             </div>
           </div>
         </li>

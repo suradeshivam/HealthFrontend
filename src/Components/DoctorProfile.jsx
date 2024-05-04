@@ -186,7 +186,9 @@ export default function DoctorProfile() {
     const isAuthenticated = localStorage.getItem("token");
     const docInfo = JSON.parse(localStorage.getItem("docInfo"));
 
+    if(docInfo){
     const userId = docInfo.userId._id;
+    
 
     setUserName(docInfo.userId?.name || "");
 
@@ -218,6 +220,13 @@ export default function DoctorProfile() {
     setPostalCode(docInfo?.zip || "");
     setSpecialization(docInfo?.specialization || "");
     setYearOfExperience(docInfo?.yearOfExperience || "");
+  }else{
+
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    setUserName(userInfo?.name);
+    setPhone(userInfo?.mobileNumber);
+    setEmail(userInfo?.email);
+  }
   };
 
   const handleSubmit = async () => {
@@ -226,7 +235,7 @@ export default function DoctorProfile() {
     const docInfo = JSON.parse(localStorage.getItem("docInfo"));
 
     console.log(
-      docInfo.userId._id,
+      // docInfo.userId._id,
       userName,
       yearOfExperience,
       fees,
@@ -301,7 +310,7 @@ export default function DoctorProfile() {
           {
             userId: userInfo._id,
             name: userName,
-            yearsOfExperience: yearOfExperience,
+            yearOfExperience: yearOfExperience,
             fees: fees,
             dob: dob,
             about: aboutMe,
@@ -329,6 +338,10 @@ export default function DoctorProfile() {
         );
 
         console.log(user);
+        localStorage.setItem(
+          "docInfo",
+          JSON.stringify(user.data.result.doctor)
+        );
       }
     } catch (error) {
       console.log(error);
@@ -509,7 +522,7 @@ export default function DoctorProfile() {
                         <input
                           type="text"
                           onChange={(e) => setPhone(e.target.value)}
-                          value={`+91 ${phone}`}
+                          value={phone}
                           className="form-control"
                         />
                       </div>
@@ -794,7 +807,7 @@ export default function DoctorProfile() {
                                 <span className="text-danger"> *</span>
                               </label>
                               <input
-                                type="number"
+                                type="text"
                                 className="form-control"
                                 name="hospitalName"
                                 value={yearOfExperience}
