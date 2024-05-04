@@ -40,6 +40,16 @@ export default function DoctorProfile() {
     return wordArray.length;
   };
 
+  const handleAwardChange = (index, event) => {
+    const { name, value } = event.target;
+    // Update awards
+    const updatedAwards = [...awards];
+    if (!updatedAwards[index]) {
+      updatedAwards[index] = {}; // Initialize if undefined
+    }
+    updatedAwards[index][name] = value;
+    setAwards(updatedAwards);
+  };
   const handleAboutRemainingChange = (e) => {
     const inputValue = e.target.value;
     if (countWords(inputValue) <= 250) {
@@ -68,17 +78,31 @@ export default function DoctorProfile() {
 
   const handleInputChange = (index, event) => {
     const { name, value } = event.target;
-    const list = [...education];
-    list[index][name] = value;
-    setEducation(list);
+    const updatedEducation = [...education];
+
+    // Update the specific field of the education object at the given index
+    updatedEducation[index] = {
+      ...updatedEducation[index],
+      [name]: value,
+    };
+
+    // Update the education state with the modified array
+    setEducation(updatedEducation);
+
+    // Update experiences
     const newExperiences = [...experiences];
+    if (!newExperiences[index]) {
+      newExperiences[index] = {}; // Initialize if undefined
+    }
     newExperiences[index][name] = value;
     setExperiences(newExperiences);
-    const updatedAwards = [...awards];
-    updatedAwards[index][name] = value;
-    setAwards(updatedAwards);
+
+    // Update memberships
     const updatedMemberships = [...memberships];
-    updatedMemberships[index].name = value;
+    if (!updatedMemberships[index]) {
+      updatedMemberships[index] = {}; // Initialize if undefined
+    }
+    updatedMemberships[index][name] = value;
     setMemberships(updatedMemberships);
   };
 
@@ -87,12 +111,30 @@ export default function DoctorProfile() {
       ...education,
       { qualification: "", collegeName: "", yearOfCompletion: "" },
     ]);
+
+    // Add placeholders to experiences, awards, and memberships
+    setExperiences([...experiences, {}]);
+    // setAwards([...awards, {}]);
+    // setMemberships([...memberships, {}]);
   };
 
   const handleRemoveEducation = (index) => {
-    const list = [...education];
-    list.splice(index, 1);
-    setEducation(list);
+    const updatedEducation = [...education];
+    updatedEducation.splice(index, 1);
+    setEducation(updatedEducation);
+
+    // Remove corresponding entries from experiences, awards, and memberships
+    const newExperiences = [...experiences];
+    newExperiences.splice(index, 1);
+    setExperiences(newExperiences);
+
+    const updatedAwards = [...awards];
+    updatedAwards.splice(index, 1);
+    setAwards(updatedAwards);
+
+    const updatedMemberships = [...memberships];
+    updatedMemberships.splice(index, 1);
+    setMemberships(updatedMemberships);
   };
   // State to manage multiple experience entries
   const [experiences, setExperiences] = useState([
@@ -206,16 +248,22 @@ export default function DoctorProfile() {
     );
 
     try {
+      const parts = dob.split("-");
+
+      // Rearrange the parts to form the "YYYY-MM-DD" format
+      const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+
+      console.log(formattedDate);
       if (docInfo) {
         console.log("1");
         const updatedDoctor = await axios.put(
-          `http://localhost:5000/doctor/${docInfo.userId._id}/update`,
+          `https://healthbackend-3xh2.onrender.com/doctor/${docInfo.userId._id}/update`,
           {
             userId: docInfo.userId._id,
             name: userName,
             yearOfExperience: yearOfExperience,
             fees: fees,
-            dob: dob,
+            dob: formattedDate,
             about: aboutMe,
             specialization: specialization,
             state: state,
