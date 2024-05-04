@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Swal from 'sweetalert2';
+import { Bounce, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 const generateTimeSlots = () =>{
@@ -103,11 +105,18 @@ export default function ScheduleTime() {
 
       // console.log(response); 
 
-      Swal.fire({
-        icon: 'success',
-      title: 'Success!',
-      text: 'Time slots updated successfully.',
-      })
+     
+      toast("Time slots updated successfully.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
 
       const doctor = await axios.get(
         `https://healthbackend-3xh2.onrender.com/doctor/${schedule.userId._id}`,
@@ -126,10 +135,17 @@ export default function ScheduleTime() {
       );
 
     } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error!',
-        text: 'Failed to update time slots. Please try again later.',
+      
+      toast.error("Failed to update time slots. Please try again later.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
       });
     }
 
@@ -172,6 +188,7 @@ export default function ScheduleTime() {
         <div className="content">
           <div className="container">
             <div className="row">
+        <ToastContainer />
               <div className="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
                 <div className="profile-sidebar">
                   <div className="widget-profile pro-widget-content">
@@ -366,7 +383,8 @@ export default function ScheduleTime() {
       className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['sunday']?.includes(timeSlot) ? '' : ''}`} 
       key={index}
       onClick={() => handleSlotClick('sunday', timeSlot)}
-      style={{borderColor: selectedSlots['sunday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '',color: selectedSlots['sunday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '' }}
+      style={{borderColor: selectedSlots['sunday']?.some((s)=>s.time === timeSlot) ? '#42c0fb' : '',color: selectedSlots['sunday']?.some((s)=>s.time === timeSlot) ? '#ffffff' : '',  backgroundColor:selectedSlots['sunday']?.some((s)=>s.time === timeSlot) ?  "#42c0fb":'',
+              border:selectedSlots['sunday']?.some((s)=>s.time === timeSlot) ?  "1px solid #42c0fb":'' }}
     >
       {timeSlot}
     </button>
@@ -395,7 +413,8 @@ export default function ScheduleTime() {
       className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['monday']?.includes(timeSlot) ? '' : ''}`}
       key={index} 
       onClick={() => handleSlotClick('monday', timeSlot)}
-      style={{borderColor: selectedSlots['monday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '',color: selectedSlots['monday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '' }}
+      style={{borderColor: selectedSlots['monday']?.some((s)=>s.time === timeSlot) ? '#42c0fb' : '',color: selectedSlots['monday']?.some((s)=>s.time === timeSlot) ? '#ffffff' : '',  backgroundColor:selectedSlots['monday']?.some((s)=>s.time === timeSlot) ?  "#42c0fb":'',
+              border:selectedSlots['monday']?.some((s)=>s.time === timeSlot) ?  "1px solid #42c0fb":'' }}
     >
       {timeSlot}
     </button>
@@ -422,7 +441,8 @@ export default function ScheduleTime() {
       className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['tuesday']?.includes(timeSlot) ? '' : ''}`}
       key={index}
       onClick={() => handleSlotClick('tuesday', timeSlot)}
-      style={{borderColor: selectedSlots['tuesday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '',color: selectedSlots['tuesday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '' }}
+      style={{borderColor: selectedSlots['tuesday']?.some((s)=>s.time === timeSlot) ? '#42c0fb' : '',color: selectedSlots['tuesday']?.some((s)=>s.time === timeSlot) ? '#ffffff' : '',  backgroundColor:selectedSlots['tuesday']?.some((s)=>s.time === timeSlot) ?  "#42c0fb":'',
+      border:selectedSlots['tuesday']?.some((s)=>s.time === timeSlot) ?  "1px solid #42c0fb":'' }}
     >
       {timeSlot}
     </button>
@@ -448,7 +468,8 @@ export default function ScheduleTime() {
       className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['wednesday']?.includes(timeSlot) ? '' : ''}`}
       key={index}
       onClick={() => handleSlotClick('wednesday', timeSlot)}
-      style={{borderColor: selectedSlots['wednesday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '',color: selectedSlots['wednesday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '' }}
+      style={{borderColor: selectedSlots['wednesday']?.some((s)=>s.time === timeSlot) ? '#42c0fb' : '',color: selectedSlots['wednesday']?.some((s)=>s.time === timeSlot) ? '#ffffff' : '',  backgroundColor:selectedSlots['wednesday']?.some((s)=>s.time === timeSlot) ?  "#42c0fb":'',
+              border:selectedSlots['wednesday']?.some((s)=>s.time === timeSlot) ?  "1px solid #42c0fb":'' }}
     >
       {timeSlot}
     </button>
@@ -474,7 +495,8 @@ export default function ScheduleTime() {
       className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['thursday']?.includes(timeSlot) ? '' : ''}`}
       key={index}
       onClick={() => handleSlotClick('thursday', timeSlot)}
-      style={{borderColor: selectedSlots['thursday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '',color: selectedSlots['thursday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '' }}
+      style={{borderColor: selectedSlots['thursday']?.some((s)=>s.time === timeSlot) ? '#42c0fb' : '',color: selectedSlots['thursday']?.some((s)=>s.time === timeSlot) ? '#ffffff' : '',  backgroundColor:selectedSlots['thursday']?.some((s)=>s.time === timeSlot) ?  "#42c0fb":'',
+              border:selectedSlots['thursday']?.some((s)=>s.time === timeSlot) ?  "1px solid #42c0fb":'' }}
     >
       {timeSlot}
     </button>
@@ -500,7 +522,8 @@ export default function ScheduleTime() {
       className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['friday']?.includes(timeSlot) ? '' : ''}`}
       key={index}
       onClick={() => handleSlotClick('friday', timeSlot)}
-      style={{borderColor: selectedSlots['friday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '',color: selectedSlots['friday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '' }}
+      style={{borderColor: selectedSlots['friday']?.some((s)=>s.time === timeSlot) ? '#42c0fb' : '',color: selectedSlots['friday']?.some((s)=>s.time === timeSlot) ? '#ffffff' : '',  backgroundColor:selectedSlots['friday']?.some((s)=>s.time === timeSlot) ?  "#42c0fb":'',
+              border:selectedSlots['friday']?.some((s)=>s.time === timeSlot) ?  "1px solid #42c0fb":'' }}
     >
       {timeSlot}
     </button>
@@ -526,7 +549,8 @@ export default function ScheduleTime() {
       className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['saturday']?.includes(timeSlot) ? '' : ''}`}
       key={index}
       onClick={() => handleSlotClick('saturday', timeSlot)}
-      style={{borderColor: selectedSlots['saturday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '',color: selectedSlots['saturday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '' }}
+      style={{borderColor: selectedSlots['saturday']?.some((s)=>s.time === timeSlot) ? '#42c0fb' : '',color: selectedSlots['saturday']?.some((s)=>s.time === timeSlot) ? '#ffffff' : '',  backgroundColor:selectedSlots['saturday']?.some((s)=>s.time === timeSlot) ?  "#42c0fb":'',
+              border:selectedSlots['saturday']?.some((s)=>s.time === timeSlot) ?  "1px solid #42c0fb":'' }}
     >
       {timeSlot}
     </button>
