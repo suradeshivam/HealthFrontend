@@ -366,7 +366,7 @@ export default function ScheduleTime() {
       className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['sunday']?.includes(timeSlot) ? '' : ''}`} 
       key={index}
       onClick={() => handleSlotClick('sunday', timeSlot)}
-      style={{ backgroundColor: selectedSlots['sunday']?.some((s)=>s.time === timeSlot) ? 'green' : '' }}
+      style={{borderColor: selectedSlots['sunday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '',color: selectedSlots['sunday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '' }}
     >
       {timeSlot}
     </button>
@@ -393,7 +393,7 @@ export default function ScheduleTime() {
   {generateTimeSlots().map((timeSlot, index) => (
     <button
       className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['monday']?.includes(timeSlot) ? '' : ''}`}
-      key={index}
+      key={index} 
       onClick={() => handleSlotClick('monday', timeSlot)}
       style={{borderColor: selectedSlots['monday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '',color: selectedSlots['monday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '' }}
     >
@@ -422,7 +422,7 @@ export default function ScheduleTime() {
       className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['tuesday']?.includes(timeSlot) ? '' : ''}`}
       key={index}
       onClick={() => handleSlotClick('tuesday', timeSlot)}
-      style={{ backgroundColor: selectedSlots['tuesday']?.some((s)=>s.time === timeSlot) ? 'green' : '' }}
+      style={{borderColor: selectedSlots['tuesday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '',color: selectedSlots['tuesday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '' }}
     >
       {timeSlot}
     </button>
@@ -448,7 +448,7 @@ export default function ScheduleTime() {
       className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['wednesday']?.includes(timeSlot) ? '' : ''}`}
       key={index}
       onClick={() => handleSlotClick('wednesday', timeSlot)}
-      style={{ backgroundColor: selectedSlots['wednesday']?.some((s)=>s.time === timeSlot) ? 'green' : '' }}
+      style={{borderColor: selectedSlots['wednesday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '',color: selectedSlots['wednesday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '' }}
     >
       {timeSlot}
     </button>
@@ -474,7 +474,7 @@ export default function ScheduleTime() {
       className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['thursday']?.includes(timeSlot) ? '' : ''}`}
       key={index}
       onClick={() => handleSlotClick('thursday', timeSlot)}
-      style={{ backgroundColor: selectedSlots['thursday']?.some((s)=>s.time === timeSlot) ? 'green' : '' }}
+      style={{borderColor: selectedSlots['thursday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '',color: selectedSlots['thursday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '' }}
     >
       {timeSlot}
     </button>
@@ -500,7 +500,7 @@ export default function ScheduleTime() {
       className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['friday']?.includes(timeSlot) ? '' : ''}`}
       key={index}
       onClick={() => handleSlotClick('friday', timeSlot)}
-      style={{ backgroundColor: selectedSlots['friday']?.some((s)=>s.time === timeSlot) ? 'green' : '' }}
+      style={{borderColor: selectedSlots['friday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '',color: selectedSlots['friday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '' }}
     >
       {timeSlot}
     </button>
@@ -526,7 +526,7 @@ export default function ScheduleTime() {
       className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['saturday']?.includes(timeSlot) ? '' : ''}`}
       key={index}
       onClick={() => handleSlotClick('saturday', timeSlot)}
-      style={{ backgroundColor: selectedSlots['saturday']?.some((s)=>s.time === timeSlot) ? 'green' : '' }}
+      style={{borderColor: selectedSlots['saturday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '',color: selectedSlots['saturday']?.some((s)=>s.time === timeSlot) ? '#11AD2D' : '' }}
     >
       {timeSlot}
     </button>

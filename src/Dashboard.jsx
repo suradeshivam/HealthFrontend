@@ -314,10 +314,13 @@ export default function Dashboard() {
                         />
                       </a>
                       <div className="profile-det-info">
-                        <h3>Dr. Darren Elder</h3>
-                        <div className="patient-details">
-                          <h5 className="mb-0">
-                            BDS, MDS - Oral &amp; Maxillofacial Surgery
+                        <h3>Dr. {doctorInfo.userId?.name}</h3>
+                        <div className="patient-details ">
+                          <h5 className="mb-0 ">
+                          {doctorInfo && doctorInfo.educationDetails && doctorInfo.educationDetails.map((edu, index) => (
+                          <p  key={index}>{edu.qualification}  {index !== doctorInfo.educationDetails.length - 1 && ','}  </p>
+                          ))}
+                           &amp; {doctorInfo.specialization}
                           </h5>
                         </div>
                       </div>

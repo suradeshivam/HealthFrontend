@@ -21,13 +21,16 @@ export default function DoctorProfile() {
   const [postalCode, setPostalCode] = useState("");
   const [specialization, setSpecialization] = useState("");
   const [yearOfExperience, setYearOfExperience] = useState("");
-  const [education, setEducation] = useState([]);
+  const [education, setEducation] = useState([
+    { qualification: "", collegeName: "", yearOfCompletion: "" }
+  ]);
   const [awardsNAchievements, setAwardsNAchievements] = useState([
     { awards: "", year: "" },
   ]);
   const [licence, setLicence] = useState([
     { licenseNumber: "", yearOfIssued: "" },
   ]);
+  const [awards, setAwards] = useState([{ name: "", year: "" }]);
 
   const [licenceNumber, setLicenceNumber] = useState("");
   const [yearLicenceNumber, setYearLicenceNumber] = useState("");
@@ -68,32 +71,87 @@ export default function DoctorProfile() {
 
   const handleInputChange = (index, event) => {
     const { name, value } = event.target;
-    const list = [...education];
-    list[index][name] = value;
-    setEducation(list);
+    const updatedEducation = [...education];
+    
+    // Update the specific field of the education object at the given index
+    updatedEducation[index] = {
+      ...updatedEducation[index],
+      [name]: value
+    };
+  
+    // Update the education state with the modified array
+    setEducation(updatedEducation);
+  
+    // Update experiences
     const newExperiences = [...experiences];
+    if (!newExperiences[index]) {
+      newExperiences[index] = {}; // Initialize if undefined
+    }
     newExperiences[index][name] = value;
     setExperiences(newExperiences);
-    const updatedAwards = [...awards];
-    updatedAwards[index][name] = value;
-    setAwards(updatedAwards);
+  
+ 
+    // Update memberships
     const updatedMemberships = [...memberships];
-    updatedMemberships[index].name = value;
+    if (!updatedMemberships[index]) {
+      updatedMemberships[index] = {}; // Initialize if undefined
+    }
+    updatedMemberships[index][name] = value;
     setMemberships(updatedMemberships);
   };
-
+  const handleAwardChange = (index, event) => {
+    const { name, value } = event.target;
+       // Update awards
+       const updatedAwards = [...awards];
+       if (!updatedAwards[index]) {
+         updatedAwards[index] = {}; // Initialize if undefined
+       }
+       updatedAwards[index][name] = value;
+       setAwards(updatedAwards);
+     
+  
+  }
+  // console.log(awards)
   const handleAddEducation = () => {
     setEducation([
       ...education,
       { qualification: "", collegeName: "", yearOfCompletion: "" },
     ]);
+  
+    // Add placeholders to experiences, awards, and memberships
+    setExperiences([...experiences, {}]);
+    // setAwards([...awards, {}]);
+    // setMemberships([...memberships, {}]);
   };
 
-  const handleRemoveEducation = (index) => {
-    const list = [...education];
-    list.splice(index, 1);
-    setEducation(list);
+  const handleAddAward = () => {
+    setAwards([...awards, { name: "", year: "" }]);
   };
+  // console.log(awards)
+  const handleRemoveAward = (index) => {
+    const updatedAwards = awards.filter((award, i) => i !== index);
+    setAwards(updatedAwards);
+  };
+  
+  const handleRemoveEducation = (index) => {
+    const updatedEducation = [...education];
+    updatedEducation.splice(index, 1);
+    setEducation(updatedEducation);
+  
+    // Remove corresponding entries from experiences, awards, and memberships
+    const newExperiences = [...experiences];
+    newExperiences.splice(index, 1);
+    setExperiences(newExperiences);
+  
+    const updatedAwards = [...awards];
+    updatedAwards.splice(index, 1);
+    setAwards(updatedAwards);
+  
+    const updatedMemberships = [...memberships];
+    updatedMemberships.splice(index, 1);
+    setMemberships(updatedMemberships);
+  };
+  
   // State to manage multiple experience entries
   const [experiences, setExperiences] = useState([
     { id: 1, hospitalName: "", from: "", to: "", designation: "" },
@@ -115,16 +173,9 @@ export default function DoctorProfile() {
     setExperiences(newExperiences);
   };
 
-  const [awards, setAwards] = useState([{ name: "", year: "" }]);
+ 
 
-  const handleAddAward = () => {
-    setAwards([...awards, { name: "", year: "" }]);
-  };
-
-  const handleRemoveAward = (index) => {
-    const updatedAwards = awards.filter((award, i) => i !== index);
-    setAwards(updatedAwards);
-  };
+ 
 
   const [memberships, setMemberships] = useState([{ name: "" }]);
 
@@ -158,7 +209,7 @@ export default function DoctorProfile() {
     const month = (dobDate.getMonth() + 1).toString().padStart(2, "0");
     const year = dobDate.getFullYear();
     const formattedDate = `${day}-${month}-${year}`;
-    console.log(formattedDate);
+    // console.log(formattedDate);
     // setDOB(result?.dob || '');
     setDOB(formattedDate);
     setFees(docInfo?.fees || "");
@@ -184,42 +235,48 @@ export default function DoctorProfile() {
     licence[0].yearOfIssued = yearLicenceNumber;
 
     console.log(
-      docInfo.userId._id,
-      userName,
-      yearOfExperience,
-      fees,
-      dob,
-      aboutMe,
-      specialization,
-      state,
-      awardsNAchievements,
-      licence,
-      address1,
-      address2,
-      city,
-      postalCode,
-      country,
-      education,
-      clinicName,
-      clinicAddress,
-      gender
+      // docInfo.userId._id,
+      // userName,
+      // yearOfExperience,
+      // fees,
+      // dob,
+      // aboutMe,
+      // specialization,
+      // state,
+      // awards,
+      // licence,
+      // address1,
+      // address2,
+      // city,
+      // postalCode,
+      // country,
+      // education,
+      // clinicName,
+      // clinicAddress,
+      // gender
     );
 
     try {
+      const parts = dob.split("-");
+
+      // Rearrange the parts to form the "YYYY-MM-DD" format
+      const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+
+
       if (docInfo) {
         console.log("1");
         const updatedDoctor = await axios.put(
-          `http://localhost:5000/doctor/${docInfo.userId._id}/update`,
+          `https://healthbackend-3xh2.onrender.com/doctor/${docInfo.userId._id}/update`,
           {
             userId: docInfo.userId._id,
             name: userName,
             yearOfExperience: yearOfExperience,
             fees: fees,
-            dob: dob,
+            dob: formattedDate,
             about: aboutMe,
             specialization: specialization,
             state: state,
-            achivement: awardsNAchievements,
+            achivement: awards,
             license: licence,
             addressLine1: address1,
             addressLine2: address2,
@@ -257,7 +314,7 @@ export default function DoctorProfile() {
             about: aboutMe,
             specialization: specialization,
             state: state,
-            achivement: awardsNAchievements,
+            achivement: awards,
             license: licence,
             addressLine1: address1,
             addressLine2: address2,
@@ -472,7 +529,7 @@ export default function DoctorProfile() {
                           onChange={(e) => setGender(e.target.value)}
                           value={gender}
                           className="form-select form-control">
-                          {console.log(gender)}
+                        
                           <option>Select</option>
                           <option>Male</option>
                           <option>Female</option>
@@ -779,7 +836,7 @@ export default function DoctorProfile() {
                               name="name"
                               value={award.name}
                               onChange={(event) =>
-                                handleInputChange(index, event)
+                                handleAwardChange(index, event)
                               }
                             />
                           </div>
@@ -793,7 +850,7 @@ export default function DoctorProfile() {
                               name="year"
                               value={award.year}
                               onChange={(event) =>
-                                handleInputChange(index, event)
+                                handleAwardChange(index, event)
                               }
                             />
                           </div>
