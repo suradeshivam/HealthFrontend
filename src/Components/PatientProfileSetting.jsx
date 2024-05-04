@@ -128,31 +128,7 @@ export default function Profilesettings() {
                             <span>Dashboard</span>
                           </Link>
                         </li>
-                        {/* <li>
-                          <Link to="/favourites">
-                            <i className="fas fa-bookmark" />
-                            <span>Favourites</span>
-                          </Link>
-                        </li> */}
-                        {/* <li>
-                          <Link to="/dependent">
-                            <i className="fas fa-users" />
-                            <span>Dependent</span>
-                          </Link>
-                        </li> */}
-                        {/* <li>
-                      <a href="chat.html">
-                        <i className="fas fa-comments" />
-                        <span>Message</span>
-                        <small className="unread-msg">23</small>
-                      </a>
-                    </li> */}
-                        {/* <li>
-                          <Link to="/patient-accounts">
-                            <i className="fas fa-file-invoice-dollar" />
-                            <span>Accounts</span>
-                          </Link>
-                        </li> */}
+
                         <li>
                           <Link to="/orders">
                             <i className="fas fa-list-alt" />
@@ -160,18 +136,7 @@ export default function Profilesettings() {
                             <small className="unread-msg">7</small>
                           </Link>
                         </li>
-                        {/* <li>
-                          <Link to="/medical-records">
-                            <i className="fas fa-clipboard" />
-                            <span>Add Medical Records</span>
-                          </Link>
-                        </li> */}
-                        {/* <li>
-                          <Link to="/medical-details">
-                            <i className="fas fa-file-medical-alt" />
-                            <span>Medical Details</span>
-                          </Link>
-                        </li> */}
+
                         <li>
                           <Link to="/patientprofile">
                             <i className="fas fa-user-cog" />
@@ -226,31 +191,22 @@ export default function Profilesettings() {
                         <div className="col-12 col-md-6">
                           <div className="mb-3">
                             <label className="mb-2">First Name</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              defaultValue="Richard"
-                            />
+                            <input type="text" className="form-control" />
                           </div>
                         </div>
                         <div className="col-12 col-md-6">
                           <div className="mb-3">
                             <label className="mb-2">Last Name</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              defaultValue="Wilson"
-                            />
+                            <input type="text" className="form-control" />
                           </div>
                         </div>
                         <div className="col-12 col-md-6">
                           <div className="mb-3">
                             <label className="mb-2">Date of Birth</label>
-                            <div className="cal-icon">
+                            <div>
                               <input
                                 type="text"
                                 className="form-control datetimepicker"
-                                defaultValue="24-07-1983"
                               />
                             </div>
                           </div>
@@ -273,71 +229,61 @@ export default function Profilesettings() {
                         <div className="col-12 col-md-6">
                           <div className="mb-3">
                             <label className="mb-2">Email ID</label>
-                            <input
-                              type="email"
-                              className="form-control"
-                              defaultValue="richard@example.com"
-                            />
+                            <input type="email" className="form-control" />
                           </div>
                         </div>
                         <div className="col-12 col-md-6">
                           <div className="mb-3">
                             <label className="mb-2">Mobile</label>
-                            <input
-                              type="text"
-                              defaultValue="+1 202-555-0125"
-                              className="form-control"
-                            />
+                            <input type="text" className="form-control" />
+                          </div>
+                        </div>
+                        <div className="col-12 col-md-6">
+                          <div className="mb-3">
+                            <label className="mb-2">Height</label>
+                            <input type="text" className="form-control" />
+                          </div>
+                        </div>
+                        <div className="col-12 col-md-6">
+                          <div className="mb-3">
+                            <label className="mb-2">Age</label>
+                            <input type="text" className="form-control" />
+                          </div>
+                        </div>
+                        <div className="col-12 col-md-6">
+                          <div className="mb-3">
+                            <label className="mb-2">Allergies</label>
+                            <input type="text" className="form-control" />
                           </div>
                         </div>
                         <div className="col-12">
                           <div className="mb-3">
                             <label className="mb-2">Address</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              defaultValue="806 Twin Willow Lane"
-                            />
+                            <input type="text" className="form-control" />
                           </div>
                         </div>
                         <div className="col-12 col-md-6">
                           <div className="mb-3">
                             <label className="mb-2">City</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              defaultValue="Old Forge"
-                            />
+                            <input type="text" className="form-control" />
                           </div>
                         </div>
                         <div className="col-12 col-md-6">
                           <div className="mb-3">
                             <label className="mb-2">State</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              defaultValue="Newyork"
-                            />
+                            <input type="text" className="form-control" />
                           </div>
                         </div>
                         <div className="col-12 col-md-6">
                           <div className="mb-3">
                             <label className="mb-2">Zip Code</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              defaultValue={13420}
-                            />
+                            <input type="text" className="form-control" />
                           </div>
                         </div>
                         <div className="col-12 col-md-6">
                           <div className="mb-3">
                             <label className="mb-2">Country</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              defaultValue="United States"
-                            />
+                            <input type="text" className="form-control" />
                           </div>
                         </div>
                       </div>
@@ -355,172 +301,6 @@ export default function Profilesettings() {
             </div>
           </div>
         </div>
-        <footer className="footer footer-one">
-          <div className="footer-top">
-            <div className="container">
-              <div className="row">
-                <div className="col-lg-3 col-md-4">
-                  <div className="footer-widget footer-about">
-                    <div className="footer-logo">
-                      <a href="index.html">
-                        <img src="assets/img/logo.png" alt="logo" />
-                      </a>
-                    </div>
-                    <div className="footer-about-content">
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-lg-6">
-                  <div className="row">
-                    <div className="col-lg-3 col-md-4">
-                      <div className="footer-widget footer-menu">
-                        <h2 className="footer-title">For Patients</h2>
-                        <ul>
-                          <li>
-                            <a href="search.html">Search for Doctors</a>
-                          </li>
-                          <li>
-                            <a href="login.html">Login</a>
-                          </li>
-                          <li>
-                            <a href="register.html">Register</a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <div className="col-lg-3 col-md-4">
-                      <div className="footer-widget footer-menu">
-                        <h2 className="footer-title">For Doctors</h2>
-                        <ul>
-                          <li>
-                            <a href="appointments.html">Appointments</a>
-                          </li>
-                          <li>
-                            <a href="chat.html">Chat</a>
-                          </li>
-                          <li>
-                            <a href="login.html">Login</a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <div className="col-lg-6 col-md-4">
-                      <div className="footer-widget footer-contact">
-                        <h2 className="footer-title">Contact Us</h2>
-                        <div className="footer-contact-info">
-                          <div className="footer-address">
-                            <p>
-                              <i className="feather-map-pin" /> 3556 Beech
-                              Street, USA
-                            </p>
-                          </div>
-                          <div className="footer-address">
-                            <p>
-                              <i className="feather-phone-call" /> +1 315 369
-                              5943
-                            </p>
-                          </div>
-                          <div className="footer-address mb-0">
-                            <p>
-                              <i className="feather-mail" />{" "}
-                              <a
-                                href="https://doccure.dreamstechnologies.com/cdn-cgi/l/email-protection"
-                                className="__cf_email__"
-                                data-cfemail="20444f4343555245604558414d504c450e434f4d">
-                                [email&nbsp;protected]
-                              </a>
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-lg-3 col-md-7">
-                  <div className="footer-widget">
-                    <h2 className="footer-title">Join Our Newsletter</h2>
-                    <div className="subscribe-form">
-                      <form action="#">
-                        <input
-                          type="email"
-                          className="form-control"
-                          placeholder="Enter Email"
-                        />
-                        <button type="submit" className="btn">
-                          Submit
-                        </button>
-                      </form>
-                    </div>
-                    <div className="social-icon">
-                      <ul>
-                        <li>
-                          <a href="javascript:void(0);">
-                            <i className="fab fa-facebook" />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="javascript:void(0);">
-                            <i className="fab fa-instagram" />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="javascript:void(0);">
-                            <i className="fab fa-twitter" />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="javascript:void(0);">
-                            <i className="fab fa-linkedin-in" />
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="footer-bottom">
-            <div className="container">
-              <div className="copyright">
-                <div className="row">
-                  <div className="col-md-6 col-lg-6">
-                    <div className="copyright-text">
-                      <p className="mb-0">
-                        {" "}
-                        Copyright © 2024{" "}
-                        <a
-                          href="https://themeforest.net/user/dreamstechnologies/portfolio"
-                          target="_blank">
-                          Dreamstechnologies.
-                        </a>{" "}
-                        All Rights Reserved
-                      </p>
-                    </div>
-                  </div>
-                  <div className="col-md-6 col-lg-6">
-                    <div className="copyright-menu">
-                      <ul className="policy-menu">
-                        <li>
-                          <a href="privacy-policy.html">Privacy Policy</a>
-                        </li>
-                        <li>
-                          <a href="terms-condition.html">
-                            Terms and Conditions
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </footer>
       </div>
       {/* Mirrored from doccure.dreamstechnologies.com/html/template/profile-settings.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 16 Apr 2024 16:46:25 GMT */}
     </>
