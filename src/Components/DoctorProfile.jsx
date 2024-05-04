@@ -257,7 +257,7 @@ export default function DoctorProfile() {
       if (docInfo) {
         console.log("1");
         const updatedDoctor = await axios.put(
-          `https://healthbackend-3xh2.onrender.com/doctor/${docInfo.userId._id}/update`,
+          `http://localhost:5000/doctor/${docInfo.userId._id}/update`,
           {
             userId: docInfo.userId._id,
             name: userName,
@@ -267,7 +267,7 @@ export default function DoctorProfile() {
             about: aboutMe,
             specialization: specialization,
             state: state,
-            achivement: awardsNAchievements,
+            achievement: awards,
             license: licence,
             addressLine1: address1,
             addressLine2: address2,
@@ -305,7 +305,7 @@ export default function DoctorProfile() {
             about: aboutMe,
             specialization: specialization,
             state: state,
-            achivement: awardsNAchievements,
+            achievement: awards,
             license: licence,
             addressLine1: address1,
             addressLine2: address2,
@@ -827,7 +827,7 @@ export default function DoctorProfile() {
                               name="name"
                               value={award.name}
                               onChange={(event) =>
-                                handleInputChange(index, event)
+                                handleAwardChange(index, event)
                               }
                             />
                           </div>
@@ -841,7 +841,7 @@ export default function DoctorProfile() {
                               name="year"
                               value={award.year}
                               onChange={(event) =>
-                                handleInputChange(index, event)
+                                handleAwardChange(index, event)
                               }
                             />
                           </div>
