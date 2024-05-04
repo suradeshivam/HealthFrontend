@@ -64,8 +64,11 @@ export default function ChangePassword() {
         },
       }
     );
-
     toast(result.data.result);
+
+    setOldPassword("");
+    setConfirmPassword("");
+    setNewPassword("");
   };
 
   const handleLogout = () => {

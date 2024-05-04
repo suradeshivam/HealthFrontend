@@ -111,9 +111,11 @@ export default function LoginDoctor() {
                       </h3>
                     </div>
                     <form onSubmit={handleSubmit(onSubmit)}>
-                      <div className="mb-3 form-focus">
+                      <div className="mb-3 ">
+                        <label className="focus-label">Email</label>
                         <input
                           type="email"
+                          placeholder="Email"
                           {...register("email", {
                             required: "Email is required",
                             pattern: {
@@ -123,12 +125,12 @@ export default function LoginDoctor() {
                           })}
                           className="form-control floating"
                         />
-                        <label className="focus-label">Email</label>
                       </div>
                       <div className="mb-2">
-                        <label className="mt-2">Create Password</label>
+                        <label className="mt-2">Enter Your Password</label>
                         <div className="d-flex">
                           <input
+                            placeholder="Password"
                             type={showPassword ? "text" : "password"}
                             {...register("password", {
                               required: "Password is required",
