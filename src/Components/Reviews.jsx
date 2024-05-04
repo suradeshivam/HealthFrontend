@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Reviews() {
+
+  const [doctorInfo,setDoctorInfo] = useState("");
   const commentData = [
     {
       imageUrl: 'assets/img/patients/patient2.jpg',
@@ -92,10 +94,34 @@ export default function Reviews() {
     return randomDate;
   }
 
+  const handleLogout = () => {
+    console.log("in here");
+    const userInfo = localStorage.getItem("userInfo");
+    if (userInfo) {
+      localStorage.removeItem("userInfo");
+    }
+    const token = localStorage.getItem("token");
+    if (token) {
+      localStorage.removeItem("token");
+    }
+    const docInfo = localStorage.getItem("docInfo");
+    if (docInfo) {
+      localStorage.removeItem("docInfo");
+    }
+  };
+
   useEffect(()=>{
     const docInfo = JSON.parse(localStorage.getItem('docInfo'));
     setReview(docInfo?.reviews);
   })
+
+  useEffect(() => {
+    const doctorInfo = JSON.parse(localStorage.getItem("docInfo"));
+    // Error in _id
+    if(doctorInfo){
+    setDoctorInfo(doctorInfo);
+    }
+  }, []);
 
   return (
     <div className="main-wrapper">
@@ -132,13 +158,16 @@ export default function Reviews() {
                       />
                     </a>
                     <div className="profile-det-info">
-                      <h3>Dr. Darren Elder</h3>
-                      <div className="patient-details">
-                        <h5 className="mb-0">
-                          BDS, MDS - Oral &amp; Maxillofacial Surgery
-                        </h5>
+                        <h3>Dr. {doctorInfo?.userId?.name}</h3>
+                        <div className="patient-details ">
+                          <h5 className="mb-0 ">
+                          {doctorInfo && doctorInfo?.educationDetails && doctorInfo?.educationDetails.map((edu, index) => (
+                          <p  key={index}>{edu.qualification}</p>
+                          ))}
+                           {/* &amp; {doctorInfo?.specialization} */}
+                          </h5>
+                        </div>
                       </div>
-                    </div>
                   </div>
                 </div>
                 <div className="dashboard-widget">
@@ -187,11 +216,11 @@ export default function Reviews() {
                         </Link>
                       </li>
                       <li>
-                        <Link to="/login">
-                          <i className="fas fa-sign-out-alt" />
-                          <span>Logout</span>
-                        </Link>
-                      </li>
+                          <Link to="/login" onClick={handleLogout}>
+                            <i className="fas fa-sign-out-alt" />
+                            <span>Logout</span>
+                          </Link>
+                        </li>
                     </ul>
                   </nav>
                 </div>

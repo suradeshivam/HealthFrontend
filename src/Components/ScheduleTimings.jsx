@@ -33,6 +33,7 @@ export default function ScheduleTime() {
     friday: [],
     saturday: []
   });
+  const [doctorInfo, setDoctorInfo] = useState("");
 
   // console.log(selectedSlots)
 
@@ -151,6 +152,22 @@ export default function ScheduleTime() {
 
   }
 
+  const handleLogout = () => {
+    console.log("in here");
+    const userInfo = localStorage.getItem("userInfo");
+    if (userInfo) {
+      localStorage.removeItem("userInfo");
+    }
+    const token = localStorage.getItem("token");
+    if (token) {
+      localStorage.removeItem("token");
+    }
+    const docInfo = localStorage.getItem("docInfo");
+    if (docInfo) {
+      localStorage.removeItem("docInfo");
+    }
+  };
+
  
 
   useEffect (()=>{
@@ -158,6 +175,7 @@ export default function ScheduleTime() {
     if(t){
     setSchedule(t)
     setSelectedSlots(t.schedules);
+    setDoctorInfo(t)
     }
   },[])
 
@@ -200,10 +218,13 @@ export default function ScheduleTime() {
                         />
                       </a>
                       <div className="profile-det-info">
-                        <h3>Dr. Darren Elder</h3>
-                        <div className="patient-details">
-                          <h5 className="mb-0">
-                            BDS, MDS - Oral &amp; Maxillofacial Surgery
+                        <h3>Dr. {doctorInfo?.userId?.name}</h3>
+                        <div className="patient-details ">
+                          <h5 className="mb-0 ">
+                          {doctorInfo && doctorInfo?.educationDetails && doctorInfo?.educationDetails.map((edu, index) => (
+                          <p  key={index}>{edu.qualification}</p>
+                          ))}
+                           {/* &amp; {doctorInfo?.specialization} */}
                           </h5>
                         </div>
                       </div>
@@ -255,7 +276,7 @@ export default function ScheduleTime() {
                           </Link>
                         </li>
                         <li>
-                          <Link to="/login">
+                          <Link to="/login" onClick={handleLogout}>
                             <i className="fas fa-sign-out-alt" />
                             <span>Logout</span>
                           </Link>

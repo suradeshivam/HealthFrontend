@@ -24,6 +24,8 @@ export default function Dashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState("");
 
   const [patientSelect, setPatientSelect] = useState(null);
+  let todayCount=0;
+  let upcomingCount=0;
   // console.log(upcoming)
 
   const handleLogout = () => {
@@ -109,6 +111,7 @@ export default function Dashboard() {
 
         let upcomingArray = [];
         let todayArray = [];
+        // console.log(datastore)
 
         datastore.forEach((data) => {
           // console.log(new Date(data.date).toLocaleDateString("en-US"))
@@ -122,15 +125,16 @@ export default function Dashboard() {
             // setToday((prevToday) => [...prevToday, data])
             // console.log(today)
           } else {
-            console.log(appointmentDate);
+            // console.log(data);
             upcomingArray.push(data);
             // setUpcoming((prevUpcoming) => [...prevUpcoming, data]);
           }
-
           setUpcoming(upcomingArray);
+          // console.log(upcoming)
           setToday(todayArray);
         });
       } else {
+        
         setAppointments(data.data.result);
       }
       // console.log(data.data.result);
@@ -269,10 +273,10 @@ export default function Dashboard() {
   useEffect(() => {
     const doctorInfo = JSON.parse(localStorage.getItem("docInfo"));
     const isAuthenticated = localStorage.getItem("token");
-    setDoctorInfo(doctorInfo);
     setIsAuthenticated(isAuthenticated);
     // Error in _id
     if(doctorInfo){
+    setDoctorInfo(doctorInfo);
     getAllAppointments(doctorInfo._id, isAuthenticated, false);
     }
   }, []);
@@ -320,7 +324,7 @@ export default function Dashboard() {
                           {doctorInfo && doctorInfo?.educationDetails && doctorInfo?.educationDetails.map((edu, index) => (
                           <p  key={index}>{edu.qualification}</p>
                           ))}
-                           &amp; {doctorInfo?.specialization}
+                           {/* &amp; {doctorInfo?.specialization} */}
                           </h5>
                         </div>
                       </div>
@@ -407,7 +411,8 @@ export default function Dashboard() {
                               </div>
                               <div className="dash-widget-info">
                                 <h6>Total Patient</h6>
-                                <h3>1500</h3>
+                                
+                                <h3>2</h3>
                                 <p className="text-muted">Till Today</p>
                               </div>
                             </div>
@@ -427,8 +432,8 @@ export default function Dashboard() {
                               </div>
                               <div className="dash-widget-info">
                                 <h6>Today Patient</h6>
-                                <h3>160</h3>
-                                <p className="text-muted">06, Nov 2023</p>
+                                <h3>{1}</h3>
+                                <p className="text-muted">{new Date().toLocaleDateString('en-US')}</p>
                               </div>
                             </div>
                           </div>
@@ -447,8 +452,8 @@ export default function Dashboard() {
                               </div>
                               <div className="dash-widget-info">
                                 <h6>Appoinments</h6>
-                                <h3>85</h3>
-                                <p className="text-muted">06, Apr 2023</p>
+                                <h3>2</h3>
+                                <p className="text-muted">{new Date().toLocaleDateString('en-US')}</p>
                               </div>
                             </div>
                           </div>
@@ -589,16 +594,14 @@ export default function Dashboard() {
                                               </button>
                                             </div>
                                             <div>
-                                              <Link to="/appointment">
-                                                <a
-                                                  className="btn btn-sm bg-info-light"
-                                                  onClick={() => {
-                                                    setselectedPatient(patient);
-                                                  }}>
-                                                  <i className="far fa-eye" />{" "}
-                                                  View
-                                                </a>
-                                              </Link>
+                                            <button
+                                                className="btn btn-sm bg-info-light"
+                                                onClick={() =>
+                                                  handlePatientSelect(patient)
+                                                }>
+                                                <i className="far fa-eye" />{" "}
+                                                View
+                                              </button>
                                             </div>
                                           </div>
                                         </td>
@@ -632,8 +635,9 @@ export default function Dashboard() {
                                     </tr>
                                   </thead>
                                   <tbody>
+                                    
                                     {upcoming.map((patient, index) => (
-                                      <tr>
+                                      <tr key={index}>
                                         <td>
                                           <h2 className="table-avatar">
                                             <a
@@ -646,9 +650,9 @@ export default function Dashboard() {
                                               />
                                             </a>
                                             <a href="patient-profile.html">
-                                              {patient.patient.userId.name}{" "}
+                                              {patient.patient?.userId?.name}{" "}
                                               <span>
-                                                {patient.patient.userId._id}
+                                                {patient.patient?.userId?._id}
                                               </span>
                                             </a>
                                           </h2>
@@ -675,14 +679,7 @@ export default function Dashboard() {
                                               display: "flex",
                                               gap: "1rem",
                                             }}>
-                                            {/* <div>
-                                              <form onSubmit={submitCode} className="">
-                                                <button
-                                                  className="btn btn-sm bg-success-light">
-                                                  <i className="fas fa-check" /> Join
-                                                </button>
-                                              </form>
-                                            </div> */}
+                                            
                                             <div className="appointment-action">
                                               <button
                                                 className="btn btn-sm bg-danger-light"
@@ -695,11 +692,7 @@ export default function Dashboard() {
                                                 Reschedule
                                               </button>
 
-                                              {/* <button
-                                           onClick={() => setShowModal(true)}
-                                          className="btn btn-sm bg-danger-light">
-                                          <i className="fas fa-calendar-alt" /> Reschedule
-                                        </button> */}
+                                            
                                               {showModal && (
                                                 <Reschedule
                                                   closeModal={closeModal}
@@ -707,12 +700,14 @@ export default function Dashboard() {
                                               )}
                                             </div>
                                             <div>
-                                              <a
-                                                href="javascript:void(0);"
-                                                className="btn btn-sm bg-info-light">
+                                            <button
+                                                className="btn btn-sm bg-info-light"
+                                                onClick={() =>
+                                                  handlePatientSelect(patient)
+                                                }>
                                                 <i className="far fa-eye" />{" "}
                                                 View
-                                              </a>
+                                              </button>
                                             </div>
                                           </div>
                                         </td>

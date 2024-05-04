@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function DoctorProfile() {
-  const [doctorInfo, setDoctorInfo] = useState({});
+  const [doctorInfo, setDoctorInfo] = useState("");
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -21,7 +21,9 @@ export default function DoctorProfile() {
   const [postalCode, setPostalCode] = useState("");
   const [specialization, setSpecialization] = useState("");
   const [yearOfExperience, setYearOfExperience] = useState("");
-  const [education, setEducation] = useState([]);
+  const [education, setEducation] = useState([
+    { qualification: "", collegeName: "", yearOfCompletion: "" }
+  ]);
   const [awardsNAchievements, setAwardsNAchievements] = useState([
     { awards: "", year: "" },
   ]);
@@ -34,6 +36,23 @@ export default function DoctorProfile() {
 
   const [fileName, setFileName] = useState("");
   const [filePreview, setFilePreview] = useState("");
+  const [errors, setErrors] = useState({
+    userName: "",
+    yearOfExperience: "",
+    gender:"",
+    dob:"",
+    fees:"",
+  address1:"",
+  city:"",
+  state:"",
+  country:"",
+  postalCode:"",
+  specialization:"",
+  education:"",
+  yearOfExperience:"",
+  licenceNumber:"",
+  yearLicenceNumber:"",
+  });
 
   const countWords = (text) => {
     const wordArray = text.trim().split(/\s+/);
@@ -348,8 +367,214 @@ export default function DoctorProfile() {
     }
   };
 
+
+
+  const handleFormSubmit = async(e) => {
+    e.preventDefault();
+
+    // Validation logic
+    let errorsObj = {};
+
+    if (!gender || gender === "Select") {
+      errorsObj.gender = "Gender is required";
+    }
+
+    if (!dob.trim()) {
+      errorsObj.dob = "Date Of Birth is required";
+    }
+
+    if (!fees) {
+      errorsObj.fees = "Fees is required";
+    }
+    if (!address1 || !address1.trim()) {
+      errorsObj.address1 = "Address is required";
+    }
+    if (!city || !city.trim()) {
+      errorsObj.city = "City is required";
+    }
+    if (!state || !state.trim()) {
+      errorsObj.state = "State is required";
+    }
+    if (!country || !country.trim()) {
+      errorsObj.country = "Country is required";
+    }
+    if (!postalCode) {
+      errorsObj.postalCode = "Postal Code is required";
+    }
+    if (!specialization || !specialization.trim()) {
+      errorsObj.specialization = "Specialization is required";
+    }
+    const isEducationValid = education.some(
+      edu => edu.qualification.trim() !== '' || 
+             edu.collegeName.trim() !== '' || 
+             edu.yearOfCompletion.trim() !== ''
+    );
+    if (!isEducationValid) {
+      errorsObj.education = "Education is required";
+    }
+    if (!yearOfExperience ||  isNaN(yearOfExperience)) {
+      errorsObj.yearOfExperience = "Experience is required";
+    }
+    if (!licenceNumber ||  isNaN(yearLicenceNumber)) {
+      errorsObj.licenceNumber = "Licence  is required";
+    }
+    if (!yearLicenceNumber || isNaN(yearLicenceNumber)) {
+      errorsObj.yearLicenceNumber = "Year Of Issued is required";
+    }
+    
+
+    // Add other validation rules
+
+    if (Object.keys(errorsObj).length > 0) {
+      setErrors(errorsObj);
+      return; // Prevent form submission if there are errors
+    }
+
+    // If validation passes, submit the form
+      const isAuthenticated = localStorage.getItem("token");
+      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+      const docInfo = JSON.parse(localStorage.getItem("docInfo"));
+  
+      console.log(
+        // docInfo.userId._id,
+        userName,
+        yearOfExperience,
+        fees,
+        dob,
+        aboutMe,
+        specialization,
+        state,
+        awardsNAchievements,
+        licenceNumber,
+        yearLicenceNumber,
+        address1,
+        address2,
+        city,
+        postalCode,
+        country,
+        education,
+        clinicName,
+        clinicAddress,
+        gender
+      );
+  
+      try {
+        const parts = dob.split("-");
+  
+        // Rearrange the parts to form the "YYYY-MM-DD" format
+        const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+  
+        console.log(formattedDate);
+        if (docInfo) {
+          console.log("1");
+          const updatedDoctor = await axios.put(
+            `https://healthbackend-3xh2.onrender.com/doctor/${docInfo.userId._id}/update`,
+            {
+              userId: docInfo.userId._id,
+              name: userName,
+              yearOfExperience: yearOfExperience,
+              fees: fees,
+              dob: formattedDate,
+              about: aboutMe,
+              specialization: specialization,
+              state: state,
+              achievement: awards,
+              licenseNumber: licenceNumber,
+              yearOfIssued: yearLicenceNumber,
+              addressLine1: address1,
+              addressLine2: address2,
+              city: city,
+              zip: postalCode,
+              contry: country,
+              educationDetails: education,
+              clinicName: clinicName,
+              clinicAddress: clinicAddress,
+              gender: gender,
+            },
+            {
+              headers: {
+                authorization: isAuthenticated,
+              },
+            }
+          );
+          console.log(updatedDoctor);
+          localStorage.setItem(
+            "docInfo",
+            JSON.stringify(updatedDoctor.data.result)
+          );
+          // setDoctorInfo(updatedDoctor.data.result);
+          // console.log(doctorInfo);
+          console.log("doctor updated success navigatingto docprofile");
+        } else {
+          const user = await axios.post(
+            `https://healthbackend-3xh2.onrender.com/doctor/create`,
+            {
+              userId: userInfo._id,
+              name: userName,
+              yearOfExperience: yearOfExperience,
+              fees: fees,
+              dob: dob,
+              about: aboutMe,
+              specialization: specialization,
+              state: state,
+              achievement: awards,
+              licenseNumber: licenceNumber,
+              yearOfIssued: yearLicenceNumber,
+              addressLine1: address1,
+              addressLine2: address2,
+              city: city,
+              zip: postalCode,
+              contry: country,
+              educationDetails: education,
+              clinicName: clinicName,
+              clinicAddress: clinicAddress,
+              gender: gender,
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: isAuthenticated,
+              },
+            }
+          );
+  
+          console.log(user);
+          localStorage.setItem(
+            "docInfo",
+            JSON.stringify(user.data.result.doctor)
+          );
+        }
+      } catch (error) {
+        console.log(error);
+      }
+  };
+
+  const handleLogout = () => {
+    console.log("in here");
+    const userInfo = localStorage.getItem("userInfo");
+    if (userInfo) {
+      localStorage.removeItem("userInfo");
+    }
+    const token = localStorage.getItem("token");
+    if (token) {
+      localStorage.removeItem("token");
+    }
+    const docInfo = localStorage.getItem("docInfo");
+    if (docInfo) {
+      localStorage.removeItem("docInfo");
+    }
+  };
+
   useEffect(() => {
     getDocInfo();
+  }, []);
+
+  useEffect(() => {
+    const doctorInfo = JSON.parse(localStorage.getItem("docInfo"));
+    // Error in _id
+    if(doctorInfo){
+    setDoctorInfo(doctorInfo);
+    }
   }, []);
 
   // useState (()=>{
@@ -392,13 +617,16 @@ export default function DoctorProfile() {
                       />
                     </a>
                     <div className="profile-det-info">
-                      <h3>Dr. Darren Elder</h3>
-                      <div className="patient-details">
-                        <h5 className="mb-0">
-                          BDS, MDS - Oral &amp; Maxillofacial Surgery
-                        </h5>
+                        <h3>Dr. {doctorInfo?.userId?.name}</h3>
+                        <div className="patient-details ">
+                          <h5 className="mb-0 ">
+                          {doctorInfo && doctorInfo?.educationDetails && doctorInfo?.educationDetails.map((edu, index) => (
+                          <p  key={index}>{edu.qualification}</p>
+                          ))}
+                           {/* &amp; {doctorInfo?.specialization} */}
+                          </h5>
+                        </div>
                       </div>
-                    </div>
                   </div>
                 </div>
                 <div className="dashboard-widget">
@@ -447,17 +675,18 @@ export default function DoctorProfile() {
                         </Link>
                       </li>
                       <li>
-                        <Link to="/login">
-                          <i className="fas fa-sign-out-alt" />
-                          <span>Logout</span>
-                        </Link>
-                      </li>
+                          <Link to="/login" onClick={handleLogout}>
+                            <i className="fas fa-sign-out-alt" />
+                            <span>Logout</span>
+                          </Link>
+                        </li>
                     </ul>
                   </nav>
                 </div>
               </div>
             </div>
             <div className="col-md-7 col-lg-8 col-xl-9">
+              <form onSubmit={handleFormSubmit}>
               <div className="card">
                 <div className="card-body">
                   <h4 className="card-title">Basic Information</h4>
@@ -485,6 +714,7 @@ export default function DoctorProfile() {
                         </div>
                       </div>
                     </div>
+                   
                     <div className="col-md-6">
                       <div className="mb-3">
                         <label className="mb-2">
@@ -497,6 +727,7 @@ export default function DoctorProfile() {
                           className="form-control"
                           readOnly=""
                         />
+                        
                       </div>
                     </div>
                     <div className="col-md-6">
@@ -541,6 +772,9 @@ export default function DoctorProfile() {
                           <option>Male</option>
                           <option>Female</option>
                         </select>
+                        {errors.gender && (
+            <span style={{ color: "red",fontSize: "13px" }}>{errors.gender}</span>
+          )}
                       </div>
                     </div>
                     <div className="col-md-6">
@@ -554,6 +788,9 @@ export default function DoctorProfile() {
                           value={dob}
                           className="form-control"
                         />
+                         {errors.dob && (
+            <span style={{ color: "red",fontSize: "13px" }}>{errors.dob}</span>
+          )}
                       </div>
                     </div>
                     <div className="col-md-6">
@@ -567,6 +804,9 @@ export default function DoctorProfile() {
                           value={fees}
                           className="form-control"
                         />
+                         {errors.fees && (
+            <span style={{ color: "red" ,fontSize: "13px"}}>{errors.fees}</span>
+          )}
                       </div>
                     </div>
                   </div>
@@ -583,7 +823,7 @@ export default function DoctorProfile() {
                       value={aboutMe}
                       rows={5}
                     />
-                    <p>Words remaining: {remainingWords}</p>
+                    <p className=" " style={{color:"red",fontSize: "13px"}}>Words remaining: {remainingWords}</p>
                   </div>
                 </div>
               </div>
@@ -600,6 +840,9 @@ export default function DoctorProfile() {
                           value={clinicName}
                           className="form-control"
                         />
+                         {errors.clinicName && (
+            <span style={{ color: "red",fontSize: "13px"}}>{errors.clinicName}</span>
+          )}
                       </div>
                     </div>
                     <div className="col-md-6">
@@ -611,6 +854,9 @@ export default function DoctorProfile() {
                           value={clinicAddress}
                           className="form-control"
                         />
+                         {errors.clinicAddress && (
+            <span style={{ color: "red",fontSize: "13px" }}>{errors.clinicAddress}</span>
+          )}
                       </div>
                     </div>
                   </div>
@@ -631,6 +877,9 @@ export default function DoctorProfile() {
                           value={address1}
                           className="form-control"
                         />
+                         {errors.address1 && (
+            <span style={{ color: "red" ,fontSize: "13px"}}>{errors.address1}</span>
+          )}
                       </div>
                     </div>
                     <div className="col-md-6">
@@ -655,6 +904,9 @@ export default function DoctorProfile() {
                           value={city}
                           className="form-control"
                         />
+                         {errors.city && (
+            <span style={{ color: "red",fontSize: "13px" }}>{errors.city}</span>
+          )}
                       </div>
                     </div>
                     <div className="col-md-6">
@@ -669,6 +921,9 @@ export default function DoctorProfile() {
                           value={state}
                           className="form-control"
                         />
+                         {errors.state && (
+            <span style={{ color: "red",fontSize: "13px" }}>{errors.state}</span>
+          )}
                       </div>
                     </div>
                     <div className="col-md-6">
@@ -682,6 +937,9 @@ export default function DoctorProfile() {
                           value={country}
                           className="form-control"
                         />
+                         {errors.country && (
+            <span style={{ color: "red" ,fontSize: "13px"}}>{errors.country}</span>
+          )}
                       </div>
                     </div>
                     <div className="col-md-6">
@@ -695,6 +953,9 @@ export default function DoctorProfile() {
                           value={postalCode}
                           className="form-control"
                         />
+                         {errors.postalCode && (
+            <span style={{ color: "red",fontSize: "13px" }}>{errors.postalCode}</span>
+          )}
                       </div>
                     </div>
                   </div>
@@ -703,7 +964,7 @@ export default function DoctorProfile() {
 
               <div className="card services-card">
                 <div className="card-body">
-                  <h4 className="card-title">Specialization</h4>
+                  <h4 className="card-title">Specialization<span className="text-danger"> *</span></h4>
 
                   <div className="mb-0">
                     <input
@@ -716,6 +977,9 @@ export default function DoctorProfile() {
                       onChange={(e) => setSpecialization(e.target.value)}
                       value={specialization}
                     />
+                     {errors.specialization && (
+            <span style={{ color: "red",fontSize: "13px" }}>{errors.specialization}</span>
+          )}
                   </div>
                 </div>
               </div>
@@ -740,6 +1004,9 @@ export default function DoctorProfile() {
                                   value={edu.qualification}
                                   onChange={(e) => handleInputChange(index, e)}
                                 />
+                                 {errors.education && (
+            <span style={{ color: "red" ,fontSize: "13px"}}>{errors.education}</span>
+          )}
                               </div>
                             </div>
                             <div className="col-12 col-md-6 col-lg-4">
@@ -756,6 +1023,7 @@ export default function DoctorProfile() {
                                   onChange={(e) => handleInputChange(index, e)}
                                 />
                               </div>
+                              
                             </div>
                             <div className="col-12 col-md-6 col-lg-4">
                               <div className="mb-3">
@@ -770,6 +1038,7 @@ export default function DoctorProfile() {
                                   value={edu.yearOfCompletion}
                                   onChange={(e) => handleInputChange(index, e)}
                                 />
+                                
                               </div>
                             </div>
                           </div>
@@ -818,6 +1087,9 @@ export default function DoctorProfile() {
                                 //   handleInputChange(index, event)
                                 // }
                               />
+                               {errors.yearOfExperience && (
+            <span style={{ color: "red",fontSize: "13px" }}>{errors.yearOfExperience}</span>
+          )}
                             </div>
                           </div>
                         </div>
@@ -903,6 +1175,9 @@ export default function DoctorProfile() {
                             value={licenceNumber}
                             className="form-control"
                           />
+                           {errors.licenceNumber && (
+            <span style={{ color: "red" ,fontSize: "13px"}}>{errors.licenceNumber}</span>
+          )}
                         </div>
                       </div>
                       <div className="col-12 col-md-5">
@@ -919,6 +1194,9 @@ export default function DoctorProfile() {
                             value={yearLicenceNumber}
                             className="form-control"
                           />
+                           {errors.yearOfIssued && (
+            <span style={{ color: "red" ,fontSize: "13px"}}>{errors.yearOfIssued}</span>
+          )}
                         </div>
                       </div>
                     </div>
@@ -979,11 +1257,12 @@ export default function DoctorProfile() {
               <div className="submit-section submit-btn-bottom">
                 <button
                   type="submit"
-                  onClick={handleSubmit}
+                  // onClick={handleSubmit}
                   className="btn btn-primary prime-btn">
                   Save Changes
                 </button>
               </div>
+              </form>
             </div>
           </div>
         </div>

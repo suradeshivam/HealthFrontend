@@ -1,1142 +1,1817 @@
-import React, { useEffect, useState } from "react";
-import profile from "./vector.webp";
-import { CiPhone } from "react-icons/ci";
-import { MdAlternateEmail } from "react-icons/md";
-import { FaRegAddressCard } from "react-icons/fa";
-import { TbReportMedical } from "react-icons/tb";
-import { FaSearch } from "react-icons/fa";
-import { OrderState } from "../Contexts";
-import { FaRegEdit } from "react-icons/fa";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { MdOutlineGridView } from "react-icons/md";
-import { FaHeadSideCough } from "react-icons/fa";
-import { FaLungs } from "react-icons/fa";
-import { LiaGrinBeamSweatSolid } from "react-icons/lia";
-import { GiStomach } from "react-icons/gi";
-import { FaGlassWater } from "react-icons/fa6";
-import { GiVomiting } from "react-icons/gi";
-import { MdPermIdentity } from "react-icons/md";
-import { CiVirus } from "react-icons/ci";
-import { PiGenderFemaleLight } from "react-icons/pi";
-import { MdOutlineDateRange } from "react-icons/md";
-import { MdOutlineBloodtype } from "react-icons/md";
-import { FiSend } from "react-icons/fi";
-// import Prescription from "./PopUps/Prescription";
-import { MdOutlineSaveAlt } from "react-icons/md";
-import { MdAddCircleOutline } from "react-icons/md";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
 import { useLocation } from "react-router-dom";
 
-const Appointment = () => {
-  const { selectedPatient, prescriptions, setPrescriptions,setselectedPatient, updatedObservations, setUpdatedObservations } = OrderState();
-  const [searchphy, setsearchphy] = useState("");
-  const [prescription, setPrescription] = useState(true);
-  const [showPrediction, setshowPrediction] = useState(false);
-  const [observation, setobservation] = useState(false);
-  const [reports, setreports] = useState(false);
-  const [dishistory, setdishistory] = useState(false);
-  const [symptoms, setsymptoms] = useState(false);
-  const [encounters, setencounters] = useState(false);
-  const [allergies, setallergies] = useState(false);
-  const [vitals, setvitals] = useState(false);
-  const [medhistory, setmedhistory] = useState(false);
-  const [popupprescription, setpopupprescription] = useState(false);
-  const [demographics, setdemograpics] = useState(false);
-  const [generatedText, setGeneratedText] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-  const [isProgressVisible, setProgressVisible] = useState(false);
-  const [isResultVisible, setResultVisible] = useState(false);
-  // const [showModal, setShowModal] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [] = useState([]);
 
+export default function Patientprofile() {
   const location = useLocation();
   const patient = location.state?.patient;
+  const [doctorInfo, setDoctorInfo] = useState("");
 
   console.log(patient)
 
-  const closeModal = () => setpopupprescription(false);
 
- 
+    const [observations, setObservations] = useState([
+        {
+            id: 1,
+            doctorId: 2568
+        }
+    ]);
 
-
-  const handlePrescription = () => {
-    console.log("clicked")
-    setobservation(false);
-    setreports(false);
-    setdishistory(false);
-    setsymptoms(false);
-    setvitals(false);
-    setmedhistory(false);
-    setPrescription(true);
-    setencounters(false);
-    setallergies(false);
-    setdemograpics(false);
-  }
-  const handleObservation = () => {
-    console.log("clicked")
-    setreports(false);
-    setPrescription(false);
-    setdishistory(false);
-    setsymptoms(false);
-    setencounters(false);
-    setallergies(false);
-    setdemograpics(false);
-    setvitals(false);
-    setmedhistory(false);
-    setobservation(true);
-
-  }
-  const handleReports = () => {
-    console.log("clicked")
-    setPrescription(false);
-    setobservation(false);
-    setdishistory(false);
-    setsymptoms(false);
-    setencounters(false);
-    setallergies(false);
-    setdemograpics(false);
-    setvitals(false);
-    setmedhistory(false);
-    setreports(true);
-  }
-
-  const handleHistory = () => {
-    console.log("clicked")
-    setPrescription(false);
-    setobservation(false);
-    setreports(false);
-    setsymptoms(false);
-    setencounters(false);
-    setallergies(false);
-    setdemograpics(false);
-    setvitals(false);
-    setmedhistory(false);
-    setdishistory(true);
-  }
-
-  const handleSympDisp = () => {
-    console.log("clicked")
-    setdemograpics(false);
-    setPrescription(false);
-    setobservation(false);
-    setreports(false);
-    setdishistory(false);
-    setencounters(false);
-    setallergies(false);
-    setvitals(false);
-    setmedhistory(false);
-    setsymptoms(true);
-  }
-
-  const handleEncounters = () => {
-    console.log("clicked")
-    setdemograpics(false);
-    setPrescription(false);
-    setobservation(false);
-    setreports(false);
-    setdishistory(false);
-    setsymptoms(false);
-    setallergies(false);
-    setvitals(false);
-    setmedhistory(false);
-    setencounters(true);
-  }
-  const handleAllergies = () => {
-    console.log("clicked")
-    setdemograpics(false);
-    setPrescription(false);
-    setobservation(false);
-    setreports(false);
-    setdishistory(false);
-    setsymptoms(false);
-    setencounters(false);
-    setvitals(false);
-    setmedhistory(false);
-    setallergies(true);
-
-  }
-  const handleVitals = () => {
-    console.log("clicked")
-    setdemograpics(false);
-    setPrescription(false);
-    setobservation(false);
-    setreports(false);
-    setdishistory(false);
-    setsymptoms(false);
-    setencounters(false);
-    setallergies(false);
-    setvitals(true);
-    setmedhistory(false);
-
-  }
-  const handleMedical = () => {
-    console.log("clicked")
-    setdemograpics(false);
-    setPrescription(false);
-    setobservation(false);
-    setreports(false);
-    setdishistory(false);
-    setsymptoms(false);
-    setencounters(false);
-    setallergies(false);
-    setvitals(false);
-    setmedhistory(true);
-  }
-  const handleDemographics = () => {
-    console.log("clicked")
-    setdemograpics(false);
-    setPrescription(false);
-    setobservation(false);
-    setreports(false);
-    setdishistory(false);
-    setsymptoms(false);
-    setencounters(false);
-    setallergies(false);
-    setdemograpics(true);
-  }
-
-  const handlePopUpPrescription = () => {
-    setpopupprescription(true);
-    setPrescriptions(selectedPatient.prescriptions)
-  }
-
-  const handleInputChange = (e, index) => {
-    const { name, value } = e.target;
-    const updatedObs = [...updatedObservations];
-    updatedObs[index] = value;
-    setUpdatedObservations(updatedObs);
-  };
-
-  const handleEditClick = (index) => {
-    setIsEditing(true);
-    // setCurrentEditingIndex(index);
-  };
-
-  const handleAddObservation = () => {
-    setUpdatedObservations([...updatedObservations, ""]);
-  };
-
-  const isAuthenticated = localStorage.getItem('token');
-
-  const handleSaveObservation = async() => {
-    const appointmentId = selectedPatient._id;
-   try{
-    const observationres = await axios.put(`https://healthcareserver.onrender.com/appointment/observation/`,
-    {
-      appointmentId : appointmentId,
-      newObservations : updatedObservations,
-    },
-    {
-      headers:{
-      "Content-Type":"application/json",
-      "Authorization":isAuthenticated,
-    },
-  }
-    )
-    console.log(observationres)
-
-    const appointment = await axios.get(`https://healthcareserver.onrender.com/appointment/${appointmentId}`,
-    {
-      headers:{
-      "Content-Type":"application/json",
-      "Authorization":isAuthenticated,
-    },
-  }  
-    );
-  
-    console.log(appointment)
-    setselectedPatient(appointment.data.result);
-
-   }catch(error){
-    console.log(error)
-   }
-
-  };
-
-  // AI
-  const startVoiceRecognition = () => {
-    const recognition = new window.webkitSpeechRecognition() || new window.SpeechRecognition();
-    recognition.lang = 'en-US';
-    recognition.start();
-    recognition.onresult = event => {
-        document.getElementById("prompt").value = event.results[0][0].transcript;
-    }
-    recognition.onend = () => {
-        recognition.stop();
-    }
-}
-
-// Event listener for voice input button
-const handleVoiceButtonClick = () => {
-    startVoiceRecognition();
-}
-
-// Event listener for form submission
-const handleSubmit = event => {
-    event.preventDefault(); // Prevent form submission
-    
-    const promptInput = document.getElementById("prompt").value.trim();
-    setErrorMessage(""); // Clear previous error messages
-    
-    if (!promptInput) {
-        setErrorMessage("Please enter a prompt.");
-    } else {
-        document.getElementById("submitButton").style.display = "none";
-        document.getElementById("submitButton").classList.remove("pulse-button"); // Remove pulse animation
-        setProgressVisible(true);
-
-        // Call API to generate text
-        generateText(promptInput)
-            .then(response => {
-                setGeneratedText(response);
-                setResultVisible(true);
-            })
-            .catch(error => {
-                setErrorMessage("Error: Failed to generate content. Please try again later.");
-            })
-            .finally(() => {
-                document.getElementById("submitButton").style.display = "block";
-                setProgressVisible(false);
-                document.getElementById("submitButton").classList.add("pulse-button"); // Add pulse animation back
-            });
-    }
-}
-
-// Function to call API and generate text
-const generateText = async prompt => {
-    const url = "https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=AIzaSyAOw_9JeI-xld7WL3pEtFotq9HyuC9pBiw"; // Replace with your API key
-    const data = {
-        "contents": [
+    const addObservation = () => {
+        const newId = observations.length + 1;
+        setObservations([
+            ...observations,
             {
-                "role": "user",
-                "parts": [
-                    {"text": prompt + 'Predict the disease from this list of symptoms. '}
-                ]
+                id: newId,
+                doctorId: 2568
             }
-        ]
+        ]);
     };
+    const deleteObservation = (id) => {
+        setObservations(observations.filter(observation => observation.id !== id));
+    };
+
+
+    const [prescriptions, setPrescriptions] = useState([
+        { name: '', quantity: '', days: '', times: [] },
+        { name: '', quantity: '', days: '', times: [] }
+    ]);
+
+
+    const addPrescription = () => {
+        setPrescriptions([...prescriptions, { name: '', quantity: '', days: '', times: [] }]);
+    };
+
+    const handleInputChange = (index, event) => {
+        const { name, value } = event.target;
+        const newPrescriptions = [...prescriptions];
+        newPrescriptions[index][name] = value;
+        setPrescriptions(newPrescriptions);
+
+
+    };
+
+    const handleCheckboxChange = (index, time) => {
+        const newPrescriptions = [...prescriptions];
+        if (newPrescriptions[index].times.includes(time)) {
+            newPrescriptions[index].times = newPrescriptions[index].times.filter(item => item !== time);
+        } else {
+            newPrescriptions[index].times.push(time);
+        }
+        setPrescriptions(newPrescriptions);
+    };
+
+    const removePrescription = (index) => {
+        const newPrescriptions = [...prescriptions];
+        newPrescriptions.splice(index, 1);
+        setPrescriptions(newPrescriptions);
+    };
+    const [isSignatureClicked, setIsSignatureClicked] = useState(false);
+
+    const handleSignatureClick = () => {
+        setIsSignatureClicked(true);
+
+    };
+
+    const handleSignatureSave = (signature) => {
+        // You can save the signature data here
+        // For example, send it to the server, save it to local storage, etc.
+        console.log("Signature saved:", signature);
+        // Close the modal and reset the signature clicked state
+        setIsSignatureClicked(false);
+        // setModalOpen(false);
+    };
+
+    const isAuthenticated = localStorage.getItem('token');
+    // const handleSaveObservation = async() => {
+    //   const appointmentId = selectedPatient._id;
+    //  try{
+    //   const observationres = await axios.put(`https://healthcareserver.onrender.com/appointment/observation/`,
+    //   {
+    //     appointmentId : appointmentId,
+    //     newObservations : updatedObservations,
+    //   },
+    //   {
+    //     headers:{
+    //     "Content-Type":"application/json",
+    //     "Authorization":isAuthenticated,
+    //   },
+    // }
+    //   )
+    //   console.log(observationres)
+  
+    //   const appointment = await axios.get(`https://healthcareserver.onrender.com/appointment/${appointmentId}`,
+    //   {
+    //     headers:{
+    //     "Content-Type":"application/json",
+    //     "Authorization":isAuthenticated,
+    //   },
+    // }  
+    //   );
     
-    const headers = {'Content-Type': 'application/json'};
-    
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify(data)
-    });
+    //   console.log(appointment)
+    //   setselectedPatient(appointment.data.result);
+  
+    //  }catch(error){
+    //   console.log(error)
+    //  }
+  
+    // };
 
-    if (!response.ok) {
-        throw new Error("Failed to generate content.");
-    }
+    useEffect(() => {
+      const doctorInfo = JSON.parse(localStorage.getItem("docInfo"));
+      setDoctorInfo(doctorInfo)
+    },[])
 
-    const result = await response.json();
-    let generatedText = result['candidates'][0]['content']['parts'][0]['text'];
-    // Remove or trim stars from the generated text
-    generatedText = generatedText.replace(/\*/g, '').trim();
-    return generatedText;
-}
-
-
-
-
-  useEffect(() => {
-    setUpdatedObservations(selectedPatient?.observations)
-  }, []);
-
-  return (
-    <>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-    {patient &&(
-       <div>
-       <h2>Appointment Details</h2>
-       {/* <p>Name: {patient.patient.userId.name}</p>
-       <p>Date: {patient.date}</p> */}
-       {/* Add more details as needed */}
-     </div>
-    )}
-    
-      {selectedPatient === null ? <h1>Data not Available</h1> :
-        <div className="bg-white overflow-auto shadow  text-black  flex justify-between  rounded-md m-2 p-4 ">
-          <div className="w-full ">
-            <div className="w-full">
-              <div className="flex md:flex-row md:space-x-6 space-y-6 md:space-y-0 flex-col ">
-
-                {/* User Section */}
-                <div className=" w-full md:w-2/5  " >
-                  <div className="   space-y-2 p-1 h-auto rounded-lg ">
-                    <div className="  " >
-                      <div className="  p-8  border-y-blue-400 shadow-2xl  border-t-4 " >
-                        <div className=" rounded-3xl ">
-                          <div className="ml-1/2 flex justify-center text-center">
-                            <img
-                              src={profile}
-                              className="mt-1 justify-center rounded-full "
-                              width={100}
-                              height={100}
-                              alt="Profile"
-                            />
-                          </div>
-                          <div className="text-center  mt-1 p-1 border-b-2">
-                            <span className="mt-4 font-bold text-lg">
-                              {selectedPatient.patient.userId?.name}
-
-                            </span></div>
+    return (
+        <div>
+            <div className="main-wrapper">
+                <div className="breadcrumb-bar-two">
+                    <div className="container">
+                        <div className="row align-items-center inner-banner">
+                            <div className="col-md-12 col-12 text-center">
+                                <h2 className="breadcrumb-title">Profile</h2>
+                                <nav aria-label="breadcrumb" className="page-breadcrumb">
+                                    <ol className="breadcrumb">
+                                        <li className="breadcrumb-item">
+                                            <a href="index.html">Home</a>
+                                        </li>
+                                        <li className="breadcrumb-item" aria-current="page">
+                                            Profile
+                                        </li>
+                                    </ol>
+                                </nav>
+                            </div>
                         </div>
-                        <div className="mt-4  space-y-2 ">
-                          <span className="flex gap-2 text-center justify-between border-b-2 p-1">
-
-                            <span className="flex flex-row gap-2 ">
-                              <MdPermIdentity className="mt-1 " /> Patient Id
-                            </span>
-                            {selectedPatient.patient.userId?._id}
-                          </span>
-
-                          <span className="flex gap-2 text-center justify-between border-b-2 p-1">
-                            <span className="flex flex-row gap-2 ">
-                              <MdOutlineDateRange className="mt-1 " /> Birth-Date
-                            </span>
-
-                            {new Date(selectedPatient.patient?.dob).toLocaleDateString("en-US")}
-                          </span>
-                            {/* {selectedPatient.patient.mobile} */}
-
-                          <span className="flex gap-2 text-center justify-between border-b-2 p-1">
-                            <span className="flex flex-row gap-2 ">
-                              <PiGenderFemaleLight className="mt-1 " /> Gender
-                            </span>
-
-                            {selectedPatient.patient?.gender}
-                            
-                          </span>
-                          <span className="flex gap-2 text-center justify-between border-b-2 p-1">
-                            <span className="flex flex-row gap-2 ">
-                              <MdOutlineBloodtype className="mt-1 " /> Blood Type
-                            </span>
-
-                            {selectedPatient.patient?.bloodType}
-                            
-                          </span>
-                          <span className="flex gap-2 text-center justify-between border-b-2 p-1">
-                            <span className="flex flex-row gap-2 ">
-                              <CiPhone className="mt-1 " /> Phone
-                            </span>
-
-                            {/* {selectedPatient.patient.mobile} */}
-                            {selectedPatient.patient.userId?.mobileNumber}
-                          </span>
-                          <span className="flex gap-2 text-center justify-between border-b-2 p-1">
-                            <span className="flex flex-row gap-2">
-                              <MdAlternateEmail className="mt-1" />Email
-                            </span>
-                            {/* {selectedPatient.patient.email} */}
-                            {selectedPatient.patient.userId?.email}
-                          </span>
-                          <span className="flex gap-2  justify-between border-b-2 p-1">
-                            <span className="flex flex-row gap-2">
-                              <FaRegAddressCard className="mt-1" />Address
-                            </span>
-                            {/* {selectedPatient.patient.address.line1} City - {selectedPatient.patient.address.city}
-                            <br /> {selectedPatient.patient.address.state}, {selectedPatient.patient.address.zipcode} */}
-                            {selectedPatient.patient?.addressLine1}
-                          </span>
-                          <span className="flex gap-2  justify-between border-b-2 p-1">
-                            <span className="flex flex-row gap-2">
-                              <FaRegAddressCard className="mt-1" />Height/Weight
-                            </span>
-                            {selectedPatient.patient?.height}ft /  {selectedPatient.patient?.weight}kg
-                          </span>
-
-                        </div>
-
-
-                        <div className=" mt-3">
-                          {/* <div className="mt-4">
-                            <div className=" w-full  bg-blue-50 p-2 rounded-md">
-                              <h2 className="font-bold text-blue-700 text-center">Vitals</h2>
-                            </div>
-                            <div className=" mt-2 grid grid-cols-2 gap-2 ml-2 ">
-                              <div className="">
-                                <div className=" md:grid-cols-2 space-y-2  text-sm  font-bold   text-center">
-                                  Blood Pressure
-                                </div>
-                                <div className=" md:grid-cols-2 space-y-2  text-sm  font-bold text-purple-600   text-center">
-                                  120/80
-                                </div>
-                                <div className=" md:grid-cols-2 space-y-2 text-xs text-gray-500   text-center">
-                                  Normal (mm/Hg)
-                                </div>
-                              </div>
-                              <div className="">
-                                <div className=" md:grid-cols-2 space-y-2  text-sm  font-bold   text-center">
-                                  Heart Rate
-                                </div>
-                                <div className=" md:grid-cols-2 space-y-2  text-sm  font-bold text-teal-500 text-center">
-                                  120/80
-                                </div>
-                                <div className=" md:grid-cols-2 space-y-2 text-xs text-gray-500   text-center">
-                                  Normal (bpm)
-                                </div>
-                              </div>
-                              <div className="">
-                                <div className=" md:grid-cols-2 space-y-2  text-sm  font-bold   text-center">
-                                Respiration rate
-                                </div>
-                                <div className=" md:grid-cols-2 space-y-2  text-sm  font-bold text-pink-600   text-center">
-                                  92
-                                </div>
-                                <div className=" md:grid-cols-2 space-y-2 text-xs text-gray-500   text-center">
-                                  High (mg/dl)
-                                </div>
-                              </div>
-                              <div className="">
-                                <div className=" md:grid-cols-2 space-y-2  text-sm  font-bold   text-center">
-                                Body temperature
-
-                                </div>
-                                <div className=" md:grid-cols-2 space-y-2  text-sm  font-bold text-red-600   text-center">
-                                  120
-
-                                </div>
-                                <div className=" md:grid-cols-2 space-y-2 text-xs text-gray-500   text-center">
-                                  HIGH (mg/dl)
-                                </div>
-                              </div>
-
-                            </div>
-                            <br />
-                          </div>
-                          <div className="mt-4">
-                            <div className=" w-full  bg-blue-50 p-2 rounded-md">
-                              <h2 className="font-bold text-blue-700 text-center">Medical History</h2>
-                            </div>
-                            <div className=" mt-2 grid grid-cols-2 gap-2 ml-2 ">
-                             <div className="text-center text-sm font-bold">
-                             Covid 19
-                             </div>
-                             <div className="text-center text-gray-500">
-                             12/03/2024
-                             </div>
-                             <div className="text-center text-sm font-bold">
-                             Heart Surgery 
-                             </div>
-                             <div className="text-center text-gray-500">
-                             12/04/2024
-                             </div>
-                             <div className="text-center text-sm font-bold">
-                             Orthopedic Surgery
-                             </div>
-                             <div className="text-center text-gray-500">
-                             15/06/2024
-                             </div>
-                            
-
-                            </div>
-                            <br /> 
-                          </div> */}
-                          <div className="bg-red-100  ml-0  rounded-lg shadow">
-                            <div className="  p-3 rounded-lg shadow-lg">
-                            <input type="text" id="prompt" value={selectedPatient.symptoms} maxLength="100" required className="hidden" />
-                              <h1 className=" text-blue-700 text-center">
-                                Generate Predicted Disease
-                              </h1>
-                              <form id="chatForm" onSubmit={handleSubmit}>
-                              <button className="mx-auto block text-xm  rounded-lg text-red-600 font-bold" id="submitButton" type="submit" onClick={() => { setshowPrediction(true) }}>Click to Predict</button><br/>
-                              {showPrediction && <h1 className="font-bold text-red-500 text-center">
-                                AI Predicted Results <br/>
-                                {generatedText}
-                              </h1>}
-                              </form>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
                     </div>
-
-                  </div>
-                  <br />
                 </div>
+                <div className="content">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar dct-dashbd-lft">
+                                <div className="card widget-profile pat-widget-profile">
+                                    <div className="card-body">
+                                        <div className="pro-widget-content">
+                                            <div className="profile-info-widget">
+                                                <a href="#" className="booking-doc-img">
+                                                    <img
+                                                        src="assets/img/patients/patient.jpg"
+                                                        alt="User Image"
+                                                    />
+                                                </a>
+                                                <div className="profile-det-info">
+                                                    <h3>{patient.patient.userId?.name}</h3>
+                                                    <div className="patient-details">
+                                                        <h5>
+                                                            <b>Patient ID :</b>{patient.patient?._id}
+                                                        </h5>
+                                                        <h5 className="mb-0">
+                                                            <i className="fas fa-map-marker-alt" /> {patient.patient?.city},
+                                                            {patient.patient?.contry}
+                                                        </h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="patient-info">
+                                            <ul>
+                                                <li>
+                                                    Phone <span>+91-{`${patient.patient.userId?.mobileNumber}`}</span>
+                                                </li>
+                                                <li>
+                                                    Age <span>{patient.patient?.age}</span>
+                                                </li>
+                                                <li>
+                                                    Blood Group <span>{patient.patient?.bloodType}</span>
+                                                </li>
+                                                <li>
+                                                    DOB <span>{new Date(patient.patient?.dob).toLocaleDateString("en-US")}</span>
+                                                </li>
+                                                <li>
+                                                    Gender<span>{patient.patient?.gender}</span>
+                                                </li>
+                                                <li>
+                                                    Email<span>{patient.patient?.userId?.email}</span>
+                                                </li>
+                                                <li>
+                                                    Height<span>{patient.patient?.height} Feet</span>
+                                                </li>
+                                                <li>
+                                                    Weight<span>{patient.patient?.weight} KG</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="card">
+                                    <div className="card-header">
+                                        <h4 className="card-title">AI Predicted Diseases</h4>
+                                    </div>
+                                    <ul className="list-group list-group-flush">
 
-                <div className="md:w-full">
-                  <div className="sm:text-ends text-center mb-1 flex gap-3 justify-end">
-                    <div className="flex  p-1 md:p-2.5 rounded shadow-md">
-                      <input type="text" className="outline-none sm:w-full border-none transition bg-transparent" value={searchphy} placeholder="Enter Physician Name" />
-                      <FaSearch className="text-blue-600 mt-1 text-end justify-end " />
+                                        <li className="list-group-item">
+                                            <div class="submit-section mt-2 text-center">
+                                                <button type="submit" class="btn btn-secondary submit-btn">Click to Predict</button>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                {/* <div className="card">
+                                    <div className="card-header">
+                                        <h4 className="card-title">Last Booking</h4>
+                                    </div>
+                                    <ul className="list-group list-group-flush">
+                                        <li className="list-group-item">
+                                            <div className="notify-block align-items-center d-flex">
+                                                <div className="me-3 flex-shrink-0">
+                                                    <img
+                                                        alt="Image placeholder"
+                                                        src="assets/img/doctors/doctor-thumb-02.jpg"
+                                                        className="avatar  rounded-circle"
+                                                    />
+                                                </div>
+                                                <div className="media-body flex-grow-1">
+                                                    <h5 className="d-block mb-0">Dr. Darren Elder </h5>
+                                                    <span className="d-block text-sm text-muted">
+                                                        Dentist
+                                                    </span>
+                                                    <span className="d-block text-sm text-muted">
+                                                        14 Nov 2023 5.00 PM
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li className="list-group-item">
+                                            <div className="notify-block align-items-center d-flex">
+                                                <div className="me-3 flex-shrink-0">
+                                                    <img
+                                                        alt="Image placeholder"
+                                                        src="assets/img/doctors/doctor-thumb-02.jpg"
+                                                        className="avatar  rounded-circle"
+                                                    />
+                                                </div>
+                                                <div className="media-body flex-grow-1">
+                                                    <h5 className="d-block mb-0">Dr. Darren Elder </h5>
+                                                    <span className="d-block text-sm text-muted">
+                                                        Dentist
+                                                    </span>
+                                                    <span className="d-block text-sm text-muted">
+                                                        12 Nov 2023 11.00 AM
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div> */}
+
+                            </div>
+                            <div className="col-md-7 col-lg-8 col-xl-9">
+                                <div className="row">
+                                    <div className="col-12 col-md-6 col-lg-4 col-xl-3 patient-dashboard-top">
+                                        <div className="card">
+                                            <div className="card-body text-center">
+                                                <div className="mb-3">
+                                                    <img
+                                                        src="assets/img/specialities/pt-dashboard-01.png"
+                                                        alt="heart-image"
+                                                        width={55}
+                                                    />
+                                                </div>
+                                                <h5>Heart Rate</h5>
+                                                <h6>
+                                                    12 <sub>bpm</sub>
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-12 col-md-6 col-lg-4 col-xl-3 patient-dashboard-top">
+                                        <div className="card">
+                                            <div className="card-body text-center">
+                                                <div className="mb-3">
+                                                    <img
+                                                        src="assets/img/specialities/pt-dashboard-02.png"
+                                                        alt="thermometer-image"
+                                                        width={55}
+                                                    />
+                                                </div>
+                                                <h5>Body Temperature</h5>
+                                                <h6>
+                                                    18 <sub>C</sub>
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-12 col-md-6 col-lg-4 col-xl-3 patient-dashboard-top">
+                                        <div className="card">
+                                            <div className="card-body text-center">
+                                                <div className="mb-3">
+                                                    <img
+                                                        src="assets/img/specialities/pt-dashboard-03.png"
+                                                        alt="hospital-equipment"
+                                                        width={55}
+                                                    />
+                                                </div>
+                                                <h5>Glucose Level</h5>
+                                                <h6>70 - 90</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-12 col-md-6 col-lg-4 col-xl-3 patient-dashboard-top">
+                                        <div className="card">
+                                            <div className="card-body text-center">
+                                                <div className="mb-3">
+                                                    <img
+                                                        src="assets/img/specialities/pt-dashboard-04.png"
+                                                        alt="hospital-equipment"
+                                                        width={55}
+                                                    />
+                                                </div>
+                                                <h5>Blood Pressure</h5>
+                                                <h6>
+                                                    202/90 <sub>mg/dl</sub>
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row patient-graph-col">
+                                    <div className="col-12">
+                                        <div className="card">
+                                            <div className="card-header">
+                                                <h4 className="card-title">Patient Basic Medical Information</h4>
+                                            </div>
+                                            <div className="card-body pt-2 pb-2 mt-1 mb-1">
+                                                <div className="row">
+                                                    <div className="col-12 col-md-6 col-lg-4 col-xl-3 patient-graph-box">
+                                                        <a
+                                                            href="#"
+                                                            className="graph-box"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#graph1"
+                                                        >
+                                                            <div>
+                                                                <h4>Symptoms</h4>
+                                                            </div>
+                                                            <div className="graph-img">
+                                                                <img
+                                                                    src="assets/img/shapes/graph-01.png"
+                                                                    alt="shapes-icon"
+                                                                />
+                                                            </div>
+
+                                                        </a>
+                                                    </div>
+                                                    <div className="col-12 col-md-6 col-lg-4 col-xl-3 patient-graph-box">
+                                                        <a
+                                                            href="#"
+                                                            className="graph-box pink-graph"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#graph2"
+                                                        >
+                                                            <div>
+                                                                <h4>Allergies</h4>
+                                                            </div>
+                                                            <div className="graph-img">
+                                                                <img
+                                                                    src="assets/img/shapes/gluten-free (1).png"
+                                                                    alt="graph-icon"
+                                                                />
+                                                            </div>
+
+                                                        </a>
+                                                    </div>
+                                                    <div className="col-12 col-md-6 col-lg-4 col-xl-3 patient-graph-box">
+                                                        <a
+                                                            href="#"
+                                                            className="graph-box sky-blue-graph"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#graph3"
+                                                        >
+                                                            <div>
+                                                                <h4>Medical Records</h4>
+                                                            </div>
+                                                            <div className="graph-img">
+                                                                <img
+                                                                    src="assets/img/shapes/graph-03.png"
+                                                                    alt="chart-icon"
+                                                                />
+                                                            </div>
+
+                                                        </a>
+                                                    </div>
+                                                    <div className="col-12 col-md-6 col-lg-4 col-xl-3 patient-graph-box">
+                                                        <a
+                                                            href="#"
+                                                            className="graph-box orange-graph"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#graph4"
+                                                        >
+                                                            <div>
+                                                                <h4>BMI</h4>
+                                                            </div>
+                                                            <div className="graph-img">
+                                                                <img
+                                                                    src="assets/img/shapes/graph-04.png"
+                                                                    alt="chart-icon"
+                                                                />
+                                                            </div>
+
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="card">
+                                    <div className="card-body pt-0">
+                                        <nav className="user-tabs mb-4">
+                                            <ul className="nav nav-tabs nav-tabs-bottom nav-justified">
+                                                <li className="nav-item">
+                                                    <a
+                                                        className="nav-link active"
+                                                        href="#pat_appointments"
+                                                        data-bs-toggle="tab"
+                                                    >
+                                                        Observations
+                                                    </a>
+                                                </li>
+                                                <li className="nav-item">
+                                                    <a
+                                                        className="nav-link"
+                                                        href="#pat_prescriptions"
+                                                        data-bs-toggle="tab"
+                                                    >
+                                                        Prescriptions
+                                                    </a>
+                                                </li>
+
+                                                <li className="nav-item">
+                                                    <a
+                                                        className="nav-link"
+                                                        href="#pat_reports"
+                                                        data-bs-toggle="tab"
+                                                    >
+                                                        Reports
+                                                    </a>
+                                                </li>
+
+                                                <li className="nav-item">
+                                                    <a
+                                                        className="nav-link"
+                                                        href="#pat_billing"
+                                                        data-bs-toggle="tab"
+                                                    >
+                                                        Encounters
+                                                    </a>
+                                                </li>
+
+                                            </ul>
+                                        </nav>
+                                        <div className="tab-content pt-0">
+                                            <div
+                                                id="pat_appointments"
+                                                className="tab-pane fade show active"
+                                            >
+                                                <div className="card card-table mb-0">
+                                                    <div className="card-body">
+                                                        <div className="table-responsive">
+                                                            <table className="table table-hover table-center mb-0">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Observation Notes</th>
+                                                                        <th>Action</th>
+                                                                        <th className="add-more mb-3">
+                                                                            <a href="javascript:void(0);" className="add-hours" onClick={addObservation}>
+                                                                                <i className="fa fa-plus-circle" /> Add More
+                                                                            </a>
+                                                                        </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    {observations.map(observation => (
+                                                                        <tr key={observation.id}>
+                                                                            <td>
+                                                                                <h2 className="table-avatar">
+                                                                                    <a href="doctor-profile.html">
+                                                                                        Observation {observation.id} <span>ID #{observation.doctorId}</span>
+                                                                                    </a>
+                                                                                </h2>
+                                                                            </td>
+                                                                            <td>
+                                                                                <div className="table-action">
+                                                                                    <a href="#edit_medical_form" className="btn btn-sm bg-info-light me-2" data-bs-toggle="modal">
+                                                                                        <i className="fas fa-edit"></i> Edit
+                                                                                    </a>
+                                                                                    <button className="btn btn-sm bg-danger-light" onClick={() => deleteObservation(observation.id)}>
+                                                                                        <i className="fas fa-trash-alt"></i> Delete
+                                                                                    </button>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    ))}
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="tab-pane fade" id="pat_prescriptions">
+                                                <div>
+                                                    <div className="card">
+                                                        <div className="card-header">
+                                                            <h4 className="card-title mb-0">Edit Prescription</h4>
+                                                        </div>
+                                                        <div className="card-body">
+                                                            <div className="row">
+                                                                <div className="col-sm-6">
+                                                                    <div className="biller-info">
+                                                                        <h4 className="d-block">Dr. {doctorInfo.userId?.name}</h4>
+                                                                        <span className="d-block text-sm text-muted">
+                                                                        {doctorInfo?.specialization} 
+                                                                        </span>
+                                                                        <span className="d-block text-sm text-muted">
+                                                                        {doctorInfo?.city} ,  {doctorInfo?.contry}
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="col-sm-6 text-sm-end">
+                                                                    <div className="billing-info">
+                                                                        <h4 className="d-block">{new Date().toLocaleDateString('en-US')}</h4>
+                                                                        {/* <span className="d-block text-muted">#INV0001</span> */}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="add-more-item text-end">
+                                                                <a onClick={addPrescription} className="add-prescription">
+                                                                    <i className="fa fa-plus-circle" /> Add More
+                                                                </a>
+                                                            </div>
+                                                            <div className="card card-table">
+                                                                <div className="card-body">
+                                                                    <div className="table-responsive">
+                                                                        <table className="table table-hover table-center add-table-prescription">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th className="table-head-name">Name</th>
+                                                                                    <th>Quantity</th>
+                                                                                    <th className="table-head-days">Days</th>
+                                                                                    <th>Time</th>
+                                                                                    <th className="custom-class" />
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                {prescriptions.map((prescription, index) => (
+                                                                                    <tr key={index}>
+                                                                                        <td>
+                                                                                            <input
+                                                                                                className="form-control"
+                                                                                                name="name"
+                                                                                                value={prescription.name}
+                                                                                                onChange={(event) => handleInputChange(index, event)}
+                                                                                                type="text"
+                                                                                            />
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input
+                                                                                                className="form-control"
+                                                                                                name="quantity"
+                                                                                                value={prescription.quantity}
+                                                                                                onChange={(event) => handleInputChange(index, event)}
+                                                                                                type="text"
+                                                                                            />
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input
+                                                                                                className="form-control"
+                                                                                                name="days"
+                                                                                                value={prescription.days}
+                                                                                                onChange={(event) => handleInputChange(index, event)}
+                                                                                                type="text"
+                                                                                            />
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <div className="form-check form-check-inline">
+                                                                                                <label className="form-check-label">
+                                                                                                    <input
+                                                                                                        className="form-check-input"
+                                                                                                        type="checkbox"
+                                                                                                        checked={prescription.times.includes('Morning')}
+                                                                                                        onChange={() => handleCheckboxChange(index, 'Morning')}
+                                                                                                    /> Morning
+                                                                                                </label>
+                                                                                            </div>
+                                                                                            <div className="form-check form-check-inline">
+                                                                                                <label className="form-check-label">
+                                                                                                    <input
+                                                                                                        className="form-check-input"
+                                                                                                        type="checkbox"
+                                                                                                        checked={prescription.times.includes('Afternoon')}
+                                                                                                        onChange={() => handleCheckboxChange(index, 'Afternoon')}
+                                                                                                    /> Afternoon
+                                                                                                </label>
+                                                                                            </div>
+
+                                                                                            <div className="form-check form-check-inline">
+                                                                                                <label className="form-check-label">
+                                                                                                    <input
+                                                                                                        className="form-check-input"
+                                                                                                        type="checkbox"
+                                                                                                        checked={prescription.times.includes('Night')}
+                                                                                                        onChange={() => handleCheckboxChange(index, 'Night')}
+                                                                                                    /> Night
+                                                                                                </label>
+                                                                                            </div>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <button onClick={() => removePrescription(index)} className="btn bg-danger-light trash">
+                                                                                                <i className="far fa-trash-alt" />
+                                                                                            </button>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                ))}
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="row">
+                                                                <div className="col-md-12 text-end">
+                                                                    <div className="signature-wrap" onClick={handleSignatureClick}>
+                                                                        <div className="signature" style={{ fontWeight: isSignatureClicked ? 'bold' : 'normal', color: isSignatureClicked ? 'green' : 'black' }}>
+                                                                            {isSignatureClicked ? <i className="fas fa-check-circle fa-2x"></i> : 'Click here to sign'}
+                                                                        </div>
+                                                                        <div className="sign-name">
+                                                                            <p className="mb-0">( Dr. Darren Elder )</p>
+                                                                            <span className="text-muted">Signature</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                            </div>
+                                                            <div className="row">
+                                                                <div className="col-md-12">
+                                                                    <div className="submit-section">
+                                                                        <button
+                                                                            type="submit"
+                                                                            className="btn btn-primary submit-btn"
+                                                                        >
+                                                                            Save
+                                                                        </button>
+                                                                        <button
+                                                                            type="reset"
+                                                                            className="btn btn-secondary submit-btn"
+                                                                        >
+                                                                            Clear
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="pat_medical_records" className="tab-pane fade">
+                                                <div className="card card-table mb-0">
+                                                    <div className="card-body">
+                                                        <div className="table-responsive">
+                                                            <table className="table table-hover table-center mb-0">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>ID</th>
+                                                                        <th>Date </th>
+                                                                        <th>Description</th>
+                                                                        <th>Attachment</th>
+                                                                        <th>Created</th>
+                                                                        <th>Action</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <a href="javascript:void(0);">#MR-0010</a>
+                                                                        </td>
+                                                                        <td>14 Nov 2023</td>
+                                                                        <td>Dental Filling</td>
+                                                                        <td>
+                                                                            <a href="#">dental-test.pdf</a>
+                                                                        </td>
+                                                                        <td>
+                                                                            <h2 className="table-avatar">
+                                                                                <a
+                                                                                    href="doctor-profile.html"
+                                                                                    className="avatar avatar-sm me-2"
+                                                                                >
+                                                                                    <img
+                                                                                        className="avatar-img rounded-circle"
+                                                                                        src="assets/img/doctors/doctor-thumb-01.jpg"
+                                                                                        alt="User Image"
+                                                                                    />
+                                                                                </a>
+                                                                                <a href="doctor-profile.html">
+                                                                                    Dr. Ruby Perrin <span>Dental</span>
+                                                                                </a>
+                                                                            </h2>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="table-action">
+                                                                                <a
+                                                                                    href="javascript:void(0);"
+                                                                                    className="btn btn-sm bg-info-light"
+                                                                                >
+                                                                                    <i className="far fa-eye" /> View
+                                                                                </a>
+                                                                                <a
+                                                                                    href="javascript:void(0);"
+                                                                                    className="btn btn-sm bg-primary-light"
+                                                                                >
+                                                                                    <i className="fas fa-print" /> Print
+                                                                                </a>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <a href="javascript:void(0);">#MR-0009</a>
+                                                                        </td>
+                                                                        <td>13 Nov 2023</td>
+                                                                        <td>Teeth Cleaning</td>
+                                                                        <td>
+                                                                            <a href="#">dental-test.pdf</a>
+                                                                        </td>
+                                                                        <td>
+                                                                            <h2 className="table-avatar">
+                                                                                <a
+                                                                                    href="doctor-profile.html"
+                                                                                    className="avatar avatar-sm me-2"
+                                                                                >
+                                                                                    <img
+                                                                                        className="avatar-img rounded-circle"
+                                                                                        src="assets/img/doctors/doctor-thumb-02.jpg"
+                                                                                        alt="User Image"
+                                                                                    />
+                                                                                </a>
+                                                                                <a href="doctor-profile.html">
+                                                                                    Dr. Darren Elder <span>Dental</span>
+                                                                                </a>
+                                                                            </h2>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="table-action">
+                                                                                <a
+                                                                                    href="javascript:void(0);"
+                                                                                    className="btn btn-sm bg-info-light"
+                                                                                >
+                                                                                    <i className="far fa-eye" /> View
+                                                                                </a>
+                                                                                <a
+                                                                                    href="javascript:void(0);"
+                                                                                    className="btn btn-sm bg-primary-light"
+                                                                                >
+                                                                                    <i className="fas fa-print" /> Print
+                                                                                </a>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <a href="javascript:void(0);">#MR-0008</a>
+                                                                        </td>
+                                                                        <td>12 Nov 2023</td>
+                                                                        <td>General Checkup</td>
+                                                                        <td>
+                                                                            <a href="#">cardio-test.pdf</a>
+                                                                        </td>
+                                                                        <td>
+                                                                            <h2 className="table-avatar">
+                                                                                <a
+                                                                                    href="doctor-profile.html"
+                                                                                    className="avatar avatar-sm me-2"
+                                                                                >
+                                                                                    <img
+                                                                                        className="avatar-img rounded-circle"
+                                                                                        src="assets/img/doctors/doctor-thumb-03.jpg"
+                                                                                        alt="User Image"
+                                                                                    />
+                                                                                </a>
+                                                                                <a href="doctor-profile.html">
+                                                                                    Dr. Deborah Angel <span>Cardiology</span>
+                                                                                </a>
+                                                                            </h2>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="table-action">
+                                                                                <a
+                                                                                    href="javascript:void(0);"
+                                                                                    className="btn btn-sm bg-info-light"
+                                                                                >
+                                                                                    <i className="far fa-eye" /> View
+                                                                                </a>
+                                                                                <a
+                                                                                    href="javascript:void(0);"
+                                                                                    className="btn btn-sm bg-primary-light"
+                                                                                >
+                                                                                    <i className="fas fa-print" /> Print
+                                                                                </a>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <a href="javascript:void(0);">#MR-0007</a>
+                                                                        </td>
+                                                                        <td>11 Nov 2023</td>
+                                                                        <td>General Test</td>
+                                                                        <td>
+                                                                            <a href="#">general-test.pdf</a>
+                                                                        </td>
+                                                                        <td>
+                                                                            <h2 className="table-avatar">
+                                                                                <a
+                                                                                    href="doctor-profile.html"
+                                                                                    className="avatar avatar-sm me-2"
+                                                                                >
+                                                                                    <img
+                                                                                        className="avatar-img rounded-circle"
+                                                                                        src="assets/img/doctors/doctor-thumb-04.jpg"
+                                                                                        alt="User Image"
+                                                                                    />
+                                                                                </a>
+                                                                                <a href="doctor-profile.html">
+                                                                                    Dr. Sofia Brient <span>Urology</span>
+                                                                                </a>
+                                                                            </h2>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="table-action">
+                                                                                <a
+                                                                                    href="javascript:void(0);"
+                                                                                    className="btn btn-sm bg-info-light"
+                                                                                >
+                                                                                    <i className="far fa-eye" /> View
+                                                                                </a>
+                                                                                <a
+                                                                                    href="javascript:void(0);"
+                                                                                    className="btn btn-sm bg-primary-light"
+                                                                                >
+                                                                                    <i className="fas fa-print" /> Print
+                                                                                </a>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <a href="javascript:void(0);">#MR-0006</a>
+                                                                        </td>
+                                                                        <td>10 Nov 2023</td>
+                                                                        <td>Eye Test</td>
+                                                                        <td>
+                                                                            <a href="#">eye-test.pdf</a>
+                                                                        </td>
+                                                                        <td>
+                                                                            <h2 className="table-avatar">
+                                                                                <a
+                                                                                    href="doctor-profile.html"
+                                                                                    className="avatar avatar-sm me-2"
+                                                                                >
+                                                                                    <img
+                                                                                        className="avatar-img rounded-circle"
+                                                                                        src="assets/img/doctors/doctor-thumb-05.jpg"
+                                                                                        alt="User Image"
+                                                                                    />
+                                                                                </a>
+                                                                                <a href="doctor-profile.html">
+                                                                                    Dr. Marvin Campbell{" "}
+                                                                                    <span>Ophthalmology</span>
+                                                                                </a>
+                                                                            </h2>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="table-action">
+                                                                                <a
+                                                                                    href="javascript:void(0);"
+                                                                                    className="btn btn-sm bg-info-light"
+                                                                                >
+                                                                                    <i className="far fa-eye" /> View
+                                                                                </a>
+                                                                                <a
+                                                                                    href="javascript:void(0);"
+                                                                                    className="btn btn-sm bg-primary-light"
+                                                                                >
+                                                                                    <i className="fas fa-print" /> Print
+                                                                                </a>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <a href="javascript:void(0);">#MR-0005</a>
+                                                                        </td>
+                                                                        <td>9 Nov 2023</td>
+                                                                        <td>Leg Pain</td>
+                                                                        <td>
+                                                                            <a href="#">ortho-test.pdf</a>
+                                                                        </td>
+                                                                        <td>
+                                                                            <h2 className="table-avatar">
+                                                                                <a
+                                                                                    href="doctor-profile.html"
+                                                                                    className="avatar avatar-sm me-2"
+                                                                                >
+                                                                                    <img
+                                                                                        className="avatar-img rounded-circle"
+                                                                                        src="assets/img/doctors/doctor-thumb-06.jpg"
+                                                                                        alt="User Image"
+                                                                                    />
+                                                                                </a>
+                                                                                <a href="doctor-profile.html">
+                                                                                    Dr. Katharine Berthold{" "}
+                                                                                    <span>Orthopaedics</span>
+                                                                                </a>
+                                                                            </h2>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="table-action">
+                                                                                <a
+                                                                                    href="javascript:void(0);"
+                                                                                    className="btn btn-sm bg-info-light"
+                                                                                >
+                                                                                    <i className="far fa-eye" /> View
+                                                                                </a>
+                                                                                <a
+                                                                                    href="javascript:void(0);"
+                                                                                    className="btn btn-sm bg-primary-light"
+                                                                                >
+                                                                                    <i className="fas fa-print" /> Print
+                                                                                </a>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <a href="javascript:void(0);">#MR-0004</a>
+                                                                        </td>
+                                                                        <td>8 Nov 2023</td>
+                                                                        <td>Head pain</td>
+                                                                        <td>
+                                                                            <a href="#">neuro-test.pdf</a>
+                                                                        </td>
+                                                                        <td>
+                                                                            <h2 className="table-avatar">
+                                                                                <a
+                                                                                    href="doctor-profile.html"
+                                                                                    className="avatar avatar-sm me-2"
+                                                                                >
+                                                                                    <img
+                                                                                        className="avatar-img rounded-circle"
+                                                                                        src="assets/img/doctors/doctor-thumb-07.jpg"
+                                                                                        alt="User Image"
+                                                                                    />
+                                                                                </a>
+                                                                                <a href="doctor-profile.html">
+                                                                                    Dr. Linda Tobin <span>Neurology</span>
+                                                                                </a>
+                                                                            </h2>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="table-action">
+                                                                                <a
+                                                                                    href="javascript:void(0);"
+                                                                                    className="btn btn-sm bg-info-light"
+                                                                                >
+                                                                                    <i className="far fa-eye" /> View
+                                                                                </a>
+                                                                                <a
+                                                                                    href="javascript:void(0);"
+                                                                                    className="btn btn-sm bg-primary-light"
+                                                                                >
+                                                                                    <i className="fas fa-print" /> Print
+                                                                                </a>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <a href="javascript:void(0);">#MR-0003</a>
+                                                                        </td>
+                                                                        <td>7 Nov 2023</td>
+                                                                        <td>Skin Alergy</td>
+                                                                        <td>
+                                                                            <a href="#">alergy-test.pdf</a>
+                                                                        </td>
+                                                                        <td>
+                                                                            <h2 className="table-avatar">
+                                                                                <a
+                                                                                    href="doctor-profile.html"
+                                                                                    className="avatar avatar-sm me-2"
+                                                                                >
+                                                                                    <img
+                                                                                        className="avatar-img rounded-circle"
+                                                                                        src="assets/img/doctors/doctor-thumb-08.jpg"
+                                                                                        alt="User Image"
+                                                                                    />
+                                                                                </a>
+                                                                                <a href="doctor-profile.html">
+                                                                                    Dr. Paul Richard <span>Dermatology</span>
+                                                                                </a>
+                                                                            </h2>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="table-action">
+                                                                                <a
+                                                                                    href="javascript:void(0);"
+                                                                                    className="btn btn-sm bg-info-light"
+                                                                                >
+                                                                                    <i className="far fa-eye" /> View
+                                                                                </a>
+                                                                                <a
+                                                                                    href="javascript:void(0);"
+                                                                                    className="btn btn-sm bg-primary-light"
+                                                                                >
+                                                                                    <i className="fas fa-print" /> Print
+                                                                                </a>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <a href="javascript:void(0);">#MR-0002</a>
+                                                                        </td>
+                                                                        <td>6 Nov 2023</td>
+                                                                        <td>Dental Removing</td>
+                                                                        <td>
+                                                                            <a href="#">dental-test.pdf</a>
+                                                                        </td>
+                                                                        <td>
+                                                                            <h2 className="table-avatar">
+                                                                                <a
+                                                                                    href="doctor-profile.html"
+                                                                                    className="avatar avatar-sm me-2"
+                                                                                >
+                                                                                    <img
+                                                                                        className="avatar-img rounded-circle"
+                                                                                        src="assets/img/doctors/doctor-thumb-09.jpg"
+                                                                                        alt="User Image"
+                                                                                    />
+                                                                                </a>
+                                                                                <a href="doctor-profile.html">
+                                                                                    Dr. John Gibbs <span>Dental</span>
+                                                                                </a>
+                                                                            </h2>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="table-action">
+                                                                                <a
+                                                                                    href="javascript:void(0);"
+                                                                                    className="btn btn-sm bg-info-light"
+                                                                                >
+                                                                                    <i className="far fa-eye" /> View
+                                                                                </a>
+                                                                                <a
+                                                                                    href="javascript:void(0);"
+                                                                                    className="btn btn-sm bg-primary-light"
+                                                                                >
+                                                                                    <i className="fas fa-print" /> Print
+                                                                                </a>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <a href="javascript:void(0);">#MR-0001</a>
+                                                                        </td>
+                                                                        <td>5 Nov 2023</td>
+                                                                        <td>Dental Filling</td>
+                                                                        <td>
+                                                                            <a href="#">dental-test.pdf</a>
+                                                                        </td>
+                                                                        <td>
+                                                                            <h2 className="table-avatar">
+                                                                                <a
+                                                                                    href="doctor-profile.html"
+                                                                                    className="avatar avatar-sm me-2"
+                                                                                >
+                                                                                    <img
+                                                                                        className="avatar-img rounded-circle"
+                                                                                        src="assets/img/doctors/doctor-thumb-10.jpg"
+                                                                                        alt="User Image"
+                                                                                    />
+                                                                                </a>
+                                                                                <a href="doctor-profile.html">
+                                                                                    Dr. Olga Barlow <span>Dental</span>
+                                                                                </a>
+                                                                            </h2>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div className="table-action">
+                                                                                <a
+                                                                                    href="javascript:void(0);"
+                                                                                    className="btn btn-sm bg-info-light"
+                                                                                >
+                                                                                    <i className="far fa-eye" /> View
+                                                                                </a>
+                                                                                <a
+                                                                                    href="javascript:void(0);"
+                                                                                    className="btn btn-sm bg-primary-light"
+                                                                                >
+                                                                                    <i className="fas fa-print" /> Print
+                                                                                </a>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="pat_reports" className="tab-pane fade">
+                                                <div className="card card-table mb-0">
+                                                    <div className="card-body">
+                                                        <div className="table-responsive">
+                                                            <table className="table table-hover table-center mb-0">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Index</th>
+                                                                        <th>Report</th>
+                                                                        <th>Date</th>
+                                                                        <th>View</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <a href="invoice-view.html">#REP-0010</a>
+                                                                        </td>
+                                                                        <td>
+                                                                            <h2 className="table-avatar">
+
+                                                                                <a href="doctor-profile.html">
+                                                                                    Report <span>Dental</span>
+                                                                                </a>
+                                                                            </h2>
+                                                                        </td>
+
+                                                                        <td>14 Nov 2023</td>
+                                                                        <td>
+                                                                            <div className="table-action">
+                                                                                <a
+                                                                                    href="invoice-view.html"
+                                                                                    className="btn btn-sm bg-info-light"
+                                                                                >
+                                                                                    <i className="far fa-eye" /> View
+                                                                                </a>
+
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <a href="invoice-view.html">#REP-0010</a>
+                                                                        </td>
+                                                                        <td>
+                                                                            <h2 className="table-avatar">
+
+                                                                                <a href="doctor-profile.html">
+                                                                                    Report <span>Dental</span>
+                                                                                </a>
+                                                                            </h2>
+                                                                        </td>
+
+                                                                        <td>14 Nov 2023</td>
+                                                                        <td>
+                                                                            <div className="table-action">
+                                                                                <a
+                                                                                    href="invoice-view.html"
+                                                                                    className="btn btn-sm bg-info-light"
+                                                                                >
+                                                                                    <i className="far fa-eye" /> View
+                                                                                </a>
+
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <a href="invoice-view.html">#REP-0010</a>
+                                                                        </td>
+                                                                        <td>
+                                                                            <h2 className="table-avatar">
+
+                                                                                <a href="doctor-profile.html">
+                                                                                    Report <span>Dental</span>
+                                                                                </a>
+                                                                            </h2>
+                                                                        </td>
+
+                                                                        <td>14 Nov 2023</td>
+                                                                        <td>
+                                                                            <div className="table-action">
+                                                                                <a
+                                                                                    href="invoice-view.html"
+                                                                                    className="btn btn-sm bg-info-light"
+                                                                                >
+                                                                                    <i className="far fa-eye" /> View
+                                                                                </a>
+
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <a href="invoice-view.html">#REP-0010</a>
+                                                                        </td>
+                                                                        <td>
+                                                                            <h2 className="table-avatar">
+
+                                                                                <a href="doctor-profile.html">
+                                                                                    Report <span>Dental</span>
+                                                                                </a>
+                                                                            </h2>
+                                                                        </td>
+
+                                                                        <td>14 Nov 2023</td>
+                                                                        <td>
+                                                                            <div className="table-action">
+                                                                                <a
+                                                                                    href="invoice-view.html"
+                                                                                    className="btn btn-sm bg-info-light"
+                                                                                >
+                                                                                    <i className="far fa-eye" /> View
+                                                                                </a>
+
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <a href="invoice-view.html">#REP-0010</a>
+                                                                        </td>
+                                                                        <td>
+                                                                            <h2 className="table-avatar">
+
+                                                                                <a href="doctor-profile.html">
+                                                                                    Report <span>Dental</span>
+                                                                                </a>
+                                                                            </h2>
+                                                                        </td>
+
+                                                                        <td>14 Nov 2023</td>
+                                                                        <td>
+                                                                            <div className="table-action">
+                                                                                <a
+                                                                                    href="invoice-view.html"
+                                                                                    className="btn btn-sm bg-info-light"
+                                                                                >
+                                                                                    <i className="far fa-eye" /> View
+                                                                                </a>
+
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="pat_billing" className="tab-pane fade">
+                                                <div className="card card-table mb-0">
+                                                    <div className="card-body">
+                                                        <div className="table-responsive">
+                                                            <table className="table table-hover table-center mb-0">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Index</th>
+                                                                        <th>Physician Name</th>
+                                                                        <th>Date</th>
+                                                                        <th>View</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <a href="invoice-view.html">#REP-0010</a>
+                                                                        </td>
+                                                                        <td>
+                                                                            <h2 className="table-avatar">
+
+                                                                                <a href="doctor-profile.html">
+                                                                                Michal Chandalr <span>CheckUp</span>
+                                                                                </a>
+                                                                            </h2>
+                                                                        </td>
+
+                                                                        <td>24/03/2024</td>
+                                                                        <td>
+                                                                            <div className="table-action">
+                                                                                <a
+                                                                                    href="invoice-view.html"
+                                                                                    className="btn btn-sm bg-info-light"
+                                                                                >
+                                                                                    <i className="far fa-eye" /> View
+                                                                                </a>
+
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <a href="invoice-view.html">#REP-0010</a>
+                                                                        </td>
+                                                                        <td>
+                                                                            <h2 className="table-avatar">
+
+                                                                                <a href="doctor-profile.html">
+                                                                                Michal Perry <span>CheckUp</span>
+                                                                                </a>
+                                                                            </h2>
+                                                                        </td>
+
+                                                                        <td>24/03/2024</td>
+                                                                        <td>
+                                                                            <div className="table-action">
+                                                                                <a
+                                                                                    href="invoice-view.html"
+                                                                                    className="btn btn-sm bg-info-light"
+                                                                                >
+                                                                                    <i className="far fa-eye" /> View
+                                                                                </a>
+
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <a href="invoice-view.html">#REP-0010</a>
+                                                                        </td>
+                                                                        <td>
+                                                                            <h2 className="table-avatar">
+
+                                                                                <a href="doctor-profile.html">
+                                                                                Eliza Stoy <span>CheckUp</span>
+                                                                                </a>
+                                                                            </h2>
+                                                                        </td>
+
+                                                                        <td>24/03/2024</td>
+                                                                        <td>
+                                                                            <div className="table-action">
+                                                                                <a
+                                                                                    href="invoice-view.html"
+                                                                                    className="btn btn-sm bg-info-light"
+                                                                                >
+                                                                                    <i className="far fa-eye" /> View
+                                                                                </a>
+
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    
+                                                                    
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <button className="text-white bg-blue-500 shadow-md p-1 px-4 sm:p-1 sm:px-4 sm:text-sm    rounded-lg  mt-1"> Refer   </button>
-                  </div>
-                  <div className=" border-none  ">
-
-                    <div className=" flex gap-4 mb-5 flex-wrap bg-white shadow-md rounded-sm p-2 text-gray-500">
-                      {/* <span className={`text-center py-2  px-2 sm:py-2.5 sm:px-4 hover:cursor-pointer ${observation === true ? 'bg-pink-600 text-white rounded-full shadow-md shadow-pink-300'  : '' `} onClick={handlePrescription}>
-                        Prescriptions</span> */}
-                      {/* <span className={`py-2 px-2 sm:py-2.5 sm:px-4 cursor-pointer ${demographics === true ? 'bg-blue-600 text-white rounded-full shadow-md shadow-blue-600/50 ' : 'bg-white'}`} onClick={handleDemographics}>
-                        Demography
-                      </span> */}
-                      <span className={`py-2 px-2 sm:py-2.5 sm:px-4 cursor-pointer ${prescription === true ? 'bg-blue-600 text-white rounded-full shadow-md shadow-blue-600/50 ' : 'bg-white'}`} onClick={handlePrescription}>
-                        Prescriptions
-                      </span>
-                      {/* <span className="bg-gray-50 text-center  py-1  px-2 sm:py-2 sm:px-4 hover:cursor-pointer" onClick={handleObservation} >
-                        Observation Notes
-                      </span> */}
-                      <span className={`py-2 px-2 sm:py-2.5 sm:px-4 cursor-pointer ${observation === true ? 'bg-blue-600 text-white rounded-full shadow-md shadow-blue-600/50' : 'bg-white'}`} onClick={handleObservation}>
-                        Observation
-                      </span>
-
-                      {/* <span className="bg-gray-50 text-center  py-1  px-1 sm:py-2 sm:px-4 hover:cursor-pointer " onClick={handleReports}>
-                        Reports
-                      </span> */}
-                      <span className={`py-2 px-2 sm:py-2.5 sm:px-4 cursor-pointer ${reports === true ? 'bg-blue-600 text-white rounded-full shadow-md shadow-blue-600/50' : 'bg-white'}`} onClick={handleReports}>
-                        Reports
-                      </span>
-
-                      {/* <span className="bg-gray-50 text-center  py-1  px-1 sm:py-2 sm:px-4 hover:cursor-pointer " onClick={handleHistory}>
-                        Medical History
-                      </span> */}
-                      {/* <span className={`py-2 px-2 sm:py-2.5 sm:px-4 cursor-pointer ${dishistory === true ? 'bg-blue-600 text-white rounded-full shadow-md shadow-blue-600/50' : 'bg-gray-50'}`} onClick={handleHistory}>
-                        History
-                      </span> */}
-                      <span className={`py-2 px-2 sm:py-2.5 sm:px-4 cursor-pointer ${symptoms === true ? 'bg-blue-600 text-white rounded-full shadow-md shadow-blue-600/50' : 'bg-gray-50'}`} onClick={handleSympDisp}>
-                        Symptoms
-                      </span>
-                      <span className={`py-2 px-2 sm:py-2.5 sm:px-4 cursor-pointer ${encounters === true ? 'bg-blue-600 text-white rounded-full shadow-md shadow-blue-600/50' : 'bg-gray-50'}`} onClick={handleEncounters}>
-                        Encounters
-                      </span>
-                      <span className={`py-2 px-2 sm:py-2.5 sm:px-4 cursor-pointer ${allergies === true ? 'bg-blue-600 text-white rounded-full shadow-md shadow-blue-600/50' : 'bg-gray-50'}`} onClick={handleAllergies}>
-                        Allergies
-                      </span>
-                      <span className={`py-2 px-2 sm:py-2.5 sm:px-4 cursor-pointer ${vitals === true ? 'bg-blue-600 text-white rounded-full shadow-md shadow-blue-600/50' : 'bg-gray-50'}`} onClick={handleVitals}>
-                        Vitals
-                      </span>
-                      <span className={`py-2 px-2 sm:py-2.5 sm:px-4 cursor-pointer ${medhistory === true ? 'bg-blue-600 text-white rounded-full shadow-md shadow-blue-600/50' : 'bg-gray-50'}`} onClick={handleMedical}>
-                        Medical History
-                      </span>
-
-                    </div>
-
-
-                    <div>
-
-
-                      {prescription &&
-                        <>
-                          {/* <div className="overflow-auto  shadow-xl">
-                            <table className="w-full overflow-auto text-center border-none  ">
-                              <thead>
-                                <tr className=" border-b-2 text-gray-600 ">
-                                  <th className="b  py-2   px-4">
-                                    Medication
-                                  </th>
-                                  <th className=" py-2   px-4">
-                                    Category
-                                  </th>
-                                  <th className=" py-2   px-4">
-                                    Dose Schedule
-                                  </th>
-                                  <th className=" py-2   px-4">
-                                    Suggested Lab
-                                  </th>
-                                  <th>
-                                    Next Review
-                                  </th>
-                                  <th className="bg-gray-50 py-2   px-4">
-                                    Action
-                                  </th>
-                                </tr>
-                                <tr className="border-none ">
-                                  <td className="py-4 px-4 mt-2">Medicine 1</td>
-                                  <td className=""><span className="border py-0.5 px-3  rounded-full border-blue-600 text-blue-600" style={{ fontSize: "15px" }}>Tablet</span></td>
-                                  <td className="">Morning</td>
-                                  <td className="" rowSpan={3}>Sonography</td>
-                                  <td className=" " rowSpan={3}>24/02/2002 </td>
-                                  <td className="flex gap-1  mt-2 justify-center">
-                                    
-                                    <span className="gap-2 flex">
-                                      <button className=""><FaRegEdit className="text-2xl text-purple-700" /></button>
-                                      <button className=""><RiDeleteBinLine className="text-2xl text-red-600" /></button>
-                                    </span>
-                                  </td>
-                                </tr>
-
-                                <tr className=" ">
-                                  <td className="py-4 px-4   ">Medicine 2</td>
-                                  <td className=""><span className="border py-0.5 px-3.5  rounded-full border-green-600 text-green-600" style={{ fontSize: "15px" }}>Syruf</span></td>
-                                  <td className=" ">Afternoon</td>
-                                  <td className="flex gap-1  mt-2 justify-center">
-                                    
-                                    <span className="gap-2 flex">
-                                      <button className=""><FaRegEdit className="text-2xl text-purple-700" /></button>
-                                      <button className=""><RiDeleteBinLine className="text-2xl text-red-600" /></button>
-                                    </span>
-                                  </td>
-                                </tr>
-                                <tr >
-                                  <td className="py-4 px-4 mt-2  ">Medicine 3</td>
-                                  <td className=""><span className="border py-0.5 px-3  rounded-full border-blue-600 text-blue-600" style={{ fontSize: "15px" }}>Tablet</span></td>
-                                  <td className=" ">Twice a day</td>
-                                  <td className="flex gap-1  mt-2 justify-center">
-                                   
-                                    <span className="gap-2 flex">
-                                      <button className=""><FaRegEdit className="text-2xl text-purple-700" /></button>
-                                      <button className=""><RiDeleteBinLine className="text-2xl text-red-600" /></button>
-                                    </span>
-                                  </td>
-                                </tr>
-                              </thead>
-                            </table>
-                          </div> */}
-                          <div className="overflow-auto  shadow-xl">
-                            <span className="mb-5 ml-2 font-bold    border-blue-500 border-l-blue-500 border-l-4 shadow-sm p-2 text-blue-600 rounded-sm">Monday 04/11/2024</span>
-                            <table className="w-full mt-6 overflow-auto text-center border-none  ">
-                              <thead>
-                                <tr className=" border-b-2 text-gray-600 ">
-                                  <th className="b  py-2   px-4">
-                                    Index
-                                  </th>
-                                  <th className=" py-2   px-4">
-                                    Prescriptions
-                                  </th>
-                                  
-                                 
-                                  <th className=" py-2   px-4">
-                                    View
-                                  </th>
-                                  <th className=" py-2   px-4">
-                                    Send
-                                  </th>
-
-                                </tr>
-                                <tr className="border-none ">
-                                  <td className="py-4 px-4 mt-2">1</td>
-                                  <td className=""><span className=" py-0.5 px-3  rounded-full  " style={{ fontSize: "15px" }}>Prescription 1</span></td>
-                                 
-                                  
-                                  <td className=" "><button className="" onClick={handlePopUpPrescription}><MdOutlineGridView className="text-blue-600 text-3xl" /></button></td>
-
-                                  <td className=" "><button className=""><FiSend className="text-green-600 text-2xl" /></button></td>
-
-
-                                </tr>
-
-
-
-                              </thead>
-                            </table>
-                          </div>
-                        </>
-                      }
-                      {observation &&
-                        <>
-                          <table className="w-full text-center   shadow-xl">
-                            <thead >
-                              <tr className="text-gray-600 border-b-2">
-                                <th className="bg-gray-50  py-3   px-4">
-                                  Observation Notes
-                                </th>
-                                <th className="bg-gray-50 py-3   px-4">
-                                  Edit
-                                </th>
-                              </tr>
-                              {updatedObservations.map((observation, index) => (
-                                <tr className=" " key={index}>
-                                  <td className="text-sm mt-2 p-4  ">
-                                    <input
-                                      type="text"
-                                      name="name"
-                                      value={observation}
-                                      onChange={(e) => handleInputChange(e, index)}
-                                      disabled={!isEditing}
-                                      className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
-                                    />
-                                  </td>
-                                  <td className="flex gap-1 border-l-2 mt-2 justify-center">
-                                    {/* <button className="sm:text-white font-bold text-green-500 sm:bg-green-500  p-1 px-2 sm:p-1 sm:px-3 sm:text-sm rounded-lg">Edit</button>
-                                  <button className="sm:text-white font-bold text-red-500 sm:bg-red-500 p-1 px-2 sm:p-1 sm:px-3 sm:text-sm rounded-lg">Delete</button> */}
-                                    <span className="gap-2 flex">
-                                      <button className=""><FaRegEdit className="text-2xl text-purple-700" onClick={handleEditClick} /></button>
-                                      {/* <button className=""><RiDeleteBinLine className="text-2xl text-red-600" /></button> */}
-                                    </span>
-                                  </td>
-                                </tr>
-                              ))}
-                              <div className="flex justify-between p-4">
-                              <button className="flex  p-2 font-bold" onClick={handleAddObservation}><MdAddCircleOutline className="text-2xl text-red-600 mr-2" />Add Observation</button>
-                              <button className="flex  p-2 font-bold" onClick={handleSaveObservation}><MdOutlineSaveAlt className="text-2xl text-red-600 mr-2" />Save Observation</button>
-                              </div>
-
-
-                            </thead>
-                          </table>
-                          
-
-                        </>
-                      }
-                      {reports &&
-
-                        <>
-                          <table className="w-full text-center shadow-xl ">
-                            <thead>
-                              <tr className="text-gray-600 border-b-2">
-                                <th className="bg-gray-50 py-2   px-4">Index</th>
-                                <th className="bg-gray-50 py-2   px-4">
-                                  Report
-                                </th>
-                                <th className="bg-gray-50 py-2   px-4">
-                                  Date
-                                </th>
-                                <th className="bg-gray-50 py-2   px-4">
-                                  Time
-                                </th>
-                                <th className="bg-gray-50 py-2   px-4">
-                                  View
-                                </th>
-                              </tr>
-                              <tr className="">
-                                <td className="py-4 px-4  ">1</td>
-                                <td className="text-sm mt-2  ">Report 1</td>
-                                <td className="text-sm mt-2  ">24/02/24</td>
-                                <td className="text-sm mt-2  ">10:00 PM</td>
-                                <td className=" "><button className=""><MdOutlineGridView className="text-blue-600 text-3xl" /></button></td>
-                              </tr>
-                              <tr className="" >
-                                <td className="py-4 px-4   ">2</td>
-                                <td className="text-sm mt-2  ">Report 2</td>
-                                <td className="text-sm mt-2  ">24/02/24</td>
-                                <td className="text-sm mt-2  ">10:00 PM</td>
-                                <td className=" "><button className=""><MdOutlineGridView className="text-blue-600 text-3xl" /></button></td>
-                              </tr>
-                              <tr >
-                                <td className="py-4 px-4  ">3</td>
-                                <td className="text-sm mt-2  ">Report 3</td>
-                                <td className="text-sm mt-2  ">24/02/24</td>
-                                <td className="text-sm mt-2  ">10:00 PM</td>
-                                <td className=" "><button className=""><MdOutlineGridView className="text-blue-600 text-3xl" /></button></td>
-                              </tr>
-                            </thead>
-                          </table>
-                         
-                        </>
-                      }
-
-                      {dishistory &&
-                        <>
-                          {/* <div className="mt-5 overflow-auto shadow-xl">
-
-                            <table className="w-full text-center  ">
-                              <thead>
-                                <tr className="text-gray-600 border-b-2">
-                                  <th className="bg-gray-50 py-2   px-4">Doctor Name</th>
-                                  <th className="bg-gray-50 py-2   px-4">
-                                    Appointment Date
-                                  </th>
-                                  <th className="bg-gray-50 py-2   px-4">
-                                    Appointment Time
-                                  </th>
-                                  <th className="bg-gray-50 py-2   px-4">
-                                    View
-                                  </th>
-                                </tr>
-                                <tr className="">
-                                  <td className="py-4 px-4  ">Michal Chandalr</td>
-                                  <td className="text-sm mt-2  ">24/03/2024 </td>
-                                  <td className="text-sm mt-2  ">4:00PM</td>
-                                  
-                                  <td className=" "><button className=""><MdOutlineGridView className="text-blue-600 text-3xl" /></button></td>
-                                </tr>
-                                <tr className="">
-                                  <td className="py-4 px-4  ">Michal Perry</td>
-                                  <td className="text-sm mt-2  ">24/03/2024 </td>
-                                  <td className="text-sm mt-2  ">4:00PM</td>
-                                  <td className=" "><button className=""><MdOutlineGridView className="text-blue-600 text-3xl" /></button></td>
-                                </tr>
-                                <tr >
-                                  <td className="py-4 px-4  ">Eliza Stoy</td>
-                                  <td className="text-sm mt-2  ">24/03/2024 </td>
-                                  <td className="text-sm mt-2  ">4:00PM</td>
-                                  <td className=" "><button className=""><MdOutlineGridView className="text-blue-600 text-3xl" /></button></td>
-                                </tr>
-                              </thead>
-                            </table>
-                          </div> */}
-                        </>
-                      }
-
-                      {symptoms &&
-                        <>
-                          {/* <h1 className="text-center mb-3 font-bold">List Of Symptoms</h1> */}
-                          <div className="shadow-lg mt-10">
-                            <span className="mb-5 font-bold ml-10   border-blue-500 border-l-blue-500 border-l-4 shadow-sm p-2 text-blue-600 rounded-sm">Monday 04/11/2024</span>
-                            <div className="grid md:grid-cols-5 grid-cols-2  gap-2 mt-5 flex-wrap justify-evenly mb-3  p-2">
-                            {selectedPatient.symptoms.map((symptom,index) =>(
-                              <div className="flex flex-col items-center  justify-center">
-                                <div className="border-2 p-6 rounded-md border-blue-300">
-                                  <FaHeadSideCough className="text-3xl mx-auto text-gray-500" />
-                                </div>
-                                <span className="text-center mt-3 text-gray-500">{symptom}</span>
-                              </div>
-                                ))}
-                              {/* <div className="flex flex-col items-center  justify-center">
-                                <div className="border-2 p-6 rounded-md border-blue-300 ">
-                                  <LiaGrinBeamSweatSolid className="text-3xl mx-auto text-gray-500" />
-                                </div>
-                                <span className="text-center mt-3 text-gray-500">Swelling</span>
-                              </div>
-                              <div className="flex flex-col items-center  justify-center">
-                                <div className="border-2 p-6 rounded-md border-blue-300 ">
-                                  <GiStomach className="text-3xl mx-auto text-gray-500" />
-                                </div>
-                                <span className="text-center mt-3 text-gray-500">Acidity</span>
-                              </div>
-                              <div className="flex flex-col items-center justify-center">
-                                <div className="border-2 justify-center p-6 rounded-md border-blue-300 ">
-                                  <FaGlassWater className="text-3xl mx-auto text-gray-500 " />
-                                </div>
-                                <span className="text-center mt-3 text-gray-500">Constipation</span>
-                              </div>
-                              <div className="flex flex-col items-center  justify-center">
-                                <div className="border-2 p-6 rounded-md border-blue-300 ">
-                                  <FaLungs className="text-3xl mx-auto text-gray-500" />
-                                </div>
-                                <span className="text-center mt-3 text-gray-500">Shortness of Breath</span>
-                              </div> */}
-                            </div>
-
-                            {/* <span className="mb-5 font-bold ml-10 mt-2  border-blue-500 border-l-blue-500 border-l-4 shadow-sm p-2 text-blue-600 rounded-sm">Saturday 24/09/2024</span>
-                            <div className="grid md:grid-cols-5 grid-cols-2  gap-2 mt-5 flex-wrap justify-evenly shadow-lg p-5">
-                              <div className="flex flex-col items-center  justify-center">
-                                <div className="border-2 p-6 rounded-md border-blue-300">
-                                  <FaHeadSideCough className="text-3xl mx-auto text-gray-500" />
-                                </div>
-                                <span className="text-center mt-3 text-gray-500">Cough</span>
-                              </div>
-                              <div className="flex flex-col items-center  justify-center">
-                                <div className="border-2 p-6 rounded-md border-blue-300 ">
-                                  <LiaGrinBeamSweatSolid className="text-3xl mx-auto text-gray-500" />
-                                </div>
-                                <span className="text-center mt-3 text-gray-500">Swelling</span>
-                              </div>
-                              <div className="flex flex-col items-center  justify-center">
-                                <div className="border-2 p-6 rounded-md border-blue-300 ">
-                                  <GiStomach className="text-3xl mx-auto text-gray-500" />
-                                </div>
-                                <span className="text-center mt-3 text-gray-500">Acidity</span>
-                              </div>
-                              <div className="flex flex-col items-center justify-center">
-                                <div className="border-2 justify-center p-6 rounded-md border-blue-300 ">
-                                  <FaGlassWater className="text-3xl mx-auto text-gray-500 " />
-                                </div>
-                                <span className="text-center mt-3 text-gray-500">Constipation</span>
-                              </div>
-                              <div className="flex flex-col items-center  justify-center">
-                                <div className="border-2 p-6 rounded-md border-blue-300 ">
-                                  <FaLungs className="text-3xl mx-auto text-gray-500" />
-                                </div>
-                                <span className="text-center mt-3 text-gray-500">Shortness of Breath</span>
-                              </div>
-                            </div> */}
-                          </div>
-
-                        </>
-                      }
-
-                      {encounters &&
-                        <>
-                          <div className="mt-5 overflow-auto shadow-xl">
-
-                            <table className="w-full text-center  ">
-                              <thead>
-                                <tr className="text-gray-600 border-b-2">
-                                  <th className="bg-gray-50 py-2   px-4">
-                                    Date
-                                  </th>
-                                  <th className="bg-gray-50 py-2   px-4">
-                                    Physician Name</th>
-                                  <th className="bg-gray-50 py-2   px-4">
-                                    Treatment
-                                  </th>
-                                  <th className="bg-gray-50 py-2   px-4">
-                                    View
-                                  </th>
-                                </tr>
-                                <tr className="">
-                                  <td className="text-sm mt-2  ">24/03/2024 </td>
-                                  <td className="py-4 px-4  ">Michal Chandalr</td>
-                                  <td className="text-sm mt-2  ">CheckUp</td>
-                                  {/* <td className=" "><button className="sm:text-white font-bold text-blue-500 sm:bg-blue-400 p-1 px-3 rounded-lg">View</button></td> */}
-                                  <td className=" "><button className=""><MdOutlineGridView className="text-blue-600 text-3xl" /></button></td>
-                                </tr>
-                                <tr className="">
-                                  <td className="text-sm mt-2  ">24/03/2024 </td>
-                                  <td className="py-4 px-4  ">Michal Perry</td>
-                                  <td className="text-sm mt-2  ">CheckUp</td>
-                                  <td className=" "><button className=""><MdOutlineGridView className="text-blue-600 text-3xl" /></button></td>
-                                </tr>
-                                <tr >
-                                  <td className="text-sm mt-2  ">24/03/2024 </td>
-                                  <td className="py-4 px-4  ">Eliza Stoy</td>
-                                  <td className="text-sm mt-2  ">CheckUp</td>
-                                  <td className=" "><button className=""><MdOutlineGridView className="text-blue-600 text-3xl" /></button></td>
-                                </tr>
-                              </thead>
-                            </table>
-                          </div>
-                        </>
-                      }
-                      {allergies &&
-                        <>
-                          <div className="grid grid-cols-5 gap-6 shadow-xl p-4">
-                          {selectedPatient.patient.allergies.map((allergy,index)=>(
-                            <div className="border rounded-full p-3 flex gap-2 border-r-8 border-r-blue-500 border-blue-500">
-                              <CiVirus className="mt-1 text-lg text-blue-700" />
-                              <div className="text-blue-400 font-bold">{allergy?.name}</div>
-                              <div className="text-gray-500">{allergy?.type}</div>
-                            </div>
-                          ))}
-                            {/* <div className="border rounded-full p-3 flex gap-2 border-r-8 border-r-blue-500 border-blue-500">
-                              <CiVirus className="mt-1 text-lg text-blue-700" />
-                              <div className="text-blue-400 font-bold">Egg</div>
-                              <div className="text-red-600">High</div>
-                            </div>
-                            <div className="border rounded-full p-3 flex gap-2 border-r-8 border-r-blue-500 border-blue-500">
-                              <CiVirus className="mt-1 text-lg text-blue-700" />
-                              <div className="text-blue-400 font-bold">Fish</div>
-                              <div className="text-green-500">Normal</div>
-                            </div>
-                            <div className="border rounded-full p-3 flex gap-2 border-r-8 border-r-blue-500 border-blue-500">
-                              <CiVirus className="mt-1 text-lg text-blue-700" />
-                              <div className="text-blue-400 font-bold">Dust</div>
-                              <div className="text-gray-500">Moderate</div>
-                            </div>
-                            <div className="border rounded-full p-3 flex gap-2 border-r-8 border-r-blue-500 border-blue-500">
-                              <CiVirus className="mt-1 text-lg text-blue-700" />
-                              <div className="text-blue-400 font-bold">Dust</div>
-                              <div className="text-red-600">High</div>
-                            </div>
-                            <div className="border rounded-full p-3 flex gap-2 border-r-8 border-r-blue-500 border-blue-500">
-                              <CiVirus className="mt-1 text-lg text-blue-700" />
-                              <div className="text-blue-400 font-bold">Dust</div>
-                              <div className="text-red-600">High</div>
-                            </div>
-                            <div className="border rounded-full p-3 flex gap-2 border-r-8 border-r-blue-500 border-blue-500">
-                              <CiVirus className="mt-1 text-lg text-blue-700" />
-                              <div className="text-blue-400 font-bold">Dust</div>
-                              <div className="text-red-600">High</div>
-                            </div> */}
-
-                          </div>
-                        </>
-                      }
-                      {vitals &&
-                        <>
-                          <div className="mt-4 shadow-xl p-2">
-                            <div className=" w-full bg-blue-50 p-1 rounded-md">
-                              <h2 className="font-bold text-blue-700 mt-4 text-center mb-4">Vital Signs</h2>
-                            </div>
-                            <div className=" mt-2 flex justify-evenly ml-2 mt-5 ">
-                            {/* {selectedPatient.vitals.map((vital,index)=>( */}
-                              
-                              <div className="">
-                                <div className=" md:grid-cols-2 space-y-2    font-bold   text-center">
-                                 BloodPressure
-                                </div>
-                                <div className=" md:grid-cols-2 space-y-2    font-bold text-purple-600   text-center">
-                                {selectedPatient.vitals.bloodPressure}
-                                </div>
-                                <div className=" md:grid-cols-2 space-y-2  text-gray-500   text-center">
-                                  Normal (mm/Hg)
-                                </div>
-                              </div>
-                               {/* ))} */}
-                              <div className="">
-                                <div className=" md:grid-cols-2 space-y-2    font-bold   text-center">
-                                  Heart Rate
-                                </div>
-                                <div className=" md:grid-cols-2 space-y-2    font-bold text-teal-500 text-center">
-                                {selectedPatient.vitals.heartRate}
-                                </div>
-                                <div className=" md:grid-cols-2 space-y-2  text-gray-500   text-center">
-                                  Normal (bpm)
-                                </div>
-                              </div>
-                              <div className="">
-                                <div className=" md:grid-cols-2 space-y-2    font-bold   text-center">
-                                Body temperature
-                                </div>
-                                <div className=" md:grid-cols-2 space-y-2    font-bold text-pink-600   text-center">
-                                {selectedPatient.vitals.temparature}
-                                </div>
-                                <div className=" md:grid-cols-2 space-y-2  text-gray-500   text-center">
-                                  High (mg/dl)
-                                </div>
-                              </div>
-                             
-
-                            </div>
-                           
-                            <br />
-                          </div>
-                        </>
-                      }
-                      {medhistory &&
-                        <>
-                          <div className="shadow-xl ">
-                            <table className="w-full text-center   ">
-                              <thead >
-                                <tr className="text-gray-600 border-b-2">
-                                  <th className="bg-gray-50  py-3 border-r-2  ">
-                                    Previous Disease
-                                  </th>
-                                  <th className="bg-gray-50 py-3 border-r-2 px-5">
-                                    Date
-                                  </th>
-                                  <th className="bg-gray-50 py-3.5   px-5">
-                                    View
-                                  </th>
-                                </tr>
-                                {selectedPatient.patient.medicalHistory.map((medhis,index)=>(
-                                <tr className="" key={index}>
-                                  <td className="text-sm mt-2  border-r-2"> {medhis?.diseaseName} </td>
-                                  <td className="py-4 px-4  border-r-2"> {new Date(medhis?.date).toLocaleDateString("en-US")}</td>
-                                  <td className=" "><button className=""><MdOutlineGridView className="text-blue-600 text-3xl" /></button></td>
-
-                                </tr>
-                                ))}
-                                
-
-                                {/* </div> */}
-                                <br />
-
-                              </thead>
-                            </table>
-                          </div>
-                        </>
-                      }
-                    </div>
-                  </div>
-
-                  {/* Previous History */}
-
                 </div>
-              </div>
+                <footer className="footer footer-one">
+                    <div className="footer-top">
+                        <div className="container">
+                            <div className="row">
+                                <div className="col-lg-3 col-md-4">
+                                    <div className="footer-widget footer-about">
+
+                                        <div className="footer-about-content">
+                                            <p>
+                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                                                do eiusmod tempor incididunt ut labore.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-lg-6">
+                                    <div className="row">
+                                        <div className="col-lg-3 col-md-4">
+                                            <div className="footer-widget footer-menu">
+                                                <h2 className="footer-title">For Patients</h2>
+                                                <ul>
+                                                    <li>
+                                                        <a href="search.html">Search for Doctors</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="login.html">Login</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="register.html">Register</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div className="col-lg-3 col-md-4">
+                                            <div className="footer-widget footer-menu">
+                                                <h2 className="footer-title">For Doctors</h2>
+                                                <ul>
+                                                    <li>
+                                                        <a href="appointments.html">Appointments</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="chat.html">Chat</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="login.html">Login</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div className="col-lg-6 col-md-4">
+                                            <div className="footer-widget footer-contact">
+                                                <h2 className="footer-title">Contact Us</h2>
+                                                <div className="footer-contact-info">
+                                                    <div className="footer-address">
+                                                        <p>
+                                                            <i className="feather-map-pin" /> 3556 Beech Street,
+                                                            USA
+                                                        </p>
+                                                    </div>
+                                                    <div className="footer-address">
+                                                        <p>
+                                                            <i className="feather-phone-call" /> +1 315 369 5943
+                                                        </p>
+                                                    </div>
+                                                    <div className="footer-address mb-0">
+                                                        <p>
+                                                            <i className="feather-mail" />{" "}
+                                                            <a
+                                                                href="https://doccure.dreamstechnologies.com/cdn-cgi/l/email-protection"
+                                                                className="__cf_email__"
+                                                                data-cfemail="8aeee5e9e9fff8efcaeff2ebe7fae6efa4e9e5e7"
+                                                            >
+                                                                [email&nbsp;protected]
+                                                            </a>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-lg-3 col-md-7">
+                                    <div className="footer-widget">
+                                        <h2 className="footer-title">Join Our Newsletter</h2>
+                                        <div className="subscribe-form">
+                                            <form action="#">
+                                                <input
+                                                    type="email"
+                                                    className="form-control"
+                                                    placeholder="Enter Email"
+                                                />
+                                                <button type="submit" className="btn">
+                                                    Submit
+                                                </button>
+                                            </form>
+                                        </div>
+                                        <div className="social-icon">
+                                            <ul>
+                                                <li>
+                                                    <a href="javascript:void(0);">
+                                                        <i className="fab fa-facebook" />
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);">
+                                                        <i className="fab fa-instagram" />
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);">
+                                                        <i className="fab fa-twitter" />
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);">
+                                                        <i className="fab fa-linkedin-in" />
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="footer-bottom">
+                        <div className="container">
+                            <div className="copyright">
+                                <div className="row">
+                                    <div className="col-md-6 col-lg-6">
+                                        <div className="copyright-text">
+                                            <p className="mb-0">
+                                                {" "}
+                                                Copyright © 2024{" "}
+                                                <a
+                                                    href="https://twinsisitech.com"
+                                                    target="_blank"
+                                                >
+                                                    TwinsisTech.
+                                                </a>{" "}
+                                                All Rights Reserved
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6 col-lg-6">
+                                        <div className="copyright-menu">
+                                            <ul className="policy-menu">
+                                                <li>
+                                                    <a href="privacy-policy.html">Privacy Policy</a>
+                                                </li>
+                                                <li>
+                                                    <a href="terms-condition.html">Terms and Conditions</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
             </div>
-          </div>
+            <div className="modal fade custom-modal" id="add_medical_records">
+                <div
+                    className="modal-dialog modal-dialog-centered modal-lg"
+                    role="document"
+                >
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h3 className="modal-title">Medical Records</h3>
+                            <button
+                                type="button"
+                                className="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            />
+                        </div>
+                        <form>
+                            <div className="modal-body">
+                                <div className="mb-3">
+                                    <label className="mb-2">Date</label>
+                                    <input
+                                        type="text"
+                                        className="form-control datetimepicker"
+                                        defaultValue="31-10-2023"
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <label className="mb-2">Description ( Optional )</label>
+                                    <textarea className="form-control" defaultValue={""} />
+                                </div>
+                                <div className="mb-3">
+                                    <label className="mb-2">Upload File</label>
+                                    <input type="file" className="form-control" />
+                                </div>
+                                <div className="submit-section text-center">
+                                    <button type="submit" className="btn btn-primary submit-btn">
+                                        Submit
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="btn btn-secondary submit-btn"
+                                        data-bs-dismiss="modal"
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div
+                id="edit_medical_form"
+                className="modal fade custom-modal"
+                tabIndex={-1}
+                role="dialog"
+                style={{ display: "none" }}
+                aria-hidden="true"
+            >
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <form
+                            action="#"
+                            encType="multipart/form-data"
+                            autoComplete="off"
+                            method="post"
+                        >
+                            <div className="modal-header">
+                                <h5 className="modal-title">Add Observation</h5>
+                                <button
+                                    type="button"
+                                    className="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                ></button>
+                            </div>
+                            <div className="modal-body">
+                                <textarea
+                                    name="data"
+                                    className="form-control"
+                                    rows="5"
+                                    placeholder="Enter your data here..."
+                                ></textarea>
+                            </div>
+                            <div className="modal-footer text-center">
+                                <button type="submit" className="btn btn-outline btn-success">
+                                    Submit
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            {/* Popup for Symptoms */}
+            <div className="modal fade custom-modal" id="graph1">
+                <div className="modal-dialog modal-dialog-centered modal-lg">
+                    <div className="modal-content">
+                        <div className="modal-header  text-light">
+                            <h5 className="modal-title">Symptoms List</h5>
+                            <button
+                                type="button"
+                                className="btn-close btn-close-black"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            ></button>
+                        </div>
+                        <div className="modal-body">
+                            <div className="card">
+                                <div className="card-body">
+                                    <h5 className="card-title"><b>Symptoms:</b></h5>
+                        {patient?.symptoms.map((symptom,index) =>(
+                                    <ul key={index} className="list-unstyled">
+                                        <li>{symptom}</li>
+                                        {/* <li>Cold</li>
+                                        <li>Cough</li> */}
+                                        {/* Add more symptoms here */}
+                                    </ul>
+                                        ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/* Popup for allergies */}
+            <div className="modal fade custom-modal" id="graph2">
+                <div className="modal-dialog modal-dialog-centered modal-lg">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title">Allergies List</h5>
+                            <button
+                                type="button"
+                                className="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            ></button>
+                        </div>
+                        <div className="modal-body">
+                            <div className="card border-0">
+                                <div className="card-body">
+                                    <h5 className="card-title"><b>Allergies:</b></h5>
+                                    {patient.patient?.allergies.map((allergy,index) =>(
+                                    <ul key={index} className="list-unstyled">
+                                        <li>{allergy?.name}</li>
+                                        {/* Add more allergies here */}
+                                    </ul>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Medical info */}
+            <div className="modal fade custom-modal" id="graph3">
+                <div className="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Medical Records</h5>
+                            <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            ></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Record ID</th>
+                                            <th>Date</th>
+                                            <th>Type</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {patient.patient.medicalHistory.map((medhis,index)=>(
+                                        <tr>
+                                            <td key={index}>{index+1}</td>
+                                            <td>{new Date(medhis?.date).toLocaleDateString("en-US")}</td>
+                                            <td>{medhis?.diseaseName}</td>
+
+                                        </tr>
+                                    ))}
+                                        {/* <tr>
+                                            <td>002</td>
+                                            <td>2024-05-04</td>
+                                            <td>MRI</td>
+
+                                        </tr>
+                                        <tr>
+                                            <td>003</td>
+                                            <td>2024-05-04</td>
+                                            <td>Ultrasound</td>
+
+                                        </tr>
+                                        <tr>
+                                            <td>004</td>
+                                            <td>2024-05-04</td>
+                                            <td>CT Scan</td>
+
+                                        </tr>
+                                        <tr>
+                                            <td>005</td>
+                                            <td>2024-05-04</td>
+                                            <td>Echocardiogram</td>
+
+                                        </tr> */}
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/* BMI Popup */}
+            <div className="modal fade custom-modal" id="graph4">
+                <div className="modal-dialog modal-dialog-centered modal-lg">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title">BMI Status</h5>
+                            <button
+                                type="button"
+                                className="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            ></button>
+                        </div>
+                        <div className="modal-body">
+                            <div id="weight-status">
+                                <h4 className="text-center">Patient BMI</h4>
+
+                                <div className="d-flex justify-content-center align-items-center mt-3">
+                                    <span className="badge bg-success-light fs-1">{(patient.patient?.weight / patient.patient?.height).toFixed(2)}</span>
+                                </div>
+                                <p className="text-center mt-3">
+                                {(() => {
+            const bmi = (patient.patient?.weight / patient.patient?.height).toFixed(2);
+            if (bmi < 18.5) {
+                return "Underweight: BMI below 18.5";
+            } else if (bmi >= 18.5 && bmi <= 24.9) {
+                return "Healthy weight: BMI 18.5–24.9";
+            } else if (bmi >= 25.0 && bmi <= 29.9) {
+                return "Overweight: BMI 25.0–29.9";
+            } else {
+                return "Obesity: BMI 30.0 and above";
+            }
+        })()}
+                
+                                
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            {/* Mirrored from doccure.dreamstechnologies.com/html/template/patient-profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 16 Apr 2024 16:46:00 GMT */}
         </div>
-      }
-       {/* {popupprescription && <Prescription closeModal={closeModal} />} */}
-      {/* } */}
 
-    </>
-  );
-};
-
-export default Appointment;
-
-
-
+    )
+}

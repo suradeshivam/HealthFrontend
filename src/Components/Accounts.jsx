@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
 
 export default function Accounts() {
@@ -6,6 +6,7 @@ export default function Accounts() {
   const [bankName, setBankName] = useState('Sbi');
   const [upiId, setUpiId] = useState();
   const [upiIdError, setUpiIdError] = useState();
+  const [doctorInfo, setDoctorInfo] = useState("");
 
   const handleUpiIdChange = (e) => {
     const upiIdValue = e.target.value;
@@ -44,6 +45,30 @@ export default function Accounts() {
       setUpiIdError('Invalid UPI ID format');
     }
   };
+
+  const handleLogout = () => {
+    console.log("in here");
+    const userInfo = localStorage.getItem("userInfo");
+    if (userInfo) {
+      localStorage.removeItem("userInfo");
+    }
+    const token = localStorage.getItem("token");
+    if (token) {
+      localStorage.removeItem("token");
+    }
+    const docInfo = localStorage.getItem("docInfo");
+    if (docInfo) {
+      localStorage.removeItem("docInfo");
+    }
+  };
+
+  
+  useEffect (()=>{
+    const t = JSON.parse(localStorage.getItem('docInfo'))
+    if(t){
+    setDoctorInfo(t)
+    }
+  },[])
   
 
   return (
@@ -82,10 +107,13 @@ export default function Accounts() {
                         />
                       </a>
                       <div className="profile-det-info">
-                        <h3>Dr. Darren Elder</h3>
-                        <div className="patient-details">
-                          <h5 className="mb-0">
-                            BDS, MDS - Oral &amp; Maxillofacial Surgery
+                        <h3>Dr. {doctorInfo?.userId?.name}</h3>
+                        <div className="patient-details ">
+                          <h5 className="mb-0 ">
+                          {doctorInfo && doctorInfo?.educationDetails && doctorInfo?.educationDetails.map((edu, index) => (
+                          <p  key={index}>{edu.qualification}</p>
+                          ))}
+                           {/* &amp; {doctorInfo?.specialization} */}
                           </h5>
                         </div>
                       </div>
@@ -137,7 +165,7 @@ export default function Accounts() {
                           </Link>
                         </li>
                         <li>
-                          <Link to="/login">
+                          <Link to="/login" onClick={handleLogout}>
                             <i className="fas fa-sign-out-alt" />
                             <span>Logout</span>
                           </Link>
