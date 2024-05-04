@@ -21,16 +21,13 @@ export default function DoctorProfile() {
   const [postalCode, setPostalCode] = useState("");
   const [specialization, setSpecialization] = useState("");
   const [yearOfExperience, setYearOfExperience] = useState("");
-  const [education, setEducation] = useState([
-    { qualification: "", collegeName: "", yearOfCompletion: "" }
-  ]);
+  const [education, setEducation] = useState([]);
   const [awardsNAchievements, setAwardsNAchievements] = useState([
     { awards: "", year: "" },
   ]);
   const [licence, setLicence] = useState([
     { licenseNumber: "", yearOfIssued: "" },
   ]);
-  const [awards, setAwards] = useState([{ name: "", year: "" }]);
 
   const [licenceNumber, setLicenceNumber] = useState("");
   const [yearLicenceNumber, setYearLicenceNumber] = useState("");
@@ -82,18 +79,6 @@ export default function DoctorProfile() {
   const handleInputChange = (index, event) => {
     const { name, value } = event.target;
     const updatedEducation = [...education];
-<<<<<<< HEAD
-    
-    // Update the specific field of the education object at the given index
-    updatedEducation[index] = {
-      ...updatedEducation[index],
-      [name]: value
-    };
-  
-    // Update the education state with the modified array
-    setEducation(updatedEducation);
-  
-=======
 
     // Update the specific field of the education object at the given index
     updatedEducation[index] = {
@@ -104,7 +89,6 @@ export default function DoctorProfile() {
     // Update the education state with the modified array
     setEducation(updatedEducation);
 
->>>>>>> a8b8fb1dbd97f1bc50ee824c3b8c0a4927b6a28b
     // Update experiences
     const newExperiences = [...experiences];
     if (!newExperiences[index]) {
@@ -112,12 +96,7 @@ export default function DoctorProfile() {
     }
     newExperiences[index][name] = value;
     setExperiences(newExperiences);
-<<<<<<< HEAD
-  
- 
-=======
 
->>>>>>> a8b8fb1dbd97f1bc50ee824c3b8c0a4927b6a28b
     // Update memberships
     const updatedMemberships = [...memberships];
     if (!updatedMemberships[index]) {
@@ -126,39 +105,19 @@ export default function DoctorProfile() {
     updatedMemberships[index][name] = value;
     setMemberships(updatedMemberships);
   };
-  const handleAwardChange = (index, event) => {
-    const { name, value } = event.target;
-       // Update awards
-       const updatedAwards = [...awards];
-       if (!updatedAwards[index]) {
-         updatedAwards[index] = {}; // Initialize if undefined
-       }
-       updatedAwards[index][name] = value;
-       setAwards(updatedAwards);
-     
-  
-  }
-  // console.log(awards)
+
   const handleAddEducation = () => {
     setEducation([
       ...education,
       { qualification: "", collegeName: "", yearOfCompletion: "" },
     ]);
-<<<<<<< HEAD
-  
-=======
 
->>>>>>> a8b8fb1dbd97f1bc50ee824c3b8c0a4927b6a28b
     // Add placeholders to experiences, awards, and memberships
     setExperiences([...experiences, {}]);
     // setAwards([...awards, {}]);
     // setMemberships([...memberships, {}]);
   };
 
-<<<<<<< HEAD
-  const handleAddAward = () => {
-    setAwards([...awards, { name: "", year: "" }]);
-=======
   const handleRemoveEducation = (index) => {
     const updatedEducation = [...education];
     updatedEducation.splice(index, 1);
@@ -176,33 +135,7 @@ export default function DoctorProfile() {
     const updatedMemberships = [...memberships];
     updatedMemberships.splice(index, 1);
     setMemberships(updatedMemberships);
->>>>>>> a8b8fb1dbd97f1bc50ee824c3b8c0a4927b6a28b
   };
-  // console.log(awards)
-  const handleRemoveAward = (index) => {
-    const updatedAwards = awards.filter((award, i) => i !== index);
-    setAwards(updatedAwards);
-  };
-  
-  const handleRemoveEducation = (index) => {
-    const updatedEducation = [...education];
-    updatedEducation.splice(index, 1);
-    setEducation(updatedEducation);
-  
-    // Remove corresponding entries from experiences, awards, and memberships
-    const newExperiences = [...experiences];
-    newExperiences.splice(index, 1);
-    setExperiences(newExperiences);
-  
-    const updatedAwards = [...awards];
-    updatedAwards.splice(index, 1);
-    setAwards(updatedAwards);
-  
-    const updatedMemberships = [...memberships];
-    updatedMemberships.splice(index, 1);
-    setMemberships(updatedMemberships);
-  };
-  
   // State to manage multiple experience entries
   const [experiences, setExperiences] = useState([
     { id: 1, hospitalName: "", from: "", to: "", designation: "" },
@@ -224,9 +157,16 @@ export default function DoctorProfile() {
     setExperiences(newExperiences);
   };
 
- 
+  const [awards, setAwards] = useState([{ name: "", year: "" }]);
 
- 
+  const handleAddAward = () => {
+    setAwards([...awards, { name: "", year: "" }]);
+  };
+
+  const handleRemoveAward = (index) => {
+    const updatedAwards = awards.filter((award, i) => i !== index);
+    setAwards(updatedAwards);
+  };
 
   const [memberships, setMemberships] = useState([{ name: "" }]);
 
@@ -249,18 +189,21 @@ export default function DoctorProfile() {
     const userId = docInfo.userId._id;
 
     setUserName(docInfo.userId?.name || "");
+
     setEmail(docInfo.userId?.email || "");
     setPhone(docInfo.userId?.mobileNumber || "");
     setGender(docInfo?.gender || "");
     setEducation(docInfo?.educationDetails || "");
     setAwardsNAchievements(docInfo?.achievement);
-    setLicence(docInfo?.license);
+    setAwards(docInfo?.achievement);
+    setLicenceNumber(docInfo?.licenseNumber);
+    setYearLicenceNumber(docInfo?.yearOfIssued);
     const dobDate = new Date(docInfo?.dob);
     const day = dobDate.getDate().toString().padStart(2, "0");
     const month = (dobDate.getMonth() + 1).toString().padStart(2, "0");
     const year = dobDate.getFullYear();
     const formattedDate = `${day}-${month}-${year}`;
-    // console.log(formattedDate);
+    console.log(formattedDate);
     // setDOB(result?.dob || '');
     setDOB(formattedDate);
     setFees(docInfo?.fees || "");
@@ -282,29 +225,27 @@ export default function DoctorProfile() {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     const docInfo = JSON.parse(localStorage.getItem("docInfo"));
 
-    licence[0].licenseNumber = licenceNumber;
-    licence[0].yearOfIssued = yearLicenceNumber;
-
     console.log(
-      // docInfo.userId._id,
-      // userName,
-      // yearOfExperience,
-      // fees,
-      // dob,
-      // aboutMe,
-      // specialization,
-      // state,
-      // awards,
-      // licence,
-      // address1,
-      // address2,
-      // city,
-      // postalCode,
-      // country,
-      // education,
-      // clinicName,
-      // clinicAddress,
-      // gender
+      docInfo.userId._id,
+      userName,
+      yearOfExperience,
+      fees,
+      dob,
+      aboutMe,
+      specialization,
+      state,
+      awardsNAchievements,
+      licenceNumber,
+      yearLicenceNumber,
+      address1,
+      address2,
+      city,
+      postalCode,
+      country,
+      education,
+      clinicName,
+      clinicAddress,
+      gender
     );
 
     try {
@@ -313,11 +254,7 @@ export default function DoctorProfile() {
       // Rearrange the parts to form the "YYYY-MM-DD" format
       const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
 
-<<<<<<< HEAD
-
-=======
       console.log(formattedDate);
->>>>>>> a8b8fb1dbd97f1bc50ee824c3b8c0a4927b6a28b
       if (docInfo) {
         console.log("1");
         const updatedDoctor = await axios.put(
@@ -331,12 +268,9 @@ export default function DoctorProfile() {
             about: aboutMe,
             specialization: specialization,
             state: state,
-<<<<<<< HEAD
-            achivement: awards,
-=======
             achievement: awards,
->>>>>>> a8b8fb1dbd97f1bc50ee824c3b8c0a4927b6a28b
-            license: licence,
+            licenseNumber: licenceNumber,
+            yearOfIssued: yearLicenceNumber,
             addressLine1: address1,
             addressLine2: address2,
             city: city,
@@ -373,12 +307,9 @@ export default function DoctorProfile() {
             about: aboutMe,
             specialization: specialization,
             state: state,
-<<<<<<< HEAD
-            achivement: awards,
-=======
             achievement: awards,
->>>>>>> a8b8fb1dbd97f1bc50ee824c3b8c0a4927b6a28b
-            license: licence,
+            licenseNumber: licenceNumber,
+            yearOfIssued: yearLicenceNumber,
             addressLine1: address1,
             addressLine2: address2,
             city: city,
@@ -592,7 +523,7 @@ export default function DoctorProfile() {
                           onChange={(e) => setGender(e.target.value)}
                           value={gender}
                           className="form-select form-control">
-                        
+                          {console.log(gender)}
                           <option>Select</option>
                           <option>Male</option>
                           <option>Female</option>
@@ -942,48 +873,45 @@ export default function DoctorProfile() {
                   </div>
                 </div>
               </div>
-
-              {licence.map((license, index) => (
-                <div className="card">
-                  <div className="card-body">
-                    <h4 className="card-title">Licence </h4>
-                    <div className="registrations-info">
-                      <div className="row reg-cont">
-                        <div className="col-12 col-md-5">
-                          <div className="mb-3">
-                            <label className="mb-2">
-                              Licence number
-                              <span className="text-danger"> *</span>
-                            </label>
-                            <input
-                              type="text"
-                              onChange={(e) => setLicenceNumber(e.target.value)}
-                              value={license?.licenseNumber}
-                              className="form-control"
-                            />
-                          </div>
+              <div className="card">
+                <div className="card-body">
+                  <h4 className="card-title">Licence </h4>
+                  <div className="registrations-info">
+                    <div className="row reg-cont">
+                      <div className="col-12 col-md-5">
+                        <div className="mb-3">
+                          <label className="mb-2">
+                            Licence number
+                            <span className="text-danger"> *</span>
+                          </label>
+                          <input
+                            type="text"
+                            onChange={(e) => setLicenceNumber(e.target.value)}
+                            value={licenceNumber}
+                            className="form-control"
+                          />
                         </div>
-                        <div className="col-12 col-md-5">
-                          <div className="mb-3">
-                            <label className="mb-2">
-                              Year of issue
-                              <span className="text-danger"> *</span>
-                            </label>
-                            <input
-                              type="text"
-                              onChange={(e) =>
-                                setYearLicenceNumber(e.target.value)
-                              }
-                              value={license?.yearOfIssued}
-                              className="form-control"
-                            />
-                          </div>
+                      </div>
+                      <div className="col-12 col-md-5">
+                        <div className="mb-3">
+                          <label className="mb-2">
+                            Year of issue
+                            <span className="text-danger"> *</span>
+                          </label>
+                          <input
+                            type="text"
+                            onChange={(e) =>
+                              setYearLicenceNumber(e.target.value)
+                            }
+                            value={yearLicenceNumber}
+                            className="form-control"
+                          />
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              ))}
+              </div>
               <div className="card">
                 <div className="card-body">
                   <h4 className="card-title">
