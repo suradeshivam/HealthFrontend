@@ -257,7 +257,7 @@ export default function DoctorProfile() {
       if (docInfo) {
         console.log("1");
         const updatedDoctor = await axios.put(
-          `http://localhost:5000/doctor/${docInfo.userId._id}/update`,
+          `https://healthbackend-3xh2.onrender.com/doctor/${docInfo.userId._id}/update`,
           {
             userId: docInfo.userId._id,
             name: userName,
