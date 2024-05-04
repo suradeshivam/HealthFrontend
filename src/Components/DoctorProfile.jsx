@@ -43,6 +43,16 @@ export default function DoctorProfile() {
     return wordArray.length;
   };
 
+  const handleAwardChange = (index, event) => {
+    const { name, value } = event.target;
+    // Update awards
+    const updatedAwards = [...awards];
+    if (!updatedAwards[index]) {
+      updatedAwards[index] = {}; // Initialize if undefined
+    }
+    updatedAwards[index][name] = value;
+    setAwards(updatedAwards);
+  };
   const handleAboutRemainingChange = (e) => {
     const inputValue = e.target.value;
     if (countWords(inputValue) <= 250) {
@@ -72,6 +82,7 @@ export default function DoctorProfile() {
   const handleInputChange = (index, event) => {
     const { name, value } = event.target;
     const updatedEducation = [...education];
+<<<<<<< HEAD
     
     // Update the specific field of the education object at the given index
     updatedEducation[index] = {
@@ -82,6 +93,18 @@ export default function DoctorProfile() {
     // Update the education state with the modified array
     setEducation(updatedEducation);
   
+=======
+
+    // Update the specific field of the education object at the given index
+    updatedEducation[index] = {
+      ...updatedEducation[index],
+      [name]: value,
+    };
+
+    // Update the education state with the modified array
+    setEducation(updatedEducation);
+
+>>>>>>> a8b8fb1dbd97f1bc50ee824c3b8c0a4927b6a28b
     // Update experiences
     const newExperiences = [...experiences];
     if (!newExperiences[index]) {
@@ -89,8 +112,12 @@ export default function DoctorProfile() {
     }
     newExperiences[index][name] = value;
     setExperiences(newExperiences);
+<<<<<<< HEAD
   
  
+=======
+
+>>>>>>> a8b8fb1dbd97f1bc50ee824c3b8c0a4927b6a28b
     // Update memberships
     const updatedMemberships = [...memberships];
     if (!updatedMemberships[index]) {
@@ -117,15 +144,39 @@ export default function DoctorProfile() {
       ...education,
       { qualification: "", collegeName: "", yearOfCompletion: "" },
     ]);
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> a8b8fb1dbd97f1bc50ee824c3b8c0a4927b6a28b
     // Add placeholders to experiences, awards, and memberships
     setExperiences([...experiences, {}]);
     // setAwards([...awards, {}]);
     // setMemberships([...memberships, {}]);
   };
 
+<<<<<<< HEAD
   const handleAddAward = () => {
     setAwards([...awards, { name: "", year: "" }]);
+=======
+  const handleRemoveEducation = (index) => {
+    const updatedEducation = [...education];
+    updatedEducation.splice(index, 1);
+    setEducation(updatedEducation);
+
+    // Remove corresponding entries from experiences, awards, and memberships
+    const newExperiences = [...experiences];
+    newExperiences.splice(index, 1);
+    setExperiences(newExperiences);
+
+    const updatedAwards = [...awards];
+    updatedAwards.splice(index, 1);
+    setAwards(updatedAwards);
+
+    const updatedMemberships = [...memberships];
+    updatedMemberships.splice(index, 1);
+    setMemberships(updatedMemberships);
+>>>>>>> a8b8fb1dbd97f1bc50ee824c3b8c0a4927b6a28b
   };
   // console.log(awards)
   const handleRemoveAward = (index) => {
@@ -262,7 +313,11 @@ export default function DoctorProfile() {
       // Rearrange the parts to form the "YYYY-MM-DD" format
       const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
 
+<<<<<<< HEAD
 
+=======
+      console.log(formattedDate);
+>>>>>>> a8b8fb1dbd97f1bc50ee824c3b8c0a4927b6a28b
       if (docInfo) {
         console.log("1");
         const updatedDoctor = await axios.put(
@@ -276,7 +331,11 @@ export default function DoctorProfile() {
             about: aboutMe,
             specialization: specialization,
             state: state,
+<<<<<<< HEAD
             achivement: awards,
+=======
+            achievement: awards,
+>>>>>>> a8b8fb1dbd97f1bc50ee824c3b8c0a4927b6a28b
             license: licence,
             addressLine1: address1,
             addressLine2: address2,
@@ -314,7 +373,11 @@ export default function DoctorProfile() {
             about: aboutMe,
             specialization: specialization,
             state: state,
+<<<<<<< HEAD
             achivement: awards,
+=======
+            achievement: awards,
+>>>>>>> a8b8fb1dbd97f1bc50ee824c3b8c0a4927b6a28b
             license: licence,
             addressLine1: address1,
             addressLine2: address2,
