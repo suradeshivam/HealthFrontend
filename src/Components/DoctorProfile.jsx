@@ -189,12 +189,15 @@ export default function DoctorProfile() {
     const userId = docInfo.userId._id;
 
     setUserName(docInfo.userId?.name || "");
+
     setEmail(docInfo.userId?.email || "");
     setPhone(docInfo.userId?.mobileNumber || "");
     setGender(docInfo?.gender || "");
     setEducation(docInfo?.educationDetails || "");
     setAwardsNAchievements(docInfo?.achievement);
-    setLicence(docInfo?.license);
+    setAwards(docInfo?.achievement);
+    setLicenceNumber(docInfo?.licenseNumber);
+    setYearLicenceNumber(docInfo?.yearOfIssued);
     const dobDate = new Date(docInfo?.dob);
     const day = dobDate.getDate().toString().padStart(2, "0");
     const month = (dobDate.getMonth() + 1).toString().padStart(2, "0");
@@ -222,9 +225,6 @@ export default function DoctorProfile() {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     const docInfo = JSON.parse(localStorage.getItem("docInfo"));
 
-    licence[0].licenseNumber = licenceNumber;
-    licence[0].yearOfIssued = yearLicenceNumber;
-
     console.log(
       docInfo.userId._id,
       userName,
@@ -235,7 +235,8 @@ export default function DoctorProfile() {
       specialization,
       state,
       awardsNAchievements,
-      licence,
+      licenceNumber,
+      yearLicenceNumber,
       address1,
       address2,
       city,
@@ -268,7 +269,8 @@ export default function DoctorProfile() {
             specialization: specialization,
             state: state,
             achievement: awards,
-            license: licence,
+            licenseNumber: licenceNumber,
+            yearOfIssued: yearLicenceNumber,
             addressLine1: address1,
             addressLine2: address2,
             city: city,
@@ -306,7 +308,8 @@ export default function DoctorProfile() {
             specialization: specialization,
             state: state,
             achievement: awards,
-            license: licence,
+            licenseNumber: licenceNumber,
+            yearOfIssued: yearLicenceNumber,
             addressLine1: address1,
             addressLine2: address2,
             city: city,
@@ -870,48 +873,45 @@ export default function DoctorProfile() {
                   </div>
                 </div>
               </div>
-
-              {licence.map((license, index) => (
-                <div className="card">
-                  <div className="card-body">
-                    <h4 className="card-title">Licence </h4>
-                    <div className="registrations-info">
-                      <div className="row reg-cont">
-                        <div className="col-12 col-md-5">
-                          <div className="mb-3">
-                            <label className="mb-2">
-                              Licence number
-                              <span className="text-danger"> *</span>
-                            </label>
-                            <input
-                              type="text"
-                              onChange={(e) => setLicenceNumber(e.target.value)}
-                              value={license?.licenseNumber}
-                              className="form-control"
-                            />
-                          </div>
+              <div className="card">
+                <div className="card-body">
+                  <h4 className="card-title">Licence </h4>
+                  <div className="registrations-info">
+                    <div className="row reg-cont">
+                      <div className="col-12 col-md-5">
+                        <div className="mb-3">
+                          <label className="mb-2">
+                            Licence number
+                            <span className="text-danger"> *</span>
+                          </label>
+                          <input
+                            type="text"
+                            onChange={(e) => setLicenceNumber(e.target.value)}
+                            value={licenceNumber}
+                            className="form-control"
+                          />
                         </div>
-                        <div className="col-12 col-md-5">
-                          <div className="mb-3">
-                            <label className="mb-2">
-                              Year of issue
-                              <span className="text-danger"> *</span>
-                            </label>
-                            <input
-                              type="text"
-                              onChange={(e) =>
-                                setYearLicenceNumber(e.target.value)
-                              }
-                              value={license?.yearOfIssued}
-                              className="form-control"
-                            />
-                          </div>
+                      </div>
+                      <div className="col-12 col-md-5">
+                        <div className="mb-3">
+                          <label className="mb-2">
+                            Year of issue
+                            <span className="text-danger"> *</span>
+                          </label>
+                          <input
+                            type="text"
+                            onChange={(e) =>
+                              setYearLicenceNumber(e.target.value)
+                            }
+                            value={yearLicenceNumber}
+                            className="form-control"
+                          />
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              ))}
+              </div>
               <div className="card">
                 <div className="card-body">
                   <h4 className="card-title">
