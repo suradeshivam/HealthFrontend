@@ -5,8 +5,7 @@ import { OrderState } from "../Contexts";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import { IoIosArrowBack } from 'react-icons/io';
-
+import { IoIosArrowBack } from "react-icons/io";
 
 export default function Patientprofile() {
   // const location = useLocation();
@@ -21,17 +20,15 @@ export default function Patientprofile() {
 
   const [observations, setObservations] = useState([]);
 
-  
   const addObservation = () => {
     setObservations([...observations, ""]);
   };
 
   const deleteObservation = (id) => {
-    setObservations(prevObservations =>
-      prevObservations.filter(observation => observation.id !== id)
+    setObservations((prevObservations) =>
+      prevObservations.filter((observation) => observation.id !== id)
     );
   };
-  
 
   const [prescriptions, setPrescriptions] = useState([
     { name: "", quantity: "", times: [] },
@@ -55,7 +52,7 @@ export default function Patientprofile() {
     setObservations(updatedObs);
   };
 
-  console.log(observations)
+  console.log(observations);
 
   const handleCheckboxChange = (index, time) => {
     const newPrescriptions = [...prescriptions];
@@ -162,46 +159,44 @@ export default function Patientprofile() {
   };
 
   const handleBack = () => {
-    navigate('/doctor'); // Navigate to Dashboard page when the back button is clicked
+    navigate("/doctor"); // Navigate to Dashboard page when the back button is clicked
   };
 
-  const handleSaveObservation = async() => {
+  const handleSaveObservation = async () => {
     const appointmentId = selectedPatient._id;
     const isAuthenticated = localStorage.getItem("token");
-   try{
-    
-    const observationres = await axios.put(`https://healthbackend-3xh2.onrender.com/appointment/observation/`,
-    {
-      appointmentId : appointmentId,
-      newObservations : observations,
-    },
-    {
-      headers:{
-      "Content-Type":"application/json",
-      "Authorization":isAuthenticated,
-    },
-  }
-    )
-    console.log(observationres)
+    try {
+      const observationres = await axios.put(
+        `https://healthbackend-3xh2.onrender.com/appointment/observation/`,
+        {
+          appointmentId: appointmentId,
+          newObservations: observations,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: isAuthenticated,
+          },
+        }
+      );
+      console.log(observationres);
 
-    const appointment = await axios.get(`https://healthbackend-3xh2.onrender.com/appointment/${appointmentId}`,
-    {
-      headers:{
-      "Content-Type":"application/json",
-      "Authorization":isAuthenticated,
-    },
-  }  
-    );
-  
-    console.log(appointment)
-    setSingleAppointment(appointment.data.result);
+      const appointment = await axios.get(
+        `https://healthbackend-3xh2.onrender.com/appointment/${appointmentId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: isAuthenticated,
+          },
+        }
+      );
 
-   }catch(error){
-    console.log(error)
-   }
-
+      console.log(appointment);
+      setSingleAppointment(appointment.data.result);
+    } catch (error) {
+      console.log(error);
+    }
   };
-
 
   // console.log(singleAppointment)
 
@@ -239,14 +234,19 @@ export default function Patientprofile() {
           </div>
         </div>
         <div className="content">
-            
           <div className="container">
-          <div>
-      <button onClick={handleBack}  className="btn btn-primary patient-graph-box"> < IoIosArrowBack />Back to Dashboard</button>
-    </div><br/>
+            <div>
+              <button
+                onClick={handleBack}
+                className="btn btn-primary patient-graph-box">
+                {" "}
+                <IoIosArrowBack />
+                Back to Dashboard
+              </button>
+            </div>
+            <br />
             <div className="row">
               <ToastContainer />
-       
 
               <div className="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar dct-dashbd-lft">
                 <div className="card widget-profile pat-widget-profile">
@@ -598,35 +598,34 @@ export default function Patientprofile() {
                                   </tr>
                                 </thead>
                                 <tbody>
-  {observations.map((observation) => (
-    <tr key={observation.id}>
-      <td>
-        <h2 className="table-avatar">
-          Observation {observation.id}
-        </h2>
-      </td>
-      <td>
-        <div className="table-action">
-          <a
-            href="#edit_medical_form"
-            className="btn btn-sm bg-info-light me-2"
-            data-bs-toggle="modal">
-            <i className="fas fa-edit"></i> Edit
-          </a>
-          <button
-            className="btn btn-sm bg-danger-light"
-            onClick={() =>
-              deleteObservation(observation.id)
-            }>
-            <i className="fas fa-trash-alt"></i>{" "}
-            Delete
-          </button>
-        </div>
-      </td>
-    </tr>
-  ))}
-</tbody>
-
+                                  {observations.map((observation) => (
+                                    <tr key={observation.id}>
+                                      <td>
+                                        <h2 className="table-avatar">
+                                          Observation {observation.id}
+                                        </h2>
+                                      </td>
+                                      <td>
+                                        <div className="table-action">
+                                          <a
+                                            href="#edit_medical_form"
+                                            className="btn btn-sm bg-info-light me-2"
+                                            data-bs-toggle="modal">
+                                            <i className="fas fa-edit"></i> Edit
+                                          </a>
+                                          <button
+                                            className="btn btn-sm bg-danger-light"
+                                            onClick={() =>
+                                              deleteObservation(observation.id)
+                                            }>
+                                            <i className="fas fa-trash-alt"></i>{" "}
+                                            Delete
+                                          </button>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  ))}
+                                </tbody>
                               </table>
                             </div>
                           </div>
@@ -1287,7 +1286,7 @@ export default function Patientprofile() {
                                 <tbody>
                                   <tr>
                                     <td>
-                                      <a href="invoice-view.html">#REP-0010</a>
+                                      <a>#REP-0010</a>
                                     </td>
                                     <td>
                                       <h2 className="table-avatar">
@@ -1300,9 +1299,7 @@ export default function Patientprofile() {
                                     <td>14 Nov 2023</td>
                                     <td>
                                       <div className="table-action">
-                                        <a
-                                          href="invoice-view.html"
-                                          className="btn btn-sm bg-info-light">
+                                        <a className="btn btn-sm bg-info-light">
                                           <i className="far fa-eye" /> View
                                         </a>
                                       </div>
@@ -1310,7 +1307,7 @@ export default function Patientprofile() {
                                   </tr>
                                   <tr>
                                     <td>
-                                      <a href="invoice-view.html">#REP-0010</a>
+                                      <a>#REP-0010</a>
                                     </td>
                                     <td>
                                       <h2 className="table-avatar">
@@ -1323,9 +1320,7 @@ export default function Patientprofile() {
                                     <td>14 Nov 2023</td>
                                     <td>
                                       <div className="table-action">
-                                        <a
-                                          href="invoice-view.html"
-                                          className="btn btn-sm bg-info-light">
+                                        <a className="btn btn-sm bg-info-light">
                                           <i className="far fa-eye" /> View
                                         </a>
                                       </div>
@@ -1333,7 +1328,7 @@ export default function Patientprofile() {
                                   </tr>
                                   <tr>
                                     <td>
-                                      <a href="invoice-view.html">#REP-0010</a>
+                                      <a>#REP-0010</a>
                                     </td>
                                     <td>
                                       <h2 className="table-avatar">
@@ -1346,9 +1341,7 @@ export default function Patientprofile() {
                                     <td>14 Nov 2023</td>
                                     <td>
                                       <div className="table-action">
-                                        <a
-                                          href="invoice-view.html"
-                                          className="btn btn-sm bg-info-light">
+                                        <a className="btn btn-sm bg-info-light">
                                           <i className="far fa-eye" /> View
                                         </a>
                                       </div>
@@ -1356,7 +1349,7 @@ export default function Patientprofile() {
                                   </tr>
                                   <tr>
                                     <td>
-                                      <a href="invoice-view.html">#REP-0010</a>
+                                      <a>#REP-0010</a>
                                     </td>
                                     <td>
                                       <h2 className="table-avatar">
@@ -1369,9 +1362,7 @@ export default function Patientprofile() {
                                     <td>14 Nov 2023</td>
                                     <td>
                                       <div className="table-action">
-                                        <a
-                                          href="invoice-view.html"
-                                          className="btn btn-sm bg-info-light">
+                                        <a className="btn btn-sm bg-info-light">
                                           <i className="far fa-eye" /> View
                                         </a>
                                       </div>
@@ -1379,7 +1370,7 @@ export default function Patientprofile() {
                                   </tr>
                                   <tr>
                                     <td>
-                                      <a href="invoice-view.html">#REP-0010</a>
+                                      <a>#REP-0010</a>
                                     </td>
                                     <td>
                                       <h2 className="table-avatar">
@@ -1392,9 +1383,7 @@ export default function Patientprofile() {
                                     <td>14 Nov 2023</td>
                                     <td>
                                       <div className="table-action">
-                                        <a
-                                          href="invoice-view.html"
-                                          className="btn btn-sm bg-info-light">
+                                        <a className="btn btn-sm bg-info-light">
                                           <i className="far fa-eye" /> View
                                         </a>
                                       </div>
@@ -1422,7 +1411,7 @@ export default function Patientprofile() {
                                 <tbody>
                                   <tr>
                                     <td>
-                                      <a href="invoice-view.html">#REP-0010</a>
+                                      <a>#REP-0010</a>
                                     </td>
                                     <td>
                                       <h2 className="table-avatar">
@@ -1435,9 +1424,7 @@ export default function Patientprofile() {
                                     <td>24/03/2024</td>
                                     <td>
                                       <div className="table-action">
-                                        <a
-                                          href="invoice-view.html"
-                                          className="btn btn-sm bg-info-light">
+                                        <a className="btn btn-sm bg-info-light">
                                           <i className="far fa-eye" /> View
                                         </a>
                                       </div>
@@ -1445,7 +1432,7 @@ export default function Patientprofile() {
                                   </tr>
                                   <tr>
                                     <td>
-                                      <a href="invoice-view.html">#REP-0010</a>
+                                      <a>#REP-0010</a>
                                     </td>
                                     <td>
                                       <h2 className="table-avatar">
@@ -1458,9 +1445,7 @@ export default function Patientprofile() {
                                     <td>24/03/2024</td>
                                     <td>
                                       <div className="table-action">
-                                        <a
-                                          href="invoice-view.html"
-                                          className="btn btn-sm bg-info-light">
+                                        <a className="btn btn-sm bg-info-light">
                                           <i className="far fa-eye" /> View
                                         </a>
                                       </div>
@@ -1468,7 +1453,7 @@ export default function Patientprofile() {
                                   </tr>
                                   <tr>
                                     <td>
-                                      <a href="invoice-view.html">#REP-0010</a>
+                                      <a>#REP-0010</a>
                                     </td>
                                     <td>
                                       <h2 className="table-avatar">
@@ -1481,9 +1466,7 @@ export default function Patientprofile() {
                                     <td>24/03/2024</td>
                                     <td>
                                       <div className="table-action">
-                                        <a
-                                          href="invoice-view.html"
-                                          className="btn btn-sm bg-info-light">
+                                        <a className="btn btn-sm bg-info-light">
                                           <i className="far fa-eye" /> View
                                         </a>
                                       </div>
@@ -1719,34 +1702,35 @@ export default function Patientprofile() {
         aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Add Observation</h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"></button>
-              </div>
-              {observations.map((observation, index) => (
-                <>
-              <div className="modal-body">
-                <textarea
-                  name="data"
-                  className="form-control"
-                  rows="5"
-                  value={observation}
-                  onChange={(e,index) => handleObservationChange(e, index)}
-                  placeholder="Enter your data here..."></textarea>
-              </div>
-              <div className="modal-footer text-center">
-                <button type="submit"
-                onClick={handleSaveObservation}
-                className="btn btn-outline btn-success">
-                  Submit
-                </button>
-              </div>
+            <div className="modal-header">
+              <h5 className="modal-title">Add Observation</h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"></button>
+            </div>
+            {observations.map((observation, index) => (
+              <>
+                <div className="modal-body">
+                  <textarea
+                    name="data"
+                    className="form-control"
+                    rows="5"
+                    value={observation}
+                    onChange={(e, index) => handleObservationChange(e, index)}
+                    placeholder="Enter your data here..."></textarea>
+                </div>
+                <div className="modal-footer text-center">
+                  <button
+                    type="submit"
+                    onClick={handleSaveObservation}
+                    className="btn btn-outline btn-success">
+                    Submit
+                  </button>
+                </div>
               </>
-              ))}
+            ))}
           </div>
         </div>
       </div>
