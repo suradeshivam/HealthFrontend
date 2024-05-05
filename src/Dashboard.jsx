@@ -713,7 +713,7 @@ export default function Dashboard() {
                                                   />
                                                 )}
                                               </div>
-                                              <div>
+                                              {/* <div>
                                                 <button
                                                   className="btn btn-sm bg-info-light"
                                                   onClick={() =>
@@ -722,7 +722,7 @@ export default function Dashboard() {
                                                   <i className="far fa-eye" />{" "}
                                                   View
                                                 </button>
-                                              </div>
+                                              </div> */}
                                             </div>
                                           </td>
                                         </tr>

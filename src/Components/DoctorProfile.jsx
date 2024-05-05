@@ -525,6 +525,19 @@ export default function DoctorProfile() {
         // setDoctorInfo(updatedDoctor.data.result);
         // console.log(doctorInfo);
         console.log("doctor updated success navigatingto docprofile");
+
+        toast("Profile Updated Successfully", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+
       } else {
         const user = await axios.post(
           `https://healthbackend-3xh2.onrender.com/doctor/create`,
@@ -563,9 +576,31 @@ export default function DoctorProfile() {
           "docInfo",
           JSON.stringify(user.data.result.doctor)
         );
+        toast("Profile Created Successfully!!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
       }
     } catch (error) {
       console.log(error);
+      toast.error(error.response.data.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   };
 
@@ -626,6 +661,7 @@ export default function DoctorProfile() {
       <div className="content">
         <div className="container">
           <div className="row">
+          <ToastContainer />
             <div className="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
               <div className="profile-sidebar">
                 <div className="widget-profile pro-widget-content">
@@ -708,12 +744,13 @@ export default function DoctorProfile() {
               </div>
             </div>
             <div className="col-md-7 col-lg-8 col-xl-9">
-              <ToastContainer />
+             
               <form onSubmit={handleFormSubmit}>
                 <div className="card">
                   <div className="card-body">
                     <h4 className="card-title">Basic Information</h4>
                     <div className="row">
+                   
                       <div className="col-md-12">
                         <div className="mb-3">
                           <div className="change-avatar">

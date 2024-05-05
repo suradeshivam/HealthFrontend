@@ -119,6 +119,7 @@ export default function Reviews() {
     // Error in _id
     if (doctorInfo) {
       setReview(doctorInfo.reviews);
+      setDoctorInfo(doctorInfo);
     }
   }, []);
 
