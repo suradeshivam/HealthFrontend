@@ -4,13 +4,29 @@ import { Link } from "react-router-dom";
 export default function Navbar() {
   const [show, setShow] = useState(false);
 
+  const handleLogout = () => {
+    console.log("in here");
+    const userInfo = localStorage.getItem("userInfo");
+    if (userInfo) {
+      localStorage.removeItem("userInfo");
+    }
+    const token = localStorage.getItem("token");
+    if (token) {
+      localStorage.removeItem("token");
+    }
+    const docInfo = localStorage.getItem("docInfo");
+    if (docInfo) {
+      localStorage.removeItem("docInfo");
+    }
+  };
+
   useEffect(() => {
     const userInfo = localStorage.getItem("userInfo");
     const doctorInfo = localStorage.getItem("docInfo");
     if (userInfo || doctorInfo) {
       setShow(true);
     }
-  }, []);
+  }, [localStorage.getItem("userInfo"), localStorage.getItem("docInfo")]);
 
   return (
     <header className="header header-custom header-fixed header-one">
@@ -846,7 +862,10 @@ export default function Navbar() {
                   <Link className="dropdown-item" to="/profile">
                     Profile Settings
                   </Link>
-                  <Link className="dropdown-item" to="/login">
+                  <Link
+                    className="dropdown-item"
+                    to="/login"
+                    onClick={handleLogout}>
                     Logout
                   </Link>
                 </div>

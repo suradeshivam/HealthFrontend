@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Link } from "react-router-dom";
@@ -18,9 +18,9 @@ export default function ChangePassword() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showOldPassword, setShowOldPassword] = useState();
   const docInfo = JSON.parse(localStorage.getItem("docInfo"));
-  const userId = docInfo.userId._id;
+  const userId = docInfo?.userId?._id;
   const isAuthenticated = localStorage.getItem("token");
-  const [doctorInfo,setDoctorInfo] = useState("");
+  const [doctorInfo, setDoctorInfo] = useState("");
 
   const handleSubmit = async () => {
     if (newPassword.length < 3) {
@@ -90,8 +90,8 @@ export default function ChangePassword() {
   useEffect(() => {
     const doctorInfo = JSON.parse(localStorage.getItem("docInfo"));
     // Error in _id
-    if(doctorInfo){
-    setDoctorInfo(doctorInfo);
+    if (doctorInfo) {
+      setDoctorInfo(doctorInfo);
     }
   }, []);
 
@@ -131,16 +131,18 @@ export default function ChangePassword() {
                       />
                     </a>
                     <div className="profile-det-info">
-                        <h3>Dr. {doctorInfo?.userId?.name}</h3>
-                        <div className="patient-details ">
-                          <h5 className="mb-0 ">
-                          {doctorInfo && doctorInfo?.educationDetails && doctorInfo?.educationDetails.map((edu, index) => (
-                          <p  key={index}>{edu.qualification}</p>
-                          ))}
-                           {/* &amp; {doctorInfo?.specialization} */}
-                          </h5>
-                        </div>
+                      <h3>Dr. {doctorInfo?.userId?.name}</h3>
+                      <div className="patient-details ">
+                        <h5 className="mb-0 ">
+                          {doctorInfo &&
+                            doctorInfo?.educationDetails &&
+                            doctorInfo?.educationDetails.map((edu, index) => (
+                              <p key={index}>{edu.qualification}</p>
+                            ))}
+                          {/* &amp; {doctorInfo?.specialization} */}
+                        </h5>
                       </div>
+                    </div>
                   </div>
                 </div>
                 <div className="dashboard-widget">
@@ -189,11 +191,11 @@ export default function ChangePassword() {
                         </Link>
                       </li>
                       <li>
-                          <Link to="/login" onClick={handleLogout}>
-                            <i className="fas fa-sign-out-alt" />
-                            <span>Logout</span>
-                          </Link>
-                        </li>
+                        <Link to="/login" onClick={handleLogout}>
+                          <i className="fas fa-sign-out-alt" />
+                          <span>Logout</span>
+                        </Link>
+                      </li>
                     </ul>
                   </nav>
                 </div>

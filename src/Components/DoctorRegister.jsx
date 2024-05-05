@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { FiEye, FiEyeOff } from "react-icons/fi";
@@ -205,9 +205,11 @@ export default function DoctorRegister() {
                         </div>
                       </div>
                       <div className="text-end">
-                        <a className="forgot-link" href="login.html">
-                          Already have an account?
-                        </a>
+                        <Link to={"/login"}>
+                          <a className="forgot-link">
+                            Already have an account?
+                          </a>
+                        </Link>
                       </div>
                       <button
                         className="btn btn-primary w-100 btn-lg login-btn"
