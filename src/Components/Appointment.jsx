@@ -1,20 +1,21 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from "react-router-dom";
+import { Bounce, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 export default function Patientprofile() {
   const location = useLocation();
   const patient = location.state?.patient;
+  
   const [doctorInfo, setDoctorInfo] = useState("");
 
   console.log(patient)
 
 
     const [observations, setObservations] = useState([
-        {
-            id: 1,
-            doctorId: 2568
-        }
+       
     ]);
 
     const addObservation = () => {
@@ -33,13 +34,14 @@ export default function Patientprofile() {
 
 
     const [prescriptions, setPrescriptions] = useState([
-        { name: '', quantity: '', days: '', times: [] },
-        { name: '', quantity: '', days: '', times: [] }
+        { name: '', quantity: '', times: [] }
     ]);
 
 
+
+
     const addPrescription = () => {
-        setPrescriptions([...prescriptions, { name: '', quantity: '', days: '', times: [] }]);
+        setPrescriptions([...prescriptions, { name: '', quantity: '', times: [] }]);
     };
 
     const handleInputChange = (index, event) => {
@@ -60,7 +62,7 @@ export default function Patientprofile() {
         }
         setPrescriptions(newPrescriptions);
     };
-
+    console.log(prescriptions)
     const removePrescription = (index) => {
         const newPrescriptions = [...prescriptions];
         newPrescriptions.splice(index, 1);
@@ -82,45 +84,73 @@ export default function Patientprofile() {
         // setModalOpen(false);
     };
 
-    const isAuthenticated = localStorage.getItem('token');
-    // const handleSaveObservation = async() => {
-    //   const appointmentId = selectedPatient._id;
-    //  try{
-    //   const observationres = await axios.put(`https://healthcareserver.onrender.com/appointment/observation/`,
-    //   {
-    //     appointmentId : appointmentId,
-    //     newObservations : updatedObservations,
-    //   },
-    //   {
-    //     headers:{
-    //     "Content-Type":"application/json",
-    //     "Authorization":isAuthenticated,
-    //   },
-    // }
-    //   )
-    //   console.log(observationres)
-  
-    //   const appointment = await axios.get(`https://healthcareserver.onrender.com/appointment/${appointmentId}`,
-    //   {
-    //     headers:{
-    //     "Content-Type":"application/json",
-    //     "Authorization":isAuthenticated,
-    //   },
-    // }  
-    //   );
     
-    //   console.log(appointment)
-    //   setselectedPatient(appointment.data.result);
-  
-    //  }catch(error){
-    //   console.log(error)
-    //  }
-  
-    // };
+   
+
+    const handlePrecriptionSubmit = async() => {
+
+      
+      const isAuthenticated = localStorage.getItem("token");
+      
+      try {
+        console.log('1')
+
+        const response = await axios.put('https://healthbackend-3xh2.onrender.com/appointment/prescription',
+        {
+          appointmentId : patient._id,
+          newPrescription: prescriptions,
+        },
+        {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: isAuthenticated,
+        },
+      }
+        );
+
+        console.log(response)
+        patient = response.data?.result;
+        
+        // localStorage.setItem(
+        //   "docInfo",
+        //   JSON.stringify(updatedDoctor.data.result)
+        // );
+
+        toast("Time slots updated successfully.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+        
+      } catch (error) {
+        toast.error("Error.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+        
+      }
+    }
 
     useEffect(() => {
       const doctorInfo = JSON.parse(localStorage.getItem("docInfo"));
+      if(doctorInfo){
       setDoctorInfo(doctorInfo)
+      }
+      setPrescriptions(patient?.prescriptions)
+      setObservations(patient?.observations)
     },[])
 
     return (
@@ -148,6 +178,7 @@ export default function Patientprofile() {
                 <div className="content">
                     <div className="container">
                         <div className="row">
+                        <ToastContainer />
                             <div className="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar dct-dashbd-lft">
                                 <div className="card widget-profile pat-widget-profile">
                                     <div className="card-body">
@@ -489,12 +520,12 @@ export default function Patientprofile() {
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    {observations.map(observation => (
-                                                                        <tr key={observation.id}>
+                                                                    {observations.map((observation,index )=> (
+                                                                        <tr key={index}>
                                                                             <td>
                                                                                 <h2 className="table-avatar">
                                                                                     <a href="doctor-profile.html">
-                                                                                        Observation {observation.id} <span>ID #{observation.doctorId}</span>
+                                                                                        Observation {index+1} 
                                                                                     </a>
                                                                                 </h2>
                                                                             </td>
@@ -555,7 +586,6 @@ export default function Patientprofile() {
                                                                                 <tr>
                                                                                     <th className="table-head-name">Name</th>
                                                                                     <th>Quantity</th>
-                                                                                    <th className="table-head-days">Days</th>
                                                                                     <th>Time</th>
                                                                                     <th className="custom-class" />
                                                                                 </tr>
@@ -581,16 +611,8 @@ export default function Patientprofile() {
                                                                                                 type="text"
                                                                                             />
                                                                                         </td>
-                                                                                        <td>
-                                                                                            <input
-                                                                                                className="form-control"
-                                                                                                name="days"
-                                                                                                value={prescription.days}
-                                                                                                onChange={(event) => handleInputChange(index, event)}
-                                                                                                type="text"
-                                                                                            />
-                                                                                        </td>
-                                                                                        <td>
+                                                                                      
+                                                                                        <td >
                                                                                             <div className="form-check form-check-inline">
                                                                                                 <label className="form-check-label">
                                                                                                     <input
@@ -655,6 +677,7 @@ export default function Patientprofile() {
                                                                     <div className="submit-section">
                                                                         <button
                                                                             type="submit"
+                                                                            onClick={handlePrecriptionSubmit}
                                                                             className="btn btn-primary submit-btn"
                                                                         >
                                                                             Save
@@ -1385,7 +1408,7 @@ export default function Patientprofile() {
                         </div>
                     </div>
                 </div>
-                <footer className="footer footer-one">
+                {/* <footer className="footer footer-one">
                     <div className="footer-top">
                         <div className="container">
                             <div className="row">
@@ -1545,7 +1568,7 @@ export default function Patientprofile() {
                             </div>
                         </div>
                     </div>
-                </footer>
+                </footer> */}
             </div>
             <div className="modal fade custom-modal" id="add_medical_records">
                 <div
@@ -1627,6 +1650,7 @@ export default function Patientprofile() {
                                     name="data"
                                     className="form-control"
                                     rows="5"
+                                    
                                     placeholder="Enter your data here..."
                                 ></textarea>
                             </div>
