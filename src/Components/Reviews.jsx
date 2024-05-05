@@ -2,58 +2,57 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Reviews() {
-
-  const [doctorInfo,setDoctorInfo] = useState("");
+  const [doctorInfo, setDoctorInfo] = useState("");
   const commentData = [
     {
-      imageUrl: 'assets/img/patients/patient2.jpg',
-      author: 'Travis Trimble',
-      reviewDate: 'Reviewed 4 Days ago',
+      imageUrl: "assets/img/patients/patient2.jpg",
+      author: "Travis Trimble",
+      reviewDate: "Reviewed 4 Days ago",
       reviewCount: 5,
       comment: `Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
       sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
       Ut enim ad minim veniam, quis nostrud exercitation. Curabitur non nulla sit amet nisl tempus`,
     },
     {
-      imageUrl: 'assets/img/patients/patient3.jpg',
-      author: 'Carl Kelly',
-      reviewDate: 'Reviewed 5 Days ago',
+      imageUrl: "assets/img/patients/patient3.jpg",
+      author: "Carl Kelly",
+      reviewDate: "Reviewed 5 Days ago",
       reviewCount: 4,
       comment: `Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
       sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
       Ut enim ad minim veniam, quis nostrud exercitation. Curabitur non nulla sit amet nisl tempus`,
     },
     {
-      imageUrl: 'assets/img/patients/patient4.jpg',
-      author: 'Michelle Fairfax',
-      reviewDate: 'Reviewed 6 Days ago',
+      imageUrl: "assets/img/patients/patient4.jpg",
+      author: "Michelle Fairfax",
+      reviewDate: "Reviewed 6 Days ago",
       reviewCount: 4,
       comment: `Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
       sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
       Ut enim ad minim veniam, quis nostrud exercitation. Curabitur non nulla sit amet nisl tempus`,
     },
     {
-      imageUrl: 'assets/img/patients/patient5.jpg',
-      author: 'Gina Moore',
-      reviewDate: 'Reviewed 1 Week ago',
+      imageUrl: "assets/img/patients/patient5.jpg",
+      author: "Gina Moore",
+      reviewDate: "Reviewed 1 Week ago",
       reviewCount: 5,
       comment: `Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
       sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
       Ut enim ad minim veniam, quis nostrud exercitation. Curabitur non nulla sit amet nisl tempus`,
     },
     {
-      imageUrl: 'assets/img/patients/patient9.jpg',
-      author: 'Walter Roberson',
-      reviewDate: 'Reviewed 1 Week ago',
+      imageUrl: "assets/img/patients/patient9.jpg",
+      author: "Walter Roberson",
+      reviewDate: "Reviewed 1 Week ago",
       reviewCount: 5,
       comment: `Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
       sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
       Ut enim ad minim veniam, quis nostrud exercitation. Curabitur non nulla sit amet nisl tempus`,
     },
     {
-      imageUrl: 'assets/img/patients/patient8.jpg',
-      author: 'Daniel Griffing',
-      reviewDate: 'Reviewed on 1 Nov 2023',
+      imageUrl: "assets/img/patients/patient8.jpg",
+      author: "Daniel Griffing",
+      reviewDate: "Reviewed on 1 Nov 2023",
       reviewCount: 1,
       comment: `Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
       sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
@@ -79,17 +78,17 @@ export default function Reviews() {
     var currentDate = new Date();
     var startDate = new Date(currentDate.getFullYear() - 10, 0, 1); // 10 years ago from today
     var endDate = currentDate; // Today
-  
+
     // Convert start and end date to milliseconds
     var startMillis = startDate.getTime();
     var endMillis = endDate.getTime();
-  
+
     // Generate a random number between start and end date milliseconds
     var randomMillis = startMillis + Math.random() * (endMillis - startMillis);
-  
+
     // Create a new Date object using the random milliseconds
     var randomDate = new Date(randomMillis);
-  
+
     // Return the random date
     return randomDate;
   }
@@ -110,16 +109,16 @@ export default function Reviews() {
     }
   };
 
-  useEffect(()=>{
-    const docInfo = JSON.parse(localStorage.getItem('docInfo'));
-    setReview(docInfo?.reviews);
-  })
+  // useEffect(()=>{
+  //   const docInfo = JSON.parse(localStorage.getItem('docInfo'));
+  //   setReview(docInfo?.reviews);
+  // })
 
   useEffect(() => {
     const doctorInfo = JSON.parse(localStorage.getItem("docInfo"));
     // Error in _id
-    if(doctorInfo){
-    setDoctorInfo(doctorInfo);
+    if (doctorInfo) {
+      setReview(doctorInfo.reviews);
     }
   }, []);
 
@@ -158,16 +157,18 @@ export default function Reviews() {
                       />
                     </a>
                     <div className="profile-det-info">
-                        <h3>Dr. {doctorInfo?.userId?.name}</h3>
-                        <div className="patient-details ">
-                          <h5 className="mb-0 ">
-                          {doctorInfo && doctorInfo?.educationDetails && doctorInfo?.educationDetails.map((edu, index) => (
-                          <p  key={index}>{edu.qualification}</p>
-                          ))}
-                           {/* &amp; {doctorInfo?.specialization} */}
-                          </h5>
-                        </div>
+                      <h3>Dr. {doctorInfo?.userId?.name}</h3>
+                      <div className="patient-details ">
+                        <h5 className="mb-0 ">
+                          {doctorInfo &&
+                            doctorInfo?.educationDetails &&
+                            doctorInfo?.educationDetails.map((edu, index) => (
+                              <p key={index}>{edu.qualification}</p>
+                            ))}
+                          {/* &amp; {doctorInfo?.specialization} */}
+                        </h5>
                       </div>
+                    </div>
                   </div>
                 </div>
                 <div className="dashboard-widget">
@@ -216,11 +217,11 @@ export default function Reviews() {
                         </Link>
                       </li>
                       <li>
-                          <Link to="/login" onClick={handleLogout}>
-                            <i className="fas fa-sign-out-alt" />
-                            <span>Logout</span>
-                          </Link>
-                        </li>
+                        <Link to="/login" onClick={handleLogout}>
+                          <i className="fas fa-sign-out-alt" />
+                          <span>Logout</span>
+                        </Link>
+                      </li>
                     </ul>
                   </nav>
                 </div>
@@ -228,29 +229,35 @@ export default function Reviews() {
             </div>
             <div className="col-md-7 col-lg-8 col-xl-9">
               <div className="doc-review review-listing">
-              <ul className="comment-list">
-      {review.map((comment, index) => (
-        <li key={index}>
-          <div className="comment">
-            <img
-              className="avatar rounded-circle"
-              alt="User Image"
-              src={'assets/img/patients/patient8.jpg'}
-            />
-            <div className="comment-body"style={{width:"100%"}}>
-              <div className="meta-data" >
-                <span className="comment-author">{comment.patientName}</span>
-                <div className="review-count rating">
-                  {renderStars(comment.rating)}
-                </div>
-                <span className="comment-date">Reviewed 1 Week ago</span>
-              </div>
-              <p className="comment-content">{comment.description}</p>
-            </div>
-          </div>
-        </li>
-      ))}
-    </ul>
+                <ul className="comment-list">
+                  {review.map((comment, index) => (
+                    <li key={index}>
+                      <div className="comment">
+                        <img
+                          className="avatar rounded-circle"
+                          alt="User Image"
+                          src={"assets/img/patients/patient8.jpg"}
+                        />
+                        <div className="comment-body" style={{ width: "100%" }}>
+                          <div className="meta-data">
+                            <span className="comment-author">
+                              {comment.patientName}
+                            </span>
+                            <div className="review-count rating">
+                              {renderStars(comment.rating)}
+                            </div>
+                            <span className="comment-date">
+                              Reviewed 1 Week ago
+                            </span>
+                          </div>
+                          <p className="comment-content">
+                            {comment.description}
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>

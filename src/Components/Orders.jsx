@@ -149,7 +149,7 @@ export default function Orderslist() {
                           <Link to="/orders">
                             <i className="fas fa-list-alt" />
                             <span>Orders</span>
-                            <small className="unread-msg">7</small>
+                            <small className="unread-msg">6</small>
                           </Link>
                         </li>
                         {/* <li>
@@ -216,10 +216,10 @@ export default function Orderslist() {
                                         OD1236547890
                                       </a>
                                     </td>
-                                    <td>Medlife Medical</td>
+                                    <td>Apollo Pharmacy</td>
                                     <td>2</td>
-                                    <td>$150</td>
-                                    <td>Stripe</td>
+                                    <td>1500</td>
+                                    <td>JusPay</td>
                                     <td>
                                       <span className="badge badge-primary">
                                         Order Placed
@@ -239,10 +239,10 @@ export default function Orderslist() {
                                         OD1236547891
                                       </a>
                                     </td>
-                                    <td>Medlife Medical</td>
+                                    <td>Healthmart</td>
                                     <td>4</td>
-                                    <td>$200</td>
-                                    <td>Stripe</td>
+                                    <td>2000</td>
+                                    <td>PhonePe</td>
                                     <td>
                                       <span className="badge badge-primary">
                                         Order Placed
@@ -262,10 +262,10 @@ export default function Orderslist() {
                                         OD1236547892
                                       </a>
                                     </td>
-                                    <td>Medlife Medical</td>
+                                    <td>Medplus</td>
                                     <td>1</td>
-                                    <td>$75</td>
-                                    <td>Stripe</td>
+                                    <td>750</td>
+                                    <td>Google Pay</td>
                                     <td>
                                       <span className="badge badge-primary">
                                         Order Placed
@@ -285,10 +285,10 @@ export default function Orderslist() {
                                         OD1236547893
                                       </a>
                                     </td>
-                                    <td>PharmaMed Medical</td>
+                                    <td>Healthessence</td>
                                     <td>2</td>
-                                    <td>$100</td>
-                                    <td>Paystack</td>
+                                    <td>1000</td>
+                                    <td>Razorpay</td>
                                     <td>
                                       <span className="badge badge-warning">
                                         Shipped
@@ -308,10 +308,10 @@ export default function Orderslist() {
                                         OD1236547894
                                       </a>
                                     </td>
-                                    <td>PharmaMed Medical</td>
+                                    <td>Razorpay </td>
                                     <td>5</td>
-                                    <td>$350</td>
-                                    <td>Stripe</td>
+                                    <td>1200</td>
+                                    <td>PhonePe</td>
                                     <td>
                                       <span className="badge badge-warning">
                                         Shipped
@@ -331,9 +331,9 @@ export default function Orderslist() {
                                         OD1236547895
                                       </a>
                                     </td>
-                                    <td>The Pill Club Medical</td>
+                                    <td>EasyMeds</td>
                                     <td>1</td>
-                                    <td>$250</td>
+                                    <td>2500</td>
                                     <td>Paypal</td>
                                     <td>
                                       <span className="badge badge-primary">
