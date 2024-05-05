@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import { Bounce, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function LoginDoctor() {
   const {
@@ -18,6 +20,7 @@ export default function LoginDoctor() {
 
   const onSubmit = useCallback(
     async (data) => {
+      toast("Please wait while we are fetching your data");
       // setLoading(true);
 
       try {
@@ -49,12 +52,14 @@ export default function LoginDoctor() {
             }
           );
 
+          toast("Data fetched successfully");
           // Store the token securely
           await localStorage.setItem(
             "docInfo",
             JSON.stringify(doctor.data.result.doctor)
           );
         } else {
+          toast("Data fetched successfully");
           await localStorage.setItem("userInfo", JSON.stringify(user));
         }
 
@@ -80,6 +85,17 @@ export default function LoginDoctor() {
       } catch (error) {
         // setLoading(false);
         console.error("Error submitting form:", error);
+        toast.error(error.response.data.message, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
         // Handle error, show error message, etc.
       }
     },
@@ -94,6 +110,7 @@ export default function LoginDoctor() {
       <div className="content top-space">
         <div className="container-fluid">
           <div className="row">
+            <ToastContainer />
             <div className="col-md-8 offset-md-2">
               <div className="account-content">
                 <div className="row align-items-center justify-content-center">
