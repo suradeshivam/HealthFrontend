@@ -108,6 +108,7 @@ export default function Dashboard() {
         const datastore = data.data.result;
 
         const todayDate = new Date().toLocaleDateString("en-US");
+        console.log(todayDate);
 
         let upcomingArray = [];
         let todayArray = [];
@@ -119,6 +120,7 @@ export default function Dashboard() {
           const appointmentDate = new Date(data.date).toLocaleDateString(
             "en-US"
           );
+          console.log(appointmentDate, data.date);
           if (todayDate === appointmentDate) {
             // console.log(data)
             todayArray.push(data);
