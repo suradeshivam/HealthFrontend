@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Bounce, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function DoctorProfile() {
   const [doctorInfo, setDoctorInfo] = useState("");
@@ -22,7 +24,7 @@ export default function DoctorProfile() {
   const [specialization, setSpecialization] = useState("");
   const [yearOfExperience, setYearOfExperience] = useState("");
   const [education, setEducation] = useState([
-    { qualification: "", collegeName: "", yearOfCompletion: "" }
+    { qualification: "", collegeName: "", yearOfCompletion: "" },
   ]);
   const [awardsNAchievements, setAwardsNAchievements] = useState([
     { awards: "", year: "" },
@@ -39,19 +41,19 @@ export default function DoctorProfile() {
   const [errors, setErrors] = useState({
     userName: "",
     yearOfExperience: "",
-    gender:"",
-    dob:"",
-    fees:"",
-  address1:"",
-  city:"",
-  state:"",
-  country:"",
-  postalCode:"",
-  specialization:"",
-  education:"",
-  yearOfExperience:"",
-  licenceNumber:"",
-  yearLicenceNumber:"",
+    gender: "",
+    dob: "",
+    fees: "",
+    address1: "",
+    city: "",
+    state: "",
+    country: "",
+    postalCode: "",
+    specialization: "",
+    education: "",
+    yearOfExperience: "",
+    licenceNumber: "",
+    yearLicenceNumber: "",
   });
 
   const countWords = (text) => {
@@ -205,50 +207,250 @@ export default function DoctorProfile() {
     const isAuthenticated = localStorage.getItem("token");
     const docInfo = JSON.parse(localStorage.getItem("docInfo"));
 
-    if(docInfo){
-    const userId = docInfo.userId._id;
-    
+    if (docInfo) {
+      const userId = docInfo.userId._id;
 
-    setUserName(docInfo.userId?.name || "");
+      setUserName(docInfo.userId?.name || "");
 
-    setEmail(docInfo.userId?.email || "");
-    setPhone(docInfo.userId?.mobileNumber || "");
-    setGender(docInfo?.gender || "");
-    setEducation(docInfo?.educationDetails || "");
-    setAwardsNAchievements(docInfo?.achievement);
-    setAwards(docInfo?.achievement);
-    setLicenceNumber(docInfo?.licenseNumber);
-    setYearLicenceNumber(docInfo?.yearOfIssued);
-    const dobDate = new Date(docInfo?.dob);
-    const day = dobDate.getDate().toString().padStart(2, "0");
-    const month = (dobDate.getMonth() + 1).toString().padStart(2, "0");
-    const year = dobDate.getFullYear();
-    const formattedDate = `${day}-${month}-${year}`;
-    console.log(formattedDate);
-    // setDOB(result?.dob || '');
-    setDOB(formattedDate);
-    setFees(docInfo?.fees || "");
-    setAboutMe(docInfo?.about || "");
-    setClinicName(docInfo?.clinicName || "");
-    setClinicAddress(docInfo?.clinicAddress || "");
-    setAddress1(docInfo?.addressLine1 || "");
-    setAddress2(docInfo?.addressLine2 || "");
-    setState(docInfo?.state);
-    setCity(docInfo?.city || "");
-    setCountry(docInfo?.contry || "");
-    setPostalCode(docInfo?.zip || "");
-    setSpecialization(docInfo?.specialization || "");
-    setYearOfExperience(docInfo?.yearOfExperience || "");
-  }else{
-
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    setUserName(userInfo?.name);
-    setPhone(userInfo?.mobileNumber);
-    setEmail(userInfo?.email);
-  }
+      setEmail(docInfo.userId?.email || "");
+      setPhone(docInfo.userId?.mobileNumber || "");
+      setGender(docInfo?.gender || "");
+      setEducation(docInfo?.educationDetails || "");
+      setAwardsNAchievements(docInfo?.achievement);
+      setAwards(docInfo?.achievement);
+      setLicenceNumber(docInfo?.licenseNumber);
+      setYearLicenceNumber(docInfo?.yearOfIssued);
+      const dobDate = new Date(docInfo?.dob);
+      const day = dobDate.getDate().toString().padStart(2, "0");
+      const month = (dobDate.getMonth() + 1).toString().padStart(2, "0");
+      const year = dobDate.getFullYear();
+      const formattedDate = `${day}-${month}-${year}`;
+      console.log(formattedDate);
+      // setDOB(result?.dob || '');
+      setDOB(formattedDate);
+      setFees(docInfo?.fees || "");
+      setAboutMe(docInfo?.about || "");
+      setClinicName(docInfo?.clinicName || "");
+      setClinicAddress(docInfo?.clinicAddress || "");
+      setAddress1(docInfo?.addressLine1 || "");
+      setAddress2(docInfo?.addressLine2 || "");
+      setState(docInfo?.state);
+      setCity(docInfo?.city || "");
+      setCountry(docInfo?.contry || "");
+      setPostalCode(docInfo?.zip || "");
+      setSpecialization(docInfo?.specialization || "");
+      setYearOfExperience(docInfo?.yearOfExperience || "");
+    } else {
+      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+      setUserName(userInfo?.name);
+      setPhone(userInfo?.mobileNumber);
+      setEmail(userInfo?.email);
+    }
   };
 
   const handleSubmit = async () => {
+    const isAuthenticated = localStorage.getItem("token");
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    const docInfo = JSON.parse(localStorage.getItem("docInfo"));
+
+    // console.log(
+    //   // docInfo.userId._id,
+    //   userName,
+    //   yearOfExperience,
+    //   fees,
+    //   dob,
+    //   aboutMe,
+    //   specialization,
+    //   state,
+    //   awardsNAchievements,
+    //   licenceNumber,
+    //   yearLicenceNumber,
+    //   address1,
+    //   address2,
+    //   city,
+    //   postalCode,
+    //   country,
+    //   education,
+    //   clinicName,
+    //   clinicAddress,
+    //   gender
+    // );
+
+    try {
+      const parts = dob.split("-");
+
+      // Rearrange the parts to form the "YYYY-MM-DD" format
+      const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+
+      console.log(formattedDate);
+      if (docInfo) {
+        console.log("1");
+        const updatedDoctor = await axios.put(
+          `https://healthbackend-3xh2.onrender.com/doctor/${docInfo.userId._id}/update`,
+          {
+            userId: docInfo.userId._id,
+            name: userName,
+            yearOfExperience: yearOfExperience,
+            fees: fees,
+            dob: formattedDate,
+            about: aboutMe,
+            specialization: specialization,
+            state: state,
+            achievement: awards,
+            licenseNumber: licenceNumber,
+            yearOfIssued: yearLicenceNumber,
+            addressLine1: address1,
+            addressLine2: address2,
+            city: city,
+            zip: postalCode,
+            contry: country,
+            educationDetails: education,
+            clinicName: clinicName,
+            clinicAddress: clinicAddress,
+            gender: gender,
+          },
+          {
+            headers: {
+              authorization: isAuthenticated,
+            },
+          }
+        );
+
+        console.log(updatedDoctor);
+        localStorage.setItem(
+          "docInfo",
+          JSON.stringify(updatedDoctor.data.result)
+        );
+        // setDoctorInfo(updatedDoctor.data.result);
+        // console.log(doctorInfo);
+        console.log("doctor updated success navigatingto docprofile");
+      } else {
+        console.log(dob);
+        const tempDate = dob;
+        const [day, month, year] = tempDate.split("-");
+        const dateObject = new Date(year, month - 1, day, 12, 0, 0); // Setting time to 12:00:00
+
+        const tempformatted = dateObject.toISOString();
+
+        console.log(formattedDate);
+        const user = await axios.post(
+          `https://healthbackend-3xh2.onrender.com/doctor/create`,
+          {
+            userId: userInfo._id,
+            name: userName,
+            yearOfExperience: yearOfExperience,
+            fees: fees,
+            dob: tempformatted,
+            about: aboutMe,
+            specialization: specialization,
+            state: state,
+            achievement: awards,
+            licenseNumber: licenceNumber,
+            yearOfIssued: yearLicenceNumber,
+            addressLine1: address1,
+            addressLine2: address2,
+            city: city,
+            zip: postalCode,
+            contry: country,
+            educationDetails: education,
+            clinicName: clinicName,
+            clinicAddress: clinicAddress,
+            gender: gender,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: isAuthenticated,
+            },
+          }
+        );
+
+        console.log(user);
+        localStorage.setItem(
+          "docInfo",
+          JSON.stringify(user.data.result.doctor)
+        );
+
+        toast("Profile Created Successfully");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+
+    // Validation logic
+    let errorsObj = {};
+
+    if (!gender || gender === "Select") {
+      errorsObj.gender = "Gender is required";
+    }
+
+    if (!dob.trim()) {
+      errorsObj.dob = "Date Of Birth is required";
+    }
+
+    if (!fees) {
+      errorsObj.fees = "Fees is required";
+    }
+    if (!address1 || !address1.trim()) {
+      errorsObj.address1 = "Address is required";
+    }
+    if (!city || !city.trim()) {
+      errorsObj.city = "City is required";
+    }
+    if (!state || !state.trim()) {
+      errorsObj.state = "State is required";
+    }
+    if (!country || !country.trim()) {
+      errorsObj.country = "Country is required";
+    }
+    if (!postalCode) {
+      errorsObj.postalCode = "Postal Code is required";
+    }
+    if (!specialization || !specialization.trim()) {
+      errorsObj.specialization = "Specialization is required";
+    }
+    const isEducationValid = education.some(
+      (edu) =>
+        edu.qualification.trim() !== "" ||
+        edu.collegeName.trim() !== "" ||
+        edu.yearOfCompletion.trim() !== ""
+    );
+    if (!isEducationValid) {
+      errorsObj.education = "Education is required";
+    }
+    if (!yearOfExperience || isNaN(yearOfExperience)) {
+      errorsObj.yearOfExperience = "Experience is required";
+    }
+    if (!licenceNumber || isNaN(yearLicenceNumber)) {
+      errorsObj.licenceNumber = "Licence  is required";
+    }
+    if (!yearLicenceNumber || isNaN(yearLicenceNumber)) {
+      errorsObj.yearLicenceNumber = "Year Of Issued is required";
+    }
+
+    // Add other validation rules
+
+    if (Object.keys(errorsObj).length > 0) {
+      setErrors(errorsObj);
+      return; // Prevent form submission if there are errors
+    }
+
+    // If validation passes, submit the form
     const isAuthenticated = localStorage.getItem("token");
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     const docInfo = JSON.parse(localStorage.getItem("docInfo"));
@@ -367,188 +569,6 @@ export default function DoctorProfile() {
     }
   };
 
-
-
-  const handleFormSubmit = async(e) => {
-    e.preventDefault();
-
-    // Validation logic
-    let errorsObj = {};
-
-    if (!gender || gender === "Select") {
-      errorsObj.gender = "Gender is required";
-    }
-
-    if (!dob.trim()) {
-      errorsObj.dob = "Date Of Birth is required";
-    }
-
-    if (!fees) {
-      errorsObj.fees = "Fees is required";
-    }
-    if (!address1 || !address1.trim()) {
-      errorsObj.address1 = "Address is required";
-    }
-    if (!city || !city.trim()) {
-      errorsObj.city = "City is required";
-    }
-    if (!state || !state.trim()) {
-      errorsObj.state = "State is required";
-    }
-    if (!country || !country.trim()) {
-      errorsObj.country = "Country is required";
-    }
-    if (!postalCode) {
-      errorsObj.postalCode = "Postal Code is required";
-    }
-    if (!specialization || !specialization.trim()) {
-      errorsObj.specialization = "Specialization is required";
-    }
-    const isEducationValid = education.some(
-      edu => edu.qualification.trim() !== '' || 
-             edu.collegeName.trim() !== '' || 
-             edu.yearOfCompletion.trim() !== ''
-    );
-    if (!isEducationValid) {
-      errorsObj.education = "Education is required";
-    }
-    if (!yearOfExperience ||  isNaN(yearOfExperience)) {
-      errorsObj.yearOfExperience = "Experience is required";
-    }
-    if (!licenceNumber ||  isNaN(yearLicenceNumber)) {
-      errorsObj.licenceNumber = "Licence  is required";
-    }
-    if (!yearLicenceNumber || isNaN(yearLicenceNumber)) {
-      errorsObj.yearLicenceNumber = "Year Of Issued is required";
-    }
-    
-
-    // Add other validation rules
-
-    if (Object.keys(errorsObj).length > 0) {
-      setErrors(errorsObj);
-      return; // Prevent form submission if there are errors
-    }
-
-    // If validation passes, submit the form
-      const isAuthenticated = localStorage.getItem("token");
-      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-      const docInfo = JSON.parse(localStorage.getItem("docInfo"));
-  
-      console.log(
-        // docInfo.userId._id,
-        userName,
-        yearOfExperience,
-        fees,
-        dob,
-        aboutMe,
-        specialization,
-        state,
-        awardsNAchievements,
-        licenceNumber,
-        yearLicenceNumber,
-        address1,
-        address2,
-        city,
-        postalCode,
-        country,
-        education,
-        clinicName,
-        clinicAddress,
-        gender
-      );
-  
-      try {
-        const parts = dob.split("-");
-  
-        // Rearrange the parts to form the "YYYY-MM-DD" format
-        const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
-  
-        console.log(formattedDate);
-        if (docInfo) {
-          console.log("1");
-          const updatedDoctor = await axios.put(
-            `https://healthbackend-3xh2.onrender.com/doctor/${docInfo.userId._id}/update`,
-            {
-              userId: docInfo.userId._id,
-              name: userName,
-              yearOfExperience: yearOfExperience,
-              fees: fees,
-              dob: formattedDate,
-              about: aboutMe,
-              specialization: specialization,
-              state: state,
-              achievement: awards,
-              licenseNumber: licenceNumber,
-              yearOfIssued: yearLicenceNumber,
-              addressLine1: address1,
-              addressLine2: address2,
-              city: city,
-              zip: postalCode,
-              contry: country,
-              educationDetails: education,
-              clinicName: clinicName,
-              clinicAddress: clinicAddress,
-              gender: gender,
-            },
-            {
-              headers: {
-                authorization: isAuthenticated,
-              },
-            }
-          );
-          console.log(updatedDoctor);
-          localStorage.setItem(
-            "docInfo",
-            JSON.stringify(updatedDoctor.data.result)
-          );
-          // setDoctorInfo(updatedDoctor.data.result);
-          // console.log(doctorInfo);
-          console.log("doctor updated success navigatingto docprofile");
-        } else {
-          const user = await axios.post(
-            `https://healthbackend-3xh2.onrender.com/doctor/create`,
-            {
-              userId: userInfo._id,
-              name: userName,
-              yearOfExperience: yearOfExperience,
-              fees: fees,
-              dob: dob,
-              about: aboutMe,
-              specialization: specialization,
-              state: state,
-              achievement: awards,
-              licenseNumber: licenceNumber,
-              yearOfIssued: yearLicenceNumber,
-              addressLine1: address1,
-              addressLine2: address2,
-              city: city,
-              zip: postalCode,
-              contry: country,
-              educationDetails: education,
-              clinicName: clinicName,
-              clinicAddress: clinicAddress,
-              gender: gender,
-            },
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: isAuthenticated,
-              },
-            }
-          );
-  
-          console.log(user);
-          localStorage.setItem(
-            "docInfo",
-            JSON.stringify(user.data.result.doctor)
-          );
-        }
-      } catch (error) {
-        console.log(error);
-      }
-  };
-
   const handleLogout = () => {
     console.log("in here");
     const userInfo = localStorage.getItem("userInfo");
@@ -572,8 +592,8 @@ export default function DoctorProfile() {
   useEffect(() => {
     const doctorInfo = JSON.parse(localStorage.getItem("docInfo"));
     // Error in _id
-    if(doctorInfo){
-    setDoctorInfo(doctorInfo);
+    if (doctorInfo) {
+      setDoctorInfo(doctorInfo);
     }
   }, []);
 
@@ -617,16 +637,18 @@ export default function DoctorProfile() {
                       />
                     </a>
                     <div className="profile-det-info">
-                        <h3>Dr. {doctorInfo?.userId?.name}</h3>
-                        <div className="patient-details ">
-                          <h5 className="mb-0 ">
-                          {doctorInfo && doctorInfo?.educationDetails && doctorInfo?.educationDetails.map((edu, index) => (
-                          <p  key={index}>{edu.qualification}</p>
-                          ))}
-                           {/* &amp; {doctorInfo?.specialization} */}
-                          </h5>
-                        </div>
+                      <h3>Dr. {doctorInfo?.userId?.name}</h3>
+                      <div className="patient-details ">
+                        <h5 className="mb-0 ">
+                          {doctorInfo &&
+                            doctorInfo?.educationDetails &&
+                            doctorInfo?.educationDetails.map((edu, index) => (
+                              <p key={index}>{edu.qualification}</p>
+                            ))}
+                          {/* &amp; {doctorInfo?.specialization} */}
+                        </h5>
                       </div>
+                    </div>
                   </div>
                 </div>
                 <div className="dashboard-widget">
@@ -675,593 +697,640 @@ export default function DoctorProfile() {
                         </Link>
                       </li>
                       <li>
-                          <Link to="/login" onClick={handleLogout}>
-                            <i className="fas fa-sign-out-alt" />
-                            <span>Logout</span>
-                          </Link>
-                        </li>
+                        <Link to="/login" onClick={handleLogout}>
+                          <i className="fas fa-sign-out-alt" />
+                          <span>Logout</span>
+                        </Link>
+                      </li>
                     </ul>
                   </nav>
                 </div>
               </div>
             </div>
             <div className="col-md-7 col-lg-8 col-xl-9">
+              <ToastContainer />
               <form onSubmit={handleFormSubmit}>
-              <div className="card">
-                <div className="card-body">
-                  <h4 className="card-title">Basic Information</h4>
-                  <div className="row">
-                    <div className="col-md-12">
-                      <div className="mb-3">
-                        <div className="change-avatar">
-                          <div className="profile-img">
-                            <img
-                              src="assets/img/doctors/doctor-thumb-02.jpg"
-                              alt="User Image"
-                            />
-                          </div>
-                          <div className="upload-img">
-                            <div className="change-photo-btn">
-                              <span>
-                                <i className="fa fa-upload" /> Upload Photo
-                              </span>
-                              <input type="file" className="upload" />
+                <div className="card">
+                  <div className="card-body">
+                    <h4 className="card-title">Basic Information</h4>
+                    <div className="row">
+                      <div className="col-md-12">
+                        <div className="mb-3">
+                          <div className="change-avatar">
+                            <div className="profile-img">
+                              <img
+                                src="assets/img/doctors/doctor-thumb-02.jpg"
+                                alt="User Image"
+                              />
                             </div>
-                            <small className="form-text text-muted">
-                              Allowed JPG, GIF or PNG. Max size of 2MB
-                            </small>
+                            <div className="upload-img">
+                              <div className="change-photo-btn">
+                                <span>
+                                  <i className="fa fa-upload" /> Upload Photo
+                                </span>
+                                <input type="file" className="upload" />
+                              </div>
+                              <small className="form-text text-muted">
+                                Allowed JPG, GIF or PNG. Max size of 2MB
+                              </small>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                   
-                    <div className="col-md-6">
-                      <div className="mb-3">
-                        <label className="mb-2">
-                          Username <span className="text-danger">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          onChange={(e) => setUserName(e.target.value)}
-                          value={userName}
-                          className="form-control"
-                          readOnly=""
-                        />
-                        
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="mb-3">
-                        <label className="mb-2">
-                          Email <span className="text-danger">*</span>
-                        </label>
-                        <input
-                          type="email"
-                          onChange={(e) => setEmail(e.target.value)}
-                          value={email}
-                          className="form-control"
-                          readOnly=""
-                        />
-                      </div>
-                    </div>
 
-                    <div className="col-md-6">
-                      <div className="mb-3">
-                        <label className="mb-2">
-                          Phone Number<span className="text-danger"> *</span>
-                        </label>
-                        <input
-                          type="text"
-                          onChange={(e) => setPhone(e.target.value)}
-                          value={phone}
-                          className="form-control"
-                        />
+                      <div className="col-md-6">
+                        <div className="mb-3">
+                          <label className="mb-2">
+                            Username <span className="text-danger">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            onChange={(e) => setUserName(e.target.value)}
+                            value={userName}
+                            className="form-control"
+                            readOnly=""
+                          />
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="mb-3">
-                        <label className="mb-2">
-                          Gender<span className="text-danger"> *</span>
-                        </label>
-                        <select
-                          onChange={(e) => setGender(e.target.value)}
-                          value={gender}
-                          className="form-select form-control">
-                          {console.log(gender)}
-                          <option>Select</option>
-                          <option>Male</option>
-                          <option>Female</option>
-                        </select>
-                        {errors.gender && (
-            <span style={{ color: "red",fontSize: "13px" }}>{errors.gender}</span>
-          )}
+                      <div className="col-md-6">
+                        <div className="mb-3">
+                          <label className="mb-2">
+                            Email <span className="text-danger">*</span>
+                          </label>
+                          <input
+                            type="email"
+                            onChange={(e) => setEmail(e.target.value)}
+                            value={email}
+                            className="form-control"
+                            readOnly=""
+                          />
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="mb-0">
-                        <label className="mb-2">
-                          Date of Birth<span className="text-danger"> *</span>
-                        </label>
-                        <input
-                          type="date"
-                          onChange={(e) => setDOB(e.target.value)}
-                          value={dob}
-                          className="form-control"
-                        />
-                         {errors.dob && (
-            <span style={{ color: "red",fontSize: "13px" }}>{errors.dob}</span>
-          )}
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="mb-0">
-                        <label className="mb-2">
-                          Fees<span className="text-danger"> *</span>
-                        </label>
-                        <input
-                          type="number"
-                          onChange={(e) => setFees(e.target.value)}
-                          value={fees}
-                          className="form-control"
-                        />
-                         {errors.fees && (
-            <span style={{ color: "red" ,fontSize: "13px"}}>{errors.fees}</span>
-          )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="card">
-                <div className="card-body">
-                  <h4 className="card-title">About Me</h4>
-                  <div className="mb-0">
-                    <label className="mb-2">Biography</label>
-                    <textarea
-                      className="form-control"
-                      onChange={handleAboutRemainingChange}
-                      value={aboutMe}
-                      rows={5}
-                    />
-                    <p className=" " style={{color:"red",fontSize: "13px"}}>Words remaining: {remainingWords}</p>
-                  </div>
-                </div>
-              </div>
-              <div className="card">
-                <div className="card-body">
-                  <h4 className="card-title">Clinic Info</h4>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="mb-3">
-                        <label className="mb-2">Clinic Name</label>
-                        <input
-                          type="text"
-                          onChange={(e) => setClinicName(e.target.value)}
-                          value={clinicName}
-                          className="form-control"
-                        />
-                         {errors.clinicName && (
-            <span style={{ color: "red",fontSize: "13px"}}>{errors.clinicName}</span>
-          )}
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="mb-3">
-                        <label className="mb-2">Clinic Address</label>
-                        <input
-                          type="text"
-                          onChange={(e) => setClinicAddress(e.target.value)}
-                          value={clinicAddress}
-                          className="form-control"
-                        />
-                         {errors.clinicAddress && (
-            <span style={{ color: "red",fontSize: "13px" }}>{errors.clinicAddress}</span>
-          )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="card ">
-                <div className="card-body">
-                  <h4 className="card-title">Address</h4>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="mb-3">
-                        <label className="mb-2">
-                          Address Line 1<span className="text-danger"> *</span>
-                        </label>
-                        <input
-                          type="text"
-                          onChange={(e) => setAddress1(e.target.value)}
-                          value={address1}
-                          className="form-control"
-                        />
-                         {errors.address1 && (
-            <span style={{ color: "red" ,fontSize: "13px"}}>{errors.address1}</span>
-          )}
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="mb-3">
-                        <label className="control-label">Address Line 2</label>
-                        <input
-                          type="text"
-                          onChange={(e) => setAddress2(e.target.value)}
-                          value={address2}
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="mb-3">
-                        <label className="control-label">
-                          City<span className="text-danger"> *</span>
-                        </label>
-                        <input
-                          type="text"
-                          onChange={(e) => setCity(e.target.value)}
-                          value={city}
-                          className="form-control"
-                        />
-                         {errors.city && (
-            <span style={{ color: "red",fontSize: "13px" }}>{errors.city}</span>
-          )}
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="mb-3">
-                        <label className="control-label">
-                          State / Province
-                          <span className="text-danger"> *</span>
-                        </label>
-                        <input
-                          type="text"
-                          onChange={(e) => setState(e.target.value)}
-                          value={state}
-                          className="form-control"
-                        />
-                         {errors.state && (
-            <span style={{ color: "red",fontSize: "13px" }}>{errors.state}</span>
-          )}
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="mb-3">
-                        <label className="control-label">
-                          Country<span className="text-danger"> *</span>
-                        </label>
-                        <input
-                          type="text"
-                          onChange={(e) => setCountry(e.target.value)}
-                          value={country}
-                          className="form-control"
-                        />
-                         {errors.country && (
-            <span style={{ color: "red" ,fontSize: "13px"}}>{errors.country}</span>
-          )}
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="mb-3">
-                        <label className="control-label">
-                          Postal Code<span className="text-danger"> *</span>
-                        </label>
-                        <input
-                          type="number"
-                          onChange={(e) => setPostalCode(e.target.value)}
-                          value={postalCode}
-                          className="form-control"
-                        />
-                         {errors.postalCode && (
-            <span style={{ color: "red",fontSize: "13px" }}>{errors.postalCode}</span>
-          )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
 
-              <div className="card services-card">
-                <div className="card-body">
-                  <h4 className="card-title">Specialization<span className="text-danger"> *</span></h4>
-
-                  <div className="mb-0">
-                    <input
-                      className="input-tags form-control"
-                      type="text"
-                      data-role="tagsinput"
-                      placeholder="Enter Specialization"
-                      name="specialist"
-                      id="specialist"
-                      onChange={(e) => setSpecialization(e.target.value)}
-                      value={specialization}
-                    />
-                     {errors.specialization && (
-            <span style={{ color: "red",fontSize: "13px" }}>{errors.specialization}</span>
-          )}
+                      <div className="col-md-6">
+                        <div className="mb-3">
+                          <label className="mb-2">
+                            Phone Number<span className="text-danger"> *</span>
+                          </label>
+                          <input
+                            type="text"
+                            onChange={(e) => setPhone(e.target.value)}
+                            value={phone}
+                            className="form-control"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="mb-3">
+                          <label className="mb-2">
+                            Gender<span className="text-danger"> *</span>
+                          </label>
+                          <select
+                            onChange={(e) => setGender(e.target.value)}
+                            value={gender}
+                            className="form-select form-control">
+                            <option>Select</option>
+                            <option>Male</option>
+                            <option>Female</option>
+                          </select>
+                          {errors.gender && (
+                            <span style={{ color: "red", fontSize: "13px" }}>
+                              {errors.gender}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="mb-0">
+                          <label className="mb-2">
+                            Date of Birth<span className="text-danger"> *</span>
+                          </label>
+                          <input
+                            type="date"
+                            onChange={(e) => setDOB(e.target.value)}
+                            value={dob}
+                            className="form-control"
+                          />
+                          {errors.dob && (
+                            <span style={{ color: "red", fontSize: "13px" }}>
+                              {errors.dob}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="mb-0">
+                          <label className="mb-2">
+                            Fees<span className="text-danger"> *</span>
+                          </label>
+                          <input
+                            type="number"
+                            onChange={(e) => setFees(e.target.value)}
+                            value={fees}
+                            className="form-control"
+                          />
+                          {errors.fees && (
+                            <span style={{ color: "red", fontSize: "13px" }}>
+                              {errors.fees}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="card">
-                <div className="card-body">
-                  <h4 className="card-title">Education</h4>
-                  {education.map((edu, index) => (
-                    <div className="education-info" key={index}>
-                      <div className="row education-cont">
+                <div className="card">
+                  <div className="card-body">
+                    <h4 className="card-title">About Me</h4>
+                    <div className="mb-0">
+                      <label className="mb-2">Biography</label>
+                      <textarea
+                        className="form-control"
+                        onChange={handleAboutRemainingChange}
+                        value={aboutMe}
+                        rows={5}
+                      />
+                      <p
+                        className=" "
+                        style={{ color: "red", fontSize: "13px" }}>
+                        Words remaining: {remainingWords}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="card">
+                  <div className="card-body">
+                    <h4 className="card-title">Clinic Info</h4>
+                    <div className="row">
+                      <div className="col-md-6">
+                        <div className="mb-3">
+                          <label className="mb-2">Clinic Name</label>
+                          <input
+                            type="text"
+                            onChange={(e) => setClinicName(e.target.value)}
+                            value={clinicName}
+                            className="form-control"
+                          />
+                          {errors.clinicName && (
+                            <span style={{ color: "red", fontSize: "13px" }}>
+                              {errors.clinicName}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="mb-3">
+                          <label className="mb-2">Clinic Address</label>
+                          <input
+                            type="text"
+                            onChange={(e) => setClinicAddress(e.target.value)}
+                            value={clinicAddress}
+                            className="form-control"
+                          />
+                          {errors.clinicAddress && (
+                            <span style={{ color: "red", fontSize: "13px" }}>
+                              {errors.clinicAddress}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="card ">
+                  <div className="card-body">
+                    <h4 className="card-title">Address</h4>
+                    <div className="row">
+                      <div className="col-md-6">
+                        <div className="mb-3">
+                          <label className="mb-2">
+                            Address Line 1
+                            <span className="text-danger"> *</span>
+                          </label>
+                          <input
+                            type="text"
+                            onChange={(e) => setAddress1(e.target.value)}
+                            value={address1}
+                            className="form-control"
+                          />
+                          {errors.address1 && (
+                            <span style={{ color: "red", fontSize: "13px" }}>
+                              {errors.address1}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="mb-3">
+                          <label className="control-label">
+                            Address Line 2
+                          </label>
+                          <input
+                            type="text"
+                            onChange={(e) => setAddress2(e.target.value)}
+                            value={address2}
+                            className="form-control"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="mb-3">
+                          <label className="control-label">
+                            City<span className="text-danger"> *</span>
+                          </label>
+                          <input
+                            type="text"
+                            onChange={(e) => setCity(e.target.value)}
+                            value={city}
+                            className="form-control"
+                          />
+                          {errors.city && (
+                            <span style={{ color: "red", fontSize: "13px" }}>
+                              {errors.city}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="mb-3">
+                          <label className="control-label">
+                            State / Province
+                            <span className="text-danger"> *</span>
+                          </label>
+                          <input
+                            type="text"
+                            onChange={(e) => setState(e.target.value)}
+                            value={state}
+                            className="form-control"
+                          />
+                          {errors.state && (
+                            <span style={{ color: "red", fontSize: "13px" }}>
+                              {errors.state}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="mb-3">
+                          <label className="control-label">
+                            Country<span className="text-danger"> *</span>
+                          </label>
+                          <input
+                            type="text"
+                            onChange={(e) => setCountry(e.target.value)}
+                            value={country}
+                            className="form-control"
+                          />
+                          {errors.country && (
+                            <span style={{ color: "red", fontSize: "13px" }}>
+                              {errors.country}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="mb-3">
+                          <label className="control-label">
+                            Postal Code<span className="text-danger"> *</span>
+                          </label>
+                          <input
+                            type="number"
+                            onChange={(e) => setPostalCode(e.target.value)}
+                            value={postalCode}
+                            className="form-control"
+                          />
+                          {errors.postalCode && (
+                            <span style={{ color: "red", fontSize: "13px" }}>
+                              {errors.postalCode}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="card services-card">
+                  <div className="card-body">
+                    <h4 className="card-title">
+                      Specialization<span className="text-danger"> *</span>
+                    </h4>
+
+                    <div className="mb-0">
+                      <input
+                        className="input-tags form-control"
+                        type="text"
+                        data-role="tagsinput"
+                        placeholder="Enter Specialization"
+                        name="specialist"
+                        id="specialist"
+                        onChange={(e) => setSpecialization(e.target.value)}
+                        value={specialization}
+                      />
+                      {errors.specialization && (
+                        <span style={{ color: "red", fontSize: "13px" }}>
+                          {errors.specialization}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className="card">
+                  <div className="card-body">
+                    <h4 className="card-title">Education</h4>
+                    {education.map((edu, index) => (
+                      <div className="education-info" key={index}>
+                        <div className="row education-cont">
+                          <div className="col-12 col-md-10 col-lg-11">
+                            <div className="row">
+                              <div className="col-12 col-md-6 col-lg-4">
+                                <div className="mb-3">
+                                  <label className="mb-2">
+                                    Qualification
+                                    <span className="text-danger"> *</span>
+                                  </label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    name="qualification"
+                                    value={edu.qualification}
+                                    onChange={(e) =>
+                                      handleInputChange(index, e)
+                                    }
+                                  />
+                                  {errors.education && (
+                                    <span
+                                      style={{
+                                        color: "red",
+                                        fontSize: "13px",
+                                      }}>
+                                      {errors.education}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                              <div className="col-12 col-md-6 col-lg-4">
+                                <div className="mb-3">
+                                  <label className="mb-2">
+                                    College/Institute
+                                    <span className="text-danger"> *</span>
+                                  </label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    name="collegeName"
+                                    value={edu.collegeName}
+                                    onChange={(e) =>
+                                      handleInputChange(index, e)
+                                    }
+                                  />
+                                </div>
+                              </div>
+                              <div className="col-12 col-md-6 col-lg-4">
+                                <div className="mb-3">
+                                  <label className="mb-2">
+                                    Year of Completion
+                                    <span className="text-danger"> *</span>
+                                  </label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    name="yearOfCompletion"
+                                    value={edu.yearOfCompletion}
+                                    onChange={(e) =>
+                                      handleInputChange(index, e)
+                                    }
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        {index !== 0 && ( // Condition to render the Remove button only for slots after the first one
+                          <div className="remove-education">
+                            <a onClick={() => handleRemoveEducation(index)}>
+                              <i className="fa fa-minus-circle" /> Remove
+                            </a>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                    <div className="add-more mt-2">
+                      <a className="add-education" onClick={handleAddEducation}>
+                        <i className="fa fa-plus-circle" /> Add More
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="card">
+                  <div className="card-body">
+                    <h4 className="card-title">Experience</h4>
+                    {/* {experiences.map((experience, index) => ( */}
+                    <div className="experience-info">
+                      <div className="row experience-cont">
                         <div className="col-12 col-md-10 col-lg-11">
                           <div className="row">
                             <div className="col-12 col-md-6 col-lg-4">
                               <div className="mb-3">
                                 <label className="mb-2">
-                                  Qualification
+                                  Years of Experience
                                   <span className="text-danger"> *</span>
                                 </label>
                                 <input
                                   type="text"
                                   className="form-control"
-                                  name="qualification"
-                                  value={edu.qualification}
-                                  onChange={(e) => handleInputChange(index, e)}
+                                  name="hospitalName"
+                                  value={yearOfExperience}
+                                  onChange={(e) =>
+                                    setYearOfExperience(e.target.value)
+                                  }
+                                  // onChange={(event) =>
+                                  //   handleInputChange(index, event)
+                                  // }
                                 />
-                                 {errors.education && (
-            <span style={{ color: "red" ,fontSize: "13px"}}>{errors.education}</span>
-          )}
-                              </div>
-                            </div>
-                            <div className="col-12 col-md-6 col-lg-4">
-                              <div className="mb-3">
-                                <label className="mb-2">
-                                  College/Institute
-                                  <span className="text-danger"> *</span>
-                                </label>
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  name="collegeName"
-                                  value={edu.collegeName}
-                                  onChange={(e) => handleInputChange(index, e)}
-                                />
-                              </div>
-                              
-                            </div>
-                            <div className="col-12 col-md-6 col-lg-4">
-                              <div className="mb-3">
-                                <label className="mb-2">
-                                  Year of Completion
-                                  <span className="text-danger"> *</span>
-                                </label>
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  name="yearOfCompletion"
-                                  value={edu.yearOfCompletion}
-                                  onChange={(e) => handleInputChange(index, e)}
-                                />
-                                
+                                {errors.yearOfExperience && (
+                                  <span
+                                    style={{ color: "red", fontSize: "13px" }}>
+                                    {errors.yearOfExperience}
+                                  </span>
+                                )}
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                      {index !== 0 && ( // Condition to render the Remove button only for slots after the first one
-                        <div className="remove-education">
-                          <a onClick={() => handleRemoveEducation(index)}>
-                            <i className="fa fa-minus-circle" /> Remove
-                          </a>
-                        </div>
-                      )}
                     </div>
-                  ))}
-                  <div className="add-more mt-2">
-                    <a className="add-education" onClick={handleAddEducation}>
-                      <i className="fa fa-plus-circle" /> Add More
-                    </a>
+                    {/* ))} */}
                   </div>
                 </div>
-              </div>
 
-              <div className="card">
-                <div className="card-body">
-                  <h4 className="card-title">Experience</h4>
-                  {/* {experiences.map((experience, index) => ( */}
-                  <div className="experience-info">
-                    <div className="row experience-cont">
-                      <div className="col-12 col-md-10 col-lg-11">
-                        <div className="row">
-                          <div className="col-12 col-md-6 col-lg-4">
+                <div className="card">
+                  <div className="card-body">
+                    <h4 className="card-title">Awards & Achievements</h4>
+                    {awards.map((award, index) => (
+                      <div key={index} className="awards-info">
+                        <div className="row awards-cont">
+                          <div className="col-12 col-md-5">
                             <div className="mb-3">
-                              <label className="mb-2">
-                                Years of Experience
-                                <span className="text-danger"> *</span>
-                              </label>
+                              <label className="mb-2">Awards</label>
                               <input
                                 type="text"
                                 className="form-control"
-                                name="hospitalName"
-                                value={yearOfExperience}
-                                onChange={(e) =>
-                                  setYearOfExperience(e.target.value)
+                                name="name"
+                                value={award.name}
+                                onChange={(event) =>
+                                  handleAwardChange(index, event)
                                 }
-                                // onChange={(event) =>
-                                //   handleInputChange(index, event)
-                                // }
                               />
-                               {errors.yearOfExperience && (
-            <span style={{ color: "red",fontSize: "13px" }}>{errors.yearOfExperience}</span>
-          )}
                             </div>
                           </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  {/* ))} */}
-                </div>
-              </div>
-
-              <div className="card">
-                <div className="card-body">
-                  <h4 className="card-title">Awards & Achievements</h4>
-                  {awards.map((award, index) => (
-                    <div key={index} className="awards-info">
-                      <div className="row awards-cont">
-                        <div className="col-12 col-md-5">
-                          <div className="mb-3">
-                            <label className="mb-2">Awards</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              name="name"
-                              value={award.name}
-                              onChange={(event) =>
-                                handleAwardChange(index, event)
-                              }
-                            />
-                          </div>
-                        </div>
-                        <div className="col-12 col-md-5">
-                          <div className="mb-3">
-                            <label className="mb-2">Year</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              name="year"
-                              value={award.year}
-                              onChange={(event) =>
-                                handleAwardChange(index, event)
-                              }
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      {index !== 0 && (
-                        <div className="row">
-                          <div className="col-12">
+                          <div className="col-12 col-md-5">
                             <div className="mb-3">
-                              <a onClick={() => handleRemoveAward(index)}>
-                                <i className="fa fa-minus-circle" /> Remove
-                              </a>
+                              <label className="mb-2">Year</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="year"
+                                value={award.year}
+                                onChange={(event) =>
+                                  handleAwardChange(index, event)
+                                }
+                              />
                             </div>
                           </div>
                         </div>
-                      )}
-                    </div>
-                  ))}
-                  <div className="add-more">
-                    <a
-                      href="javascript:void(0);"
-                      className="add-experience"
-                      onClick={handleAddAward}>
-                      <i className="fa fa-plus-circle" /> Add More
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div className="card">
-                <div className="card-body">
-                  <h4 className="card-title">Licence </h4>
-                  <div className="registrations-info">
-                    <div className="row reg-cont">
-                      <div className="col-12 col-md-5">
-                        <div className="mb-3">
-                          <label className="mb-2">
-                            Licence number
-                            <span className="text-danger"> *</span>
-                          </label>
-                          <input
-                            type="text"
-                            onChange={(e) => setLicenceNumber(e.target.value)}
-                            value={licenceNumber}
-                            className="form-control"
-                          />
-                           {errors.licenceNumber && (
-            <span style={{ color: "red" ,fontSize: "13px"}}>{errors.licenceNumber}</span>
-          )}
-                        </div>
+                        {index !== 0 && (
+                          <div className="row">
+                            <div className="col-12">
+                              <div className="mb-3">
+                                <a onClick={() => handleRemoveAward(index)}>
+                                  <i className="fa fa-minus-circle" /> Remove
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </div>
-                      <div className="col-12 col-md-5">
-                        <div className="mb-3">
-                          <label className="mb-2">
-                            Year of issue
-                            <span className="text-danger"> *</span>
-                          </label>
-                          <input
-                            type="text"
-                            onChange={(e) =>
-                              setYearLicenceNumber(e.target.value)
-                            }
-                            value={yearLicenceNumber}
-                            className="form-control"
-                          />
-                           {errors.yearOfIssued && (
-            <span style={{ color: "red" ,fontSize: "13px"}}>{errors.yearOfIssued}</span>
-          )}
-                        </div>
-                      </div>
+                    ))}
+                    <div className="add-more">
+                      <a
+                        href="javascript:void(0);"
+                        className="add-experience"
+                        onClick={handleAddAward}>
+                        <i className="fa fa-plus-circle" /> Add More
+                      </a>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="card">
-                <div className="card-body">
-                  <h4 className="card-title">
-                    Certificate<span className="text-danger"> *</span>
-                  </h4>
-                  <div className="row">
-                    <div className="col-lg-12">
-                      <div className="mb-3">
-                        <div className="relative-form">
-                          <label htmlFor="certificateUpload">
-                            Upload Certificate Here
-                          </label>
-                          <div className="relative-file-upload">
+                <div className="card">
+                  <div className="card-body">
+                    <h4 className="card-title">Licence </h4>
+                    <div className="registrations-info">
+                      <div className="row reg-cont">
+                        <div className="col-12 col-md-5">
+                          <div className="mb-3">
+                            <label className="mb-2">
+                              Licence number
+                              <span className="text-danger"> *</span>
+                            </label>
                             <input
-                              type="file"
-                              id="certificateUpload"
-                              onChange={handleFileChange}
-                              accept=".pdf, image/*"
+                              type="text"
+                              onChange={(e) => setLicenceNumber(e.target.value)}
+                              value={licenceNumber}
+                              className="form-control"
                             />
-                            <span>
-                              {fileName
-                                ? `Selected File: ${fileName}`
-                                : "Choose File"}
-                            </span>
+                            {errors.licenceNumber && (
+                              <span style={{ color: "red", fontSize: "13px" }}>
+                                {errors.licenceNumber}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-12 col-md-5">
+                          <div className="mb-3">
+                            <label className="mb-2">
+                              Year of issue
+                              <span className="text-danger"> *</span>
+                            </label>
+                            <input
+                              type="text"
+                              onChange={(e) =>
+                                setYearLicenceNumber(e.target.value)
+                              }
+                              value={yearLicenceNumber}
+                              className="form-control"
+                            />
+                            {errors.yearOfIssued && (
+                              <span style={{ color: "red", fontSize: "13px" }}>
+                                {errors.yearOfIssued}
+                              </span>
+                            )}
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  {filePreview && (
-                    <div>
-                      <h5>Preview</h5>
-                      {fileName.toLowerCase().endsWith(".pdf") ? (
-                        <embed
-                          src={filePreview}
-                          type="application/pdf"
-                          width="100%"
-                          height="500px"
-                        />
-                      ) : (
-                        <img
-                          src={filePreview}
-                          alt="Preview"
-                          style={{ maxWidth: "100%" }}
-                        />
-                      )}
-                    </div>
-                  )}
                 </div>
-              </div>
+                <div className="card">
+                  <div className="card-body">
+                    <h4 className="card-title">
+                      Certificate<span className="text-danger"> *</span>
+                    </h4>
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <div className="mb-3">
+                          <div className="relative-form">
+                            <label htmlFor="certificateUpload">
+                              Upload Certificate Here
+                            </label>
+                            <div className="relative-file-upload">
+                              <input
+                                type="file"
+                                id="certificateUpload"
+                                onChange={handleFileChange}
+                                accept=".pdf, image/*"
+                              />
+                              <span>
+                                {fileName
+                                  ? `Selected File: ${fileName}`
+                                  : "Choose File"}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {filePreview && (
+                      <div>
+                        <h5>Preview</h5>
+                        {fileName.toLowerCase().endsWith(".pdf") ? (
+                          <embed
+                            src={filePreview}
+                            type="application/pdf"
+                            width="100%"
+                            height="500px"
+                          />
+                        ) : (
+                          <img
+                            src={filePreview}
+                            alt="Preview"
+                            style={{ maxWidth: "100%" }}
+                          />
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
 
-              <div className="submit-section submit-btn-bottom">
-                <button
-                  type="submit"
-                  // onClick={handleSubmit}
-                  className="btn btn-primary prime-btn">
-                  Save Changes
-                </button>
-              </div>
+                <div className="submit-section submit-btn-bottom">
+                  <button
+                    type="submit"
+                    // onClick={handleSubmit}
+                    className="btn btn-primary prime-btn">
+                    Save Changes
+                  </button>
+                </div>
               </form>
             </div>
           </div>
