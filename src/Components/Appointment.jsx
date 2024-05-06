@@ -28,10 +28,11 @@ export default function Patientprofile() {
     setObservations([...observations, ""]);
   };
 
-  const deleteObservation = (id) => {
-    setObservations((prevObservations) =>
-      prevObservations.filter((observation) => observation.id !== id)
-    );
+  const deleteObservation = (index) => {
+    
+    const newObservations = [...observations];
+    newObservations.splice(index, 1);
+    setObservations(newObservations);
   };
 
   const handleEditClick = (index) => {
@@ -626,10 +627,9 @@ export default function Patientprofile() {
                                     //   className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
                                     ></textarea>
                                   </td>
-                                  <td className="flex gap-1 border-l-2 mt-2 justify-center">
-                                    {/* <button className="sm:text-white font-bold text-green-500 sm:bg-green-500  p-1 px-2 sm:p-1 sm:px-3 sm:text-sm rounded-lg">Edit</button>
-                                  <button className="sm:text-white font-bold text-red-500 sm:bg-red-500 p-1 px-2 sm:p-1 sm:px-3 sm:text-sm rounded-lg">Delete</button> */}
-                                   <div>
+                                  <td className="flex gap-1 border-l-2 mt-2 justify-center d-flex flex-row">
+                                    {/* <button className="sm:text-white font-bold text-green-500 sm:bg-green-500  p-1 px-2 sm:p-1 sm:px-3 sm:text-sm rounded-lg">Edit</button> */}
+                                    <div>
               <button
                 className="btn btn-primary patient-graph-box"
                 onClick={handleEditClick} 
@@ -639,6 +639,8 @@ export default function Patientprofile() {
                 Edit
               </button>
             </div>
+                                  <button className="btn mb-1 bg-danger-light patient-graph-box" onClick={()=>deleteObservation(index)}>Delete</button>
+                                  
                                     
                                   </td>
                                 </tr>
