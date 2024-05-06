@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Swal from 'sweetalert2';
+import { Bounce, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 const generateTimeSlots = () =>{
@@ -31,6 +33,7 @@ export default function ScheduleTime() {
     friday: [],
     saturday: []
   });
+  const [doctorInfo, setDoctorInfo] = useState("");
 
   // console.log(selectedSlots)
 
@@ -103,11 +106,18 @@ export default function ScheduleTime() {
 
       // console.log(response); 
 
-      Swal.fire({
-        icon: 'success',
-      title: 'Success!',
-      text: 'Time slots updated successfully.',
-      })
+     
+      toast("Time slots updated successfully.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
 
       const doctor = await axios.get(
         `https://healthbackend-3xh2.onrender.com/doctor/${schedule.userId._id}`,
@@ -126,21 +136,47 @@ export default function ScheduleTime() {
       );
 
     } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error!',
-        text: 'Failed to update time slots. Please try again later.',
+      
+      toast.error("Failed to update time slots. Please try again later.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
       });
     }
 
   }
 
+  const handleLogout = () => {
+    console.log("in here");
+    const userInfo = localStorage.getItem("userInfo");
+    if (userInfo) {
+      localStorage.removeItem("userInfo");
+    }
+    const token = localStorage.getItem("token");
+    if (token) {
+      localStorage.removeItem("token");
+    }
+    const docInfo = localStorage.getItem("docInfo");
+    if (docInfo) {
+      localStorage.removeItem("docInfo");
+    }
+  };
+
  
 
   useEffect (()=>{
     const t = JSON.parse(localStorage.getItem('docInfo'))
+    if(t){
     setSchedule(t)
     setSelectedSlots(t.schedules);
+    setDoctorInfo(t)
+    }
   },[])
 
 
@@ -170,6 +206,7 @@ export default function ScheduleTime() {
         <div className="content">
           <div className="container">
             <div className="row">
+        <ToastContainer />
               <div className="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
                 <div className="profile-sidebar">
                   <div className="widget-profile pro-widget-content">
@@ -181,10 +218,13 @@ export default function ScheduleTime() {
                         />
                       </a>
                       <div className="profile-det-info">
-                        <h3>Dr. Darren Elder</h3>
-                        <div className="patient-details">
-                          <h5 className="mb-0">
-                            BDS, MDS - Oral &amp; Maxillofacial Surgery
+                        <h3>Dr. {doctorInfo?.userId?.name}</h3>
+                        <div className="patient-details ">
+                          <h5 className="mb-0 ">
+                          {doctorInfo && doctorInfo?.educationDetails && doctorInfo?.educationDetails.map((edu, index) => (
+                          <p  key={index}>{edu.qualification}</p>
+                          ))}
+                           {/* &amp; {doctorInfo?.specialization} */}
                           </h5>
                         </div>
                       </div>
@@ -199,12 +239,12 @@ export default function ScheduleTime() {
                             <span>Dashboard</span>
                           </Link>
                         </li>
-                        <li>
+                        {/* <li>
                           <Link to="/appointments">
                             <i className="fas fa-calendar-check" />
                             <span>Appointments</span>
                           </Link>
-                        </li>
+                        </li> */}
                         <li className="active">
                           <Link to="/schedule">
                             <i className="fas fa-hourglass-start" />
@@ -236,7 +276,7 @@ export default function ScheduleTime() {
                           </Link>
                         </li>
                         <li>
-                          <Link to="/login">
+                          <Link to="/login" onClick={handleLogout}>
                             <i className="fas fa-sign-out-alt" />
                             <span>Logout</span>
                           </Link>
@@ -364,7 +404,8 @@ export default function ScheduleTime() {
       className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['sunday']?.includes(timeSlot) ? '' : ''}`} 
       key={index}
       onClick={() => handleSlotClick('sunday', timeSlot)}
-      style={{ backgroundColor: selectedSlots['sunday']?.some((s)=>s.time === timeSlot) ? 'green' : '' }}
+      style={{borderColor: selectedSlots['sunday']?.some((s)=>s.time === timeSlot) ? '#42c0fb' : '',color: selectedSlots['sunday']?.some((s)=>s.time === timeSlot) ? '#ffffff' : '',  backgroundColor:selectedSlots['sunday']?.some((s)=>s.time === timeSlot) ?  "#42c0fb":'',
+              border:selectedSlots['sunday']?.some((s)=>s.time === timeSlot) ?  "1px solid #42c0fb":'' }}
     >
       {timeSlot}
     </button>
@@ -391,9 +432,10 @@ export default function ScheduleTime() {
   {generateTimeSlots().map((timeSlot, index) => (
     <button
       className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['monday']?.includes(timeSlot) ? '' : ''}`}
-      key={index}
+      key={index} 
       onClick={() => handleSlotClick('monday', timeSlot)}
-      style={{ backgroundColor: selectedSlots['monday']?.some((s)=>s.time === timeSlot) ? 'green' : '' }}
+      style={{borderColor: selectedSlots['monday']?.some((s)=>s.time === timeSlot) ? '#42c0fb' : '',color: selectedSlots['monday']?.some((s)=>s.time === timeSlot) ? '#ffffff' : '',  backgroundColor:selectedSlots['monday']?.some((s)=>s.time === timeSlot) ?  "#42c0fb":'',
+              border:selectedSlots['monday']?.some((s)=>s.time === timeSlot) ?  "1px solid #42c0fb":'' }}
     >
       {timeSlot}
     </button>
@@ -420,7 +462,8 @@ export default function ScheduleTime() {
       className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['tuesday']?.includes(timeSlot) ? '' : ''}`}
       key={index}
       onClick={() => handleSlotClick('tuesday', timeSlot)}
-      style={{ backgroundColor: selectedSlots['tuesday']?.some((s)=>s.time === timeSlot) ? 'green' : '' }}
+      style={{borderColor: selectedSlots['tuesday']?.some((s)=>s.time === timeSlot) ? '#42c0fb' : '',color: selectedSlots['tuesday']?.some((s)=>s.time === timeSlot) ? '#ffffff' : '',  backgroundColor:selectedSlots['tuesday']?.some((s)=>s.time === timeSlot) ?  "#42c0fb":'',
+      border:selectedSlots['tuesday']?.some((s)=>s.time === timeSlot) ?  "1px solid #42c0fb":'' }}
     >
       {timeSlot}
     </button>
@@ -446,7 +489,8 @@ export default function ScheduleTime() {
       className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['wednesday']?.includes(timeSlot) ? '' : ''}`}
       key={index}
       onClick={() => handleSlotClick('wednesday', timeSlot)}
-      style={{ backgroundColor: selectedSlots['wednesday']?.some((s)=>s.time === timeSlot) ? 'green' : '' }}
+      style={{borderColor: selectedSlots['wednesday']?.some((s)=>s.time === timeSlot) ? '#42c0fb' : '',color: selectedSlots['wednesday']?.some((s)=>s.time === timeSlot) ? '#ffffff' : '',  backgroundColor:selectedSlots['wednesday']?.some((s)=>s.time === timeSlot) ?  "#42c0fb":'',
+              border:selectedSlots['wednesday']?.some((s)=>s.time === timeSlot) ?  "1px solid #42c0fb":'' }}
     >
       {timeSlot}
     </button>
@@ -472,7 +516,8 @@ export default function ScheduleTime() {
       className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['thursday']?.includes(timeSlot) ? '' : ''}`}
       key={index}
       onClick={() => handleSlotClick('thursday', timeSlot)}
-      style={{ backgroundColor: selectedSlots['thursday']?.some((s)=>s.time === timeSlot) ? 'green' : '' }}
+      style={{borderColor: selectedSlots['thursday']?.some((s)=>s.time === timeSlot) ? '#42c0fb' : '',color: selectedSlots['thursday']?.some((s)=>s.time === timeSlot) ? '#ffffff' : '',  backgroundColor:selectedSlots['thursday']?.some((s)=>s.time === timeSlot) ?  "#42c0fb":'',
+              border:selectedSlots['thursday']?.some((s)=>s.time === timeSlot) ?  "1px solid #42c0fb":'' }}
     >
       {timeSlot}
     </button>
@@ -498,7 +543,8 @@ export default function ScheduleTime() {
       className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['friday']?.includes(timeSlot) ? '' : ''}`}
       key={index}
       onClick={() => handleSlotClick('friday', timeSlot)}
-      style={{ backgroundColor: selectedSlots['friday']?.some((s)=>s.time === timeSlot) ? 'green' : '' }}
+      style={{borderColor: selectedSlots['friday']?.some((s)=>s.time === timeSlot) ? '#42c0fb' : '',color: selectedSlots['friday']?.some((s)=>s.time === timeSlot) ? '#ffffff' : '',  backgroundColor:selectedSlots['friday']?.some((s)=>s.time === timeSlot) ?  "#42c0fb":'',
+              border:selectedSlots['friday']?.some((s)=>s.time === timeSlot) ?  "1px solid #42c0fb":'' }}
     >
       {timeSlot}
     </button>
@@ -524,7 +570,8 @@ export default function ScheduleTime() {
       className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['saturday']?.includes(timeSlot) ? '' : ''}`}
       key={index}
       onClick={() => handleSlotClick('saturday', timeSlot)}
-      style={{ backgroundColor: selectedSlots['saturday']?.some((s)=>s.time === timeSlot) ? 'green' : '' }}
+      style={{borderColor: selectedSlots['saturday']?.some((s)=>s.time === timeSlot) ? '#42c0fb' : '',color: selectedSlots['saturday']?.some((s)=>s.time === timeSlot) ? '#ffffff' : '',  backgroundColor:selectedSlots['saturday']?.some((s)=>s.time === timeSlot) ?  "#42c0fb":'',
+              border:selectedSlots['saturday']?.some((s)=>s.time === timeSlot) ?  "1px solid #42c0fb":'' }}
     >
       {timeSlot}
     </button>

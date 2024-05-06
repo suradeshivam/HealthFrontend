@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
@@ -9,9 +10,11 @@ export default function Footer() {
             <div className="col-lg-3 col-md-4">
               <div className="footer-widget footer-about">
                 <div className="footer-logo">
-                  <a href="index.html">
-                    <h4>TwinDoc</h4>
-                  </a>
+                  <Link to={"/"}>
+                    <a>
+                      <h4>TwinDoc</h4>
+                    </a>
+                  </Link>
                 </div>
                 <div className="footer-about-content">
                   <p>
@@ -28,13 +31,13 @@ export default function Footer() {
                     <h2 className="footer-title">For Patients</h2>
                     <ul>
                       <li>
-                        <a href="search.html">Search for Doctors</a>
+                        <a>Search for Doctors</a>
                       </li>
                       <li>
-                        <a href="login.html">Login</a>
+                        <Link to={"/login"}>Login</Link>
                       </li>
                       <li>
-                        <a href="register.html">Register</a>
+                        <Link to={"signup"}>Register</Link>
                       </li>
                     </ul>
                   </div>
@@ -44,13 +47,15 @@ export default function Footer() {
                     <h2 className="footer-title">For Doctors</h2>
                     <ul>
                       <li>
-                        <a href="appointments.html">Appointments</a>
+                        <a>Appointments</a>
                       </li>
                       <li>
-                        <a href="chat.html">Chat</a>
+                        <a>Chat</a>
                       </li>
                       <li>
-                        <a href="login.html">Login</a>
+                        <Link to={"/login"}>
+                          <a>Login</a>
+                        </Link>
                       </li>
                     </ul>
                   </div>
@@ -72,13 +77,7 @@ export default function Footer() {
                       </div>
                       <div className="footer-address mb-0">
                         <p>
-                          <i className="feather-mail" />{" "}
-                          <a
-                            href="https://TwinDoc.dreamstechnologies.com/cdn-cgi/l/email-protection"
-                            className="__cf_email__"
-                            data-cfemail="dbbfb4b8b8aea9be9bbea3bab6abb7bef5b8b4b6">
-                            [email&nbsp;protected]
-                          </a>
+                          <i className="feather-mail" /> <a>email</a>
                         </p>
                       </div>
                     </div>
@@ -130,7 +129,6 @@ export default function Footer() {
           </div>
         </div>
       </div>
-
     </footer>
   );
 }

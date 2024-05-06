@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import { Bounce, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function LoginDoctor() {
   const {
@@ -18,6 +20,7 @@ export default function LoginDoctor() {
 
   const onSubmit = useCallback(
     async (data) => {
+      toast("Please wait while we are fetching your data");
       // setLoading(true);
 
       try {
@@ -37,30 +40,36 @@ export default function LoginDoctor() {
         // Saving TOken
         await localStorage.setItem("token", response.data.result.token);
 
-        const doctor = await axios.get(
-          `https://healthbackend-3xh2.onrender.com/doctor/${user._id}`,
+        if (user.createdProfile) {
+          const doctor = await axios.get(
+            `https://healthbackend-3xh2.onrender.com/doctor/${user._id}`,
 
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: response.data.result.token,
-            },
-          }
-        );
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: response.data.result.token,
+              },
+            }
+          );
 
-        // Store the token securely
-        await localStorage.setItem(
-          "docInfo",
-          JSON.stringify(doctor.data.result.doctor)
-        );
+          toast("Data fetched successfully");
+          // Store the token securely
+          await localStorage.setItem(
+            "docInfo",
+            JSON.stringify(doctor.data.result.doctor)
+          );
+        } else {
+          toast("Data fetched successfully");
+          await localStorage.setItem("userInfo", JSON.stringify(user));
+        }
 
         // setLoading(false);
         // setIsLoggedIn(true);
 
-        console.log("Token ", response.data.result.token);
+        // console.log("Token ", response.data.result.token);
 
         // Check the role from the response data
-        const role = response.data.result.user.role;
+        const role = user.role;
         // console.log(role)
 
         // Redirect user based on the role
@@ -76,6 +85,17 @@ export default function LoginDoctor() {
       } catch (error) {
         // setLoading(false);
         console.error("Error submitting form:", error);
+        toast.error(error.response.data.message, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
         // Handle error, show error message, etc.
       }
     },
@@ -90,6 +110,7 @@ export default function LoginDoctor() {
       <div className="content top-space">
         <div className="container-fluid">
           <div className="row">
+            <ToastContainer />
             <div className="col-md-8 offset-md-2">
               <div className="account-content">
                 <div className="row align-items-center justify-content-center">
@@ -107,9 +128,11 @@ export default function LoginDoctor() {
                       </h3>
                     </div>
                     <form onSubmit={handleSubmit(onSubmit)}>
-                      <div className="mb-3 form-focus">
+                      <div className="mb-3 ">
+                        <label className="focus-label">Email</label>
                         <input
                           type="email"
+                          placeholder="Email"
                           {...register("email", {
                             required: "Email is required",
                             pattern: {
@@ -119,12 +142,12 @@ export default function LoginDoctor() {
                           })}
                           className="form-control floating"
                         />
-                        <label className="focus-label">Email</label>
                       </div>
                       <div className="mb-2">
-                        <label className="mt-2">Create Password</label>
+                        <label className="mt-2">Enter Your Password</label>
                         <div className="d-flex">
                           <input
+                            placeholder="Password"
                             type={showPassword ? "text" : "password"}
                             {...register("password", {
                               required: "Password is required",
@@ -153,9 +176,7 @@ export default function LoginDoctor() {
                         </div>
                       </div>
                       <div className="text-end">
-                        <a className="forgot-link" href="forgot-password.html">
-                          Forgot Password ?
-                        </a>
+                        <a className="forgot-link">Forgot Password ?</a>
                       </div>
                       <button
                         className="btn btn-primary w-100 btn-lg login-btn"

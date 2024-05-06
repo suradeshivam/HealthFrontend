@@ -12,7 +12,6 @@ import Appointment from "./Components/Appointment";
 
 // DashBoard
 export default function Dashboard() {
-
   const [showModal, setShowModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
@@ -20,28 +19,41 @@ export default function Dashboard() {
   const [appointments, setAppointments] = useState([]);
   const [upcoming, setUpcoming] = useState([]);
   const [today, setToday] = useState([]);
-  // const [selectedPatient, setSelectedPatient] = useState([]);
-  const { setselectedPatient} = OrderState();
-  const [doctorInfo, setDoctorInfo] = useState('');
-const [isAuthenticated, setIsAuthenticated] = useState('');
+  const { setselectedPatient } = OrderState();
+  const [doctorInfo, setDoctorInfo] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState("");
 
- 
-console.log(upcoming)
+  const [patientSelect, setPatientSelect] = useState(null);
+  let todayCount = 0;
+  let upcomingCount = 0;
+  // console.log(upcoming)
+
+  const handleLogout = () => {
+    console.log("in here");
+    const userInfo = localStorage.getItem("userInfo");
+    if (userInfo) {
+      localStorage.removeItem("userInfo");
+    }
+    const token = localStorage.getItem("token");
+    if (token) {
+      localStorage.removeItem("token");
+    }
+    const docInfo = localStorage.getItem("docInfo");
+    if (docInfo) {
+      localStorage.removeItem("docInfo");
+    }
+  };
 
   const isRescheduleEnabled = (patient) => {
     const patientDateTime = new Date(`${patient.date} ${patient.time}`);
 
-
     const differenceInMinutes = (patientDateTime - currentTime) / (1000 * 60);
-
-
 
     return (
       patientDateTime.toDateString() === currentTime.toDateString() &&
       differenceInMinutes < 60
     );
   };
-
 
   const navigate = useNavigate();
 
@@ -65,19 +77,16 @@ console.log(upcoming)
     navigate(`/room/${roomId}`);
   };
 
-  const handleViewAppointment = (e,patientData) => {
+  const handleViewAppointment = (e, patientData) => {
     e.preventDefault();
     // setSelectedPatientValue(true);
-    setselectedPatient(patientData);
+    //setSelectedPatient(patientData);
   };
 
-  // Api Calling 
+  // Api Calling
 
-
-
-
-// Past data
-  const getAllAppointments = async (id, isAuthenticated,past) => {
+  // Past data
+  const getAllAppointments = async (id, isAuthenticated, past) => {
     try {
       const data = await axios.post(
         "https://healthbackend-3xh2.onrender.com/appointment/appointments",
@@ -95,48 +104,48 @@ console.log(upcoming)
         }
       );
 
-
-      if(past === false){
+      if (past === false) {
         const datastore = data.data.result;
 
         const todayDate = new Date().toLocaleDateString("en-US");
+        console.log(todayDate);
 
         let upcomingArray = [];
         let todayArray = [];
+        // console.log(datastore)
 
         datastore.forEach((data) => {
           // console.log(new Date(data.date).toLocaleDateString("en-US"))
           // console.log(new Date().toLocaleDateString("en-US"))
-          const appointmentDate = new Date(data.date).toLocaleDateString("en-US");
-          if(todayDate === appointmentDate){
+          const appointmentDate = new Date(data.date).toLocaleDateString(
+            "en-US"
+          );
+          console.log(appointmentDate, data.date);
+          if (todayDate === appointmentDate) {
             // console.log(data)
-            todayArray.push(data)
+            todayArray.push(data);
             // setToday((prevToday) => [...prevToday, data])
             // console.log(today)
-          }else{
-            console.log(appointmentDate);
-            upcomingArray.push(data)
+          } else {
+            // console.log(data);
+            upcomingArray.push(data);
             // setUpcoming((prevUpcoming) => [...prevUpcoming, data]);
-            }
-
-            setUpcoming(upcomingArray)
-            setToday(todayArray)
-      })
-
-      }else{
-
-      setAppointments(data.data.result);
-    }
-    console.log(data.data.result);
-    console.log(today)
-    console.log(upcoming)
+          }
+          setUpcoming(upcomingArray);
+          // console.log(upcoming)
+          setToday(todayArray);
+        });
+      } else {
+        setAppointments(data.data.result);
+      }
+      // console.log(data.data.result);
+      // console.log(today)
+      // console.log(upcoming)
       // console.log(appointments);
     } catch (error) {
-      console.log(error); 
+      console.log(error);
     }
   };
-
-
 
   const patients = [
     {
@@ -241,7 +250,7 @@ console.log(upcoming)
       date: "2024-04-29",
       time: "14:00",
     },
-  ]
+  ];
 
   // Pagination Logic
   const [currentPage, setCurrentPage] = useState(1);
@@ -255,16 +264,24 @@ console.log(upcoming)
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  
+  const handlePatientSelect = (patient) => {
+    // console.log(patient)
+    setselectedPatient(patient);
+
+    navigate("/appointment");
+    // console.log(selectedPatient)
+  };
 
   useEffect(() => {
-    const doctorInfo = JSON.parse(localStorage.getItem('docInfo'));
+    const doctorInfo = JSON.parse(localStorage.getItem("docInfo"));
     const isAuthenticated = localStorage.getItem("token");
-    setDoctorInfo(doctorInfo);
     setIsAuthenticated(isAuthenticated);
-    getAllAppointments(doctorInfo._id, isAuthenticated,false);
-  }, [])
-
+    // Error in _id
+    if (doctorInfo) {
+      setDoctorInfo(doctorInfo);
+      getAllAppointments(doctorInfo._id, isAuthenticated, false);
+    }
+  }, []);
 
   return (
     <div>
@@ -288,6 +305,7 @@ console.log(upcoming)
             </div>
           </div>
         </div>
+
         <div className="content">
           <div className="container">
             <div className="row">
@@ -302,10 +320,15 @@ console.log(upcoming)
                         />
                       </a>
                       <div className="profile-det-info">
-                        <h3>Dr. Darren Elder</h3>
-                        <div className="patient-details">
-                          <h5 className="mb-0">
-                            BDS, MDS - Oral &amp; Maxillofacial Surgery
+                        <h3>Dr. {doctorInfo?.userId?.name}</h3>
+                        <div className="patient-details ">
+                          <h5 className="mb-0 ">
+                            {doctorInfo &&
+                              doctorInfo?.educationDetails &&
+                              doctorInfo?.educationDetails.map((edu, index) => (
+                                <p key={index}>{edu.qualification}</p>
+                              ))}
+                            {/* &amp; {doctorInfo?.specialization} */}
                           </h5>
                         </div>
                       </div>
@@ -357,7 +380,7 @@ console.log(upcoming)
                           </Link>
                         </li>
                         <li>
-                          <Link to="/login">
+                          <Link to="/login" onClick={handleLogout}>
                             <i className="fas fa-sign-out-alt" />
                             <span>Logout</span>
                           </Link>
@@ -368,401 +391,453 @@ console.log(upcoming)
                 </div>
               </div>
 
-
               {/* 1 */}
+
               <div className="col-md-7 col-lg-8 col-xl-9">
                 <div className="row">
                   <div className="col-md-12">
                     <div className="card dash-card">
                       <div className="card-body">
-                        <div className="row">
-                          <div className="col-md-12 col-lg-4">
-                            <div className="dash-widget dct-border-rht">
-                              <div className="circle-bar circle-bar1">
-                                <div className="circle-graph1" data-percent={75}>
-                                  <img
-                                    src="assets/img/icon-01.png"
-                                    className="img-fluid"
-                                    alt="patient"
-                                  />
+                        {doctorInfo ? (
+                          <div className="row">
+                            <div className="col-md-12 col-lg-4">
+                              <div className="dash-widget dct-border-rht">
+                                <div className="circle-bar circle-bar1">
+                                  <div
+                                    className="circle-graph1"
+                                    data-percent={75}>
+                                    <img
+                                      src="assets/img/icon-01.png"
+                                      className="img-fluid"
+                                      alt="patient"
+                                    />
+                                  </div>
+                                </div>
+                                <div className="dash-widget-info">
+                                  <h6>Total Patient</h6>
+
+                                  <h3>2</h3>
+                                  <p className="text-muted">Till Today</p>
                                 </div>
                               </div>
-                              <div className="dash-widget-info">
-                                <h6>Total Patient</h6>
-                                <h3>1500</h3>
-                                <p className="text-muted">Till Today</p>
+                            </div>
+                            <div className="col-md-12 col-lg-4">
+                              <div className="dash-widget dct-border-rht">
+                                <div className="circle-bar circle-bar2">
+                                  <div
+                                    className="circle-graph2"
+                                    data-percent={65}>
+                                    <img
+                                      src="assets/img/icon-02.png"
+                                      className="img-fluid"
+                                      alt="Patient"
+                                    />
+                                  </div>
+                                </div>
+                                <div className="dash-widget-info">
+                                  <h6>Today Patient</h6>
+                                  <h3>{1}</h3>
+                                  <p className="text-muted">
+                                    {new Date().toLocaleDateString("en-US")}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-md-12 col-lg-4">
+                              <div className="dash-widget">
+                                <div className="circle-bar circle-bar3">
+                                  <div
+                                    className="circle-graph3"
+                                    data-percent={50}>
+                                    <img
+                                      src="assets/img/icon-03.png"
+                                      className="img-fluid"
+                                      alt="Patient"
+                                    />
+                                  </div>
+                                </div>
+                                <div className="dash-widget-info">
+                                  <h6>Appoinments</h6>
+                                  <h3>2</h3>
+                                  <p className="text-muted">
+                                    {new Date().toLocaleDateString("en-US")}
+                                  </p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                          <div className="col-md-12 col-lg-4">
-                            <div className="dash-widget dct-border-rht">
-                              <div className="circle-bar circle-bar2">
-                                <div className="circle-graph2" data-percent={65}>
-                                  <img
-                                    src="assets/img/icon-02.png"
-                                    className="img-fluid"
-                                    alt="Patient"
-                                  />
-                                </div>
-                              </div>
-                              <div className="dash-widget-info">
-                                <h6>Today Patient</h6>
-                                <h3>160</h3>
-                                <p className="text-muted">06, Nov 2023</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="col-md-12 col-lg-4">
-                            <div className="dash-widget">
-                              <div className="circle-bar circle-bar3">
-                                <div className="circle-graph3" data-percent={50}>
-                                  <img
-                                    src="assets/img/icon-03.png"
-                                    className="img-fluid"
-                                    alt="Patient"
-                                  />
-                                </div>
-                              </div>
-                              <div className="dash-widget-info">
-                                <h6>Appoinments</h6>
-                                <h3>85</h3>
-                                <p className="text-muted">06, Apr 2023</p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                        ) : (
+                          <>
+                            <h1 className="mx-auto text-center">
+                              Your Analytics and Appointments will be Shown Here
+                              !
+                            </h1>
+                            <br />
+                            <h1 className="mx-auto text-center">
+                              Please Create Your Profile !
+                            </h1>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
                 </div>
-
 
                 {/* 2 */}
-                <div className="row">
-                  <div className="col-md-12">
-                    <h4 className="mb-4">Patient Appoinment</h4>
-                    <div className="appointment-tab">
-                      <ul className="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
-                        <li className="nav-item">
-                          <a
-                            className="nav-link active"
-                            href="#upcoming-appointments"
-                            data-bs-toggle="tab">
-                            Today
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a
-                            className="nav-link"
-                            href="#today-appointments"
-                            data-bs-toggle="tab">
-                            Upcoming
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a
-                            className="nav-link"
-                            href="#history-appointments"
-                            data-bs-toggle="tab"
-                            onClick={()=>getAllAppointments(doctorInfo._id, isAuthenticated,true)}
-                            >
-                            History
-                          </a>
-                        </li>
-                      </ul>
-                      <div className="tab-content">
-
-                        {/* Today Appointment Section */}
-                        <div
-                          className="tab-pane show active"
-                          id="upcoming-appointments">
-                          <div className="card card-table mb-0">
-                            <div className="card-body">
-                              <div className="table-responsive">
-                                <table className="table table-hover table-center mb-0">
-                                  <thead>
-                                    <tr>
-                                      <th>Patient Name</th>
-                                      <th>Appt Date</th>
-                                      <th>Action</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {today.map((patient, index) => (
+                {doctorInfo && (
+                  <div className="row">
+                    <div className="col-md-12">
+                      <h4 className="mb-4">Patient Appoinment</h4>
+                      <div className="appointment-tab">
+                        <ul className="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
+                          <li className="nav-item">
+                            <a
+                              className="nav-link active"
+                              href="#upcoming-appointments"
+                              data-bs-toggle="tab">
+                              Today
+                            </a>
+                          </li>
+                          <li className="nav-item">
+                            <a
+                              className="nav-link"
+                              href="#today-appointments"
+                              data-bs-toggle="tab">
+                              Upcoming
+                            </a>
+                          </li>
+                          <li className="nav-item">
+                            <a
+                              className="nav-link"
+                              href="#history-appointments"
+                              data-bs-toggle="tab"
+                              onClick={() =>
+                                getAllAppointments(
+                                  doctorInfo._id,
+                                  isAuthenticated,
+                                  true
+                                )
+                              }>
+                              History
+                            </a>
+                          </li>
+                        </ul>
+                        <div className="tab-content">
+                          {/* Today Appointment Section */}
+                          <div
+                            className="tab-pane show active"
+                            id="upcoming-appointments">
+                            <div className="card card-table mb-0">
+                              <div className="card-body">
+                                <div className="table-responsive">
+                                  <table className="table table-hover table-center mb-0">
+                                    <thead>
                                       <tr>
-                                        <td>
-                                          <h2 className="table-avatar">
-                                            <a
-                                              href="patient-profile.html"
-                                              className="avatar avatar-sm me-2">
-                                              <img
-                                                className="avatar-img rounded-circle"
-                                                src="assets/img/patients/patient.jpg"
-                                                alt="User Image"
-                                              />
-                                            </a>
-                                            <a href="patient-profile.html">
-                                              {patient.patient.userId.name} <span>{patient.patient.userId._id}</span>
-                                            </a>
-                                          </h2>
-                                        </td>
-                                        <td>
-                                          {patient.date
-                                            ? new Date(patient.date).toLocaleDateString("en-US")
-                                            : "Date not available"}{" "}
-                                          <span className="d-block text-info">
+                                        <th>Patient Name</th>
+                                        <th>Appt Date</th>
+                                        <th>Action</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {today.map((patient, index) => (
+                                        <tr>
+                                          <td>
+                                            <h2 className="table-avatar">
+                                              <a
+                                                href="patient-profile.html"
+                                                className="avatar avatar-sm me-2">
+                                                <img
+                                                  className="avatar-img rounded-circle"
+                                                  src="assets/img/patients/patient.jpg"
+                                                  alt="User Image"
+                                                />
+                                              </a>
+                                              <a href="patient-profile.html">
+                                                {patient.patient.userId.name}{" "}
+                                                <span>
+                                                  {patient.patient.userId._id}
+                                                </span>
+                                              </a>
+                                            </h2>
+                                          </td>
+                                          <td>
                                             {patient.date
-                                              ? new Date(patient.date).toLocaleTimeString("en-US")
-                                              : "Time not available"}
-                                          </span>
-                                        </td>
+                                              ? new Date(
+                                                  patient.date
+                                                ).toLocaleDateString("en-US")
+                                              : "Date not available"}{" "}
+                                            <span className="d-block text-info">
+                                              {patient.date
+                                                ? new Date(
+                                                    patient.date
+                                                  ).toLocaleTimeString("en-US")
+                                                : "Time not available"}
+                                            </span>
+                                          </td>
 
-                                        <td style={{ textAlign: "center" }}>
-                                          <div className="table-action" style={{ display: "flex", gap: "1rem" }}>
-                                            <div>
-                                              <form onSubmit={submitCode} className="">
+                                          <td style={{ textAlign: "center" }}>
+                                            <div
+                                              className="table-action"
+                                              style={{
+                                                display: "flex",
+                                                gap: "1rem",
+                                              }}>
+                                              <div>
+                                                <form
+                                                  onSubmit={submitCode}
+                                                  className="">
+                                                  <button className="btn btn-sm bg-success-light">
+                                                    <i className="fas fa-check" />{" "}
+                                                    Join
+                                                  </button>
+                                                </form>
+                                              </div>
+                                              <div className="appointment-action">
                                                 <button
-                                                  className="btn btn-sm bg-success-light">
-                                                  <i className="fas fa-check" /> Join
+                                                  className="btn btn-sm bg-danger-light"
+                                                  data-bs-toggle="modal"
+                                                  data-bs-target="#appt_details"
+                                                  disabled={isRescheduleEnabled(
+                                                    patient
+                                                  )}
+                                                  onClick={() => {
+                                                    setSelectedDate(
+                                                      patient.date
+                                                    );
+                                                    setSelectedTime(
+                                                      patient.time
+                                                    );
+                                                  }}>
+                                                  <i className="fas fa-calendar-alt" />{" "}
+                                                  Reschedule
                                                 </button>
-                                              </form>
-                                            </div>
-                                            <div className="appointment-action">
-                                              <button
-                                                className="btn btn-sm bg-danger-light"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#appt_details"
-                                                disabled={isRescheduleEnabled(patient)}
-                                                onClick={() => {
-                                                  setSelectedDate(patient.date)
-                                                  setSelectedTime(patient.time)
-                                                }}
-                                              >
-                                                <i className="fas fa-calendar-alt" /> Reschedule
-                                              </button>
-                                             
-                                            </div>
-                                            <div>
-                                            <Link to="/appointment" >
-                                              <a
-                                                className="btn btn-sm bg-info-light"
-                                                onClick={() => {
-                                                                 setselectedPatient(patient);
-                                                }
-                                                }
-                                                >
-                                                <i className="far fa-eye" /> View
-                                              </a>
-                                              </Link>
-
-                                            </div>
-                                          </div>
-                                        </td>
-
-
-                                      </tr>
-                                    ))}
-                                    {/* {selectedPatientValue && <Appointment selectedPatient={selectedPatient} />} */}
-                                  </tbody>
-                                </table>
-
-                              </div>
-                            </div>
-                          </div>
-                          <Pagination
-                            itemsPerPage={itemsPerPage}
-                            totalItems={today.length}
-                            paginate={paginate}
-                          />
-                        </div>
-
-                        {/* Upcoming Appointment Section */}
-                        <div className="tab-pane" id="today-appointments">
-                          <div className="card card-table mb-0">
-                            <div className="card-body">
-                              <div className="table-responsive">
-                                <table className="table table-hover table-center mb-0">
-                                  <thead>
-                                    <tr>
-                                      <th>Patient Name</th>
-                                      <th>Appt Date</th>
-
-                                      <th>Action</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {upcoming.map((patient, index) => (
-                                      <tr>
-                                        <td>
-                                          <h2 className="table-avatar">
-                                            <a
-                                              href="patient-profile.html"
-                                              className="avatar avatar-sm me-2">
-                                              <img
-                                                className="avatar-img rounded-circle"
-                                                src="assets/img/patients/patient6.jpg"
-                                                alt="User Image"
-                                              />
-                                            </a>
-                                            <a href="patient-profile.html">
-                                              {patient.name} <span>{patient.id}</span>
-                                            </a>
-                                          </h2>
-                                        </td>
-                                        <td>
-                                          {patient.date
-                                            ? new Date(patient.date).toLocaleDateString("en-US")
-                                            : "Date not available"}{" "}
-                                          <span className="d-block text-info">
-                                            {patient.date
-                                              ? new Date(patient.date).toLocaleTimeString("en-US")
-                                              : "Time not available"}
-                                          </span>
-                                        </td>
-
-                                        <td style={{ textAlign: "center" }}>
-                                          <div className="table-action" style={{ display: "flex", gap: "1rem" }}>
-                                            {/* <div>
-                                              <form onSubmit={submitCode} className="">
+                                              </div>
+                                              <div>
                                                 <button
-                                                  className="btn btn-sm bg-success-light">
-                                                  <i className="fas fa-check" /> Join
+                                                  className="btn btn-sm bg-info-light"
+                                                  onClick={() =>
+                                                    handlePatientSelect(patient)
+                                                  }>
+                                                  <i className="far fa-eye" />{" "}
+                                                  View
                                                 </button>
-                                              </form>
-                                            </div> */}
-                                            <div className="appointment-action">
-
-                                              <button
-                                                className="btn btn-sm bg-danger-light"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#appt_details"
-                                                disabled={isRescheduleEnabled(patient)}
-                                              >
-                                                <i className="fas fa-calendar-alt" /> Reschedule
-                                              </button>
-
-                                              {/* <button
-                                           onClick={() => setShowModal(true)}
-                                          className="btn btn-sm bg-danger-light">
-                                          <i className="fas fa-calendar-alt" /> Reschedule
-                                        </button> */}
-                                              {showModal && <Reschedule closeModal={closeModal} />}
+                                              </div>
                                             </div>
-                                            <div>
-                                              <a
-                                                href="javascript:void(0);"
-                                                className="btn btn-sm bg-info-light">
-                                                <i className="far fa-eye" /> View
-                                              </a>
-
-                                            </div>
-                                          </div>
-                                        </td>
-                                      </tr>
-                                    ))}
-
-
-                                  </tbody>
-                                </table>
-
+                                          </td>
+                                        </tr>
+                                      ))}
+                                      {/* {selectedPatientValue && <Appointment selectedPatient={selectedPatient} />} */}
+                                    </tbody>
+                                  </table>
+                                </div>
                               </div>
                             </div>
+                            <Pagination
+                              itemsPerPage={itemsPerPage}
+                              totalItems={today.length}
+                              paginate={paginate}
+                            />
                           </div>
-                          <Pagination
-                            itemsPerPage={itemsPerPage}
-                            totalItems={upcoming.length}
-                            paginate={paginate}
-                          />
-                        </div>
 
-                        {/* History Section */}
-                        <div className="tab-pane" id="history-appointments">
-                          <div className="card card-table mb-0">
-                            <div className="card-body">
-                              <div className="table-responsive">
-                                <table className="table table-hover table-center mb-0">
-                                  <thead>
-                                    <tr>
-                                      <th>Patient Name</th>
-                                      <th>Appt Date</th>
-
-                                      <th>Action</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {appointments.map((patient, index) => (
+                          {/* Upcoming Appointment Section */}
+                          <div className="tab-pane" id="today-appointments">
+                            <div className="card card-table mb-0">
+                              <div className="card-body">
+                                <div className="table-responsive">
+                                  <table className="table table-hover table-center mb-0">
+                                    <thead>
                                       <tr>
-                                        <td>
-                                          <h2 className="table-avatar">
-                                            <a
-                                              href="patient-profile.html"
-                                              className="avatar avatar-sm me-2">
-                                              <img
-                                                className="avatar-img rounded-circle"
-                                                src="assets/img/patients/patient6.jpg"
-                                                alt="User Image"
-                                              />
-                                            </a>
-                                            <a href="patient-profile.html">
-                                              {patient.name} <span>{patient.id}</span>
-                                            </a>
-                                          </h2>
-                                        </td>
-                                        <td>
-                                          {patient.date
-                                            ? new Date(patient.date).toLocaleDateString("en-US")
-                                            : "Date not available"}{" "}
-                                          <span className="d-block text-info">
-                                            {patient.date
-                                              ? new Date(patient.date).toLocaleTimeString("en-US")
-                                              : "Time not available"}
-                                          </span>
-                                        </td>
+                                        <th>Patient Name</th>
+                                        <th>Appt Date</th>
 
-                                        <td style={{ textAlign: "center" }}>
-                                          <div className="table-action" style={{ display: "flex", gap: "1rem" }}>
-
-
-                                            <div>
-                                              <Link to="/appointment">
-                                              <a
-                                                className="btn btn-sm bg-info-light"
-                                                
-                                                >
-                                                <i className="far fa-eye" /> View
-                                              </a>
-                                              </Link>
-
-                                            </div>
-                                          </div>
-                                        </td>
+                                        <th>Action</th>
                                       </tr>
-                                    ))}
-                                    
-                                  </tbody>
-                                </table>
+                                    </thead>
+                                    <tbody>
+                                      {upcoming.map((patient, index) => (
+                                        <tr key={index}>
+                                          <td>
+                                            <h2 className="table-avatar">
+                                              <a
+                                                href="patient-profile.html"
+                                                className="avatar avatar-sm me-2">
+                                                <img
+                                                  className="avatar-img rounded-circle"
+                                                  src="assets/img/patients/patient6.jpg"
+                                                  alt="User Image"
+                                                />
+                                              </a>
+                                              <a href="patient-profile.html">
+                                                {patient.patient?.userId?.name}{" "}
+                                                <span>
+                                                  {patient.patient?.userId?._id}
+                                                </span>
+                                              </a>
+                                            </h2>
+                                          </td>
+                                          <td>
+                                            {patient.date
+                                              ? new Date(
+                                                  patient.date
+                                                ).toLocaleDateString("en-US")
+                                              : "Date not available"}{" "}
+                                            <span className="d-block text-info">
+                                              {patient.date
+                                                ? new Date(
+                                                    patient.date
+                                                  ).toLocaleTimeString("en-US")
+                                                : "Time not available"}
+                                            </span>
+                                          </td>
 
+                                          <td style={{ textAlign: "center" }}>
+                                            <div
+                                              className="table-action"
+                                              style={{
+                                                display: "flex",
+                                                gap: "1rem",
+                                              }}>
+                                              <div className="appointment-action">
+                                                <button
+                                                  className="btn btn-sm bg-danger-light"
+                                                  data-bs-toggle="modal"
+                                                  data-bs-target="#appt_details"
+                                                  disabled={isRescheduleEnabled(
+                                                    patient
+                                                  )}>
+                                                  <i className="fas fa-calendar-alt" />{" "}
+                                                  Reschedule
+                                                </button>
+
+                                                {showModal && (
+                                                  <Reschedule
+                                                    closeModal={closeModal}
+                                                  />
+                                                )}
+                                              </div>
+                                              {/* <div>
+                                                <button
+                                                  className="btn btn-sm bg-info-light"
+                                                  onClick={() =>
+                                                    handlePatientSelect(patient)
+                                                  }>
+                                                  <i className="far fa-eye" />{" "}
+                                                  View
+                                                </button>
+                                              </div> */}
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      ))}
+                                    </tbody>
+                                  </table>
+                                </div>
                               </div>
                             </div>
+                            <Pagination
+                              itemsPerPage={itemsPerPage}
+                              totalItems={upcoming.length}
+                              paginate={paginate}
+                            />
                           </div>
-                          <Pagination
-                            itemsPerPage={itemsPerPage}
-                            totalItems={appointments.length}
-                            paginate={paginate}
-                          />
+
+                          {/* History Section */}
+                          <div className="tab-pane" id="history-appointments">
+                            <div className="card card-table mb-0">
+                              <div className="card-body">
+                                <div className="table-responsive">
+                                  <table className="table table-hover table-center mb-0">
+                                    <thead>
+                                      <tr>
+                                        <th>Patient Name</th>
+                                        <th>Appt Date</th>
+
+                                        <th>Action</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {appointments[0] &&
+                                        appointments.map((patient, index) => (
+                                          <tr key={index}>
+                                            <td>
+                                              <h2 className="table-avatar">
+                                                <a
+                                                  href="patient-profile.html"
+                                                  className="avatar avatar-sm me-2">
+                                                  <img
+                                                    className="avatar-img rounded-circle"
+                                                    src="assets/img/patients/patient6.jpg"
+                                                    alt="User Image"
+                                                  />
+                                                </a>
+                                                <a href="patient-profile.html">
+                                                  {patient.patient.userId.name}{" "}
+                                                  <span>
+                                                    {patient.patient.userId._id}
+                                                  </span>
+                                                </a>
+                                              </h2>
+                                            </td>
+                                            <td>
+                                              {patient.date
+                                                ? new Date(
+                                                    patient.date
+                                                  ).toLocaleDateString("en-US")
+                                                : "Date not available"}{" "}
+                                              <span className="d-block text-info">
+                                                {patient.date
+                                                  ? new Date(
+                                                      patient.date
+                                                    ).toLocaleTimeString(
+                                                      "en-US"
+                                                    )
+                                                  : "Time not available"}
+                                              </span>
+                                            </td>
+                                            <td style={{ textAlign: "center" }}>
+                                              <div
+                                                className="table-action"
+                                                style={{
+                                                  display: "flex",
+                                                  gap: "1rem",
+                                                }}>
+                                                <div>
+                                                  <button
+                                                    className="btn btn-sm bg-info-light"
+                                                    onClick={() =>
+                                                      handlePatientSelect(
+                                                        patient
+                                                      )
+                                                    }>
+                                                    <i className="far fa-eye" />{" "}
+                                                    View
+                                                  </button>
+                                                </div>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        ))}
+                                      {patientSelect && (
+                                        <Appointment patient={patientSelect} />
+                                      )}
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                            <Pagination
+                              itemsPerPage={itemsPerPage}
+                              totalItems={appointments.length}
+                              paginate={paginate}
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
-
-
                   </div>
-
-                </div>
-
+                )}
               </div>
             </div>
-
-
           </div>
         </div>
       </div>
@@ -770,7 +845,18 @@ console.log(upcoming)
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">  <FaBusinessTime style={{ color: "#48BB78", fontSize: "2rem", marginBottom: "0rem", marginRight: "0.5rem" }} />Reschedule</h5>
+              <h5 className="modal-title">
+                {" "}
+                <FaBusinessTime
+                  style={{
+                    color: "#48BB78",
+                    fontSize: "2rem",
+                    marginBottom: "0rem",
+                    marginRight: "0.5rem",
+                  }}
+                />
+                Reschedule
+              </h5>
               <button
                 type="button"
                 className="btn-close"
@@ -778,9 +864,15 @@ console.log(upcoming)
                 aria-label="Close"></button>
             </div>
             <div className="modal-body">
-              <div >
-                <div >
-                  <label htmlFor="date" style={{ display: "block", color: "#4A5568", fontWeight: "bold" }}>
+              <div>
+                <div>
+                  <label
+                    htmlFor="date"
+                    style={{
+                      display: "block",
+                      color: "#4A5568",
+                      fontWeight: "bold",
+                    }}>
                     Date:
                   </label>
                   <input
@@ -794,21 +886,27 @@ console.log(upcoming)
                       border: "1px solid #E2E8F0",
                       borderRadius: "0.25rem",
                       outline: "none",
-                      transition: "border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out",
+                      transition:
+                        "border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out",
                       "&:focus": {
                         borderColor: "#38A169",
                       },
                     }}
                   />
                   <div style={{ marginBottom: "1rem" }}>
-                    <label htmlFor="time" style={{ display: "block", color: "#4A5568", fontWeight: "bold" }}>
+                    <label
+                      htmlFor="time"
+                      style={{
+                        display: "block",
+                        color: "#4A5568",
+                        fontWeight: "bold",
+                      }}>
                       Time:
                     </label>
                     <input
                       id="time"
                       type="time"
                       value={selectedTime}
-
                       onChange={(e) => setSelectedTime(e.target.value)}
                       style={{
                         width: "100%",
@@ -816,28 +914,23 @@ console.log(upcoming)
                         border: "1px solid #E2E8F0",
                         borderRadius: "0.25rem",
                         outline: "none",
-                        transition: "border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out",
+                        transition:
+                          "border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out",
                         "&:focus": {
                           borderColor: "#38A169",
                         },
                       }}
                     />
-
                   </div>
                 </div>
                 {/* <DatePicker value={value} onChange={setValue} /> */}
                 <div style={{ display: "flex", gap: "1rem" }}>
-
                   <button
                     className="btn btn-sm bg-success-light"
                     style={{ margin: "auto" }}
-                    onClick={handleConfirm}
-                  >
+                    onClick={handleConfirm}>
                     <i className="fas fa-check" /> Confirm
                   </button>
-
-
-
                 </div>
               </div>
             </div>
