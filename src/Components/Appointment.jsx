@@ -5,13 +5,17 @@ import { OrderState } from "../Contexts";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { FaRegEdit } from "react-icons/fa";
 import { IoIosArrowBack } from "react-icons/io";
+import { MdOutlineSaveAlt } from "react-icons/md";
+import { MdAddCircleOutline } from "react-icons/md";
 
 export default function Patientprofile() {
   // const location = useLocation();
   // const [patient, setPatient] = useState(location.state?.patient);
   const [singleAppointment, setSingleAppointment] = useState();
   const { selectedPatient } = OrderState();
+  const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
 
   const [doctorInfo, setDoctorInfo] = useState("");
@@ -28,6 +32,11 @@ export default function Patientprofile() {
     setObservations((prevObservations) =>
       prevObservations.filter((observation) => observation.id !== id)
     );
+  };
+
+  const handleEditClick = (index) => {
+    setIsEditing(true);
+    // setCurrentEditingIndex(index);
   };
 
   const [prescriptions, setPrescriptions] = useState([
@@ -50,6 +59,10 @@ export default function Patientprofile() {
     const updatedObs = [...observations];
     updatedObs[index] = value;
     setObservations(updatedObs);
+  };
+
+  const handleAddObservation = () => {
+    setObservations([...observations, ""]);
   };
 
   console.log(observations);
@@ -162,6 +175,8 @@ export default function Patientprofile() {
     navigate("/doctor"); // Navigate to Dashboard page when the back button is clicked
   };
 
+//   console.log(observations) 
+
   const handleSaveObservation = async () => {
     const appointmentId = selectedPatient._id;
     const isAuthenticated = localStorage.getItem("token");
@@ -181,6 +196,19 @@ export default function Patientprofile() {
       );
       console.log(observationres);
 
+      toast("Observation Added Successfully", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+   
+
       const appointment = await axios.get(
         `https://healthbackend-3xh2.onrender.com/appointment/${appointmentId}`,
         {
@@ -195,21 +223,33 @@ export default function Patientprofile() {
       setSingleAppointment(appointment.data.result);
     } catch (error) {
       console.log(error);
+        toast.error("Internal Server Error", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
     }
   };
 
   // console.log(singleAppointment)
 
   useEffect(() => {
-    getOneAppointment();
-    const doctorInfo = JSON.parse(localStorage.getItem("docInfo"));
-    if (doctorInfo) {
+      getOneAppointment();
+      const doctorInfo = JSON.parse(localStorage.getItem("docInfo"));
+      if (doctorInfo) {
       setDoctorInfo(doctorInfo);
     }
     setPrescriptions(selectedPatient?.prescriptions);
     setObservations(selectedPatient?.observations);
   }, []);
 
+  
   return (
     <div>
       <div className="main-wrapper">
@@ -334,53 +374,7 @@ export default function Patientprofile() {
                     </li>
                   </ul>
                 </div>
-                {/* <div className="card">
-                                    <div className="card-header">
-                                        <h4 className="card-title">Last Booking</h4>
-                                    </div>
-                                    <ul className="list-group list-group-flush">
-                                        <li className="list-group-item">
-                                            <div className="notify-block align-items-center d-flex">
-                                                <div className="me-3 flex-shrink-0">
-                                                    <img
-                                                        alt="Image placeholder"
-                                                        src="assets/img/doctors/doctor-thumb-02.jpg"
-                                                        className="avatar  rounded-circle"
-                                                    />
-                                                </div>
-                                                <div className="media-body flex-grow-1">
-                                                    <h5 className="d-block mb-0">Dr. Darren Elder </h5>
-                                                    <span className="d-block text-sm text-muted">
-                                                        Dentist
-                                                    </span>
-                                                    <span className="d-block text-sm text-muted">
-                                                        14 Nov 2023 5.00 PM
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li className="list-group-item">
-                                            <div className="notify-block align-items-center d-flex">
-                                                <div className="me-3 flex-shrink-0">
-                                                    <img
-                                                        alt="Image placeholder"
-                                                        src="assets/img/doctors/doctor-thumb-02.jpg"
-                                                        className="avatar  rounded-circle"
-                                                    />
-                                                </div>
-                                                <div className="media-body flex-grow-1">
-                                                    <h5 className="d-block mb-0">Dr. Darren Elder </h5>
-                                                    <span className="d-block text-sm text-muted">
-                                                        Dentist
-                                                    </span>
-                                                    <span className="d-block text-sm text-muted">
-                                                        12 Nov 2023 11.00 AM
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div> */}
+              
               </div>
               <div className="col-md-7 col-lg-8 col-xl-9">
                 <div className="row">
@@ -396,7 +390,7 @@ export default function Patientprofile() {
                         </div>
                         <h5>Heart Rate</h5>
                         <h6>
-                          12 <sub>bpm</sub>
+                        {selectedPatient?.vitals?.heartRate}  <sub>bpm</sub>
                         </h6>
                       </div>
                     </div>
@@ -413,7 +407,7 @@ export default function Patientprofile() {
                         </div>
                         <h5>Body Temperature</h5>
                         <h6>
-                          18 <sub>C</sub>
+                        {selectedPatient?.vitals?.temparature} <sub>C</sub>
                         </h6>
                       </div>
                     </div>
@@ -445,7 +439,7 @@ export default function Patientprofile() {
                         </div>
                         <h5>Blood Pressure</h5>
                         <h6>
-                          202/90 <sub>mg/dl</sub>
+                        {selectedPatient?.vitals?.bloodPressure}  <sub>mg/dl</sub>
                         </h6>
                       </div>
                     </div>
@@ -590,7 +584,7 @@ export default function Patientprofile() {
                                       <a
                                         href="javascript:void(0);"
                                         className="add-hours"
-                                        onClick={addObservation}>
+                                        onClick={handleAddObservation}>
                                         <i className="fa fa-plus-circle" /> Add
                                         Observation
                                       </a>
@@ -598,33 +592,71 @@ export default function Patientprofile() {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {observations.map((observation) => (
-                                    <tr key={observation.id}>
-                                      <td>
-                                        <h2 className="table-avatar">
-                                          Observation {observation.id}
-                                        </h2>
-                                      </td>
-                                      <td>
-                                        <div className="table-action">
-                                          <a
-                                            href="#edit_medical_form"
-                                            className="btn btn-sm bg-info-light me-2"
-                                            data-bs-toggle="modal">
-                                            <i className="fas fa-edit"></i> Edit
-                                          </a>
-                                          <button
-                                            className="btn btn-sm bg-danger-light"
-                                            onClick={() =>
-                                              deleteObservation(observation.id)
-                                            }>
-                                            <i className="fas fa-trash-alt"></i>{" "}
-                                            Delete
-                                          </button>
-                                        </div>
-                                      </td>
-                                    </tr>
-                                  ))}
+                                {/* {observations.map((observation, index) => (
+              <>
+                <div className="modal-body">
+                  <textarea
+                    name="data"
+                    className="form-control"
+                    rows="5"
+                    value={observation}
+                    onChange={(e, index) => handleObservationChange(e, index)}
+                    placeholder="Enter your data here..."></textarea>
+                </div>
+                <div className="modal-footer text-center">
+                  <button
+                    type="submit"
+                    onClick={handleSaveObservation}
+                    className="btn btn-outline btn-success">
+                    Submit
+                  </button>
+                </div>
+              </>
+            ))} */}
+                                   {observations.map((observation, index) => (
+                                <tr className=" " key={index}>
+                                  <td className="text-sm mt-2 p-4  ">
+                                  <textarea
+                    className="form-control"
+                    rows="5"
+                                      name="name"
+                                      value={observation}
+                                      onChange={(e) => handleObservationChange(e, index)}
+                                      disabled={!isEditing}
+                                    //   className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+                                    ></textarea>
+                                  </td>
+                                  <td className="flex gap-1 border-l-2 mt-2 justify-center">
+                                    {/* <button className="sm:text-white font-bold text-green-500 sm:bg-green-500  p-1 px-2 sm:p-1 sm:px-3 sm:text-sm rounded-lg">Edit</button>
+                                  <button className="sm:text-white font-bold text-red-500 sm:bg-red-500 p-1 px-2 sm:p-1 sm:px-3 sm:text-sm rounded-lg">Delete</button> */}
+                                   <div>
+              <button
+                className="btn btn-primary patient-graph-box"
+                onClick={handleEditClick} 
+                >
+                
+                <MdOutlineSaveAlt className="mt-1" />
+                Edit
+              </button>
+            </div>
+                                    
+                                  </td>
+                                </tr>
+                              ))}
+                               <div className="flex justify-between p-4">
+                             
+                              <div>
+              <button
+                className="btn btn-primary patient-graph-box"
+                onClick={handleSaveObservation}
+                >
+                
+                <MdOutlineSaveAlt className="mt-1" />
+                Save
+              </button>
+            </div>
+                           
+                              </div>
                                 </tbody>
                               </table>
                             </div>
@@ -1710,7 +1742,7 @@ export default function Patientprofile() {
                 data-bs-dismiss="modal"
                 aria-label="Close"></button>
             </div>
-            {observations.map((observation, index) => (
+            {/* {observations.map((observation, index) => (
               <>
                 <div className="modal-body">
                   <textarea
@@ -1730,7 +1762,7 @@ export default function Patientprofile() {
                   </button>
                 </div>
               </>
-            ))}
+            ))} */}
           </div>
         </div>
       </div>
