@@ -176,9 +176,7 @@ export default function LoginDoctor() {
                         </div>
                       </div>
                       <div className="text-end">
-                        <a className="forgot-link" href="forgot-password.html">
-                          Forgot Password ?
-                        </a>
+                        <a className="forgot-link">Forgot Password ?</a>
                       </div>
                       <button
                         className="btn btn-primary w-100 btn-lg login-btn"
