@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import "./Navbar.css";
 
 export default function Navbar() {
   const [show, setShow] = useState(false);
@@ -23,7 +24,8 @@ export default function Navbar() {
   useEffect(() => {
     const userInfo = localStorage.getItem("userInfo");
     const doctorInfo = localStorage.getItem("docInfo");
-    if (userInfo || doctorInfo) {
+    if (userInfo !== null || doctorInfo !== null) {
+      // console.log(userInfo || doctorInfo);
       setShow(true);
     }
   }, [localStorage.getItem("userInfo"), localStorage.getItem("docInfo")]);
@@ -42,6 +44,192 @@ export default function Navbar() {
             </a>
             <a href="index.html" className="navbar-brand logo">
               <h4>TwinDoc</h4>
+            </a>
+            <a>
+              <ul className="navbar-header   navbarForMobile">
+                {show && (
+                  <li className="nav-item dropdown noti-nav me-3 pe-0">
+                    <a
+                      href="#"
+                      className="dropdown-toggle nav-link p-0"
+                      data-bs-toggle="dropdown">
+                      <i className="fa-solid fa-bell" />{" "}
+                      <span className="badge">5</span>
+                    </a>
+                    <div className="dropdown-menu notifications dropdown-menu-end ">
+                      <div className="topnav-dropdown-header">
+                        <span className="notification-title">
+                          Notifications
+                        </span>
+                      </div>
+                      <div className="noti-content">
+                        <ul className="notification-list">
+                          <li className="notification-message">
+                            <a href="#">
+                              <div className="notify-block d-flex">
+                                <span className="avatar">
+                                  <img
+                                    className="avatar-img"
+                                    alt="Ruby perin"
+                                    src="assets/img/clients/client-01.jpg"
+                                  />
+                                </span>
+                                <div className="media-body">
+                                  <h6>
+                                    Travis Tremble{" "}
+                                    <span className="notification-time">
+                                      18.30 PM
+                                    </span>
+                                  </h6>
+                                  <p className="noti-details">
+                                    Sent a amount of $210 for his Appointment{" "}
+                                    <span className="noti-title">
+                                      Dr.Ruby perin
+                                    </span>
+                                  </p>
+                                </div>
+                              </div>
+                            </a>
+                          </li>
+                          <li className="notification-message">
+                            <a href="#">
+                              <div className="notify-block d-flex">
+                                <span className="avatar">
+                                  <img
+                                    className="avatar-img"
+                                    alt="Hendry Watt"
+                                    src="assets/img/clients/client-02.jpg"
+                                  />
+                                </span>
+                                <div className="media-body">
+                                  <h6>
+                                    Travis Tremble{" "}
+                                    <span className="notification-time">
+                                      12 Min Ago
+                                    </span>
+                                  </h6>
+                                  <p className="noti-details">
+                                    {" "}
+                                    has booked her appointment to{" "}
+                                    <span className="noti-title">
+                                      Dr. Hendry Watt
+                                    </span>
+                                  </p>
+                                </div>
+                              </div>
+                            </a>
+                          </li>
+                          <li className="notification-message">
+                            <a href="#">
+                              <div className="notify-block d-flex">
+                                <div className="avatar">
+                                  <img
+                                    className="avatar-img"
+                                    alt="Maria Dyen"
+                                    src="assets/img/clients/client-03.jpg"
+                                  />
+                                </div>
+                                <div className="media-body">
+                                  <h6>
+                                    Travis Tremble{" "}
+                                    <span className="notification-time">
+                                      6 Min Ago
+                                    </span>
+                                  </h6>
+                                  <p className="noti-details">
+                                    {" "}
+                                    Sent a amount $210 for his Appointment{" "}
+                                    <span className="noti-title">
+                                      Dr.Maria Dyen
+                                    </span>
+                                  </p>
+                                </div>
+                              </div>
+                            </a>
+                          </li>
+                          <li className="notification-message">
+                            <a href="#">
+                              <div className="notify-block d-flex">
+                                <div className="avatar avatar-sm">
+                                  <img
+                                    className="avatar-img"
+                                    alt="client-image"
+                                    src="assets/img/clients/client-04.jpg"
+                                  />
+                                </div>
+                                <div className="media-body">
+                                  <h6>
+                                    Travis Tremble{" "}
+                                    <span className="notification-time">
+                                      8.30 AM
+                                    </span>
+                                  </h6>
+                                  <p className="noti-details">
+                                    {" "}
+                                    Send a message to his doctor
+                                  </p>
+                                </div>
+                              </div>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </li>
+                )}
+                {show ? (
+                  <li className="nav-item dropdown has-arrow logged-item">
+                    <a
+                      href="#"
+                      className="dropdown-toggle nav-link"
+                      data-bs-toggle="dropdown">
+                      <span className="user-img">
+                        <img
+                          className="rounded-circle"
+                          src="assets/img/doctors/doctor-thumb-02.jpg"
+                          width={31}
+                          alt="Darren Elder"
+                        />
+                      </span>
+                    </a>
+                    <div className="dropdown-menu dropdown-menu-end">
+                      <div className="user-header">
+                        <div className="avatar avatar-sm">
+                          <img
+                            src="assets/img/doctors/doctor-thumb-02.jpg"
+                            alt="User Image"
+                            className="avatar-img rounded-circle"
+                          />
+                        </div>
+                        <div className="user-text">
+                          <h6>Darren Elder</h6>
+                          <p className="text-muted mb-0">Doctor</p>
+                        </div>
+                      </div>
+                      <Link className="dropdown-item" to="/doctor">
+                        Dashboard
+                      </Link>
+                      <Link className="dropdown-item" to="/profile">
+                        Profile Settings
+                      </Link>
+                      <Link
+                        className="dropdown-item"
+                        to="/login"
+                        onClick={handleLogout}>
+                        Logout
+                      </Link>
+                    </div>
+                  </li>
+                ) : (
+                  <Link to={"/login"}>
+                    <button
+                      style={{ fontSize: "14px", padding: 0 }}
+                      className="btn btn-primary btn-xs ">
+                      Login / Sign Up
+                    </button>
+                  </Link>
+                )}
+              </ul>
             </a>
           </div>
           <div className="main-menu-wrapper">

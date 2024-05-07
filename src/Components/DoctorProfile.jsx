@@ -23,6 +23,8 @@ export default function DoctorProfile() {
   const [postalCode, setPostalCode] = useState("");
   const [specialization, setSpecialization] = useState("");
   const [yearOfExperience, setYearOfExperience] = useState("");
+  const [pic, setPic] = useState();
+  const [preview, setPreview] = useState();
   const [education, setEducation] = useState([
     { qualification: "", collegeName: "", yearOfCompletion: "" },
   ]);
@@ -537,7 +539,6 @@ export default function DoctorProfile() {
           theme: "light",
           transition: Bounce,
         });
-
       } else {
         const user = await axios.post(
           `https://healthbackend-3xh2.onrender.com/doctor/create`,
@@ -604,6 +605,24 @@ export default function DoctorProfile() {
     }
   };
 
+  const uploadImage = async (picture) => {
+    try {
+      // setPic(picture);
+      var reader = new FileReader();
+      reader.onloadend = function () {
+        setPreview(reader.result);
+      };
+      reader.readAsDataURL(picture);
+
+      const res = await axios.post("http://localhost:5000/doctor/uploadImg", {
+        image_url: preview,
+      });
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleLogout = () => {
     console.log("in here");
     const userInfo = localStorage.getItem("userInfo");
@@ -661,7 +680,7 @@ export default function DoctorProfile() {
       <div className="content">
         <div className="container">
           <div className="row">
-          <ToastContainer />
+            <ToastContainer />
             <div className="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
               <div className="profile-sidebar">
                 <div className="widget-profile pro-widget-content">
@@ -744,19 +763,21 @@ export default function DoctorProfile() {
               </div>
             </div>
             <div className="col-md-7 col-lg-8 col-xl-9">
-             
               <form onSubmit={handleFormSubmit}>
                 <div className="card">
                   <div className="card-body">
                     <h4 className="card-title">Basic Information</h4>
                     <div className="row">
-                   
                       <div className="col-md-12">
                         <div className="mb-3">
                           <div className="change-avatar">
                             <div className="profile-img">
                               <img
-                                src="assets/img/doctors/doctor-thumb-02.jpg"
+                                src={
+                                  preview
+                                    ? preview
+                                    : "assets/img/doctors/doctor-thumb-02.jpg"
+                                }
                                 alt="User Image"
                               />
                             </div>
@@ -765,10 +786,17 @@ export default function DoctorProfile() {
                                 <span>
                                   <i className="fa fa-upload" /> Upload Photo
                                 </span>
-                                <input type="file" className="upload" />
+                                <input
+                                  type="file"
+                                  className="upload"
+                                  accept=".png, .jpg, .jpeg"
+                                  onChange={(e) =>
+                                    uploadImage(e.target.files[0])
+                                  }
+                                />
                               </div>
                               <small className="form-text text-muted">
-                                Allowed JPG, GIF or PNG. Max size of 2MB
+                                Allowed JPG, PNG and JPEG. Max size of 2MB
                               </small>
                             </div>
                           </div>

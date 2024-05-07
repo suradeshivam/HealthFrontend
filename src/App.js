@@ -17,6 +17,7 @@ import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
 import Patientdashboard from "./Components/PatientDashboard";
 import PatientProfileSetting from "./Components/PatientProfileSetting";
 import Orders from "./Components/Orders";
+import Home from "./Components/Home";
 
 // App changed
 function App() {
@@ -28,6 +29,7 @@ function App() {
     <div className="m-0 p-0 bg-neutral-100">
       {shouldShowNavbarAndFooter && <Navbar />}
       <Routes>
+        <Route path="" element={<Home />} />
         <Route path="signup" element={<DoctorRegister />} />
         <Route path="login" element={<LoginDoctor />} />
         <Route element={<ProtectedRoute />}>
