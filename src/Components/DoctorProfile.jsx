@@ -23,7 +23,7 @@ export default function DoctorProfile() {
   const [postalCode, setPostalCode] = useState("");
   const [specialization, setSpecialization] = useState("");
   const [yearOfExperience, setYearOfExperience] = useState("");
-  const [pic, setPic] = useState();
+  const [pic, setPic] = useState("assets/img/doctors/doctor-thumb-02.jpg");
   const [preview, setPreview] = useState();
   const [education, setEducation] = useState([
     { qualification: "", collegeName: "", yearOfCompletion: "" },
@@ -211,9 +211,10 @@ export default function DoctorProfile() {
 
     if (docInfo) {
       const userId = docInfo.userId._id;
-
       setUserName(docInfo.userId?.name || "");
-
+      setPic(
+        docInfo?.profilePicture || "assets/img/doctors/doctor-thumb-02.jpg"
+      );
       setEmail(docInfo.userId?.email || "");
       setPhone(docInfo.userId?.mobileNumber || "");
       setGender(docInfo?.gender || "");
@@ -227,8 +228,6 @@ export default function DoctorProfile() {
       const month = (dobDate.getMonth() + 1).toString().padStart(2, "0");
       const year = dobDate.getFullYear();
       const formattedDate = `${day}-${month}-${year}`;
-      console.log(formattedDate);
-      // setDOB(result?.dob || '');
       setDOB(formattedDate);
       setFees(docInfo?.fees || "");
       setAboutMe(docInfo?.about || "");
@@ -250,146 +249,148 @@ export default function DoctorProfile() {
     }
   };
 
-  const handleSubmit = async () => {
-    const isAuthenticated = localStorage.getItem("token");
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    const docInfo = JSON.parse(localStorage.getItem("docInfo"));
+  // const handleSubmit = async () => {
+  //   const isAuthenticated = localStorage.getItem("token");
+  //   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  //   const docInfo = JSON.parse(localStorage.getItem("docInfo"));
 
-    // console.log(
-    //   // docInfo.userId._id,
-    //   userName,
-    //   yearOfExperience,
-    //   fees,
-    //   dob,
-    //   aboutMe,
-    //   specialization,
-    //   state,
-    //   awardsNAchievements,
-    //   licenceNumber,
-    //   yearLicenceNumber,
-    //   address1,
-    //   address2,
-    //   city,
-    //   postalCode,
-    //   country,
-    //   education,
-    //   clinicName,
-    //   clinicAddress,
-    //   gender
-    // );
+  //   // console.log(
+  //   //   // docInfo.userId._id,
+  //   //   userName,
+  //   //   yearOfExperience,
+  //   //   fees,
+  //   //   dob,
+  //   //   aboutMe,
+  //   //   specialization,
+  //   //   state,
+  //   //   awardsNAchievements,
+  //   //   licenceNumber,
+  //   //   yearLicenceNumber,
+  //   //   address1,
+  //   //   address2,
+  //   //   city,
+  //   //   postalCode,
+  //   //   country,
+  //   //   education,
+  //   //   clinicName,
+  //   //   clinicAddress,
+  //   //   gender
+  //   // );
 
-    try {
-      const parts = dob.split("-");
+  //   try {
+  //     const parts = dob.split("-");
 
-      // Rearrange the parts to form the "YYYY-MM-DD" format
-      const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+  //     // Rearrange the parts to form the "YYYY-MM-DD" format
+  //     const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
 
-      console.log(formattedDate);
-      if (docInfo) {
-        console.log("1");
-        const updatedDoctor = await axios.put(
-          `https://healthbackend-3xh2.onrender.com/doctor/${docInfo.userId._id}/update`,
-          {
-            userId: docInfo.userId._id,
-            name: userName,
-            yearOfExperience: yearOfExperience,
-            fees: fees,
-            dob: formattedDate,
-            about: aboutMe,
-            specialization: specialization,
-            state: state,
-            achievement: awards,
-            licenseNumber: licenceNumber,
-            yearOfIssued: yearLicenceNumber,
-            addressLine1: address1,
-            addressLine2: address2,
-            city: city,
-            zip: postalCode,
-            contry: country,
-            educationDetails: education,
-            clinicName: clinicName,
-            clinicAddress: clinicAddress,
-            gender: gender,
-          },
-          {
-            headers: {
-              authorization: isAuthenticated,
-            },
-          }
-        );
+  //     console.log(formattedDate);
+  //     if (docInfo) {
+  //       console.log("1");
+  //       const updatedDoctor = await axios.put(
+  //         `https://healthbackend-3xh2.onrender.com/doctor/${docInfo.userId._id}/update`,
+  //         {
+  //           userId: docInfo.userId._id,
+  //           profilePicture: pic,
+  //           name: userName,
+  //           yearOfExperience: yearOfExperience,
+  //           fees: fees,
+  //           dob: formattedDate,
+  //           about: aboutMe,
+  //           specialization: specialization,
+  //           state: state,
+  //           achievement: awards,
+  //           licenseNumber: licenceNumber,
+  //           yearOfIssued: yearLicenceNumber,
+  //           addressLine1: address1,
+  //           addressLine2: address2,
+  //           city: city,
+  //           zip: postalCode,
+  //           contry: country,
+  //           educationDetails: education,
+  //           clinicName: clinicName,
+  //           clinicAddress: clinicAddress,
+  //           gender: gender,
+  //         },
+  //         {
+  //           headers: {
+  //             authorization: isAuthenticated,
+  //           },
+  //         }
+  //       );
 
-        console.log(updatedDoctor);
-        localStorage.setItem(
-          "docInfo",
-          JSON.stringify(updatedDoctor.data.result)
-        );
-        // setDoctorInfo(updatedDoctor.data.result);
-        // console.log(doctorInfo);
-        console.log("doctor updated success navigatingto docprofile");
-      } else {
-        console.log(dob);
-        const tempDate = dob;
-        const [day, month, year] = tempDate.split("-");
-        const dateObject = new Date(year, month - 1, day, 12, 0, 0); // Setting time to 12:00:00
+  //       console.log(updatedDoctor);
+  //       localStorage.setItem(
+  //         "docInfo",
+  //         JSON.stringify(updatedDoctor.data.result)
+  //       );
+  //       // setDoctorInfo(updatedDoctor.data.result);
+  //       // console.log(doctorInfo);
+  //       console.log("doctor updated success navigatingto docprofile");
+  //     } else {
+  //       console.log(dob);
+  //       const tempDate = dob;
+  //       const [day, month, year] = tempDate.split("-");
+  //       const dateObject = new Date(year, month - 1, day, 12, 0, 0); // Setting time to 12:00:00
 
-        const tempformatted = dateObject.toISOString();
+  //       const tempformatted = dateObject.toISOString();
 
-        console.log(formattedDate);
-        const user = await axios.post(
-          `https://healthbackend-3xh2.onrender.com/doctor/create`,
-          {
-            userId: userInfo._id,
-            name: userName,
-            yearOfExperience: yearOfExperience,
-            fees: fees,
-            dob: tempformatted,
-            about: aboutMe,
-            specialization: specialization,
-            state: state,
-            achievement: awards,
-            licenseNumber: licenceNumber,
-            yearOfIssued: yearLicenceNumber,
-            addressLine1: address1,
-            addressLine2: address2,
-            city: city,
-            zip: postalCode,
-            contry: country,
-            educationDetails: education,
-            clinicName: clinicName,
-            clinicAddress: clinicAddress,
-            gender: gender,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: isAuthenticated,
-            },
-          }
-        );
+  //       console.log(formattedDate);
+  //       const user = await axios.post(
+  //         `https://healthbackend-3xh2.onrender.com/doctor/create`,
+  //         {
+  //           userId: userInfo._id,
+  //           profilePicture: pic,
+  //           name: userName,
+  //           yearOfExperience: yearOfExperience,
+  //           fees: fees,
+  //           dob: tempformatted,
+  //           about: aboutMe,
+  //           specialization: specialization,
+  //           state: state,
+  //           achievement: awards,
+  //           licenseNumber: licenceNumber,
+  //           yearOfIssued: yearLicenceNumber,
+  //           addressLine1: address1,
+  //           addressLine2: address2,
+  //           city: city,
+  //           zip: postalCode,
+  //           contry: country,
+  //           educationDetails: education,
+  //           clinicName: clinicName,
+  //           clinicAddress: clinicAddress,
+  //           gender: gender,
+  //         },
+  //         {
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //             Authorization: isAuthenticated,
+  //           },
+  //         }
+  //       );
 
-        console.log(user);
-        localStorage.setItem(
-          "docInfo",
-          JSON.stringify(user.data.result.doctor)
-        );
+  //       console.log(user);
+  //       localStorage.setItem(
+  //         "docInfo",
+  //         JSON.stringify(user.data.result.doctor)
+  //       );
 
-        toast("Profile Created Successfully");
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error(error.response.data.message, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
-    }
-  };
+  //       toast("Profile Created Successfully");
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //     toast.error(error.response.data.message, {
+  //       position: "top-right",
+  //       autoClose: 3000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "light",
+  //       transition: Bounce,
+  //     });
+  //   }
+  // };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -494,6 +495,7 @@ export default function DoctorProfile() {
           {
             userId: docInfo.userId._id,
             name: userName,
+            profilePicture: pic,
             yearOfExperience: yearOfExperience,
             fees: fees,
             dob: formattedDate,
@@ -545,6 +547,7 @@ export default function DoctorProfile() {
           {
             userId: userInfo._id,
             name: userName,
+            profilePicture: pic,
             yearOfExperience: yearOfExperience,
             fees: fees,
             dob: dob,
@@ -606,20 +609,55 @@ export default function DoctorProfile() {
   };
 
   const uploadImage = async (picture) => {
+    const isAuthenticated = localStorage.getItem("token");
     try {
-      // setPic(picture);
       var reader = new FileReader();
-      reader.onloadend = function () {
-        setPreview(reader.result);
+      reader.onloadend = async function () {
+        setPreview(reader.result); // Set preview image
+        try {
+          const res = await axios.post(
+            "https://healthbackend-3xh2.onrender.com/service/uploadImage",
+            {
+              imageUrl: reader.result, // Use reader.result directly here
+            },
+            {
+              headers: {
+                authorization: isAuthenticated,
+              },
+            }
+          );
+          if (res.status === 200) {
+            setPic(res.data.result);
+            console.log(res.data.result);
+          }
+          toast(res.data.message);
+        } catch (error) {
+          toast.error(error.message, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+        }
       };
-      reader.readAsDataURL(picture);
-
-      const res = await axios.post("http://localhost:5000/doctor/uploadImg", {
-        image_url: preview,
-      });
-      console.log(res);
+      reader.readAsDataURL(picture); // Read the file
     } catch (error) {
-      console.log(error);
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   };
 
@@ -773,11 +811,7 @@ export default function DoctorProfile() {
                           <div className="change-avatar">
                             <div className="profile-img">
                               <img
-                                src={
-                                  preview
-                                    ? preview
-                                    : "assets/img/doctors/doctor-thumb-02.jpg"
-                                }
+                                src={preview ? preview : pic}
                                 alt="User Image"
                               />
                             </div>
