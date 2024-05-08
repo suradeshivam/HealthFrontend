@@ -256,12 +256,28 @@ export default function Dashboard() {
 
   // Pagination Logic
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(3);
+  const [itemsPerPage] = useState(5);
 
   // Get Patients
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = patients.slice(indexOfFirstItem, indexOfLastItem);
+  // const indexOfLastItem = currentPage * itemsPerPage;
+  // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  // const currentItems = patients.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Today Section
+const todayStartIndex = (currentPage - 1) * itemsPerPage;
+const todayEndIndex = currentPage * itemsPerPage;
+const todayAppointments = today.slice(todayStartIndex, todayEndIndex);
+
+// Upcoming Section
+const upcomingStartIndex = (currentPage - 1) * itemsPerPage;
+const upcomingEndIndex = currentPage * itemsPerPage;
+const upcomingAppointments = upcoming.slice(upcomingStartIndex, upcomingEndIndex);
+
+// History Section
+const historyStartIndex = (currentPage - 1) * itemsPerPage;
+const historyEndIndex = currentPage * itemsPerPage;
+const historyAppointments = appointments.slice(historyStartIndex, historyEndIndex);
+
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -541,7 +557,7 @@ export default function Dashboard() {
                                       </tr>
                                     </thead>
                                     <tbody>
-                                      {today.map((patient, index) => (
+                                      {todayAppointments.map((patient, index) => (
                                         <tr>
                                           <td>
                                             <h2 className="table-avatar">
@@ -656,7 +672,7 @@ export default function Dashboard() {
                                       </tr>
                                     </thead>
                                     <tbody>
-                                      {upcoming.map((patient, index) => (
+                                      {upcomingAppointments.map((patient, index) => (
                                         <tr key={index}>
                                           <td>
                                             <h2 className="table-avatar">
@@ -759,7 +775,7 @@ export default function Dashboard() {
                                     </thead>
                                     <tbody>
                                       {appointments[0] &&
-                                        appointments.map((patient, index) => (
+                                        historyAppointments.map((patient, index) => (
                                           <tr key={index}>
                                             <td>
                                               <h2 className="table-avatar">
