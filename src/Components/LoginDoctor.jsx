@@ -35,12 +35,13 @@ export default function LoginDoctor() {
           }
         );
 
+        console.log(response);
         const user = response.data.result.user;
 
         // Saving TOken
         await localStorage.setItem("token", response.data.result.token);
 
-        if (user.createdProfile) {
+        if (user.createdProfile && user.role === "doctor") {
           const doctor = await axios.get(
             `https://healthbackend-3xh2.onrender.com/doctor/${user._id}`,
 
@@ -58,34 +59,42 @@ export default function LoginDoctor() {
             "docInfo",
             JSON.stringify(doctor.data.result.doctor)
           );
-        } else {
+        } else if (user.createdProfile && user.role === "user") {
+          const patient = await axios.get(
+            `https://healthbackend-3xh2.onrender.com/patient/${user._id}`,
+
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: response.data.result.token,
+              },
+            }
+          );
+
           toast("Data fetched successfully");
-          await localStorage.setItem("userInfo", JSON.stringify(user));
+          // Store the token securely
+          await localStorage.setItem(
+            "patientInfo",
+            JSON.stringify(patient.data.result)
+          );
+          console.log(patient.data.result);
         }
-
-        // setLoading(false);
-        // setIsLoggedIn(true);
-
-        // console.log("Token ", response.data.result.token);
-
-        // Check the role from the response data
+        await localStorage.setItem("userInfo", JSON.stringify(user));
         const role = user.role;
-        // console.log(role)
-
-        // Redirect user based on the role
+        console.log(role);
         if (role === "doctor") {
           await navigate("/doctor");
         } else if (role === "user") {
+          console.log("here");
           navigate("/user");
         } else {
-          // Handle unknown role
-          // For now, let's redirect to the dashboard
+          console.log("here");
           navigate("/dashboard");
         }
       } catch (error) {
         // setLoading(false);
         console.error("Error submitting form:", error);
-        toast.error(error.response.data.message, {
+        toast.error(error.message, {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,

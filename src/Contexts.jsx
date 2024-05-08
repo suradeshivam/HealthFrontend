@@ -13,6 +13,7 @@ const Context = ({ children }) => {
   const [appointments, setAppointments] = useState([]);
   const [height, setHeight] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [role, setRole] = useState("");
   const [prescriptions, setPrescriptions] = useState([
     {
       name: "",
@@ -26,7 +27,6 @@ const Context = ({ children }) => {
   ]);
   const [updatedObservations, setUpdatedObservations] = useState([]);
 
-
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("userinfo"));
     setUserInfo(userInfo);
@@ -37,6 +37,8 @@ const Context = ({ children }) => {
       value={{
         sideOpen,
         setSideOpen,
+        role,
+        setRole,
         selectedPatient,
         setselectedPatient,
         userInfo,

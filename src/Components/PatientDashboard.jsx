@@ -1,6 +1,15 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 export default function Patientdashboard() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    if (userInfo.role !== "user") {
+      navigate("/");
+    }
+  }, []);
+
   return (
     <>
       {/* Mirrored from doccure.dreamstechnologies.com/html/template/patient-dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 16 Apr 2024 16:46:18 GMT */}

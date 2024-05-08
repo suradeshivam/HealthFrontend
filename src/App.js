@@ -33,7 +33,7 @@ function App() {
         <Route path="signup" element={<DoctorRegister />} />
         <Route path="login" element={<LoginDoctor />} />
         <Route element={<ProtectedRoute />}>
-          <Route path="patient" element={<Patientdashboard />} />
+          <Route path="user" element={<Patientdashboard />} />
           <Route path="doctor" element={<Dashboard />} />
           {/* <Route path="appointments" element={<Appointments />} /> */}
           <Route path="changepassword" element={<ChangePassword />} />

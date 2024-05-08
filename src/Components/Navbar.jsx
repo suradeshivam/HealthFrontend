@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
+import { OrderState } from "../Contexts";
 
 export default function Navbar() {
   const [show, setShow] = useState(false);
-
+  const { role } = OrderState();
+  console.log(role);
   const handleLogout = () => {
     console.log("in here");
     const userInfo = localStorage.getItem("userInfo");
@@ -22,7 +24,7 @@ export default function Navbar() {
   };
 
   useEffect(() => {
-    const userInfo = localStorage.getItem("userInfo");
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     const doctorInfo = localStorage.getItem("docInfo");
     if (userInfo !== null || doctorInfo !== null) {
       // console.log(userInfo || doctorInfo);
@@ -206,9 +208,11 @@ export default function Navbar() {
                           <p className="text-muted mb-0">Doctor</p>
                         </div>
                       </div>
-                      <Link className="dropdown-item" to="/doctor">
+                      <li
+                        className="dropdown-item"
+                        to={role === "user" ? "/user" : "/doctor"}>
                         Dashboard
-                      </Link>
+                      </li>
                       <Link className="dropdown-item" to="/profile">
                         Profile Settings
                       </Link>
