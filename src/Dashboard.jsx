@@ -23,6 +23,12 @@ export default function Dashboard() {
   const [doctorInfo, setDoctorInfo] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState("");
 
+  // Paginations
+  const [itemsPerPage] = useState(5);
+  const [currentPageToday, setCurrentPageToday] = useState(1);
+  const [currentPageUpcoming, setCurrentPageUpcoming] = useState(1);
+  const [currentPageHistory, setCurrentPageHistory] = useState(1);
+
   const [patientSelect, setPatientSelect] = useState(null);
   let todayCount = 0;
   let upcomingCount = 0;
@@ -104,6 +110,8 @@ export default function Dashboard() {
         }
       );
 
+      console.log(data)
+
       if (past === false) {
         const datastore = data.data.result;
 
@@ -120,7 +128,7 @@ export default function Dashboard() {
           const appointmentDate = new Date(data.date).toLocaleDateString(
             "en-US"
           );
-          console.log(appointmentDate, data.date);
+          // console.log(appointmentDate, data.date);
           if (todayDate === appointmentDate) {
             // console.log(data)
             todayArray.push(data);
@@ -132,7 +140,7 @@ export default function Dashboard() {
             // setUpcoming((prevUpcoming) => [...prevUpcoming, data]);
           }
           setUpcoming(upcomingArray);
-          // console.log(upcoming)
+          console.log(upcoming)
           setToday(todayArray);
         });
       } else {
@@ -253,16 +261,31 @@ export default function Dashboard() {
   ];
 
   // Pagination Logic
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(3);
+ 
 
   // Get Patients
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = patients.slice(indexOfFirstItem, indexOfLastItem);
+  // const indexOfLastItem = currentPage * itemsPerPage;
+  // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  // const currentItems = patients.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Change page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  // Today Appointment
+  const todayStartIndex = (currentPageToday - 1) * itemsPerPage;
+  const todayEndIndex = currentPageToday * itemsPerPage;
+  const todayAppointments = tableData.slice(todayStartIndex, todayEndIndex);
+  
+  // Upcoming Section
+  const upcomingStartIndex = (currentPageUpcoming - 1) * itemsPerPage;
+  const upcomingEndIndex = currentPageUpcoming * itemsPerPage;
+  const upcomingAppointments = upcoming.slice(upcomingStartIndex, upcomingEndIndex);
+  
+  // History Section
+  const historyStartIndex = (currentPageHistory - 1) * itemsPerPage;
+  const historyEndIndex = currentPageHistory * itemsPerPage;
+  const historyAppointments = history.slice(historyStartIndex, historyEndIndex);
+  
+  const paginate1 = (pageNumber) => setCurrentPageToday(pageNumber);
+  const paginate2 = (pageNumber) => setCurrentPageUpcoming(pageNumber);
+  const paginate3 = (pageNumber) => setCurrentPageHistory(pageNumber);
 
   const handlePatientSelect = (patient) => {
     // console.log(patient)
@@ -539,7 +562,7 @@ export default function Dashboard() {
                                       </tr>
                                     </thead>
                                     <tbody>
-                                      {today.map((patient, index) => (
+                                      {todayAppointments.map((patient, index) => (
                                         <tr>
                                           <td>
                                             <h2 className="table-avatar">
@@ -635,7 +658,7 @@ export default function Dashboard() {
                             <Pagination
                               itemsPerPage={itemsPerPage}
                               totalItems={today.length}
-                              paginate={paginate}
+                              paginate={paginate1}
                             />
                           </div>
 
@@ -654,7 +677,7 @@ export default function Dashboard() {
                                       </tr>
                                     </thead>
                                     <tbody>
-                                      {upcoming.map((patient, index) => (
+                                      {upcomingAppointments.map((patient, index) => (
                                         <tr key={index}>
                                           <td>
                                             <h2 className="table-avatar">
@@ -737,7 +760,7 @@ export default function Dashboard() {
                             <Pagination
                               itemsPerPage={itemsPerPage}
                               totalItems={upcoming.length}
-                              paginate={paginate}
+                              paginate={paginate2}
                             />
                           </div>
 
@@ -757,7 +780,7 @@ export default function Dashboard() {
                                     </thead>
                                     <tbody>
                                       {appointments[0] &&
-                                        appointments.map((patient, index) => (
+                                        historyAppointments.map((patient, index) => (
                                           <tr key={index}>
                                             <td>
                                               <h2 className="table-avatar">
@@ -771,9 +794,9 @@ export default function Dashboard() {
                                                   />
                                                 </a>
                                                 <a href="patient-profile.html">
-                                                  {patient.patient.userId.name}{" "}
+                                                  {patient.patient?.userId?.name}{" "}
                                                   <span>
-                                                    {patient.patient.userId._id}
+                                                    {patient.patient?.userId?._id}
                                                   </span>
                                                 </a>
                                               </h2>
@@ -787,7 +810,7 @@ export default function Dashboard() {
                                               <span className="d-block text-info">
                                                 {patient.date
                                                   ? new Date(
-                                                      patient.date
+                                                      patient?.date
                                                     ).toLocaleTimeString(
                                                       "en-US"
                                                     )
@@ -828,7 +851,7 @@ export default function Dashboard() {
                             <Pagination
                               itemsPerPage={itemsPerPage}
                               totalItems={appointments.length}
-                              paginate={paginate}
+                              paginate={paginate3}
                             />
                           </div>
                         </div>

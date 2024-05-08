@@ -1854,7 +1854,7 @@ export default function Patientprofile() {
                     </tr>
                   </thead>
                   <tbody>
-                    {selectedPatient.patient.medicalHistory.map(
+                    {selectedPatient?.patient?.medicalHistory.map(
                       (medhis, index) => (
                         <tr>
                           <td key={index}>{index + 1}</td>
