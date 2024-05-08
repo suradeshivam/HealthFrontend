@@ -5,6 +5,7 @@ import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function DoctorProfile() {
+  const [uploadedFileName, setUploadedFileName] = useState("");
   const [doctorInfo, setDoctorInfo] = useState("");
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
@@ -83,19 +84,45 @@ export default function DoctorProfile() {
   // Calculate the remaining words
   const remainingWords = 250 - countWords(aboutMe);
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setFileName(file.name);
+  const handleFileChange = async (event) => {
+    try {
+      const isAuthenticated = localStorage.getItem("token");
+      const file = event.target.files[0];
+      if (file) {
+        setFileName(file.name);
 
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFilePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setFileName("");
-      setFilePreview("");
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setFilePreview(reader.result);
+        };
+        reader.readAsDataURL(file);
+
+        const formData = new FormData();
+        formData.append("title", fileName);
+        formData.append("file", file);
+        console.log(fileName, file);
+
+        const result = await axios.post(
+          "http://localhost:5000/service/uploadPdf",
+          formData,
+          {
+            headers: {
+              authorization: isAuthenticated,
+            },
+          }
+        );
+
+        console.log(result);
+        setUploadedFileName(result.data.result);
+
+        toast(result.data.message);
+      } else {
+        setFileName("");
+        setFilePreview("");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
     }
   };
 
@@ -215,6 +242,7 @@ export default function DoctorProfile() {
       setPic(
         docInfo?.profilePicture || "assets/img/doctors/doctor-thumb-02.jpg"
       );
+      setUploadedFileName(docInfo?.certificate || "");
       setEmail(docInfo.userId?.email || "");
       setPhone(docInfo.userId?.mobileNumber || "");
       setGender(docInfo?.gender || "");
@@ -491,11 +519,12 @@ export default function DoctorProfile() {
       if (docInfo) {
         console.log("1");
         const updatedDoctor = await axios.put(
-          `https://healthbackend-3xh2.onrender.com/doctor/${docInfo.userId._id}/update`,
+          `http://localhost:5000/doctor/${docInfo.userId._id}/update`,
           {
             userId: docInfo.userId._id,
             name: userName,
             profilePicture: pic,
+            certificate: uploadedFileName,
             yearOfExperience: yearOfExperience,
             fees: fees,
             dob: formattedDate,
@@ -543,11 +572,12 @@ export default function DoctorProfile() {
         });
       } else {
         const user = await axios.post(
-          `https://healthbackend-3xh2.onrender.com/doctor/create`,
+          `http://localhost:5000/doctor/create`,
           {
             userId: userInfo._id,
             name: userName,
             profilePicture: pic,
+            certificate: uploadedFileName,
             yearOfExperience: yearOfExperience,
             fees: fees,
             dob: dob,
@@ -1388,7 +1418,7 @@ export default function DoctorProfile() {
                                 type="file"
                                 id="certificateUpload"
                                 onChange={handleFileChange}
-                                accept=".pdf, image/*"
+                                accept=".pdf"
                               />
                               <span>
                                 {fileName
