@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,BarChart,Bar,Legend, } from 'recharts';
@@ -8,6 +9,12 @@ export default function Accounts() {
   const [bankName, setBankName] = useState('Sbi');
   const [upiId, setUpiId] = useState();
   const [upiIdError, setUpiIdError] = useState();
+  const [doctorInfo, setDoctorInfo] = useState("");
+  const [dataRevenues, setDataRevenues] = useState(null);
+
+  const docInfo = JSON.parse(localStorage.getItem("docInfo"));
+
+  const fees = docInfo?.fees;
 
   const handleUpiIdChange = (e) => {
     const upiIdValue = e.target.value;
@@ -182,6 +189,77 @@ export default function Accounts() {
       Not_Attented: 25
     }
   ]
+
+  const getAnalyticsData = async() =>{
+
+    const isAuthenticated = localStorage.getItem("token");
+   
+
+    if(docInfo){
+      
+    try {
+
+      const response = await axios.post("https://healthbackend-3xh2.onrender.com/appointment/analytics/",
+
+      {
+        
+          userId : docInfo?.userId?._id,
+       },
+        {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: isAuthenticated,
+        },
+      }
+      );
+
+      console.log(response.data.result);
+      const {appointmentCounts} = response.data.result;
+      // const updatedCounts = {};
+
+      // 2024-05 6
+
+      // for(const [key,value ]  of Object.entries(appointmentCounts)){
+      //   console.log(key,value);
+      //   const updatedValue = value * fees;
+      //   updatedCounts[key] = updatedValue;
+      // }
+      // console.log(updatedCounts)  // 2024-05 6000
+
+      if(appointmentCounts){
+      const data = Object.entries(appointmentCounts).map(([name,income]) =>({
+        name:name,
+        Income: fees*income,
+      }));
+
+      console.log(data)   // {name: 2024-05 , Income: 6000}
+      setDataRevenues(data)
+    }
+
+
+     
+      
+    } catch (error) {
+
+      console.log(error)
+      
+    }
+  }
+  }
+  console.log(dataRevenues)
+
+  useEffect(() => {
+    getAnalyticsData();
+  }, []);
+  
+  useEffect(() => {
+    const doctorInfo = JSON.parse(localStorage.getItem("docInfo"));
+    if (doctorInfo) {
+      setDoctorInfo(doctorInfo);
+    }
+  }, []);
+
+
   
  
 
@@ -391,7 +469,7 @@ export default function Accounts() {
 
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
-            data={dataRevenue}
+            data={dataRevenues}
             margin={{
               top: 10,
               right: 30,

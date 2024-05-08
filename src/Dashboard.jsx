@@ -104,6 +104,8 @@ export default function Dashboard() {
         }
       );
 
+      console.log(data)
+
       if (past === false) {
         const datastore = data.data.result;
 
@@ -120,7 +122,7 @@ export default function Dashboard() {
           const appointmentDate = new Date(data.date).toLocaleDateString(
             "en-US"
           );
-          console.log(appointmentDate, data.date);
+          // console.log(appointmentDate, data.date);
           if (todayDate === appointmentDate) {
             // console.log(data)
             todayArray.push(data);
@@ -132,7 +134,7 @@ export default function Dashboard() {
             // setUpcoming((prevUpcoming) => [...prevUpcoming, data]);
           }
           setUpcoming(upcomingArray);
-          // console.log(upcoming)
+          console.log(upcoming)
           setToday(todayArray);
         });
       } else {
@@ -771,9 +773,9 @@ export default function Dashboard() {
                                                   />
                                                 </a>
                                                 <a href="patient-profile.html">
-                                                  {patient.patient.userId.name}{" "}
+                                                  {patient.patient?.userId?.name}{" "}
                                                   <span>
-                                                    {patient.patient.userId._id}
+                                                    {patient.patient?.userId?._id}
                                                   </span>
                                                 </a>
                                               </h2>
@@ -787,7 +789,7 @@ export default function Dashboard() {
                                               <span className="d-block text-info">
                                                 {patient.date
                                                   ? new Date(
-                                                      patient.date
+                                                      patient?.date
                                                     ).toLocaleTimeString(
                                                       "en-US"
                                                     )

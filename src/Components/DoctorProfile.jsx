@@ -857,6 +857,7 @@ export default function DoctorProfile() {
                             <option>Select</option>
                             <option>Male</option>
                             <option>Female</option>
+                            <option>Other</option>
                           </select>
                           {errors.gender && (
                             <span style={{ color: "red", fontSize: "13px" }}>
