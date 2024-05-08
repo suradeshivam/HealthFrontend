@@ -23,6 +23,12 @@ export default function Dashboard() {
   const [doctorInfo, setDoctorInfo] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState("");
 
+  // Paginations
+  const [itemsPerPage] = useState(5);
+  const [currentPageToday, setCurrentPageToday] = useState(1);
+  const [currentPageUpcoming, setCurrentPageUpcoming] = useState(1);
+  const [currentPageHistory, setCurrentPageHistory] = useState(1);
+
   const [patientSelect, setPatientSelect] = useState(null);
   let todayCount = 0;
   let upcomingCount = 0;
@@ -255,32 +261,31 @@ export default function Dashboard() {
   ];
 
   // Pagination Logic
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5);
+ 
 
   // Get Patients
   // const indexOfLastItem = currentPage * itemsPerPage;
   // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   // const currentItems = patients.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Today Section
-const todayStartIndex = (currentPage - 1) * itemsPerPage;
-const todayEndIndex = currentPage * itemsPerPage;
-const todayAppointments = today.slice(todayStartIndex, todayEndIndex);
-
-// Upcoming Section
-const upcomingStartIndex = (currentPage - 1) * itemsPerPage;
-const upcomingEndIndex = currentPage * itemsPerPage;
-const upcomingAppointments = upcoming.slice(upcomingStartIndex, upcomingEndIndex);
-
-// History Section
-const historyStartIndex = (currentPage - 1) * itemsPerPage;
-const historyEndIndex = currentPage * itemsPerPage;
-const historyAppointments = appointments.slice(historyStartIndex, historyEndIndex);
-
-
-  // Change page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  // Today Appointment
+  const todayStartIndex = (currentPageToday - 1) * itemsPerPage;
+  const todayEndIndex = currentPageToday * itemsPerPage;
+  const todayAppointments = tableData.slice(todayStartIndex, todayEndIndex);
+  
+  // Upcoming Section
+  const upcomingStartIndex = (currentPageUpcoming - 1) * itemsPerPage;
+  const upcomingEndIndex = currentPageUpcoming * itemsPerPage;
+  const upcomingAppointments = upcoming.slice(upcomingStartIndex, upcomingEndIndex);
+  
+  // History Section
+  const historyStartIndex = (currentPageHistory - 1) * itemsPerPage;
+  const historyEndIndex = currentPageHistory * itemsPerPage;
+  const historyAppointments = history.slice(historyStartIndex, historyEndIndex);
+  
+  const paginate1 = (pageNumber) => setCurrentPageToday(pageNumber);
+  const paginate2 = (pageNumber) => setCurrentPageUpcoming(pageNumber);
+  const paginate3 = (pageNumber) => setCurrentPageHistory(pageNumber);
 
   const handlePatientSelect = (patient) => {
     // console.log(patient)
@@ -653,7 +658,7 @@ const historyAppointments = appointments.slice(historyStartIndex, historyEndInde
                             <Pagination
                               itemsPerPage={itemsPerPage}
                               totalItems={today.length}
-                              paginate={paginate}
+                              paginate={paginate1}
                             />
                           </div>
 
@@ -755,7 +760,7 @@ const historyAppointments = appointments.slice(historyStartIndex, historyEndInde
                             <Pagination
                               itemsPerPage={itemsPerPage}
                               totalItems={upcoming.length}
-                              paginate={paginate}
+                              paginate={paginate2}
                             />
                           </div>
 
@@ -846,7 +851,7 @@ const historyAppointments = appointments.slice(historyStartIndex, historyEndInde
                             <Pagination
                               itemsPerPage={itemsPerPage}
                               totalItems={appointments.length}
-                              paginate={paginate}
+                              paginate={paginate3}
                             />
                           </div>
                         </div>
