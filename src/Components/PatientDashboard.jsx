@@ -1,14 +1,240 @@
-import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React,{useEffect, useState} from "react";
+import { Link,useNavigate } from "react-router-dom";
+import Pagination from "./Pagination";
 export default function Patientdashboard() {
+
+  const [currentPageToday, setCurrentPageToday] = useState(1);
+  const [currentPageUpcoming, setCurrentPageUpcoming] = useState(1);
+  const [currentPageHistory, setCurrentPageHistory] = useState(1);
+  const [itemsPerPage] = useState(5);
+
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    if (userInfo.role !== "user") {
-      navigate("/");
-    }
-  }, []);
+
+  const tableData = [
+    {
+      doctorName: "Dr. Jai",
+      specialty: "Dental",
+      appointmentDate: "14 Nov 2023",
+      appointmentTime: "10.00 AM",
+      BookingDate: "12 Nov 2023",
+      consultationFee: "$160",
+      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+    },
+    {
+      doctorName: "Dr. Ruby Perrin",
+      specialty: "Dental",
+      appointmentDate: "14 Nov 2023",
+      appointmentTime: "10.00 AM",
+      BookingDate: "12 Nov 2023",
+      consultationFee: "$160",
+      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+    },
+    {
+      doctorName: "Dr. Ruby Perrin",
+      specialty: "Dental",
+      appointmentDate: "14 Nov 2023",
+      appointmentTime: "10.00 AM",
+      BookingDate: "12 Nov 2023",
+      consultationFee: "$160",
+      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+    },
+    {
+      doctorName: "Dr. Ruby Perrin",
+      specialty: "Dental",
+      appointmentDate: "14 Nov 2023",
+      appointmentTime: "10.00 AM",
+      BookingDate: "12 Nov 2023",
+      consultationFee: "$160",
+      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+    },
+    {
+      doctorName: "Dr. Ruby Perrin",
+      specialty: "Dental",
+      appointmentDate: "14 Nov 2023",
+      appointmentTime: "10.00 AM",
+      BookingDate: "12 Nov 2023",
+      consultationFee: "$160",
+      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+    },
+    {
+      doctorName: "Dr. Ruby Perrin",
+      specialty: "Dental",
+      appointmentDate: "14 Nov 2023",
+      appointmentTime: "10.00 AM",
+      BookingDate: "12 Nov 2023",
+      consultationFee: "$160",
+      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+    },
+ 
+  ];
+  const upcoming = [
+    {
+      doctorName: "Dr. Shree",
+      specialty: "Dental",
+      appointmentDate: "14 Nov 2023",
+      appointmentTime: "10.00 AM",
+      BookingDate: "12 Nov 2023",
+      consultationFee: "$160",
+      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+    },
+    {
+      doctorName: "Dr. Ruby Perrin",
+      specialty: "Dental",
+      appointmentDate: "14 Nov 2023",
+      appointmentTime: "10.00 AM",
+      BookingDate: "12 Nov 2023",
+      consultationFee: "$160",
+      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+    },
+    {
+      doctorName: "Dr. Ruby Perrin",
+      specialty: "Dental",
+      appointmentDate: "14 Nov 2023",
+      appointmentTime: "10.00 AM",
+      BookingDate: "12 Nov 2023",
+      consultationFee: "$160",
+      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+    },
+    {
+      doctorName: "Dr. Ruby Perrin",
+      specialty: "Dental",
+      appointmentDate: "14 Nov 2023",
+      appointmentTime: "10.00 AM",
+      BookingDate: "12 Nov 2023",
+      consultationFee: "$160",
+      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+    },
+    {
+      doctorName: "Dr. Ruby Perrin",
+      specialty: "Dental",
+      appointmentDate: "14 Nov 2023",
+      appointmentTime: "10.00 AM",
+      BookingDate: "12 Nov 2023",
+      consultationFee: "$160",
+      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+    },
+    {
+      doctorName: "Dr. Ruby Perrin",
+      specialty: "Dental",
+      appointmentDate: "14 Nov 2023",
+      appointmentTime: "10.00 AM",
+      BookingDate: "12 Nov 2023",
+      consultationFee: "$160",
+      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+    },
+    {
+      doctorName: "Dr. Ruby Perrin",
+      specialty: "Dental",
+      appointmentDate: "14 Nov 2023",
+      appointmentTime: "10.00 AM",
+      BookingDate: "12 Nov 2023",
+      consultationFee: "$160",
+      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+    },
+ 
+  ];
+  const history = [
+    {
+      doctorName: "Dr. Ram",
+      specialty: "Dental",
+      appointmentDate: "14 Nov 2023",
+      appointmentTime: "10.00 AM",
+      BookingDate: "12 Nov 2023",
+      consultationFee: "$160",
+      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+    },
+    {
+      doctorName: "Dr. Ruby Perrin",
+      specialty: "Dental",
+      appointmentDate: "14 Nov 2023",
+      appointmentTime: "10.00 AM",
+      BookingDate: "12 Nov 2023",
+      consultationFee: "$160",
+      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+    },
+    {
+      doctorName: "Dr. Ruby Perrin",
+      specialty: "Dental",
+      appointmentDate: "14 Nov 2023",
+      appointmentTime: "10.00 AM",
+      BookingDate: "12 Nov 2023",
+      consultationFee: "$160",
+      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+    },
+    {
+      doctorName: "Dr. Ruby Perrin",
+      specialty: "Dental",
+      appointmentDate: "14 Nov 2023",
+      appointmentTime: "10.00 AM",
+      BookingDate: "12 Nov 2023",
+      consultationFee: "$160",
+      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+    },
+    {
+      doctorName: "Dr. Ruby Perrin",
+      specialty: "Dental",
+      appointmentDate: "14 Nov 2023",
+      appointmentTime: "10.00 AM",
+      BookingDate: "12 Nov 2023",
+      consultationFee: "$160",
+      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+    },
+    {
+      doctorName: "Dr. Ruby Perrin",
+      specialty: "Dental",
+      appointmentDate: "14 Nov 2023",
+      appointmentTime: "10.00 AM",
+      BookingDate: "12 Nov 2023",
+      consultationFee: "$160",
+      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+    },
+    {
+      doctorName: "Dr. Ruby Perrin",
+      specialty: "Dental",
+      appointmentDate: "14 Nov 2023",
+      appointmentTime: "10.00 AM",
+      BookingDate: "12 Nov 2023",
+      consultationFee: "$160",
+      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+    },
+    {
+      doctorName: "Dr. Ruby Perrin",
+      specialty: "Dental",
+      appointmentDate: "14 Nov 2023",
+      appointmentTime: "10.00 AM",
+      BookingDate: "12 Nov 2023",
+      consultationFee: "$160",
+      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+    },
+ 
+  ];
+
+  // Today Appointment
+const todayStartIndex = (currentPageToday - 1) * itemsPerPage;
+const todayEndIndex = currentPageToday * itemsPerPage;
+const todayAppointments = tableData.slice(todayStartIndex, todayEndIndex);
+
+// Upcoming Section
+const upcomingStartIndex = (currentPageUpcoming - 1) * itemsPerPage;
+const upcomingEndIndex = currentPageUpcoming * itemsPerPage;
+const upcomingAppointments = upcoming.slice(upcomingStartIndex, upcomingEndIndex);
+
+// History Section
+const historyStartIndex = (currentPageHistory - 1) * itemsPerPage;
+const historyEndIndex = currentPageHistory * itemsPerPage;
+const historyAppointments = history.slice(historyStartIndex, historyEndIndex);
+
+const paginate1 = (pageNumber) => setCurrentPageToday(pageNumber);
+const paginate2 = (pageNumber) => setCurrentPageUpcoming(pageNumber);
+const paginate3 = (pageNumber) => setCurrentPageHistory(pageNumber);
+
+useEffect(() => {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  if (userInfo.role !== "user") {
+    navigate("/");
+  }
+}, []);
 
   return (
     <>
@@ -131,18 +357,13 @@ export default function Patientdashboard() {
                             <span>Dashboard</span>
                           </Link>
                         </li>
-                        {/* <li>
-                          <Link to="/favourites">
-                            <i className="fas fa-bookmark" />
-                            <span>Favourites</span>
-                          </Link>
-                        </li> */}
-                        {/* <li>
+
+                        <li>
                           <Link to="/dependent">
                             <i className="fas fa-users" />
                             <span>Dependent</span>
                           </Link>
-                        </li> */}
+                        </li>
                         {/* <li>
                       <a href="chat.html">
                         <i className="fas fa-comments" />
@@ -151,11 +372,11 @@ export default function Patientdashboard() {
                       </a>
                     </li> */}
                         {/* <li>
-                          <Link to="/patient-accounts">
-                            <i className="fas fa-file-invoice-dollar" />
-                            <span>Accounts</span>
-                          </Link>
-                        </li> */}
+                      <Link to="/patient-accounts">
+                        <i className="fas fa-file-invoice-dollar" />
+                        <span>Accounts</span>
+                      </Link>
+                    </li> */}
                         <li>
                           <Link to="/orders">
                             <i className="fas fa-list-alt" />
@@ -163,26 +384,26 @@ export default function Patientdashboard() {
                             <small className="unread-msg">7</small>
                           </Link>
                         </li>
-                        {/* <li>
+                        <li>
                           <Link to="/medical-records">
                             <i className="fas fa-clipboard" />
                             <span>Add Medical Records</span>
                           </Link>
-                        </li> */}
-                        {/* <li>
+                        </li>
+                        <li>
                           <Link to="/medical-details">
                             <i className="fas fa-file-medical-alt" />
                             <span>Medical Details</span>
                           </Link>
-                        </li> */}
+                        </li>
                         <li>
-                          <Link to="/patientprofile">
+                          <Link to="/profile-settings">
                             <i className="fas fa-user-cog" />
                             <span>Profile Settings</span>
                           </Link>
                         </li>
                         <li>
-                          <Link to="/changepassword">
+                          <Link to="/change-password">
                             <i className="fas fa-lock" />
                             <span>Change Password</span>
                           </Link>
@@ -268,105 +489,7 @@ export default function Patientdashboard() {
                   </div>
                 </div>
                 <div className="row patient-graph-col">
-                  <div className="col-12">
-                    <div className="card">
-                      <div className="card-header">
-                        <h4 className="card-title">Graph Status</h4>
-                      </div>
-                      <div className="card-body pt-2 pb-2 mt-1 mb-1">
-                        <div className="row">
-                          <div className="col-12 col-md-6 col-lg-4 col-xl-3 patient-graph-box">
-                            <a
-                              href="#"
-                              className="graph-box"
-                              data-bs-toggle="modal"
-                              data-bs-target="#graph1">
-                              <div>
-                                <h4>BMI Status</h4>
-                              </div>
-                              <div className="graph-img">
-                                <img
-                                  src="assets/img/shapes/graph-01.png"
-                                  alt="shapes-icon"
-                                />
-                              </div>
-                              <div className="graph-status-result mt-3">
-                                <span className="graph-update-date">
-                                  Last Update 6d
-                                </span>
-                              </div>
-                            </a>
-                          </div>
-                          <div className="col-12 col-md-6 col-lg-4 col-xl-3 patient-graph-box">
-                            <a
-                              href="#"
-                              className="graph-box pink-graph"
-                              data-bs-toggle="modal"
-                              data-bs-target="#graph2">
-                              <div>
-                                <h4>Heart Rate Status</h4>
-                              </div>
-                              <div className="graph-img">
-                                <img
-                                  src="assets/img/shapes/graph-02.png"
-                                  alt="graph-icon"
-                                />
-                              </div>
-                              <div className="graph-status-result mt-3">
-                                <span className="graph-update-date">
-                                  Last Update 2d
-                                </span>
-                              </div>
-                            </a>
-                          </div>
-                          <div className="col-12 col-md-6 col-lg-4 col-xl-3 patient-graph-box">
-                            <a
-                              href="#"
-                              className="graph-box sky-blue-graph"
-                              data-bs-toggle="modal"
-                              data-bs-target="#graph3">
-                              <div>
-                                <h4>FBC Status</h4>
-                              </div>
-                              <div className="graph-img">
-                                <img
-                                  src="assets/img/shapes/graph-03.png"
-                                  alt="chart-icon"
-                                />
-                              </div>
-                              <div className="graph-status-result mt-3">
-                                <span className="graph-update-date">
-                                  Last Update 5d
-                                </span>
-                              </div>
-                            </a>
-                          </div>
-                          <div className="col-12 col-md-6 col-lg-4 col-xl-3 patient-graph-box">
-                            <a
-                              href="#"
-                              className="graph-box orange-graph"
-                              data-bs-toggle="modal"
-                              data-bs-target="#graph4">
-                              <div>
-                                <h4>Weight Status</h4>
-                              </div>
-                              <div className="graph-img">
-                                <img
-                                  src="assets/img/shapes/graph-04.png"
-                                  alt="chart-icon"
-                                />
-                              </div>
-                              <div className="graph-status-result mt-3">
-                                <span className="graph-update-date">
-                                  Last Update 3d
-                                </span>
-                              </div>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <div className="col-12"></div>
                 </div>
                 <div className="card">
                   <div className="card-body pt-0">
@@ -375,16 +498,20 @@ export default function Patientdashboard() {
                         <li className="nav-item">
                           <a
                             className="nav-link active"
-                            href="#pat_appointments"
-                            data-bs-toggle="tab">
+                            href="#pat_appointment"
+                            data-bs-toggle="tab"
+                          >
                             Appointments
                           </a>
                         </li>
-                        <li className="nav-item">
+                        </ul>
+                    </nav>
+                        {/* <li className="nav-item">
                           <a
                             className="nav-link"
                             href="#pat_prescriptions"
-                            data-bs-toggle="tab">
+                            data-bs-toggle="tab"
+                          >
                             Prescriptions
                           </a>
                         </li>
@@ -392,7 +519,8 @@ export default function Patientdashboard() {
                           <a
                             className="nav-link"
                             href="#pat_medical_records"
-                            data-bs-toggle="tab">
+                            data-bs-toggle="tab"
+                          >
                             <span className="med-records">Medical Records</span>
                           </a>
                         </li>
@@ -400,16 +528,52 @@ export default function Patientdashboard() {
                           <a
                             className="nav-link"
                             href="#pat_billing"
-                            data-bs-toggle="tab">
+                            data-bs-toggle="tab"
+                          >
                             Billing
                           </a>
-                        </li>
-                      </ul>
-                    </nav>
+                        </li> */}
+                        
+                     
                     <div className="tab-content pt-0">
+                    <ul className="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
+                          <li className="nav-item">
+                            <a
+                              className="nav-link active"
+                              href="#today-appointments"
+                              data-bs-toggle="tab">
+                              Today
+                            </a>
+                          </li>
+                          <li className="nav-item">
+                            <a
+                              className="nav-link"
+                              href="#upcoming-appointments"
+                              data-bs-toggle="tab">
+                              Upcoming
+                            </a>
+                          </li>
+                          <li className="nav-item">
+                            <a
+                              className="nav-link"
+                              href="#history-appointments"
+                              data-bs-toggle="tab"
+                              // onClick={() =>
+                              //   getAllAppointments(
+                              //     doctorInfo._id,
+                              //     isAuthenticated,
+                              //     true
+                              //   )
+                              // }
+                              >
+                              History
+                            </a>
+                          </li>
+                        </ul><br/>
                       <div
-                        id="pat_appointments"
-                        className="tab-pane fade show active">
+                        id="today-appointments"
+                        className="tab-pane fade show active"
+                      >
                         <div className="card card-table mb-0">
                           <div className="card-body">
                             <div className="table-responsive">
@@ -420,483 +584,221 @@ export default function Patientdashboard() {
                                     <th>Appt Date</th>
                                     <th>Booking Date</th>
                                     <th>Amount</th>
-                                    <th>Follow Up</th>
-                                    <th>Status</th>
                                     <th>Action</th>
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr>
-                                    <td>
-                                      <h2 className="table-avatar">
-                                        <a
-                                          href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
-                                          <img
-                                            className="avatar-img rounded-circle"
-                                            src="assets/img/doctors/doctor-thumb-01.jpg"
-                                            alt="User Image"
-                                          />
-                                        </a>
-                                        <a href="doctor-profile.html">
-                                          Dr. Ruby Perrin <span>Dental</span>
-                                        </a>
-                                      </h2>
-                                    </td>
-                                    <td>
-                                      14 Nov 2023{" "}
-                                      <span className="d-block text-info">
-                                        10.00 AM
-                                      </span>
-                                    </td>
-                                    <td>12 Nov 2023</td>
-                                    <td>$160</td>
-                                    <td>16 Nov 2023</td>
-                                    <td>
-                                      <span className="badge rounded-pill bg-success-light">
-                                        Confirm
-                                      </span>
-                                    </td>
-                                    <td>
-                                      <div className="table-action">
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
-                                          <i className="fas fa-print" /> Print
-                                        </a>
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
-                                          <i className="far fa-eye" /> View
-                                        </a>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td>
-                                      <h2 className="table-avatar">
-                                        <a
-                                          href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
-                                          <img
-                                            className="avatar-img rounded-circle"
-                                            src="assets/img/doctors/doctor-thumb-02.jpg"
-                                            alt="User Image"
-                                          />
-                                        </a>
-                                        <a href="doctor-profile.html">
-                                          Dr. Darren Elder <span>Dental</span>
-                                        </a>
-                                      </h2>
-                                    </td>
-                                    <td>
-                                      12 Nov 2023{" "}
-                                      <span className="d-block text-info">
-                                        8.00 PM
-                                      </span>
-                                    </td>
-                                    <td>12 Nov 2023</td>
-                                    <td>$250</td>
-                                    <td>14 Nov 2023</td>
-                                    <td>
-                                      <span className="badge rounded-pill bg-success-light">
-                                        Confirm
-                                      </span>
-                                    </td>
-                                    <td>
-                                      <div className="table-action">
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
-                                          <i className="fas fa-print" /> Print
-                                        </a>
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
-                                          <i className="far fa-eye" /> View
-                                        </a>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td>
-                                      <h2 className="table-avatar">
-                                        <a
-                                          href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
-                                          <img
-                                            className="avatar-img rounded-circle"
-                                            src="assets/img/doctors/doctor-thumb-03.jpg"
-                                            alt="User Image"
-                                          />
-                                        </a>
-                                        <a href="doctor-profile.html">
-                                          Dr. Deborah Angel{" "}
-                                          <span>Cardiology</span>
-                                        </a>
-                                      </h2>
-                                    </td>
-                                    <td>
-                                      11 Nov 2023{" "}
-                                      <span className="d-block text-info">
-                                        11.00 AM
-                                      </span>
-                                    </td>
-                                    <td>10 Nov 2023</td>
-                                    <td>$400</td>
-                                    <td>13 Nov 2023</td>
-                                    <td>
-                                      <span className="badge rounded-pill bg-danger-light">
-                                        Cancelled
-                                      </span>
-                                    </td>
-                                    <td>
-                                      <div className="table-action">
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
-                                          <i className="fas fa-print" /> Print
-                                        </a>
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
-                                          <i className="far fa-eye" /> View
-                                        </a>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td>
-                                      <h2 className="table-avatar">
-                                        <a
-                                          href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
-                                          <img
-                                            className="avatar-img rounded-circle"
-                                            src="assets/img/doctors/doctor-thumb-04.jpg"
-                                            alt="User Image"
-                                          />
-                                        </a>
-                                        <a href="doctor-profile.html">
-                                          Dr. Sofia Brient <span>Urology</span>
-                                        </a>
-                                      </h2>
-                                    </td>
-                                    <td>
-                                      10 Nov 2023{" "}
-                                      <span className="d-block text-info">
-                                        3.00 PM
-                                      </span>
-                                    </td>
-                                    <td>10 Nov 2023</td>
-                                    <td>$350</td>
-                                    <td>12 Nov 2023</td>
-                                    <td>
-                                      <span className="badge rounded-pill bg-warning-light">
-                                        Pending
-                                      </span>
-                                    </td>
-                                    <td>
-                                      <div className="table-action">
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
-                                          <i className="fas fa-print" /> Print
-                                        </a>
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
-                                          <i className="far fa-eye" /> View
-                                        </a>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td>
-                                      <h2 className="table-avatar">
-                                        <a
-                                          href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
-                                          <img
-                                            className="avatar-img rounded-circle"
-                                            src="assets/img/doctors/doctor-thumb-05.jpg"
-                                            alt="User Image"
-                                          />
-                                        </a>
-                                        <a href="doctor-profile.html">
-                                          Dr. Marvin Campbell{" "}
-                                          <span>Ophthalmology</span>
-                                        </a>
-                                      </h2>
-                                    </td>
-                                    <td>
-                                      9 Nov 2023{" "}
-                                      <span className="d-block text-info">
-                                        7.00 PM
-                                      </span>
-                                    </td>
-                                    <td>8 Nov 2023</td>
-                                    <td>$75</td>
-                                    <td>11 Nov 2023</td>
-                                    <td>
-                                      <span className="badge rounded-pill bg-success-light">
-                                        Confirm
-                                      </span>
-                                    </td>
-                                    <td>
-                                      <div className="table-action">
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
-                                          <i className="fas fa-print" /> Print
-                                        </a>
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
-                                          <i className="far fa-eye" /> View
-                                        </a>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td>
-                                      <h2 className="table-avatar">
-                                        <a
-                                          href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
-                                          <img
-                                            className="avatar-img rounded-circle"
-                                            src="assets/img/doctors/doctor-thumb-06.jpg"
-                                            alt="User Image"
-                                          />
-                                        </a>
-                                        <a href="doctor-profile.html">
-                                          Dr. Katharine Berthold{" "}
-                                          <span>Orthopaedics</span>
-                                        </a>
-                                      </h2>
-                                    </td>
-                                    <td>
-                                      8 Nov 2023{" "}
-                                      <span className="d-block text-info">
-                                        9.00 AM
-                                      </span>
-                                    </td>
-                                    <td>6 Nov 2023</td>
-                                    <td>$175</td>
-                                    <td>10 Nov 2023</td>
-                                    <td>
-                                      <span className="badge rounded-pill bg-danger-light">
-                                        Cancelled
-                                      </span>
-                                    </td>
-                                    <td>
-                                      <div className="table-action">
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
-                                          <i className="fas fa-print" /> Print
-                                        </a>
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
-                                          <i className="far fa-eye" /> View
-                                        </a>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td>
-                                      <h2 className="table-avatar">
-                                        <a
-                                          href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
-                                          <img
-                                            className="avatar-img rounded-circle"
-                                            src="assets/img/doctors/doctor-thumb-07.jpg"
-                                            alt="User Image"
-                                          />
-                                        </a>
-                                        <a href="doctor-profile.html">
-                                          Dr. Linda Tobin <span>Neurology</span>
-                                        </a>
-                                      </h2>
-                                    </td>
-                                    <td>
-                                      8 Nov 2023{" "}
-                                      <span className="d-block text-info">
-                                        6.00 PM
-                                      </span>
-                                    </td>
-                                    <td>6 Nov 2023</td>
-                                    <td>$450</td>
-                                    <td>10 Nov 2023</td>
-                                    <td>
-                                      <span className="badge rounded-pill bg-success-light">
-                                        Confirm
-                                      </span>
-                                    </td>
-                                    <td>
-                                      <div className="table-action">
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
-                                          <i className="fas fa-print" /> Print
-                                        </a>
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
-                                          <i className="far fa-eye" /> View
-                                        </a>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td>
-                                      <h2 className="table-avatar">
-                                        <a
-                                          href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
-                                          <img
-                                            className="avatar-img rounded-circle"
-                                            src="assets/img/doctors/doctor-thumb-08.jpg"
-                                            alt="User Image"
-                                          />
-                                        </a>
-                                        <a href="doctor-profile.html">
-                                          Dr. Paul Richard{" "}
-                                          <span>Dermatology</span>
-                                        </a>
-                                      </h2>
-                                    </td>
-                                    <td>
-                                      7 Nov 2023{" "}
-                                      <span className="d-block text-info">
-                                        9.00 PM
-                                      </span>
-                                    </td>
-                                    <td>7 Nov 2023</td>
-                                    <td>$275</td>
-                                    <td>9 Nov 2023</td>
-                                    <td>
-                                      <span className="badge rounded-pill bg-success-light">
-                                        Confirm
-                                      </span>
-                                    </td>
-                                    <td>
-                                      <div className="table-action">
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
-                                          <i className="fas fa-print" /> Print
-                                        </a>
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
-                                          <i className="far fa-eye" /> View
-                                        </a>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td>
-                                      <h2 className="table-avatar">
-                                        <a
-                                          href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
-                                          <img
-                                            className="avatar-img rounded-circle"
-                                            src="assets/img/doctors/doctor-thumb-09.jpg"
-                                            alt="User Image"
-                                          />
-                                        </a>
-                                        <a href="doctor-profile.html">
-                                          Dr. John Gibbs <span>Dental</span>
-                                        </a>
-                                      </h2>
-                                    </td>
-                                    <td>
-                                      6 Nov 2023{" "}
-                                      <span className="d-block text-info">
-                                        8.00 PM
-                                      </span>
-                                    </td>
-                                    <td>4 Nov 2023</td>
-                                    <td>$600</td>
-                                    <td>8 Nov 2023</td>
-                                    <td>
-                                      <span className="badge rounded-pill bg-success-light">
-                                        Confirm
-                                      </span>
-                                    </td>
-                                    <td>
-                                      <div className="table-action">
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
-                                          <i className="fas fa-print" /> Print
-                                        </a>
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
-                                          <i className="far fa-eye" /> View
-                                        </a>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td>
-                                      <h2 className="table-avatar">
-                                        <a
-                                          href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
-                                          <img
-                                            className="avatar-img rounded-circle"
-                                            src="assets/img/doctors/doctor-thumb-10.jpg"
-                                            alt="User Image"
-                                          />
-                                        </a>
-                                        <a href="doctor-profile.html">
-                                          Dr. Olga Barlow <span>Dental</span>
-                                        </a>
-                                      </h2>
-                                    </td>
-                                    <td>
-                                      5 Nov 2023{" "}
-                                      <span className="d-block text-info">
-                                        5.00 PM
-                                      </span>
-                                    </td>
-                                    <td>1 Nov 2023</td>
-                                    <td>$100</td>
-                                    <td>7 Nov 2023</td>
-                                    <td>
-                                      <span className="badge rounded-pill bg-success-light">
-                                        Confirm
-                                      </span>
-                                    </td>
-                                    <td>
-                                      <div className="table-action">
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
-                                          <i className="fas fa-print" /> Print
-                                        </a>
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
-                                          <i className="far fa-eye" /> View
-                                        </a>
-                                      </div>
-                                    </td>
-                                  </tr>
+                                  {todayAppointments.map((row, index) => (
+                                    <tr key={index}>
+                                      <td>
+                                        <h2 className="table-avatar">
+                                          <a
+                                            href="doctor-profile.html"
+                                            className="avatar avatar-sm me-2"
+                                          >
+                                            <img
+                                              className="avatar-img rounded-circle"
+                                              src={row.avatarSrc}
+                                              alt="User Image"
+                                            />
+                                          </a>
+                                          <a href="doctor-profile.html">
+                                            {row.doctorName}{" "}
+                                            <span>{row.specialty}</span>
+                                          </a>
+                                        </h2>
+                                      </td>
+                                      <td>
+                                        {row.appointmentDate}{" "}
+                                        <span className="d-block text-info">
+                                          {row.appointmentTime}
+                                        </span>
+                                      </td>
+                                      <td>{row.BookingDate}</td>
+                                      <td>{row.consultationFee}</td>
+                                      <td>
+                                        <div className="table-action">
+                                        <button
+                                            
+                                            className="btn btn-sm bg-info-light me-2"
+                                          >
+                                            <i className="fas fa-sign-in-alt" /> Join
+                                          </button>
+                                                <button
+                                                  className="btn btn-sm bg-info-light"
+                                                  >
+                                                  <i className="far fa-eye" />{" "}
+                                                  View
+                                                </button>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  ))}
+                                  
                                 </tbody>
                               </table>
+                                  <Pagination
+                            itemsPerPage={itemsPerPage}
+                            totalItems={tableData.length}
+                            paginate={paginate1}
+                          />
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div className="tab-pane fade" id="pat_prescriptions">
+                      <div
+                        id="upcoming-appointments"
+                        className="tab-pane fade "
+                      >
+                        <div className="card card-table mb-0">
+                          <div className="card-body">
+                            <div className="table-responsive">
+                              <table className="table table-hover table-center mb-0">
+                                <thead>
+                                  <tr>
+                                    <th>Doctor</th>
+                                    <th>Appt Date</th>
+                                    <th>Booking Date</th>
+                                    <th>Amount</th>
+                                    <th>Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {upcomingAppointments.map((row, index) => (
+                                    <tr key={index}>
+                                      <td>
+                                        <h2 className="table-avatar">
+                                          <a
+                                            href="doctor-profile.html"
+                                            className="avatar avatar-sm me-2"
+                                          >
+                                            <img
+                                              className="avatar-img rounded-circle"
+                                              src={row.avatarSrc}
+                                              alt="User Image"
+                                            />
+                                          </a>
+                                          <a href="doctor-profile.html">
+                                            {row.doctorName}{" "}
+                                            <span>{row.specialty}</span>
+                                          </a>
+                                        </h2>
+                                      </td>
+                                      <td>
+                                        {row.appointmentDate}{" "}
+                                        <span className="d-block text-info">
+                                          {row.appointmentTime}
+                                        </span>
+                                      </td>
+                                      <td>{row.BookingDate}</td>
+                                      <td>{row.consultationFee}</td>
+                                      <td>
+                                        <div className="table-action">
+                                        <button
+                                            
+                                            className="btn btn-sm bg-info-light me-2"
+                                          >
+                                            <i className="fas fa-sign-in-alt" /> Join
+                                          </button>
+                                                <button
+                                                  className="btn btn-sm bg-info-light"
+                                                  >
+                                                  <i className="far fa-eye" />{" "}
+                                                  View
+                                                </button>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  ))}
+                                  
+                                </tbody>
+                              </table>
+                                  <Pagination
+                            itemsPerPage={itemsPerPage}
+                            totalItems={upcoming.length}
+                            paginate={paginate2}
+                          />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        id="history-appointments"
+                        className="tab-pane fade"
+                      >
+                        <div className="card card-table mb-0">
+                          <div className="card-body">
+                            <div className="table-responsive">
+                              <table className="table table-hover table-center mb-0">
+                                <thead>
+                                  <tr>
+                                    <th>Doctor</th>
+                                    <th>Appt Date</th>
+                                    <th>Booking Date</th>
+                                    <th>Amount</th>
+                                    <th>Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {historyAppointments.map((row, index) => (
+                                    <tr key={index}>
+                                      <td>
+                                        <h2 className="table-avatar">
+                                          <a
+                                            href="doctor-profile.html"
+                                            className="avatar avatar-sm me-2"
+                                          >
+                                            <img
+                                              className="avatar-img rounded-circle"
+                                              src={row.avatarSrc}
+                                              alt="User Image"
+                                            />
+                                          </a>
+                                          <a href="doctor-profile.html">
+                                            {row.doctorName}{" "}
+                                            <span>{row.specialty}</span>
+                                          </a>
+                                        </h2>
+                                      </td>
+                                      <td>
+                                        {row.appointmentDate}{" "}
+                                        <span className="d-block text-info">
+                                          {row.appointmentTime}
+                                        </span>
+                                      </td>
+                                      <td>{row.BookingDate}</td>
+                                      <td>{row.consultationFee}</td>
+                                      <td>
+                                        <div className="table-action">
+                                        <button
+                                            
+                                            className="btn btn-sm bg-info-light me-2"
+                                          >
+                                            <i className="fas fa-sign-in-alt" /> Join
+                                          </button>
+                                                <button
+                                                  className="btn btn-sm bg-info-light"
+                                                  >
+                                                  <i className="far fa-eye" />{" "}
+                                                  View
+                                                </button>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  ))}
+                                  
+                                </tbody>
+                              </table>
+                                  <Pagination
+                            itemsPerPage={itemsPerPage}
+                            totalItems={history.length}
+                            paginate={paginate3}
+                          />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {/* <div className="tab-pane fade" id="pat_prescriptions">
                         <div className="card card-table mb-0">
                           <div className="card-body">
                             <div className="table-responsive">
@@ -910,357 +812,42 @@ export default function Patientdashboard() {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr>
-                                    <td>14 Nov 2023</td>
-                                    <td>Prescription 1</td>
-                                    <td>
-                                      <h2 className="table-avatar">
-                                        <a
-                                          href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
-                                          <img
-                                            className="avatar-img rounded-circle"
-                                            src="assets/img/doctors/doctor-thumb-01.jpg"
-                                            alt="User Image"
-                                          />
-                                        </a>
-                                        <a href="doctor-profile.html">
-                                          Dr. Ruby Perrin <span>Dental</span>
-                                        </a>
-                                      </h2>
-                                    </td>
-                                    <td>
-                                      <div className="table-action">
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
-                                          <i className="fas fa-print" /> Print
-                                        </a>
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
-                                          <i className="far fa-eye" /> View
-                                        </a>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td>13 Nov 2023</td>
-                                    <td>Prescription 2</td>
-                                    <td>
-                                      <h2 className="table-avatar">
-                                        <a
-                                          href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
-                                          <img
-                                            className="avatar-img rounded-circle"
-                                            src="assets/img/doctors/doctor-thumb-02.jpg"
-                                            alt="User Image"
-                                          />
-                                        </a>
-                                        <a href="doctor-profile.html">
-                                          Dr. Darren Elder <span>Dental</span>
-                                        </a>
-                                      </h2>
-                                    </td>
-                                    <td>
-                                      <div className="table-action">
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
-                                          <i className="fas fa-print" /> Print
-                                        </a>
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
-                                          <i className="far fa-eye" /> View
-                                        </a>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td>12 Nov 2023</td>
-                                    <td>Prescription 3</td>
-                                    <td>
-                                      <h2 className="table-avatar">
-                                        <a
-                                          href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
-                                          <img
-                                            className="avatar-img rounded-circle"
-                                            src="assets/img/doctors/doctor-thumb-03.jpg"
-                                            alt="User Image"
-                                          />
-                                        </a>
-                                        <a href="doctor-profile.html">
-                                          Dr. Deborah Angel{" "}
-                                          <span>Cardiology</span>
-                                        </a>
-                                      </h2>
-                                    </td>
-                                    <td>
-                                      <div className="table-action">
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
-                                          <i className="fas fa-print" /> Print
-                                        </a>
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
-                                          <i className="far fa-eye" /> View
-                                        </a>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td>11 Nov 2023</td>
-                                    <td>Prescription 4</td>
-                                    <td>
-                                      <h2 className="table-avatar">
-                                        <a
-                                          href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
-                                          <img
-                                            className="avatar-img rounded-circle"
-                                            src="assets/img/doctors/doctor-thumb-04.jpg"
-                                            alt="User Image"
-                                          />
-                                        </a>
-                                        <a href="doctor-profile.html">
-                                          Dr. Sofia Brient <span>Urology</span>
-                                        </a>
-                                      </h2>
-                                    </td>
-                                    <td>
-                                      <div className="table-action">
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
-                                          <i className="fas fa-print" /> Print
-                                        </a>
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
-                                          <i className="far fa-eye" /> View
-                                        </a>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td>10 Nov 2023</td>
-                                    <td>Prescription 5</td>
-                                    <td>
-                                      <h2 className="table-avatar">
-                                        <a
-                                          href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
-                                          <img
-                                            className="avatar-img rounded-circle"
-                                            src="assets/img/doctors/doctor-thumb-05.jpg"
-                                            alt="User Image"
-                                          />
-                                        </a>
-                                        <a href="doctor-profile.html">
-                                          Dr. Marvin Campbell{" "}
-                                          <span>Dental</span>
-                                        </a>
-                                      </h2>
-                                    </td>
-                                    <td>
-                                      <div className="table-action">
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
-                                          <i className="fas fa-print" /> Print
-                                        </a>
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
-                                          <i className="far fa-eye" /> View
-                                        </a>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td>9 Nov 2023</td>
-                                    <td>Prescription 6</td>
-                                    <td>
-                                      <h2 className="table-avatar">
-                                        <a
-                                          href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
-                                          <img
-                                            className="avatar-img rounded-circle"
-                                            src="assets/img/doctors/doctor-thumb-06.jpg"
-                                            alt="User Image"
-                                          />
-                                        </a>
-                                        <a href="doctor-profile.html">
-                                          Dr. Katharine Berthold{" "}
-                                          <span>Orthopaedics</span>
-                                        </a>
-                                      </h2>
-                                    </td>
-                                    <td>
-                                      <div className="table-action">
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
-                                          <i className="fas fa-print" /> Print
-                                        </a>
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
-                                          <i className="far fa-eye" /> View
-                                        </a>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td>8 Nov 2023</td>
-                                    <td>Prescription 7</td>
-                                    <td>
-                                      <h2 className="table-avatar">
-                                        <a
-                                          href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
-                                          <img
-                                            className="avatar-img rounded-circle"
-                                            src="assets/img/doctors/doctor-thumb-07.jpg"
-                                            alt="User Image"
-                                          />
-                                        </a>
-                                        <a href="doctor-profile.html">
-                                          Dr. Linda Tobin <span>Neurology</span>
-                                        </a>
-                                      </h2>
-                                    </td>
-                                    <td>
-                                      <div className="table-action">
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
-                                          <i className="fas fa-print" /> Print
-                                        </a>
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
-                                          <i className="far fa-eye" /> View
-                                        </a>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td>7 Nov 2023</td>
-                                    <td>Prescription 8</td>
-                                    <td>
-                                      <h2 className="table-avatar">
-                                        <a
-                                          href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
-                                          <img
-                                            className="avatar-img rounded-circle"
-                                            src="assets/img/doctors/doctor-thumb-08.jpg"
-                                            alt="User Image"
-                                          />
-                                        </a>
-                                        <a href="doctor-profile.html">
-                                          Dr. Paul Richard{" "}
-                                          <span>Dermatology</span>
-                                        </a>
-                                      </h2>
-                                    </td>
-                                    <td>
-                                      <div className="table-action">
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
-                                          <i className="fas fa-print" /> Print
-                                        </a>
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
-                                          <i className="far fa-eye" /> View
-                                        </a>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td>6 Nov 2023</td>
-                                    <td>Prescription 9</td>
-                                    <td>
-                                      <h2 className="table-avatar">
-                                        <a
-                                          href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
-                                          <img
-                                            className="avatar-img rounded-circle"
-                                            src="assets/img/doctors/doctor-thumb-09.jpg"
-                                            alt="User Image"
-                                          />
-                                        </a>
-                                        <a href="doctor-profile.html">
-                                          Dr. John Gibbs <span>Dental</span>
-                                        </a>
-                                      </h2>
-                                    </td>
-                                    <td>
-                                      <div className="table-action">
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
-                                          <i className="fas fa-print" /> Print
-                                        </a>
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
-                                          <i className="far fa-eye" /> View
-                                        </a>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td>5 Nov 2023</td>
-                                    <td>Prescription 10</td>
-                                    <td>
-                                      <h2 className="table-avatar">
-                                        <a
-                                          href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
-                                          <img
-                                            className="avatar-img rounded-circle"
-                                            src="assets/img/doctors/doctor-thumb-10.jpg"
-                                            alt="User Image"
-                                          />
-                                        </a>
-                                        <a href="doctor-profile.html">
-                                          Dr. Olga Barlow <span>Dental</span>
-                                        </a>
-                                      </h2>
-                                    </td>
-                                    <td>
-                                      <div className="table-action">
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
-                                          <i className="fas fa-print" /> Print
-                                        </a>
-                                        <a
-                                          href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
-                                          <i className="far fa-eye" /> View
-                                        </a>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                </tbody>
+  {prescriptions.map((prescription, index) => (
+    <tr key={index}>
+      <td>{prescription.date}</td>
+      <td>{prescription.prescription}</td>
+      <td>
+        <h2 className="table-avatar">
+          <a href={prescription.doctor.profileUrl} className="avatar avatar-sm me-2">
+            <img
+              className="avatar-img rounded-circle"
+              src={prescription.doctor.avatar}
+              alt="Doctor Avatar"
+            />
+          </a>
+          <a href={prescription.doctor.profileUrl}>
+            {prescription.doctor.name} <span>{prescription.doctor.speciality}</span>
+          </a>
+        </h2>
+      </td>
+      <td>
+        <div className="table-action">
+         
+          <a  className="btn btn-sm bg-info-light">
+            <i className="far fa-eye" /> View
+          </a>
+        </div>
+      </td>
+    </tr>
+  ))}
+</tbody>
+
                               </table>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div id="pat_medical_records" className="tab-pane fade">
+                      </div> */}
+                      {/* <div id="pat_medical_records" className="tab-pane fade">
                         <div className="card card-table mb-0">
                           <div className="card-body">
                             <div className="table-responsive">
@@ -1289,7 +876,8 @@ export default function Patientdashboard() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
+                                          className="avatar avatar-sm me-2"
+                                        >
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-01.jpg"
@@ -1305,12 +893,14 @@ export default function Patientdashboard() {
                                       <div className="table-action">
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
+                                          className="btn btn-sm bg-info-light"
+                                        >
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
+                                          className="btn btn-sm bg-primary-light"
+                                        >
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -1329,7 +919,8 @@ export default function Patientdashboard() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
+                                          className="avatar avatar-sm me-2"
+                                        >
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-02.jpg"
@@ -1345,12 +936,14 @@ export default function Patientdashboard() {
                                       <div className="table-action">
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
+                                          className="btn btn-sm bg-info-light"
+                                        >
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
+                                          className="btn btn-sm bg-primary-light"
+                                        >
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -1369,7 +962,8 @@ export default function Patientdashboard() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
+                                          className="avatar avatar-sm me-2"
+                                        >
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-03.jpg"
@@ -1386,12 +980,14 @@ export default function Patientdashboard() {
                                       <div className="table-action">
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
+                                          className="btn btn-sm bg-info-light"
+                                        >
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
+                                          className="btn btn-sm bg-primary-light"
+                                        >
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -1410,7 +1006,8 @@ export default function Patientdashboard() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
+                                          className="avatar avatar-sm me-2"
+                                        >
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-04.jpg"
@@ -1426,12 +1023,14 @@ export default function Patientdashboard() {
                                       <div className="table-action">
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
+                                          className="btn btn-sm bg-info-light"
+                                        >
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
+                                          className="btn btn-sm bg-primary-light"
+                                        >
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -1450,7 +1049,8 @@ export default function Patientdashboard() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
+                                          className="avatar avatar-sm me-2"
+                                        >
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-05.jpg"
@@ -1467,12 +1067,14 @@ export default function Patientdashboard() {
                                       <div className="table-action">
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
+                                          className="btn btn-sm bg-info-light"
+                                        >
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
+                                          className="btn btn-sm bg-primary-light"
+                                        >
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -1491,7 +1093,8 @@ export default function Patientdashboard() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
+                                          className="avatar avatar-sm me-2"
+                                        >
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-06.jpg"
@@ -1508,12 +1111,14 @@ export default function Patientdashboard() {
                                       <div className="table-action">
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
+                                          className="btn btn-sm bg-info-light"
+                                        >
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
+                                          className="btn btn-sm bg-primary-light"
+                                        >
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -1532,7 +1137,8 @@ export default function Patientdashboard() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
+                                          className="avatar avatar-sm me-2"
+                                        >
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-07.jpg"
@@ -1548,12 +1154,14 @@ export default function Patientdashboard() {
                                       <div className="table-action">
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
+                                          className="btn btn-sm bg-info-light"
+                                        >
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
+                                          className="btn btn-sm bg-primary-light"
+                                        >
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -1572,7 +1180,8 @@ export default function Patientdashboard() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
+                                          className="avatar avatar-sm me-2"
+                                        >
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-08.jpg"
@@ -1589,12 +1198,14 @@ export default function Patientdashboard() {
                                       <div className="table-action">
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
+                                          className="btn btn-sm bg-info-light"
+                                        >
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
+                                          className="btn btn-sm bg-primary-light"
+                                        >
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -1613,7 +1224,8 @@ export default function Patientdashboard() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
+                                          className="avatar avatar-sm me-2"
+                                        >
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-09.jpg"
@@ -1629,12 +1241,14 @@ export default function Patientdashboard() {
                                       <div className="table-action">
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
+                                          className="btn btn-sm bg-info-light"
+                                        >
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
+                                          className="btn btn-sm bg-primary-light"
+                                        >
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -1653,7 +1267,8 @@ export default function Patientdashboard() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
+                                          className="avatar avatar-sm me-2"
+                                        >
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-10.jpg"
@@ -1669,12 +1284,14 @@ export default function Patientdashboard() {
                                       <div className="table-action">
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light">
+                                          className="btn btn-sm bg-info-light"
+                                        >
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
+                                          className="btn btn-sm bg-primary-light"
+                                        >
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -1685,8 +1302,8 @@ export default function Patientdashboard() {
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div id="pat_billing" className="tab-pane fade">
+                      </div> */}
+                      {/* <div id="pat_billing" className="tab-pane fade">
                         <div className="card card-table mb-0">
                           <div className="card-body">
                             <div className="table-responsive">
@@ -1709,7 +1326,8 @@ export default function Patientdashboard() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
+                                          className="avatar avatar-sm me-2"
+                                        >
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-01.jpg"
@@ -1727,12 +1345,14 @@ export default function Patientdashboard() {
                                       <div className="table-action">
                                         <a
                                           href="invoice-view.html"
-                                          className="btn btn-sm bg-info-light">
+                                          className="btn btn-sm bg-info-light"
+                                        >
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
+                                          className="btn btn-sm bg-primary-light"
+                                        >
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -1746,7 +1366,8 @@ export default function Patientdashboard() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
+                                          className="avatar avatar-sm me-2"
+                                        >
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-02.jpg"
@@ -1764,12 +1385,14 @@ export default function Patientdashboard() {
                                       <div className="table-action">
                                         <a
                                           href="invoice-view.html"
-                                          className="btn btn-sm bg-info-light">
+                                          className="btn btn-sm bg-info-light"
+                                        >
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
+                                          className="btn btn-sm bg-primary-light"
+                                        >
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -1783,7 +1406,8 @@ export default function Patientdashboard() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
+                                          className="avatar avatar-sm me-2"
+                                        >
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-03.jpg"
@@ -1802,12 +1426,14 @@ export default function Patientdashboard() {
                                       <div className="table-action">
                                         <a
                                           href="invoice-view.html"
-                                          className="btn btn-sm bg-info-light">
+                                          className="btn btn-sm bg-info-light"
+                                        >
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
+                                          className="btn btn-sm bg-primary-light"
+                                        >
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -1821,7 +1447,8 @@ export default function Patientdashboard() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
+                                          className="avatar avatar-sm me-2"
+                                        >
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-04.jpg"
@@ -1839,12 +1466,14 @@ export default function Patientdashboard() {
                                       <div className="table-action">
                                         <a
                                           href="invoice-view.html"
-                                          className="btn btn-sm bg-info-light">
+                                          className="btn btn-sm bg-info-light"
+                                        >
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
+                                          className="btn btn-sm bg-primary-light"
+                                        >
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -1858,7 +1487,8 @@ export default function Patientdashboard() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
+                                          className="avatar avatar-sm me-2"
+                                        >
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-05.jpg"
@@ -1877,12 +1507,14 @@ export default function Patientdashboard() {
                                       <div className="table-action">
                                         <a
                                           href="invoice-view.html"
-                                          className="btn btn-sm bg-info-light">
+                                          className="btn btn-sm bg-info-light"
+                                        >
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
+                                          className="btn btn-sm bg-primary-light"
+                                        >
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -1896,7 +1528,8 @@ export default function Patientdashboard() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
+                                          className="avatar avatar-sm me-2"
+                                        >
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-06.jpg"
@@ -1915,12 +1548,14 @@ export default function Patientdashboard() {
                                       <div className="table-action">
                                         <a
                                           href="invoice-view.html"
-                                          className="btn btn-sm bg-info-light">
+                                          className="btn btn-sm bg-info-light"
+                                        >
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
+                                          className="btn btn-sm bg-primary-light"
+                                        >
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -1934,7 +1569,8 @@ export default function Patientdashboard() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
+                                          className="avatar avatar-sm me-2"
+                                        >
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-07.jpg"
@@ -1952,12 +1588,14 @@ export default function Patientdashboard() {
                                       <div className="table-action">
                                         <a
                                           href="invoice-view.html"
-                                          className="btn btn-sm bg-info-light">
+                                          className="btn btn-sm bg-info-light"
+                                        >
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
+                                          className="btn btn-sm bg-primary-light"
+                                        >
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -1971,7 +1609,8 @@ export default function Patientdashboard() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
+                                          className="avatar avatar-sm me-2"
+                                        >
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-08.jpg"
@@ -1990,12 +1629,14 @@ export default function Patientdashboard() {
                                       <div className="table-action">
                                         <a
                                           href="invoice-view.html"
-                                          className="btn btn-sm bg-info-light">
+                                          className="btn btn-sm bg-info-light"
+                                        >
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
+                                          className="btn btn-sm bg-primary-light"
+                                        >
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -2009,7 +1650,8 @@ export default function Patientdashboard() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
+                                          className="avatar avatar-sm me-2"
+                                        >
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-09.jpg"
@@ -2027,12 +1669,14 @@ export default function Patientdashboard() {
                                       <div className="table-action">
                                         <a
                                           href="invoice-view.html"
-                                          className="btn btn-sm bg-info-light">
+                                          className="btn btn-sm bg-info-light"
+                                        >
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
+                                          className="btn btn-sm bg-primary-light"
+                                        >
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -2046,7 +1690,8 @@ export default function Patientdashboard() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2">
+                                          className="avatar avatar-sm me-2"
+                                        >
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-10.jpg"
@@ -2064,12 +1709,14 @@ export default function Patientdashboard() {
                                       <div className="table-action">
                                         <a
                                           href="invoice-view.html"
-                                          className="btn btn-sm bg-info-light">
+                                          className="btn btn-sm bg-info-light"
+                                        >
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light">
+                                          className="btn btn-sm bg-primary-light"
+                                        >
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -2080,7 +1727,7 @@ export default function Patientdashboard() {
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>
@@ -2098,7 +1745,8 @@ export default function Patientdashboard() {
                 type="button"
                 className="btn-close"
                 data-bs-dismiss="modal"
-                aria-label="Close"></button>
+                aria-label="Close"
+              ></button>
             </div>
             <div className="modal-body">
               <div id="bmi-status" />
@@ -2115,7 +1763,8 @@ export default function Patientdashboard() {
                 type="button"
                 className="btn-close"
                 data-bs-dismiss="modal"
-                aria-label="Close"></button>
+                aria-label="Close"
+              ></button>
             </div>
             <div className="modal-body">
               <div id="heartrate-status" />
@@ -2132,7 +1781,8 @@ export default function Patientdashboard() {
                 type="button"
                 className="btn-close"
                 data-bs-dismiss="modal"
-                aria-label="Close"></button>
+                aria-label="Close"
+              ></button>
             </div>
             <div className="modal-body">
               <div id="fbc-status" />
@@ -2149,7 +1799,8 @@ export default function Patientdashboard() {
                 type="button"
                 className="btn-close"
                 data-bs-dismiss="modal"
-                aria-label="Close"></button>
+                aria-label="Close"
+              ></button>
             </div>
             <div className="modal-body">
               <div id="weight-status" />

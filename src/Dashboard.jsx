@@ -271,7 +271,7 @@ export default function Dashboard() {
   // Today Appointment
   const todayStartIndex = (currentPageToday - 1) * itemsPerPage;
   const todayEndIndex = currentPageToday * itemsPerPage;
-  const todayAppointments = tableData.slice(todayStartIndex, todayEndIndex);
+  const todayAppointments = today.slice(todayStartIndex, todayEndIndex);
   
   // Upcoming Section
   const upcomingStartIndex = (currentPageUpcoming - 1) * itemsPerPage;
@@ -281,7 +281,7 @@ export default function Dashboard() {
   // History Section
   const historyStartIndex = (currentPageHistory - 1) * itemsPerPage;
   const historyEndIndex = currentPageHistory * itemsPerPage;
-  const historyAppointments = history.slice(historyStartIndex, historyEndIndex);
+  const historyAppointments = appointments.slice(historyStartIndex, historyEndIndex);
   
   const paginate1 = (pageNumber) => setCurrentPageToday(pageNumber);
   const paginate2 = (pageNumber) => setCurrentPageUpcoming(pageNumber);

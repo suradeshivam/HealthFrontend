@@ -18,6 +18,7 @@ import Patientdashboard from "./Components/PatientDashboard";
 import PatientProfileSetting from "./Components/PatientProfileSetting";
 import Orders from "./Components/Orders";
 import Home from "./Components/Home";
+import Profilesettings from "./Components/PatientProfileSetting";
 
 // App changed
 function App() {
@@ -45,6 +46,9 @@ function App() {
           <Route path="accounts" element={<Accounts />} />
           <Route path="room/:roomID" element={<Room />} />
           <Route path="appointment" element={<Appointment />} />
+
+          {/* Patient Routs */}
+          <Route path="profile-settings" element={<Profilesettings />} />
         </Route>
       </Routes>
       {shouldShowNavbarAndFooter && <Footer />}

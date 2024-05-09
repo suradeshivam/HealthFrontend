@@ -1,7 +1,230 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Profilesettings() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    dateOfBirth: "",
+    age: "",
+    bloodGroup: "",
+    gender: "",
+    mobile: "",
+    height: "",
+    weight: "",
+    allergies: [""],
+    previousDisease: [{ disease: "", year: "" }],
+    address: "",
+    city: "",
+    state: "",
+    zipCode: "",
+    country: "",
+  });
+
+  const [errors, setErrors] = useState({
+    dateOfBirth: "",
+    age: "",
+    bloodGroup: "",
+    gender: "",
+    email: "",
+    mobile: "",
+    address: "",
+    city: "",
+    state: "",
+    zipCode: "",
+    country: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: "",
+    }));
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+
+
+  const handleAllergies = () => {
+    setFormData((prevState) => ({
+      ...prevState,
+      allergies: [...prevState.allergies, ""], // Add a new empty allergy field
+    }));
+  };
+  const handleRemoveAllergy = (index) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      allergies: prevState.allergies.filter((_, i) => i !== index), // Remove allergy at specified index
+    }));
+  };
+
+  const handleChangeAllergies = (index, value) => {
+    const updatedAllergies = [...formData.allergies];
+    updatedAllergies[index] = value;
+    setFormData((prevState) => ({
+      ...prevState,
+      allergies: updatedAllergies,
+    }));
+  };
+
+  const handlePreviousDisease = () => {
+    setFormData((prevState) => ({
+      ...prevState,
+      previousDisease: [
+        ...prevState.previousDisease,
+        { disease: "", year: "" },
+      ], // Add a new empty allergy field
+    }));
+  };
+
+  const handleRemovePreviousDisease = (index) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      previousDisease: prevState.previousDisease.filter((_, i) => i !== index), // Remove allergy at specified index
+    }));
+  };
+
+  const handleChangePreviousDisease = (e, index, key) => {
+    const { value } = e.target;
+    const updatedPreviousDisease = [...formData.previousDisease];
+    updatedPreviousDisease[index][key] = value; // Update the specified property of the object at the specified index
+    setFormData((prevState) => ({
+      ...prevState,
+      previousDisease: updatedPreviousDisease,
+    }));
+    
+  };
+
+  const getPatientInfo = async () => {
+
+    
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+
+    setFormData({
+      name: userInfo.name || "",
+      email: userInfo.email || "",
+      mobile: userInfo.mobileNumber || "",
+      dateOfBirth: "",
+      age: "",
+      bloodGroup: "",
+      gender: "",
+      height: "",
+      weight: "",
+      allergies: [""],
+      previousDisease: [{ disease: "", year: "" }],
+      address: "",
+      city: "",
+      state: "",
+      zipCode: "",
+      country: "",
+    });
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Add other validation rules
+    let errorsObj = {};
+
+    if (!formData.dateOfBirth.trim()) {
+      errorsObj.dateOfBirth = "Date of Birth is required";
+    }
+
+    if (!formData.age.trim()) {
+      errorsObj.age = "Age is required";
+    }
+
+    if (!formData.bloodGroup.trim()) {
+      errorsObj.bloodGroup = "Blood Group is required";
+    }
+
+    if (!formData.gender.trim() || formData.gender === "Select") {
+      errorsObj.gender = "Gender is required";
+    }
+
+    if (!formData.address.trim()) {
+      errorsObj.address = "Address is required";
+    }
+
+    if (!formData.city.trim()) {
+      errorsObj.city = "City is required";
+    }
+
+    if (!formData.state.trim()) {
+      errorsObj.state = "State is required";
+    }
+
+    if (!formData.zipCode.trim()) {
+      errorsObj.zipCode = "Zip Code is required";
+    }
+
+    if (!formData.country.trim()) {
+      errorsObj.country = "Country is required";
+    }
+
+    if (Object.keys(errorsObj).length > 0) {
+      setErrors(errorsObj);
+      return; // Prevent form submission if there are errors
+    }
+
+    setErrors({
+      dateOfBirth: "",
+      age: "",
+      bloodGroup: "",
+      gender: "",
+      address: "",
+      city: "",
+      state: "",
+      zipCode: "",
+      country: "",
+      // Add other fields as needed
+    });
+
+    console.log(formData);
+
+    const isAuthenticated = localStorage.getItem("token");
+
+
+    try {
+
+      const user = await axios.post(
+        `https://healthbackend-3xh2.onrender.com/patient/create`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: isAuthenticated,
+          },
+        }
+      );
+
+      console.log(user);
+      // localStorage.setItem(
+      //   "patientInfo",
+      //   JSON.stringify(user.data.result.doctor)
+      // );
+     
+    } catch (error) {
+      console.log(error);
+    }
+
+
+
+
+
+  };
+
+  useEffect(() => {
+    getPatientInfo();
+  }, []);
+
   return (
     <>
       {/* Mirrored from doccure.dreamstechnologies.com/html/template/profile-settings.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 16 Apr 2024 16:46:25 GMT */}
@@ -123,7 +346,7 @@ export default function Profilesettings() {
                     <nav className="dashboard-menu">
                       <ul>
                         <li className="active">
-                          <Link to="/patient">
+                          <Link to="/user">
                             <i className="fas fa-columns" />
                             <span>Dashboard</span>
                           </Link>
@@ -163,7 +386,8 @@ export default function Profilesettings() {
               <div className="col-md-7 col-lg-8 col-xl-9">
                 <div className="card">
                   <div className="card-body">
-                    <form>
+                    <form onSubmit={handleSubmit}>
+                      <h4 className="card-title">Basic Information</h4>
                       <div className="row">
                         <div className="col-12 col-md-12">
                           <div className="mb-3">
@@ -190,31 +414,103 @@ export default function Profilesettings() {
                         </div>
                         <div className="col-12 col-md-6">
                           <div className="mb-3">
-                            <label className="mb-2">First Name</label>
-                            <input type="text" className="form-control" />
+                            <label className="mb-2">
+                              Name<span className="text-danger"> *</span>
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="name"
+                              value={formData.name}
+                              onChange={handleChange}
+                            />
                           </div>
                         </div>
+
                         <div className="col-12 col-md-6">
                           <div className="mb-3">
-                            <label className="mb-2">Last Name</label>
-                            <input type="text" className="form-control" />
+                            <label className="mb-2">
+                              Mobile No. <span className="text-danger"> *</span>
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="mobile"
+                              value={formData.mobile}
+                              onChange={handleChange}
+                            />
                           </div>
                         </div>
+                        
+                        {/* <div className="col-12 col-md-6">
+                          <div className="mb-3">
+                            <label className="mb-2">
+                              Last Name <span className="text-danger"> *</span>
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="lastName"
+                              value={formData.lastName}
+                              onChange={handleChange}
+                            />
+                          </div>
+                        </div> */}
                         <div className="col-12 col-md-6">
                           <div className="mb-3">
-                            <label className="mb-2">Date of Birth</label>
+                            <label className="mb-2">
+                              Date of Birth{" "}
+                              <span className="text-danger"> *</span>
+                            </label>
                             <div>
                               <input
-                                type="text"
+                                type="date"
                                 className="form-control datetimepicker"
+                                name="dateOfBirth"
+                                value={formData.dateOfBirth}
+                                onChange={handleChange}
                               />
+                              {errors.dateOfBirth && (
+                                <span
+                                  style={{ color: "red", fontSize: "13px" }}
+                                >
+                                  {errors.dateOfBirth}
+                                </span>
+                              )}
                             </div>
                           </div>
                         </div>
                         <div className="col-12 col-md-6">
                           <div className="mb-3">
-                            <label className="mb-2">Blood Group</label>
-                            <select className="form-select form-control">
+                            <label className="mb-2">
+                              Age <span className="text-danger"> *</span>
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="age"
+                              value={formData.age}
+                              onChange={handleChange}
+                            />
+                            {errors.age && (
+                              <span style={{ color: "red", fontSize: "13px" }}>
+                                {errors.age}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-12 col-md-6">
+                          <div className="mb-3">
+                            <label className="mb-2">
+                              Blood Group{" "}
+                              <span className="text-danger"> *</span>
+                            </label>
+                            <select
+                              className="form-select form-control"
+                              name="bloodGroup"
+                              value={formData.bloodGroup}
+                              onChange={handleChange}
+                            >
                               <option>A-</option>
                               <option>A+</option>
                               <option>B-</option>
@@ -225,72 +521,260 @@ export default function Profilesettings() {
                               <option>O+</option>
                             </select>
                           </div>
+                          {errors.bloodGroup && (
+                            <span style={{ color: "red", fontSize: "13px" }}>
+                              {errors.bloodGroup}
+                            </span>
+                          )}
                         </div>
                         <div className="col-12 col-md-6">
                           <div className="mb-3">
-                            <label className="mb-2">Email ID</label>
-                            <input type="email" className="form-control" />
+                            <label className="mb-2">
+                              Gender <span className="text-danger"> *</span>
+                            </label>
+                            <select
+                              className="form-select form-control"
+                              name="gender"
+                              value={formData.gender}
+                              onChange={handleChange}
+                            >
+                              <option>Select</option>
+                              <option>Male</option>
+                              <option>Female</option>
+                              <option>Other</option>
+                            </select>
                           </div>
+                          {errors.gender && (
+                            <span style={{ color: "red", fontSize: "13px" }}>
+                              {errors.gender}
+                            </span>
+                          )}
                         </div>
+                        
+                        
                         <div className="col-12 col-md-6">
                           <div className="mb-3">
-                            <label className="mb-2">Mobile</label>
-                            <input type="text" className="form-control" />
+                            <label className="mb-2">Height(ft)</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="height"
+                              value={formData.height}
+                              onChange={handleChange}
+                            />
                           </div>
                         </div>
-                        <div className="col-12 col-md-6">
+                        <div className="col-12  col-md-6">
                           <div className="mb-3">
-                            <label className="mb-2">Height</label>
-                            <input type="text" className="form-control" />
+                            <label className="mb-2">Weight(kg)</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="weight"
+                              value={formData.weight}
+                              onChange={handleChange}
+                            />
                           </div>
                         </div>
-                        <div className="col-12 col-md-6">
+                        <div className="col-12 ">
                           <div className="mb-3">
-                            <label className="mb-2">Age</label>
-                            <input type="text" className="form-control" />
+                            <label className="mb-2">
+                              Email ID <span className="text-danger"> *</span>
+                            </label>
+                            <input
+                              type="email"
+                              className="form-control"
+                              name="email"
+                              value={formData.email}
+                              onChange={handleChange}
+                            />
                           </div>
                         </div>
+
+
+<br/>
                         <div className="col-12 col-md-6">
-                          <div className="mb-3">
-                            <label className="mb-2">Allergies</label>
-                            <input type="text" className="form-control" />
+                          {/* <div style={{ display: 'flex', flexWrap: 'wrap', gap:"4px" }}> */}
+                          {formData.allergies.map((allergy, index) => (
+                            <div className="mb-3" key={index}>
+                              <label className="mb-2">
+                                Allergies {index + 1}
+                              </label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                value={allergy}
+                                placeholder="Allergy"
+                                onChange={(e) =>
+                                  handleChangeAllergies(index, e.target.value)
+                                }
+                              />
+                              {index !== 0 && ( // Condition to render the Remove button only for slots after the first one
+                                <div className="remove-education">
+                                  <a onClick={() => handleRemoveAllergy(index)}>
+                                    <i className="fa fa-minus-circle" /> Remove
+                                  </a>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                          {/* </div> */}
+                          <div className="add-more mt-2">
+                            <a
+                              className="add-education"
+                              onClick={handleAllergies}
+                            >
+                              <i className="fa fa-plus-circle" /> Add More
+                            </a>
                           </div>
                         </div>
+
+                        
+                       <div className="col-12 col-md-6">
+  {formData.previousDisease.map((diseaseItem, index) => (
+    <div className="mb-3 " key={index}>
+      <label className="mb-2">Previous Disease {index + 1}</label>
+      <div className="d-flex gap-3 "> {/* Use d-flex class to display items in a row */}
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Previous Disease"
+          value={diseaseItem.disease}
+          onChange={(e) => handleChangePreviousDisease(e, index, 'disease')}
+        />
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Year"
+          value={diseaseItem.year}
+          onChange={(e) => handleChangePreviousDisease(e, index, 'year')}
+        />
+            </div>
+        {index !== 0 && (
+          <div className="remove-education">
+            <a onClick={() => handleRemovePreviousDisease(index)}>
+              <i className="fa fa-minus-circle" /> Remove
+            </a>
+          </div>
+        )}
+    </div>
+  ))}
+  <div className="add-more mt-2">
+    <a className="add-education" onClick={handlePreviousDisease}>
+      <i className="fa fa-plus-circle" /> Add More
+    </a>
+  </div>
+</div>
+
+
+                        
+                        <br />
+                        <br />
+                        <br /> <br />
+                        <br />
+                        <br />
                         <div className="col-12">
                           <div className="mb-3">
-                            <label className="mb-2">Address</label>
-                            <input type="text" className="form-control" />
+                            <h4 className="card-title">Address</h4>
+                            <label className="mb-2">
+                              Address <span className="text-danger"> *</span>
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="address"
+                              value={formData.address}
+                              onChange={handleChange}
+                            />
+                            {errors.address && (
+                              <span style={{ color: "red", fontSize: "13px" }}>
+                                {errors.address}
+                              </span>
+                            )}
                           </div>
                         </div>
                         <div className="col-12 col-md-6">
                           <div className="mb-3">
-                            <label className="mb-2">City</label>
-                            <input type="text" className="form-control" />
+                            <label className="mb-2">
+                              City <span className="text-danger"> *</span>
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="city"
+                              value={formData.city}
+                              onChange={handleChange}
+                            />
+                            {errors.city && (
+                              <span style={{ color: "red", fontSize: "13px" }}>
+                                {errors.city}
+                              </span>
+                            )}
                           </div>
                         </div>
                         <div className="col-12 col-md-6">
                           <div className="mb-3">
-                            <label className="mb-2">State</label>
-                            <input type="text" className="form-control" />
+                            <label className="mb-2">
+                              State <span className="text-danger"> *</span>
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="state"
+                              value={formData.state}
+                              onChange={handleChange}
+                            />
+                            {errors.state && (
+                              <span style={{ color: "red", fontSize: "13px" }}>
+                                {errors.state}
+                              </span>
+                            )}
                           </div>
                         </div>
                         <div className="col-12 col-md-6">
                           <div className="mb-3">
-                            <label className="mb-2">Zip Code</label>
-                            <input type="text" className="form-control" />
+                            <label className="mb-2">
+                              Zip Code <span className="text-danger"> *</span>
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="zipCode"
+                              value={formData.zipCode}
+                              onChange={handleChange}
+                            />
+                            {errors.zipCode && (
+                              <span style={{ color: "red", fontSize: "13px" }}>
+                                {errors.zipCode}
+                              </span>
+                            )}
                           </div>
                         </div>
                         <div className="col-12 col-md-6">
                           <div className="mb-3">
-                            <label className="mb-2">Country</label>
-                            <input type="text" className="form-control" />
+                            <label className="mb-2">
+                              Country <span className="text-danger"> *</span>
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="country"
+                              value={formData.country}
+                              onChange={handleChange}
+                            />
+                            {errors.country && (
+                              <span style={{ color: "red", fontSize: "13px" }}>
+                                {errors.country}
+                              </span>
+                            )}
                           </div>
                         </div>
                       </div>
                       <div className="submit-section">
                         <button
                           type="submit"
-                          className="btn btn-primary submit-btn">
+                          className="btn btn-primary submit-btn"
+                        >
                           Save Changes
                         </button>
                       </div>
