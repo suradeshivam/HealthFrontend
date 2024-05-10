@@ -18,7 +18,10 @@ import Patientdashboard from "./Components/PatientDashboard";
 import PatientProfileSetting from "./Components/PatientProfileSetting";
 import Orders from "./Components/Orders";
 import Home from "./Components/Home";
+
+
 import Profilesettings from "./Components/PatientProfileSetting";
+import DoctorSearch from "./Components/patientfolder/DoctorSearch";
 
 // App changed
 function App() {
@@ -49,6 +52,7 @@ function App() {
 
           {/* Patient Routs */}
           <Route path="profile-settings" element={<Profilesettings />} />
+          <Route path="docsearch" element={<DoctorSearch />} />
         </Route>
       </Routes>
       {shouldShowNavbarAndFooter && <Footer />}

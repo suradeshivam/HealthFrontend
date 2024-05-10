@@ -6,34 +6,34 @@ export default function Profilesettings() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    dateOfBirth: "",
+    dob: "", //
     age: "",
-    bloodGroup: "",
-    gender: "",
+    bloodType: "",
+    gender: "", //
     mobile: "",
-    height: "",
-    weight: "",
+    height: "", //
+    weight: "",  //
     allergies: [""],
-    previousDisease: [{ disease: "", year: "" }],
-    address: "",
+    medicalHistory: [{ diseaseName: "", year: "" }],
+    addressLine1: "",
     city: "",
     state: "",
-    zipCode: "",
-    country: "",
+    zip: "",
+    contry: "",
   });
 
   const [errors, setErrors] = useState({
-    dateOfBirth: "",
+    dob: "",
     age: "",
-    bloodGroup: "",
+    bloodType: "",
     gender: "",
     email: "",
     mobile: "",
-    address: "",
+    addressLine1: "",
     city: "",
     state: "",
-    zipCode: "",
-    country: "",
+    zip: "",
+    contry: "",
   });
 
   const handleChange = (e) => {
@@ -73,30 +73,30 @@ export default function Profilesettings() {
     }));
   };
 
-  const handlePreviousDisease = () => {
+  const handlemedicalHistory = () => {
     setFormData((prevState) => ({
       ...prevState,
-      previousDisease: [
-        ...prevState.previousDisease,
-        { disease: "", year: "" },
+      medicalHistory: [
+        ...prevState.medicalHistory,
+        { diseaseName: "", year: "" },
       ], // Add a new empty allergy field
     }));
   };
 
-  const handleRemovePreviousDisease = (index) => {
+  const handleRemovemedicalHistory = (index) => {
     setFormData((prevState) => ({
       ...prevState,
-      previousDisease: prevState.previousDisease.filter((_, i) => i !== index), // Remove allergy at specified index
+      medicalHistory: prevState.medicalHistory.filter((_, i) => i !== index), // Remove allergy at specified index
     }));
   };
 
-  const handleChangePreviousDisease = (e, index, key) => {
+  const handleChangemedicalHistory = (e, index, key) => {
     const { value } = e.target;
-    const updatedPreviousDisease = [...formData.previousDisease];
-    updatedPreviousDisease[index][key] = value; // Update the specified property of the object at the specified index
+    const updatedmedicalHistory = [...formData.medicalHistory];
+    updatedmedicalHistory[index][key] = value; // Update the specified property of the object at the specified index
     setFormData((prevState) => ({
       ...prevState,
-      previousDisease: updatedPreviousDisease,
+      medicalHistory: updatedmedicalHistory,
     }));
     
   };
@@ -111,19 +111,19 @@ export default function Profilesettings() {
       name: userInfo.name || "",
       email: userInfo.email || "",
       mobile: userInfo.mobileNumber || "",
-      dateOfBirth: "",
+      dob: "",
       age: "",
-      bloodGroup: "",
+      bloodType: "",
       gender: "",
       height: "",
       weight: "",
       allergies: [""],
-      previousDisease: [{ disease: "", year: "" }],
-      address: "",
+      medicalHistory: [{ diseaseName: "", year: "" }],
+      addressLine1: "",
       city: "",
       state: "",
-      zipCode: "",
-      country: "",
+      zip: "",
+      contry: "",
     });
   }
 
@@ -133,24 +133,24 @@ export default function Profilesettings() {
     // Add other validation rules
     let errorsObj = {};
 
-    if (!formData.dateOfBirth.trim()) {
-      errorsObj.dateOfBirth = "Date of Birth is required";
+    if (!formData.dob.trim()) {
+      errorsObj.dob = "Date of Birth is required";
     }
 
     if (!formData.age.trim()) {
       errorsObj.age = "Age is required";
     }
 
-    if (!formData.bloodGroup.trim()) {
-      errorsObj.bloodGroup = "Blood Group is required";
+    if (!formData.bloodType.trim()) {
+      errorsObj.bloodType = "Blood Group is required";
     }
 
     if (!formData.gender.trim() || formData.gender === "Select") {
       errorsObj.gender = "Gender is required";
     }
 
-    if (!formData.address.trim()) {
-      errorsObj.address = "Address is required";
+    if (!formData.addressLine1.trim()) {
+      errorsObj.addressLine1 = "addressLine1 is required";
     }
 
     if (!formData.city.trim()) {
@@ -161,12 +161,12 @@ export default function Profilesettings() {
       errorsObj.state = "State is required";
     }
 
-    if (!formData.zipCode.trim()) {
-      errorsObj.zipCode = "Zip Code is required";
+    if (!formData.zip.trim()) {
+      errorsObj.zip = "Zip Code is required";
     }
 
-    if (!formData.country.trim()) {
-      errorsObj.country = "Country is required";
+    if (!formData.contry.trim()) {
+      errorsObj.contry = "contry is required";
     }
 
     if (Object.keys(errorsObj).length > 0) {
@@ -175,15 +175,15 @@ export default function Profilesettings() {
     }
 
     setErrors({
-      dateOfBirth: "",
+      dob: "",
       age: "",
-      bloodGroup: "",
+      bloodType: "",
       gender: "",
-      address: "",
+      addressLine1: "",
       city: "",
       state: "",
-      zipCode: "",
-      country: "",
+      zip: "",
+      contry: "",
       // Add other fields as needed
     });
 
@@ -206,10 +206,10 @@ export default function Profilesettings() {
       );
 
       console.log(user);
-      // localStorage.setItem(
-      //   "patientInfo",
-      //   JSON.stringify(user.data.result.doctor)
-      // );
+      localStorage.setItem(
+        "patientInfo",
+        JSON.stringify(user.data.result)
+      );
      
     } catch (error) {
       console.log(error);
@@ -466,15 +466,15 @@ export default function Profilesettings() {
                               <input
                                 type="date"
                                 className="form-control datetimepicker"
-                                name="dateOfBirth"
-                                value={formData.dateOfBirth}
+                                name="dob"
+                                value={formData.dob}
                                 onChange={handleChange}
                               />
-                              {errors.dateOfBirth && (
+                              {errors.dob && (
                                 <span
                                   style={{ color: "red", fontSize: "13px" }}
                                 >
-                                  {errors.dateOfBirth}
+                                  {errors.dob}
                                 </span>
                               )}
                             </div>
@@ -507,8 +507,8 @@ export default function Profilesettings() {
                             </label>
                             <select
                               className="form-select form-control"
-                              name="bloodGroup"
-                              value={formData.bloodGroup}
+                              name="bloodType"
+                              value={formData.bloodType}
                               onChange={handleChange}
                             >
                               <option>A-</option>
@@ -521,9 +521,9 @@ export default function Profilesettings() {
                               <option>O+</option>
                             </select>
                           </div>
-                          {errors.bloodGroup && (
+                          {errors.bloodType && (
                             <span style={{ color: "red", fontSize: "13px" }}>
-                              {errors.bloodGroup}
+                              {errors.bloodType}
                             </span>
                           )}
                         </div>
@@ -631,28 +631,28 @@ export default function Profilesettings() {
 
                         
                        <div className="col-12 col-md-6">
-  {formData.previousDisease.map((diseaseItem, index) => (
+  {formData.medicalHistory.map((diseaseNameItem, index) => (
     <div className="mb-3 " key={index}>
-      <label className="mb-2">Previous Disease {index + 1}</label>
+      <label className="mb-2">Previous diseaseName {index + 1}</label>
       <div className="d-flex gap-3 "> {/* Use d-flex class to display items in a row */}
         <input
           type="text"
           className="form-control"
-          placeholder="Previous Disease"
-          value={diseaseItem.disease}
-          onChange={(e) => handleChangePreviousDisease(e, index, 'disease')}
+          placeholder="Previous diseaseName"
+          value={diseaseNameItem.diseaseName}
+          onChange={(e) => handleChangemedicalHistory(e, index, 'diseaseName')}
         />
         <input
           type="text"
           className="form-control"
           placeholder="Year"
-          value={diseaseItem.year}
-          onChange={(e) => handleChangePreviousDisease(e, index, 'year')}
+          value={diseaseNameItem.year}
+          onChange={(e) => handleChangemedicalHistory(e, index, 'year')}
         />
             </div>
         {index !== 0 && (
           <div className="remove-education">
-            <a onClick={() => handleRemovePreviousDisease(index)}>
+            <a onClick={() => handleRemovemedicalHistory(index)}>
               <i className="fa fa-minus-circle" /> Remove
             </a>
           </div>
@@ -660,7 +660,7 @@ export default function Profilesettings() {
     </div>
   ))}
   <div className="add-more mt-2">
-    <a className="add-education" onClick={handlePreviousDisease}>
+    <a className="add-education" onClick={handlemedicalHistory}>
       <i className="fa fa-plus-circle" /> Add More
     </a>
   </div>
@@ -675,20 +675,20 @@ export default function Profilesettings() {
                         <br />
                         <div className="col-12">
                           <div className="mb-3">
-                            <h4 className="card-title">Address</h4>
+                            <h4 className="card-title">addressLine1</h4>
                             <label className="mb-2">
-                              Address <span className="text-danger"> *</span>
+                              addressLine1 <span className="text-danger"> *</span>
                             </label>
                             <input
                               type="text"
                               className="form-control"
-                              name="address"
-                              value={formData.address}
+                              name="addressLine1"
+                              value={formData.addressLine1}
                               onChange={handleChange}
                             />
-                            {errors.address && (
+                            {errors.addressLine1 && (
                               <span style={{ color: "red", fontSize: "13px" }}>
-                                {errors.address}
+                                {errors.addressLine1}
                               </span>
                             )}
                           </div>
@@ -739,13 +739,13 @@ export default function Profilesettings() {
                             <input
                               type="text"
                               className="form-control"
-                              name="zipCode"
-                              value={formData.zipCode}
+                              name="zip"
+                              value={formData.zip}
                               onChange={handleChange}
                             />
-                            {errors.zipCode && (
+                            {errors.zip && (
                               <span style={{ color: "red", fontSize: "13px" }}>
-                                {errors.zipCode}
+                                {errors.zip}
                               </span>
                             )}
                           </div>
@@ -753,18 +753,18 @@ export default function Profilesettings() {
                         <div className="col-12 col-md-6">
                           <div className="mb-3">
                             <label className="mb-2">
-                              Country <span className="text-danger"> *</span>
+                              contry <span className="text-danger"> *</span>
                             </label>
                             <input
                               type="text"
                               className="form-control"
-                              name="country"
-                              value={formData.country}
+                              name="contry"
+                              value={formData.contry}
                               onChange={handleChange}
                             />
-                            {errors.country && (
+                            {errors.contry && (
                               <span style={{ color: "red", fontSize: "13px" }}>
-                                {errors.country}
+                                {errors.contry}
                               </span>
                             )}
                           </div>
