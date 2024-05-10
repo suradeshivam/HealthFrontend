@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import { Bounce, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function DoctorRegister() {
   const location = useLocation();
@@ -27,12 +29,9 @@ export default function DoctorRegister() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const onSubmit = async (data) => {
-    // setLoading(true); // Set loading to true before form submission
-
-    // Validation for password matching
     if (data.password !== data.confirmPassword) {
       // setLoading(false); // Set loading to false after validation
-      alert("Passwords do not match");
+      toast("Passwords do not match");
       return;
     }
 
@@ -53,6 +52,8 @@ export default function DoctorRegister() {
       // Include status field set to "active"
       data.status = "active";
 
+      console.log("in here");
+
       // Send form data to backend
       const response = await axios.post(
         "https://healthbackend-3xh2.onrender.com/user/signup",
@@ -69,7 +70,7 @@ export default function DoctorRegister() {
       console.log("Response from backend:", response.data);
 
       // Navigate to the OTP page after successful signup
-      navigate("/doctor/", { state: { phoneNumber: data.mobileNumber } });
+      navigate("/login", { state: { phoneNumber: data.mobileNumber } });
     } catch (error) {
       // setLoading(false); // Set loading to false after error
       console.error("Error submitting form:", error);
@@ -94,7 +95,9 @@ export default function DoctorRegister() {
                   <div className="col-md-12 col-lg-6 login-right">
                     <div className="login-header">
                       <h3>
-                        Doctor Register{" "}
+                        {role === "doctor"
+                          ? "Doctor Register"
+                          : "User Register"}
                         <a href="register.html">Not a Doctor?</a>
                       </h3>
                     </div>
@@ -124,6 +127,7 @@ export default function DoctorRegister() {
                         <label className="mt-2">Mobile Number</label>
                         <input
                           type="text"
+                          placeholder="Mobile Number"
                           {...register("phoneNumber", {
                             required: "Phone number is required",
                             pattern: {
@@ -144,6 +148,7 @@ export default function DoctorRegister() {
                         <div className="d-flex">
                           <input
                             type={showPassword ? "text" : "password"}
+                            placeholder="Password"
                             {...register("password", {
                               required: "Password is required",
                               pattern: {
@@ -176,6 +181,7 @@ export default function DoctorRegister() {
                         <label className="mt-2">Confirm Password</label>
                         <div className="d-flex">
                           <input
+                            placeholder="Confirm Password"
                             type={showConfirmPassword ? "text" : "password"}
                             {...register("confirmPassword", {
                               required: "Confirm Password is required",
