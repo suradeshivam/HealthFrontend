@@ -118,18 +118,29 @@ export default function DoctorSearch() {
   // Function to filter doctors by gender
   const filterDoctors = (filterName, value) => {
     let filteredDoctors = [...doctors];
-
-    // filteredDoctors = filteredDoctors.filter((doctor) => {
-    //   // Check if the doctor matches the selected gender
-    //   if (filters.selectedExperience || filters.selectedRating) {
-    //     return false;
-    //   }
-      
-    // Apply gender filter
-      filteredDoctors = doctors.filter((doctor) => doctor.gender === value);
-      // return true;
-    // });
-
+  
+    // Apply gender filter if selected
+    if (filters.selectedGender) {
+      // console.log( value)
+      filteredDoctors = filteredDoctors.filter(
+        (doctor) => doctor.gender === value
+  
+      );
+    }
+  
+    // Apply experience filter if selected
+    if (filters.selectedExperience) {
+      if (filters.selectedExperience === "1-5") {
+        filteredDoctors = filteredDoctors.filter(
+          (doctor) => doctor.yearOfExperience >= 1 && doctor.yearOfExperience <= 5
+        );
+      } else if (filters.selectedExperience === "5+") {
+        filteredDoctors = filteredDoctors.filter(
+          (doctor) => doctor.yearOfExperience > 5
+        );
+      }
+    }
+  
     // Update filtered doctors state
     setFilterDoctor(filteredDoctors);
   };
@@ -150,7 +161,7 @@ export default function DoctorSearch() {
   const experienceFilter = (value) => {
     let filteredDoctors = [...doctors];
     filteredDoctors = filteredDoctors.filter((doctor) => {
-    if (filters.selectedGender && doctor.gender !== filters.selectedGender) {
+    if (filters.selectedGender && doctor.gender !== filters.selectedGender ) {
       return false;
     }
 
@@ -173,9 +184,24 @@ export default function DoctorSearch() {
     const rating = parseInt(value);
 
     filteredDoctors = filteredDoctors.filter((doctor) => {
-      if (filters.selectedGender && doctor.gender !== filters.selectedGender) {
+      if (filters.selectedGender && doctor.gender !== filters.selectedGender ) {
         return false;
       }
+      // Check if the doctor matches the selected experience filter
+    if (filters.selectedExperience) {
+      if (filters.selectedExperience === "1-5") {
+        if (
+          doctor.yearOfExperience < 1 ||
+          doctor.yearOfExperience > 5
+        ) {
+          return false;
+        }
+      } else if (filters.selectedExperience === "5+") {
+        if (doctor.yearOfExperience <= 5) {
+          return false;
+        }
+      }
+    }
         if (Array.isArray(doctor.reviews)) {
             const totalRating = doctor.reviews.reduce((acc, review) => acc + review.rating, 0);
             const averageRating = Math.round(totalRating / doctor.reviews.length) || 0;

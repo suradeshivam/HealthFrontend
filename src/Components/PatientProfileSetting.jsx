@@ -1,8 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Bounce, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Profilesettings() {
+  const [pic, setPic] = useState("assets/img/doctors/doctor-thumb-02.jpg");
+  const [preview, setPreview] = useState();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -47,6 +51,59 @@ export default function Profilesettings() {
       ...prevState,
       [name]: value,
     }));
+  };
+
+  const uploadImage = async (picture) => {
+    const isAuthenticated = localStorage.getItem("token");
+    try {
+      var reader = new FileReader();
+      reader.onloadend = async function () {
+        setPreview(reader.result); // Set preview image
+        try {
+          const res = await axios.post(
+            "https://healthbackend-3xh2.onrender.com/service/uploadImage",
+            {
+              imageUrl: reader.result, // Use reader.result directly here
+            },
+            {
+              headers: {
+                authorization: isAuthenticated,
+              },
+            }
+          );
+          if (res.status === 200) {
+            setPic(res.data.result);
+            console.log(res.data.result);
+          }
+          toast(res.data.message);
+        } catch (error) {
+          toast.error(error.message, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+        }
+      };
+      reader.readAsDataURL(picture); // Read the file
+    } catch (error) {
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
   };
 
 
@@ -105,27 +162,50 @@ export default function Profilesettings() {
 
     
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    const patientInfo = JSON.parse(localStorage.getItem("patientInfo"));
 
+    if(patientInfo){
+  setFormData({
+    name: userInfo?.name || "",
+    email: userInfo?.email || "",
+    mobile: userInfo?.mobileNumber || "",
+    dob: patientInfo?.dob || "",
+    age:  String(patientInfo?.age) || "",
+    bloodType: patientInfo?.bloodType || "",
+    gender: patientInfo?.gender || "",
+    height:  String(patientInfo?.height) || "",
+    weight:  String(patientInfo?.weight) || "",
+    allergies: patientInfo?.allergies || [],
+    medicalHistory: patientInfo?.medicalHistory || [],
+    addressLine1: patientInfo?.addressLine1 || "",
+    city: patientInfo?.city || "",
+    state: patientInfo?.state || "",
+    zip: patientInfo?.zip || "",
+    contry: patientInfo?.contry || "",
+  })
+  }else{
+  setFormData({
+    name: userInfo?.name || "",
+    email: userInfo?.email || "",
+    mobile: userInfo?.mobileNumber || "",
+    dob: "",
+    age: "",
+    bloodType: "",
+    gender: "",
+    height: "",
+    weight: "",
+    allergies: [""],
+    medicalHistory: [{ diseaseName: "", year: "" }],
+    addressLine1: "",
+    city: "",
+    state: "",
+    zip: "",
+    contry: "",
+  });
+}
 
-    setFormData({
-      name: userInfo.name || "",
-      email: userInfo.email || "",
-      mobile: userInfo.mobileNumber || "",
-      dob: "",
-      age: "",
-      bloodType: "",
-      gender: "",
-      height: "",
-      weight: "",
-      allergies: [""],
-      medicalHistory: [{ diseaseName: "", year: "" }],
-      addressLine1: "",
-      city: "",
-      state: "",
-      zip: "",
-      contry: "",
-    });
-  }
+}
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -161,7 +241,7 @@ export default function Profilesettings() {
       errorsObj.state = "State is required";
     }
 
-    if (!formData.zip.trim()) {
+    if (!formData.zip || !formData.zip.toString().trim()) {
       errorsObj.zip = "Zip Code is required";
     }
 
@@ -190,9 +270,45 @@ export default function Profilesettings() {
     console.log(formData);
 
     const isAuthenticated = localStorage.getItem("token");
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    const patientInfo = JSON.parse(localStorage.getItem("patientInfo"));
 
 
     try {
+
+      if (patientInfo) {
+        console.log("1");
+        const updatedDoctor = await axios.put(
+          `https://healthbackend-3xh2.onrender.com/patient/${patientInfo._id}`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: isAuthenticated,
+            },
+          }
+        );  
+        console.log(updatedDoctor);
+        // localStorage.setItem(
+        //   "patientInfo",
+        //   JSON.stringify(updatedDoctor.data.result)
+        // );
+        // setDoctorInfo(updatedDoctor.data.result);
+        // console.log(doctorInfo);
+        console.log("doctor updated success navigatingto docprofile");
+
+        toast("Profile Updated Successfully", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      } else {
 
       const user = await axios.post(
         `https://healthbackend-3xh2.onrender.com/patient/create`,
@@ -210,15 +326,34 @@ export default function Profilesettings() {
         "patientInfo",
         JSON.stringify(user.data.result)
       );
+
+      toast("Profile Created Successfully!!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
      
     } catch (error) {
       console.log(error);
+       toast.error(error.response.data.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
-
-
-
-
-
   };
 
   useEffect(() => {
@@ -318,6 +453,7 @@ export default function Profilesettings() {
         <div className="content">
           <div className="container">
             <div className="row">
+            <ToastContainer />
               <div className="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
                 <div className="profile-sidebar">
                   <div className="widget-profile pro-widget-content">
@@ -394,21 +530,28 @@ export default function Profilesettings() {
                             <div className="change-avatar">
                               <div className="profile-img">
                                 <img
-                                  src="assets/img/patients/patient.jpg"
+                                  src={preview ? preview : pic}
                                   alt="User Image"
                                 />
                               </div>
                               <div className="upload-img">
-                                <div className="change-photo-btn">
-                                  <span>
-                                    <i className="fa fa-upload" /> Upload Photo
-                                  </span>
-                                  <input type="file" className="upload" />
-                                </div>
-                                <small className="form-text text-muted">
-                                  Allowed JPG, GIF or PNG. Max size of 2MB
-                                </small>
+                              <div className="change-photo-btn">
+                                <span>
+                                  <i className="fa fa-upload" /> Upload Photo
+                                </span>
+                                <input
+                                  type="file"
+                                  className="upload"
+                                  accept=".png, .jpg, .jpeg"
+                                  onChange={(e) =>
+                                    uploadImage(e.target.files[0])
+                                  }
+                                />
                               </div>
+                              <small className="form-text text-muted">
+                                Allowed JPG, PNG and JPEG. Max size of 2MB
+                              </small>
+                            </div>
                             </div>
                           </div>
                         </div>
