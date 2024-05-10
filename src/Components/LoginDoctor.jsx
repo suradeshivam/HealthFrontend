@@ -216,7 +216,7 @@ export default function LoginDoctor() {
                           <FaUserMd className="" /> Sign up as a Doctor
                         </Link>
                         <Link
-                          to="/signup?role=patient" // Include role parameter for Patient signup
+                          to="/signup?role=user" // Include role parameter for Patient signup
                           className="">
                           <FaUserInjured /> Sign up as a Patient
                         </Link>
