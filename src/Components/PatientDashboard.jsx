@@ -1,15 +1,13 @@
-import React,{useEffect, useState} from "react";
-import { Link,useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Pagination from "./Pagination";
 export default function Patientdashboard() {
-
   const [currentPageToday, setCurrentPageToday] = useState(1);
   const [currentPageUpcoming, setCurrentPageUpcoming] = useState(1);
   const [currentPageHistory, setCurrentPageHistory] = useState(1);
   const [itemsPerPage] = useState(5);
 
   const navigate = useNavigate();
-
 
   const tableData = [
     {
@@ -66,7 +64,6 @@ export default function Patientdashboard() {
       consultationFee: "$160",
       avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
     },
- 
   ];
   const upcoming = [
     {
@@ -132,7 +129,6 @@ export default function Patientdashboard() {
       consultationFee: "$160",
       avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
     },
- 
   ];
   const history = [
     {
@@ -207,34 +203,36 @@ export default function Patientdashboard() {
       consultationFee: "$160",
       avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
     },
- 
   ];
 
   // Today Appointment
-const todayStartIndex = (currentPageToday - 1) * itemsPerPage;
-const todayEndIndex = currentPageToday * itemsPerPage;
-const todayAppointments = tableData.slice(todayStartIndex, todayEndIndex);
+  const todayStartIndex = (currentPageToday - 1) * itemsPerPage;
+  const todayEndIndex = currentPageToday * itemsPerPage;
+  const todayAppointments = tableData.slice(todayStartIndex, todayEndIndex);
 
-// Upcoming Section
-const upcomingStartIndex = (currentPageUpcoming - 1) * itemsPerPage;
-const upcomingEndIndex = currentPageUpcoming * itemsPerPage;
-const upcomingAppointments = upcoming.slice(upcomingStartIndex, upcomingEndIndex);
+  // Upcoming Section
+  const upcomingStartIndex = (currentPageUpcoming - 1) * itemsPerPage;
+  const upcomingEndIndex = currentPageUpcoming * itemsPerPage;
+  const upcomingAppointments = upcoming.slice(
+    upcomingStartIndex,
+    upcomingEndIndex
+  );
 
-// History Section
-const historyStartIndex = (currentPageHistory - 1) * itemsPerPage;
-const historyEndIndex = currentPageHistory * itemsPerPage;
-const historyAppointments = history.slice(historyStartIndex, historyEndIndex);
+  // History Section
+  const historyStartIndex = (currentPageHistory - 1) * itemsPerPage;
+  const historyEndIndex = currentPageHistory * itemsPerPage;
+  const historyAppointments = history.slice(historyStartIndex, historyEndIndex);
 
-const paginate1 = (pageNumber) => setCurrentPageToday(pageNumber);
-const paginate2 = (pageNumber) => setCurrentPageUpcoming(pageNumber);
-const paginate3 = (pageNumber) => setCurrentPageHistory(pageNumber);
+  const paginate1 = (pageNumber) => setCurrentPageToday(pageNumber);
+  const paginate2 = (pageNumber) => setCurrentPageUpcoming(pageNumber);
+  const paginate3 = (pageNumber) => setCurrentPageHistory(pageNumber);
 
-useEffect(() => {
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  if (userInfo.role !== "user") {
-    navigate("/");
-  }
-}, []);
+  useEffect(() => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    if (userInfo.role !== "user") {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <>
@@ -403,7 +401,7 @@ useEffect(() => {
                           </Link>
                         </li>
                         <li>
-                          <Link to="/change-password">
+                          <Link to="/changepasswordpatient">
                             <i className="fas fa-lock" />
                             <span>Change Password</span>
                           </Link>
@@ -499,14 +497,13 @@ useEffect(() => {
                           <a
                             className="nav-link active"
                             href="#pat_appointment"
-                            data-bs-toggle="tab"
-                          >
+                            data-bs-toggle="tab">
                             Appointments
                           </a>
                         </li>
-                        </ul>
+                      </ul>
                     </nav>
-                        {/* <li className="nav-item">
+                    {/* <li className="nav-item">
                           <a
                             className="nav-link"
                             href="#pat_prescriptions"
@@ -533,47 +530,46 @@ useEffect(() => {
                             Billing
                           </a>
                         </li> */}
-                        
-                     
+
                     <div className="tab-content pt-0">
-                    <ul className="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
-                          <li className="nav-item">
-                            <a
-                              className="nav-link active"
-                              href="#today-appointments"
-                              data-bs-toggle="tab">
-                              Today
-                            </a>
-                          </li>
-                          <li className="nav-item">
-                            <a
-                              className="nav-link"
-                              href="#upcoming-appointments"
-                              data-bs-toggle="tab">
-                              Upcoming
-                            </a>
-                          </li>
-                          <li className="nav-item">
-                            <a
-                              className="nav-link"
-                              href="#history-appointments"
-                              data-bs-toggle="tab"
-                              // onClick={() =>
-                              //   getAllAppointments(
-                              //     doctorInfo._id,
-                              //     isAuthenticated,
-                              //     true
-                              //   )
-                              // }
-                              >
-                              History
-                            </a>
-                          </li>
-                        </ul><br/>
+                      <ul className="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
+                        <li className="nav-item">
+                          <a
+                            className="nav-link active"
+                            href="#today-appointments"
+                            data-bs-toggle="tab">
+                            Today
+                          </a>
+                        </li>
+                        <li className="nav-item">
+                          <a
+                            className="nav-link"
+                            href="#upcoming-appointments"
+                            data-bs-toggle="tab">
+                            Upcoming
+                          </a>
+                        </li>
+                        <li className="nav-item">
+                          <a
+                            className="nav-link"
+                            href="#history-appointments"
+                            data-bs-toggle="tab"
+                            // onClick={() =>
+                            //   getAllAppointments(
+                            //     doctorInfo._id,
+                            //     isAuthenticated,
+                            //     true
+                            //   )
+                            // }
+                          >
+                            History
+                          </a>
+                        </li>
+                      </ul>
+                      <br />
                       <div
                         id="today-appointments"
-                        className="tab-pane fade show active"
-                      >
+                        className="tab-pane fade show active">
                         <div className="card card-table mb-0">
                           <div className="card-body">
                             <div className="table-responsive">
@@ -594,8 +590,7 @@ useEffect(() => {
                                         <h2 className="table-avatar">
                                           <a
                                             href="doctor-profile.html"
-                                            className="avatar avatar-sm me-2"
-                                          >
+                                            className="avatar avatar-sm me-2">
                                             <img
                                               className="avatar-img rounded-circle"
                                               src={row.avatarSrc}
@@ -618,38 +613,31 @@ useEffect(() => {
                                       <td>{row.consultationFee}</td>
                                       <td>
                                         <div className="table-action">
-                                        <button
-                                            
-                                            className="btn btn-sm bg-info-light me-2"
-                                          >
-                                            <i className="fas fa-sign-in-alt" /> Join
+                                          <button className="btn btn-sm bg-info-light me-2">
+                                            <i className="fas fa-sign-in-alt" />{" "}
+                                            Join
                                           </button>
-                                                <button
-                                                  className="btn btn-sm bg-info-light"
-                                                  >
-                                                  <i className="far fa-eye" />{" "}
-                                                  View
-                                                </button>
+                                          <button className="btn btn-sm bg-info-light">
+                                            <i className="far fa-eye" /> View
+                                          </button>
                                         </div>
                                       </td>
                                     </tr>
                                   ))}
-                                  
                                 </tbody>
                               </table>
-                                  <Pagination
-                            itemsPerPage={itemsPerPage}
-                            totalItems={tableData.length}
-                            paginate={paginate1}
-                          />
+                              <Pagination
+                                itemsPerPage={itemsPerPage}
+                                totalItems={tableData.length}
+                                paginate={paginate1}
+                              />
                             </div>
                           </div>
                         </div>
                       </div>
                       <div
                         id="upcoming-appointments"
-                        className="tab-pane fade "
-                      >
+                        className="tab-pane fade ">
                         <div className="card card-table mb-0">
                           <div className="card-body">
                             <div className="table-responsive">
@@ -670,8 +658,7 @@ useEffect(() => {
                                         <h2 className="table-avatar">
                                           <a
                                             href="doctor-profile.html"
-                                            className="avatar avatar-sm me-2"
-                                          >
+                                            className="avatar avatar-sm me-2">
                                             <img
                                               className="avatar-img rounded-circle"
                                               src={row.avatarSrc}
@@ -694,38 +681,29 @@ useEffect(() => {
                                       <td>{row.consultationFee}</td>
                                       <td>
                                         <div className="table-action">
-                                        <button
-                                            
-                                            className="btn btn-sm bg-info-light me-2"
-                                          >
-                                            <i className="fas fa-sign-in-alt" /> Join
+                                          <button className="btn btn-sm bg-info-light me-2">
+                                            <i className="fas fa-sign-in-alt" />{" "}
+                                            Join
                                           </button>
-                                                <button
-                                                  className="btn btn-sm bg-info-light"
-                                                  >
-                                                  <i className="far fa-eye" />{" "}
-                                                  View
-                                                </button>
+                                          <button className="btn btn-sm bg-info-light">
+                                            <i className="far fa-eye" /> View
+                                          </button>
                                         </div>
                                       </td>
                                     </tr>
                                   ))}
-                                  
                                 </tbody>
                               </table>
-                                  <Pagination
-                            itemsPerPage={itemsPerPage}
-                            totalItems={upcoming.length}
-                            paginate={paginate2}
-                          />
+                              <Pagination
+                                itemsPerPage={itemsPerPage}
+                                totalItems={upcoming.length}
+                                paginate={paginate2}
+                              />
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div
-                        id="history-appointments"
-                        className="tab-pane fade"
-                      >
+                      <div id="history-appointments" className="tab-pane fade">
                         <div className="card card-table mb-0">
                           <div className="card-body">
                             <div className="table-responsive">
@@ -746,8 +724,7 @@ useEffect(() => {
                                         <h2 className="table-avatar">
                                           <a
                                             href="doctor-profile.html"
-                                            className="avatar avatar-sm me-2"
-                                          >
+                                            className="avatar avatar-sm me-2">
                                             <img
                                               className="avatar-img rounded-circle"
                                               src={row.avatarSrc}
@@ -770,30 +747,24 @@ useEffect(() => {
                                       <td>{row.consultationFee}</td>
                                       <td>
                                         <div className="table-action">
-                                        <button
-                                            
-                                            className="btn btn-sm bg-info-light me-2"
-                                          >
-                                            <i className="fas fa-sign-in-alt" /> Join
+                                          <button className="btn btn-sm bg-info-light me-2">
+                                            <i className="fas fa-sign-in-alt" />{" "}
+                                            Join
                                           </button>
-                                                <button
-                                                  className="btn btn-sm bg-info-light"
-                                                  >
-                                                  <i className="far fa-eye" />{" "}
-                                                  View
-                                                </button>
+                                          <button className="btn btn-sm bg-info-light">
+                                            <i className="far fa-eye" /> View
+                                          </button>
                                         </div>
                                       </td>
                                     </tr>
                                   ))}
-                                  
                                 </tbody>
                               </table>
-                                  <Pagination
-                            itemsPerPage={itemsPerPage}
-                            totalItems={history.length}
-                            paginate={paginate3}
-                          />
+                              <Pagination
+                                itemsPerPage={itemsPerPage}
+                                totalItems={history.length}
+                                paginate={paginate3}
+                              />
                             </div>
                           </div>
                         </div>
@@ -1745,8 +1716,7 @@ useEffect(() => {
                 type="button"
                 className="btn-close"
                 data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
+                aria-label="Close"></button>
             </div>
             <div className="modal-body">
               <div id="bmi-status" />
@@ -1763,8 +1733,7 @@ useEffect(() => {
                 type="button"
                 className="btn-close"
                 data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
+                aria-label="Close"></button>
             </div>
             <div className="modal-body">
               <div id="heartrate-status" />
@@ -1781,8 +1750,7 @@ useEffect(() => {
                 type="button"
                 className="btn-close"
                 data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
+                aria-label="Close"></button>
             </div>
             <div className="modal-body">
               <div id="fbc-status" />
@@ -1799,8 +1767,7 @@ useEffect(() => {
                 type="button"
                 className="btn-close"
                 data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
+                aria-label="Close"></button>
             </div>
             <div className="modal-body">
               <div id="weight-status" />

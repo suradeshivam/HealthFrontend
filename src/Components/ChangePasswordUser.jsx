@@ -1,6 +1,7 @@
-import React from "react";
-
-export default function Changepassword() {
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Pagination from "./Pagination";
+export default function Patientdashboard() {
   return (
     <>
       {/* Mirrored from doccure.dreamstechnologies.com/html/template/change-password.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 16 Apr 2024 16:46:25 GMT */}
