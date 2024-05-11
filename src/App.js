@@ -18,7 +18,7 @@ import Patientdashboard from "./Components/PatientDashboard";
 import PatientProfileSetting from "./Components/PatientProfileSetting";
 import Orders from "./Components/Orders";
 import Home from "./Components/Home";
-
+import ChangePasswordUser from "./Components/ChangePasswordUser";
 
 import Profilesettings from "./Components/PatientProfileSetting";
 import DoctorSearch from "./Components/patientfolder/DoctorSearch";
@@ -41,6 +41,10 @@ function App() {
           <Route path="doctor" element={<Dashboard />} />
           {/* <Route path="appointments" element={<Appointments />} /> */}
           <Route path="changepassword" element={<ChangePassword />} />
+          <Route
+            path="changepasswordpatient"
+            element={<ChangePasswordUser />}
+          />
           <Route path="orders" element={<Orders />} />
           <Route path="patientprofile" element={<PatientProfileSetting />} />
           <Route path="profile" element={<DoctorProfile />} />
