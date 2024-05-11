@@ -294,15 +294,20 @@ export default function Accounts() {
                     <div className="profile-info-widget">
                       <a href="#" className="booking-doc-img">
                         <img
-                          src="assets/img/doctors/doctor-thumb-02.jpg"
-                          alt="User Image"
+                           src={doctorInfo?.profilePicture || "assets/img/doctors/doctor-thumb-02.jpg"}
+                          alt="assets/img/doctors/doctor-thumb-02.jpg"
                         />
                       </a>
                       <div className="profile-det-info">
-                        <h3>Dr. Darren Elder</h3>
-                        <div className="patient-details">
-                          <h5 className="mb-0">
-                            BDS, MDS - Oral &amp; Maxillofacial Surgery
+                        <h3>Dr. {doctorInfo?.userId?.name}</h3>
+                        <div className="patient-details ">
+                          <h5 className="mb-0 ">
+                            {doctorInfo &&
+                              doctorInfo?.educationDetails &&
+                              doctorInfo?.educationDetails.map((edu, index) => (
+                                <p key={index}>{edu.qualification}</p>
+                              ))}
+                            {/* &amp; {doctorInfo?.specialization} */}
                           </h5>
                         </div>
                       </div>
@@ -317,12 +322,7 @@ export default function Accounts() {
                             <span>Dashboard</span>
                           </Link>
                         </li>
-                        <li>
-                          <Link to="/appointments">
-                            <i className="fas fa-calendar-check" />
-                            <span>Appointments</span>
-                          </Link>
-                        </li>
+                        
                         <li>
                           <Link to="/schedule">
                             <i className="fas fa-hourglass-start" />

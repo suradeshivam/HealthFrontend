@@ -22,6 +22,9 @@ import Home from "./Components/Home";
 
 import Profilesettings from "./Components/PatientProfileSetting";
 import DoctorSearch from "./Components/patientfolder/DoctorSearch";
+import Dependent from "./Components/patientfolder/Dependent";
+import Medicalrecords from "./Components/patientfolder/Medicalrecords";
+import ChangePasswordPatient from "./Components/patientfolder/ChangePasswordPatient";
 
 // App changed
 function App() {
@@ -37,11 +40,11 @@ function App() {
         <Route path="signup" element={<DoctorRegister />} />
         <Route path="login" element={<LoginDoctor />} />
         <Route element={<ProtectedRoute />}>
-          <Route path="user" element={<Patientdashboard />} />
+         
           <Route path="doctor" element={<Dashboard />} />
           {/* <Route path="appointments" element={<Appointments />} /> */}
           <Route path="changepassword" element={<ChangePassword />} />
-          <Route path="orders" element={<Orders />} />
+          
           <Route path="patientprofile" element={<PatientProfileSetting />} />
           <Route path="profile" element={<DoctorProfile />} />
           <Route path="reviews" element={<Reviews />} />
@@ -51,8 +54,13 @@ function App() {
           <Route path="appointment" element={<Appointment />} />
 
           {/* Patient Routs */}
-          <Route path="profile-settings" element={<Profilesettings />} />
+          <Route path="user" element={<Patientdashboard />} />
+          <Route path="orders" element={<Orders />} />
           <Route path="docsearch" element={<DoctorSearch />} />
+          <Route path="dependent" element={<Dependent />} />
+          <Route path="medical-records" element={<Medicalrecords />} />
+          <Route path="profile-settings" element={<Profilesettings />} />
+          <Route path="change-password" element={<ChangePasswordPatient />} />
         </Route>
       </Routes>
       {shouldShowNavbarAndFooter && <Footer />}

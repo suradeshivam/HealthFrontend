@@ -7,6 +7,8 @@ export default function Patientdashboard() {
   const [currentPageUpcoming, setCurrentPageUpcoming] = useState(1);
   const [currentPageHistory, setCurrentPageHistory] = useState(1);
   const [itemsPerPage] = useState(5);
+  const [patientInfo, setPatientInfo] = useState("");
+  const [userInfo, setUserInfo] = useState("");
 
   const navigate = useNavigate();
 
@@ -236,6 +238,13 @@ useEffect(() => {
   }
 }, []);
 
+useEffect(() => {
+  const patientInfo = JSON.parse(localStorage.getItem('patientInfo'))
+  setPatientInfo(patientInfo)
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+  setUserInfo(userInfo)
+}, []);
+
   return (
     <>
       {/* Mirrored from doccure.dreamstechnologies.com/html/template/patient-dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 16 Apr 2024 16:46:18 GMT */}
@@ -329,19 +338,21 @@ useEffect(() => {
                     <div className="profile-info-widget">
                       <a href="#" className="booking-doc-img">
                         <img
-                          src="assets/img/patients/patient.jpg"
-                          alt="User Image"
+                          src = {patientInfo?.profilePicture}
+                          alt="assets/img/patients/patient.jpg"
                         />
                       </a>
                       <div className="profile-det-info">
-                        <h3>Richard Wilson</h3>
+                        <h3>Patient</h3>
                         <div className="patient-details">
                           <h5>
-                            <i className="fas fa-birthday-cake" /> 24 Jul 1983,
-                            38 years
+                            <i className="fas fa-birthday-cake" />
+                             {
+                             new Date(patientInfo?.dob).toLocaleDateString('en-GB', { day: '2-digit',month: 'long',year: 'numeric'})},
+                            {patientInfo?.age} years
                           </h5>
                           <h5 className="mb-0">
-                            <i className="fas fa-map-marker-alt" /> Newyork, USA
+                            <i className="fas fa-map-marker-alt" /> {patientInfo?.city}, {patientInfo?.contry}
                           </h5>
                         </div>
                       </div>
@@ -352,7 +363,7 @@ useEffect(() => {
                     <nav className="dashboard-menu">
                       <ul>
                         <li className="active">
-                          <Link to="/patient">
+                          <Link to="/user">
                             <i className="fas fa-columns" />
                             <span>Dashboard</span>
                           </Link>
@@ -390,12 +401,7 @@ useEffect(() => {
                             <span>Add Medical Records</span>
                           </Link>
                         </li>
-                        <li>
-                          <Link to="/medical-details">
-                            <i className="fas fa-file-medical-alt" />
-                            <span>Medical Details</span>
-                          </Link>
-                        </li>
+                        
                         <li>
                           <Link to="/profile-settings">
                             <i className="fas fa-user-cog" />

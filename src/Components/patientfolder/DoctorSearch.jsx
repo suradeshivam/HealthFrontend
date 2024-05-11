@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Pagination from "../Pagination";
 import data from "./data";
 import FilterDisplay from "./FilterDisplay";
+import axios from "axios";
 
 export default function DoctorSearch() {
   //   const [doctors, setDoctors] = useState([
@@ -98,6 +99,8 @@ export default function DoctorSearch() {
     selectedRating: [],
   });
 
+  const [docFilter, setDocFilter] = useState("");
+
   // Function to handle filter changes
   const handleFilterChange = (filterName, value) => {
     setFilters({
@@ -117,16 +120,22 @@ export default function DoctorSearch() {
 
   // Function to filter doctors by gender
   const filterDoctors = (filterName, value) => {
-    let filteredDoctors = [...doctors];
+    let filteredDoctors = [...docFilter];
   
+    //   if (filterName === "selectedGender") {
+    //   filteredDoctors = doctors.filter((doctor) => doctor.gender === value);
+    // }
+
+    
     // Apply gender filter if selected
-    if (filters.selectedGender) {
+    if (filterName === "selectedGender") {
       // console.log( value)
       filteredDoctors = filteredDoctors.filter(
         (doctor) => doctor.gender === value
   
       );
     }
+    
   
     // Apply experience filter if selected
     if (filters.selectedExperience) {
@@ -159,7 +168,7 @@ export default function DoctorSearch() {
   };
 
   const experienceFilter = (value) => {
-    let filteredDoctors = [...doctors];
+    let filteredDoctors = [...docFilter];
     filteredDoctors = filteredDoctors.filter((doctor) => {
     if (filters.selectedGender && doctor.gender !== filters.selectedGender ) {
       return false;
@@ -213,6 +222,37 @@ export default function DoctorSearch() {
 
     setFilterDoctor(filteredDoctors);
   };
+
+  const getAllDoctors = async() =>{
+
+    const isAuthenticated = localStorage.getItem("token");
+    try {
+
+      const response = await axios.get('https://healthbackend-3xh2.onrender.com/patient/search',
+      {
+        headers:{
+          "Content-Type": "application/json",
+          Authorization: isAuthenticated,
+        },
+      }
+      );
+
+      console.log(response);
+      setDocFilter(response.data.result);
+      // setFilterDoctor(response.data.result);
+      
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
+  console.log(docFilter)
+
+  useEffect ( ()=>{
+
+    getAllDoctors();
+
+  },[]);
 
   return (
     <>

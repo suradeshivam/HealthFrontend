@@ -1,7 +1,18 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import { Link } from "react-router-dom";
 
 export default function Orderslist() {
+
+  const [patientInfo, setPatientInfo] = useState("");
+  const [userInfo, setUserInfo] = useState("");
+
+  useEffect(() => {
+    const patientInfo = JSON.parse(localStorage.getItem('patientInfo'))
+    setPatientInfo(patientInfo)
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    setUserInfo(userInfo)
+  }, []);
+
   return (
     <>
       {/* Mirrored from doccure.dreamstechnologies.com/html/template/orders-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 16 Apr 2024 16:48:29 GMT */}
@@ -90,22 +101,24 @@ export default function Orderslist() {
               <div className="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
                 <div className="profile-sidebar">
                   <div className="widget-profile pro-widget-content">
-                    <div className="profile-info-widget">
+                  <div className="profile-info-widget">
                       <a href="#" className="booking-doc-img">
                         <img
-                          src="assets/img/patients/patient.jpg"
-                          alt="User Image"
+                          src = {patientInfo?.profilePicture}
+                          alt="assets/img/patients/patient.jpg"
                         />
                       </a>
                       <div className="profile-det-info">
-                        <h3>Richard Wilson</h3>
+                        <h3>Patient</h3>
                         <div className="patient-details">
                           <h5>
-                            <i className="fas fa-birthday-cake" /> 24 Jul 1983,
-                            38 years
+                            <i className="fas fa-birthday-cake" />
+                             {
+                             new Date(patientInfo?.dob).toLocaleDateString('en-GB', { day: '2-digit',month: 'long',year: 'numeric'})},
+                            {patientInfo?.age} years
                           </h5>
                           <h5 className="mb-0">
-                            <i className="fas fa-map-marker-alt" /> Newyork, USA
+                            <i className="fas fa-map-marker-alt" /> {patientInfo?.city}, {patientInfo?.contry}
                           </h5>
                         </div>
                       </div>
@@ -115,7 +128,7 @@ export default function Orderslist() {
                     <nav className="dashboard-menu">
                       <ul>
                         <li className="active">
-                          <Link to="/patient">
+                          <Link to="/user">
                             <i className="fas fa-columns" />
                             <span>Dashboard</span>
                           </Link>
@@ -145,6 +158,12 @@ export default function Orderslist() {
                             <span>Accounts</span>
                           </Link>
                         </li> */}
+                         <li>
+                          <Link to="/dependent">
+                            <i className="fas fa-users" />
+                            <span>Dependent</span>
+                          </Link>
+                        </li>
                         <li>
                           <Link to="/orders">
                             <i className="fas fa-list-alt" />
@@ -152,26 +171,21 @@ export default function Orderslist() {
                             <small className="unread-msg">6</small>
                           </Link>
                         </li>
-                        {/* <li>
+                        <li>
                           <Link to="/medical-records">
                             <i className="fas fa-clipboard" />
                             <span>Add Medical Records</span>
                           </Link>
-                        </li> */}
-                        {/* <li>
-                          <Link to="/medical-details">
-                            <i className="fas fa-file-medical-alt" />
-                            <span>Medical Details</span>
-                          </Link>
-                        </li> */}
+                        </li>
+                       
                         <li>
-                          <Link to="/patientprofile">
+                          <Link to="/profile-settings">
                             <i className="fas fa-user-cog" />
                             <span>Profile Settings</span>
                           </Link>
                         </li>
                         <li>
-                          <Link to="/changepassword">
+                          <Link to="/change-password">
                             <i className="fas fa-lock" />
                             <span>Change Password</span>
                           </Link>

@@ -153,8 +153,8 @@ export default function Reviews() {
                   <div className="profile-info-widget">
                     <a href="#" className="booking-doc-img">
                       <img
-                        src="assets/img/doctors/doctor-thumb-02.jpg"
-                        alt="User Image"
+                         src={doctorInfo?.profilePicture || "assets/img/doctors/doctor-thumb-02.jpg"}
+                        alt="assets/img/doctors/doctor-thumb-02.jpg"
                       />
                     </a>
                     <div className="profile-det-info">

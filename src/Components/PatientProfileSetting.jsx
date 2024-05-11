@@ -7,7 +7,14 @@ import "react-toastify/dist/ReactToastify.css";
 export default function Profilesettings() {
   const [pic, setPic] = useState("assets/img/doctors/doctor-thumb-02.jpg");
   const [preview, setPreview] = useState();
+   const [patientInfo, setPatientInfo] = useState("");
+  const [userInfo, setUserInfo] = useState("");
+  
+
+  // const userInfo = JSON.parse( localStorage.getItem("userInfo"));
+
   const [formData, setFormData] = useState({
+    userId:"",
     name: "",
     email: "",
     dob: "", //
@@ -20,6 +27,7 @@ export default function Profilesettings() {
     allergies: [""],
     medicalHistory: [{ diseaseName: "", year: "" }],
     addressLine1: "",
+    profilePicture:"",
     city: "",
     state: "",
     zip: "",
@@ -73,6 +81,9 @@ export default function Profilesettings() {
           );
           if (res.status === 200) {
             setPic(res.data.result);
+            setFormData({
+              ...formData, profilePicture:res.data.result
+            })
             console.log(res.data.result);
           }
           toast(res.data.message);
@@ -166,8 +177,10 @@ export default function Profilesettings() {
 
     if(patientInfo){
   setFormData({
+    userId:userInfo?._id,
     name: userInfo?.name || "",
     email: userInfo?.email || "",
+    profilePicture:patientInfo?.profilePicture || "assets/img/doctors/doctor-thumb-02.jpg",
     mobile: userInfo?.mobileNumber || "",
     dob: patientInfo?.dob || "",
     age:  String(patientInfo?.age) || "",
@@ -185,6 +198,7 @@ export default function Profilesettings() {
   })
   }else{
   setFormData({
+    userId:userInfo?._id,
     name: userInfo?.name || "",
     email: userInfo?.email || "",
     mobile: userInfo?.mobileNumber || "",
@@ -273,13 +287,17 @@ export default function Profilesettings() {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     const patientInfo = JSON.parse(localStorage.getItem("patientInfo"));
 
+    setFormData({
+      ...formData , userId:userInfo._id
+    })
+    console.log(formData)
 
     try {
 
       if (patientInfo) {
         console.log("1");
-        const updatedDoctor = await axios.put(
-          `https://healthbackend-3xh2.onrender.com/patient/${patientInfo._id}`,
+        const updatedPatient = await axios.put(
+          `https://healthbackend-3xh2.onrender.com/patient/${patientInfo.userId}`,
           formData,
           {
             headers: {
@@ -288,11 +306,11 @@ export default function Profilesettings() {
             },
           }
         );  
-        console.log(updatedDoctor);
-        // localStorage.setItem(
-        //   "patientInfo",
-        //   JSON.stringify(updatedDoctor.data.result)
-        // );
+        console.log(updatedPatient);
+        localStorage.setItem(
+          "patientInfo",
+          JSON.stringify(updatedPatient.data.result)
+        );
         // setDoctorInfo(updatedDoctor.data.result);
         // console.log(doctorInfo);
         console.log("doctor updated success navigatingto docprofile");
@@ -358,6 +376,13 @@ export default function Profilesettings() {
 
   useEffect(() => {
     getPatientInfo();
+  }, []);
+
+  useEffect(() => {
+    const patientInfo = JSON.parse(localStorage.getItem('patientInfo'))
+    setPatientInfo(patientInfo)
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    setUserInfo(userInfo)
   }, []);
 
   return (
@@ -460,19 +485,21 @@ export default function Profilesettings() {
                     <div className="profile-info-widget">
                       <a href="#" className="booking-doc-img">
                         <img
-                          src="assets/img/patients/patient.jpg"
-                          alt="User Image"
+                           src = {patientInfo?.profilePicture}
+                           alt={"assets/img/patients/patient1.jpg"}
                         />
                       </a>
                       <div className="profile-det-info">
                         <h3>Richard Wilson</h3>
                         <div className="patient-details">
                           <h5>
-                            <i className="fas fa-birthday-cake" /> 24 Jul 1983,
-                            38 years
+                            <i className="fas fa-birthday-cake" />
+                             {
+                             new Date(patientInfo?.dob).toLocaleDateString('en-GB', { day: '2-digit',month: 'long',year: 'numeric'})},
+                            {patientInfo?.age} years
                           </h5>
                           <h5 className="mb-0">
-                            <i className="fas fa-map-marker-alt" /> Newyork, USA
+                            <i className="fas fa-map-marker-alt" /> {patientInfo?.city}, {patientInfo?.contry}
                           </h5>
                         </div>
                       </div>
@@ -489,12 +516,26 @@ export default function Profilesettings() {
                         </li>
 
                         <li>
+                          <Link to="/dependent">
+                            <i className="fas fa-users" />
+                            <span>Dependent</span>
+                          </Link>
+                        </li>
+
+                        <li>
                           <Link to="/orders">
                             <i className="fas fa-list-alt" />
                             <span>Orders</span>
                             <small className="unread-msg">7</small>
                           </Link>
                         </li>
+                        <li>
+                          <Link to="/medical-records">
+                            <i className="fas fa-clipboard" />
+                            <span>Add Medical Records</span>
+                          </Link>
+                        </li>
+                       
 
                         <li>
                           <Link to="/patientprofile">
@@ -503,7 +544,7 @@ export default function Profilesettings() {
                           </Link>
                         </li>
                         <li>
-                          <Link to="/changepassword">
+                          <Link to="/change-password">
                             <i className="fas fa-lock" />
                             <span>Change Password</span>
                           </Link>
@@ -530,7 +571,7 @@ export default function Profilesettings() {
                             <div className="change-avatar">
                               <div className="profile-img">
                                 <img
-                                  src={preview ? preview : pic}
+                                  src={preview ? preview : formData.profilePicture}
                                   alt="User Image"
                                 />
                               </div>
@@ -818,9 +859,9 @@ export default function Profilesettings() {
                         <br />
                         <div className="col-12">
                           <div className="mb-3">
-                            <h4 className="card-title">addressLine1</h4>
+                            <h4 className="card-title">Address Line</h4>
                             <label className="mb-2">
-                              addressLine1 <span className="text-danger"> *</span>
+                              Address Line <span className="text-danger"> *</span>
                             </label>
                             <input
                               type="text"
@@ -896,7 +937,7 @@ export default function Profilesettings() {
                         <div className="col-12 col-md-6">
                           <div className="mb-3">
                             <label className="mb-2">
-                              contry <span className="text-danger"> *</span>
+                              Country <span className="text-danger"> *</span>
                             </label>
                             <input
                               type="text"

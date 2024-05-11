@@ -304,7 +304,7 @@
       "image": "assets/img/doctors/doctor-17.jpg",
       "speciality": "MBBS, Dentist",
       "location": "Andheri West - Mumbai, India",
-      
+      "gender": "Male",
       "availability": "Available Today",
       "rating": 4.5,
       "specialization": "Heart specialist",
