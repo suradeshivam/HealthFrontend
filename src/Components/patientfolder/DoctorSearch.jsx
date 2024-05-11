@@ -100,6 +100,23 @@ export default function DoctorSearch() {
   });
 
   const [docFilter, setDocFilter] = useState("");
+  const [feeRange, setFeeRange] = useState([1500, 5000]);
+
+  const handleFeeChange = (event) => {
+    
+    const newFeeRange = parseInt(event.target.value);
+    setFeeRange([newFeeRange, feeRange[1]]);
+    filterDoctors(newFeeRange, feeRange[1]);
+
+  };
+
+  const filterDoctors = (minFee, maxFee) => {
+    let filteredDoctors = [...doctors];
+    filteredDoctors = filteredDoctors.filter(
+      (doctor) => doctor.fee >= minFee && doctor.fee <= maxFee
+    );
+    setFilterDoctor(filteredDoctors);
+  };
 
   // Function to handle filter changes
   const handleFilterChange = (filterName, value) => {
@@ -115,44 +132,24 @@ export default function DoctorSearch() {
       experienceFilter(value);
     } else if (filterName === "selectedRating") {
       selectedRatingFilter(value);
+    } else if (filterName === "feeRange") {
+      selectedFeeFilter();
     }
   };
 
-  // Function to filter doctors by gender
-  const filterDoctors = (filterName, value) => {
-    let filteredDoctors = [...docFilter];
-  
-    //   if (filterName === "selectedGender") {
-    //   filteredDoctors = doctors.filter((doctor) => doctor.gender === value);
-    // }
 
-    
-    // Apply gender filter if selected
-    if (filterName === "selectedGender") {
-      // console.log( value)
-      filteredDoctors = filteredDoctors.filter(
-        (doctor) => doctor.gender === value
-  
-      );
-    }
-    
-  
-    // Apply experience filter if selected
-    if (filters.selectedExperience) {
-      if (filters.selectedExperience === "1-5") {
-        filteredDoctors = filteredDoctors.filter(
-          (doctor) => doctor.yearOfExperience >= 1 && doctor.yearOfExperience <= 5
-        );
-      } else if (filters.selectedExperience === "5+") {
-        filteredDoctors = filteredDoctors.filter(
-          (doctor) => doctor.yearOfExperience > 5
-        );
-      }
-    }
-  
-    // Update filtered doctors state
+  const selectedFeeFilter = () => {
+    // const filteredDoctors = filterDoctor.filter(
+    //   (doctor) => doctor.fee >= value[0] && doctor.fee <= value[1]
+    // );
+    const filteredDoctors = filterDoctor.filter(
+      (doctor) => doctor.fee <= feeRange[0] && doctor.fee <= feeRange[1]
+    );
+
     setFilterDoctor(filteredDoctors);
-  };
+  }
+
+ 
 
   const sortFilteredDoctors = (value) => {
     const sortedDoctors = [...filterDoctor];
@@ -419,34 +416,50 @@ export default function DoctorSearch() {
                           </div>
                         </div> */}
                         <div className="filter-grid">
-                          <h4>
-                            <a href="#collapsethree" data-bs-toggle="collapse">
-                              Consultation Fee
-                            </a>
-                          </h4>
-                          <div id="collapsethree" className="collapse show">
-                            <div className="filter-collapse">
-                              <div className="filter-content filter-content-slider">
-                                <p>
-                                  RS 1000 <span>RS 30000</span>
-                                </p>
-                                <div className="slider-wrapper">
-                                  <div id="price-range" />
-                                </div>
-                                <div className="price-wrapper">
-                                  <h6>
-                                    Price :
-                                    <span>
-                                      RS <span id="pricerangemin" />
-                                      - RS
-                                      <span id="pricerangemax" />
-                                    </span>
-                                  </h6>
-                                </div>
-                              </div>
+                      <h4>
+                        <a href="#collapsethree" data-bs-toggle="collapse">
+                          Consultation Fee
+                        </a>
+                      </h4>
+                      <div id="collapsethree" className="collapse show">
+                        <div className="filter-collapse">
+                          <div className="filter-content filter-content-slider">
+                            
+                            <div className="slider-wrapper" >
+                              <div id="price-range" />
+                              <input type="range"
+                                min="0"
+                                max="5000"
+                                step="100"
+                                value={feeRange[0]}
+                                onChange={handleFeeChange}
+                                style={{
+                                  width: "100%", 
+                                  height: "10px", 
+                                  borderRadius: "5px", 
+                                  background: "#E9ECF1", 
+                                  outline: "none",
+                                  opacity: "0.7", 
+                                  transition: "opacity 0.2s",
+                                   
+                                  ":hover": {
+                                      opacity: "1", 
+                                  }
+                              }}/>
+                            </div>
+                            <div className="price-wrapper">
+                              <h6>
+                                Price :
+                                <span>
+                                   RS{feeRange[0]} <span id="pricerangemin" />
+                                  - {feeRange[1]} RS<span id="pricerangemax" />
+                                </span>
+                              </h6>
                             </div>
                           </div>
                         </div>
+                      </div>
+                    </div>
                         {/* <div className="filter-grid">
                           <h4>
                             <a href="#collapsefour" data-bs-toggle="collapse">
