@@ -39,12 +39,10 @@ function App() {
         <Route path="signup" element={<DoctorRegister />} />
         <Route path="login" element={<LoginDoctor />} />
         <Route element={<ProtectedRoute />}>
-         
           <Route path="doctor" element={<Dashboard />} />
           {/* <Route path="appointments" element={<Appointments />} /> */}
           <Route path="changepassword" element={<ChangePassword />} />
 
-  
           <Route path="orders" element={<Orders />} />
           <Route path="patientprofile" element={<PatientProfileSetting />} />
           <Route path="profile" element={<DoctorProfile />} />
