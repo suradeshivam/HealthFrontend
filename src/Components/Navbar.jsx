@@ -21,6 +21,11 @@ export default function Navbar() {
     if (docInfo) {
       localStorage.removeItem("docInfo");
     }
+
+    const patientInfo = localStorage.getItem("patientInfo");
+    if (patientInfo) {
+      localStorage.removeItem("patientInfo");
+    }
   };
 
   useEffect(() => {
