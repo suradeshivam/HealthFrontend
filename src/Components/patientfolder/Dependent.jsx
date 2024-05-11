@@ -158,7 +158,7 @@ export default function Dependent() {
                 <div className="profile-info-widget">
                   <a href="#" className="booking-doc-img">
                     <img
-                      src = {patientInfo?.profilePicture}
+                      src={patientInfo?.profilePicture || "assets/img/doctors/doctor-thumb-02.jpg"}
                       alt="assets/img/patients/patient.jpg"
                     />
                   </a>

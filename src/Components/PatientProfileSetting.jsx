@@ -485,7 +485,7 @@ export default function Profilesettings() {
                     <div className="profile-info-widget">
                       <a href="#" className="booking-doc-img">
                         <img
-                           src = {patientInfo?.profilePicture}
+                           src={patientInfo?.profilePicture || "assets/img/doctors/doctor-thumb-02.jpg"}
                            alt={"assets/img/patients/patient1.jpg"}
                         />
                       </a>
@@ -571,8 +571,9 @@ export default function Profilesettings() {
                             <div className="change-avatar">
                               <div className="profile-img">
                                 <img
-                                  src={preview ? preview : formData.profilePicture}
+                                  src={preview ? preview : formData.profilePicture || "assets/img/doctors/doctor-thumb-02.jpg"}
                                   alt="User Image"
+                                  
                                 />
                               </div>
                               <div className="upload-img">
