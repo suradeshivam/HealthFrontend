@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Pagination from "../Pagination";
 import data from "./data";
 import FilterDisplay from "./FilterDisplay";
@@ -7,6 +7,8 @@ import axios from "axios";
 
 export default function DoctorSearch() {
   //   const [doctors, setDoctors] = useState([
+
+
   //     {
   //       id: 1,
   //       name: "Dr. Suresh Joshi",
@@ -90,14 +92,22 @@ export default function DoctorSearch() {
 
   // Filter state for gender and sorting
 
+  const location = useLocation();
+  const docFilters = location.state?.docFilters || "";
+  console.log("1");
+  console.log(docFilters);
+
+
   const [doctors, setDoctors] = useState(data);
-  const [filterDoctor, setFilterDoctor] = useState(data);
+  const [filterDoctor, setFilterDoctor] = useState(docFilters);
   const [filters, setFilters] = useState({
     selectedGender: "",
     selectedExperience: "",
     sortOrder: "",
     selectedRating: [],
   });
+
+
 
   const [docFilter, setDocFilter] = useState("");
   const [feeRange, setFeeRange] = useState([1500, 5000]);
@@ -220,37 +230,7 @@ export default function DoctorSearch() {
     setFilterDoctor(filteredDoctors);
   };
 
-  const getAllDoctors = async() =>{
-
-    const isAuthenticated = localStorage.getItem("token");
-    try {
-
-      const response = await axios.get('https://healthbackend-3xh2.onrender.com/patient/search',
-      {
-        headers:{
-          "Content-Type": "application/json",
-          Authorization: isAuthenticated,
-        },
-      }
-      );
-
-      console.log(response);
-      setDocFilter(response.data.result);
-      // setFilterDoctor(response.data.result);
-      
-    } catch (error) {
-      console.log(error);
-    }
-
-  }
-  console.log(docFilter)
-
-  useEffect ( ()=>{
-
-    getAllDoctors();
-
-  },[]);
-
+ 
   return (
     <>
       <title>TwinDoc</title>

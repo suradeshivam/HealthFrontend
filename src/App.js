@@ -24,6 +24,7 @@ import DoctorSearch from "./Components/patientfolder/DoctorSearch";
 import Dependent from "./Components/patientfolder/Dependent";
 import Medicalrecords from "./Components/patientfolder/Medicalrecords";
 import ChangePasswordPatient from "./Components/patientfolder/ChangePasswordPatient";
+import HomePage from "./HomePage";
 
 // App changed
 function App() {
@@ -35,7 +36,7 @@ function App() {
     <div className="m-0 p-0 bg-neutral-100">
       {shouldShowNavbarAndFooter && <Navbar />}
       <Routes>
-        <Route path="" element={<Home />} />
+        <Route path="" element={<HomePage />} />
         <Route path="signup" element={<DoctorRegister />} />
         <Route path="login" element={<LoginDoctor />} />
         <Route element={<ProtectedRoute />}>

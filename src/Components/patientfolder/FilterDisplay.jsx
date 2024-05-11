@@ -24,7 +24,7 @@ const FilterDisplay = ({ filterData }) => {
                 <div className="doctor-img">
                   <a href="doctor-profile.html">
                     <img
-                      src={doctor.image}
+                       src={doctor?.profilePicture || "assets/img/doctors/doctor-thumb-02.jpg"}
                       className="img-fluid"
                       alt={doctor.name}
                     />
@@ -32,14 +32,14 @@ const FilterDisplay = ({ filterData }) => {
                 </div>
                 <div className="doc-info-cont">
                   <h4 className="doc-name">
-                    <a href="doctor-profile.html">{doctor.name}</a>
+                    <a href="doctor-profile.html">Dr. {doctor.userId?.name}</a>
                     <i className="fas fa-circle-check" />
                   </h4>
-                  <p className="doc-speciality">{doctor.speciality}</p>
+                  <p className="doc-speciality">{doctor.specialization}</p>
                   <div className="clinic-details">
                     <p className="doc-location">
                       <i className="feather-map-pin" />
-                      {doctor.location}
+                      {doctor.city} {" "} {doctor.contry}
                     </p>
                     <p className="doc-location">
                       <i className="feather-award" /> {doctor.yearOfExperience}  Years of Experience
@@ -50,12 +50,12 @@ const FilterDisplay = ({ filterData }) => {
               <div className="doc-info-right">
                 <div className="clini-infos">
                   <ul>
-                    <li>
+                    {/* <li>
                       <i className="feather-clock available-icon" />
                       <span className="available-date">
                         {doctor.availability}
                       </span>
-                    </li>
+                    </li> */}
                           <li>
                             {/* Display rating and reviews */}
                             <div className="reviews-ratings">
@@ -70,7 +70,7 @@ const FilterDisplay = ({ filterData }) => {
                             </div>
                           </li>
                     <li>
-                      ₹ {doctor.fee}{" "}
+                      ₹ {doctor.fees}{" "}
                       <i className="feather-info available-info-icon" />
                     </li>
                   </ul>
