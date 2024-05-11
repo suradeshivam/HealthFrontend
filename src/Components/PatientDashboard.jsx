@@ -236,12 +236,12 @@ export default function Patientdashboard() {
     }
   }, []);
 
-useEffect(() => {
-  const patientInfo = JSON.parse(localStorage.getItem('patientInfo'))
-  setPatientInfo(patientInfo)
-  const userInfo = JSON.parse(localStorage.getItem('userInfo'))
-  setUserInfo(userInfo)
-}, []);
+  useEffect(() => {
+    const patientInfo = JSON.parse(localStorage.getItem("patientInfo"));
+    setPatientInfo(patientInfo);
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    setUserInfo(userInfo);
+  }, []);
 
   return (
     <>
@@ -336,7 +336,10 @@ useEffect(() => {
                     <div className="profile-info-widget">
                       <a href="#" className="booking-doc-img">
                         <img
-                          src={patientInfo?.profilePicture || "assets/img/doctors/doctor-thumb-02.jpg"}
+                          src={
+                            patientInfo?.profilePicture ||
+                            "assets/img/doctors/doctor-thumb-02.jpg"
+                          }
                           alt="assets/img/patients/patient.jpg"
                         />
                       </a>
@@ -345,12 +348,15 @@ useEffect(() => {
                         <div className="patient-details">
                           <h5>
                             <i className="fas fa-birthday-cake" />
-                             {
-                             new Date(patientInfo?.dob).toLocaleDateString('en-GB', { day: '2-digit',month: 'long',year: 'numeric'})},
-                            {patientInfo?.age} years
+                            {new Date(patientInfo?.dob).toLocaleDateString(
+                              "en-GB",
+                              { day: "2-digit", month: "long", year: "numeric" }
+                            )}
+                            ,{patientInfo?.age} years
                           </h5>
                           <h5 className="mb-0">
-                            <i className="fas fa-map-marker-alt" /> {patientInfo?.city}, {patientInfo?.contry}
+                            <i className="fas fa-map-marker-alt" />{" "}
+                            {patientInfo?.city}, {patientInfo?.contry}
                           </h5>
                         </div>
                       </div>
@@ -399,7 +405,7 @@ useEffect(() => {
                             <span>Add Medical Records</span>
                           </Link>
                         </li>
-                        
+
                         <li>
                           <Link to="/profile-settings">
                             <i className="fas fa-user-cog" />
@@ -407,7 +413,7 @@ useEffect(() => {
                           </Link>
                         </li>
                         <li>
-                          <Link to="/changepasswordpatient">
+                          <Link to="/change-password">
                             <i className="fas fa-lock" />
                             <span>Change Password</span>
                           </Link>

@@ -1096,27 +1096,124 @@ export default function Patientdashboard() {
                   <div className="card-body">
                     <div className="row">
                       <div className="col-md-12 col-lg-6">
-                        <form>
-                          <div className="mb-3">
-                            <label className="mb-2">Old Password</label>
-                            <input type="password" className="form-control" />
-                          </div>
-                          <div className="mb-3">
-                            <label className="mb-2">New Password</label>
-                            <input type="password" className="form-control" />
-                          </div>
-                          <div className="mb-3">
-                            <label className="mb-2">Confirm Password</label>
-                            <input type="password" className="form-control" />
-                          </div>
-                          <div className="submit-section">
+                        <div className="mb-3">
+                          <label className="mb-2">Old Passworddddd</label>
+                          <div className="d-flex">
+                            <input
+                              value={oldPassword}
+                              type={showOldPassword ? "text" : "password"}
+                              {...register("oldPassword", {
+                                required: "Password is required",
+                                pattern: {
+                                  value:
+                                    /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9]).{8,}$/,
+                                  message:
+                                    "Password must contain at least 8 characters, one uppercase letter, one number, and one special character",
+                                },
+                              })}
+                              onChange={(e) => setOldPassword(e.target.value)}
+                              className="form-control"
+                            />
                             <button
-                              type="submit"
-                              className="btn btn-primary submit-btn">
-                              Save Changes
+                              type="button"
+                              onClick={() =>
+                                setShowOldPassword(!showOldPassword)
+                              }
+                              className="">
+                              {showOldPassword ? (
+                                <FiEyeOff className="text-gray-500" />
+                              ) : (
+                                <FiEye className="text-gray-500" />
+                              )}
                             </button>
+                            {errors.password && (
+                              <p className="text-red-500 text-xs italic">
+                                {errors.password.message}
+                              </p>
+                            )}
                           </div>
-                        </form>
+                        </div>
+                        <div className="mb-3">
+                          <label className="mb-2">New Password</label>
+                          <div className="d-flex">
+                            <input
+                              value={newPassword}
+                              type={showPassword ? "text" : "password"}
+                              {...register("newPassword", {
+                                required: "Password is required",
+                                pattern: {
+                                  value:
+                                    /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9]).{8,}$/,
+                                  message:
+                                    "Password must contain at least 8 characters, one uppercase letter, one number, and one special character",
+                                },
+                              })}
+                              onChange={(e) => setNewPassword(e.target.value)}
+                              className="form-control"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setShowPassword(!showPassword)}
+                              className="">
+                              {showPassword ? (
+                                <FiEyeOff className="text-gray-500" />
+                              ) : (
+                                <FiEye className="text-gray-500" />
+                              )}
+                            </button>
+                            {errors.password && (
+                              <p className="text-red-500 text-xs italic">
+                                {errors.password.message}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                        <div className="mb-3">
+                          <label className="mb-2">Confirm Password</label>
+                          <div className="d-flex">
+                            <input
+                              value={confirmPassword}
+                              type={showConfirmPassword ? "text" : "password"}
+                              {...register("confirmPassword", {
+                                required: "Password is required",
+                                pattern: {
+                                  value:
+                                    /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9]).{8,}$/,
+                                  message:
+                                    "Password must contain at least 8 characters, one uppercase letter, one number, and one special character",
+                                },
+                              })}
+                              onChange={(e) =>
+                                setConfirmPassword(e.target.value)
+                              }
+                              className="form-control"
+                            />
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setShowConfirmPassword(!showConfirmPassword)
+                              }
+                              className="">
+                              {showConfirmPassword ? (
+                                <FiEyeOff className="text-gray-500" />
+                              ) : (
+                                <FiEye className="text-gray-500" />
+                              )}
+                            </button>
+                            {errors.password && (
+                              <p className="text-red-500 text-xs italic">
+                                {errors.password.message}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                        <div className="submit-section">
+                          <button
+                            onClick={handleSubmit}
+                            className="btn btn-primary submit-btn">
+                            Save Changes
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
