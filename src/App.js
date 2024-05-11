@@ -23,7 +23,7 @@ import Profilesettings from "./Components/PatientProfileSetting";
 import DoctorSearch from "./Components/patientfolder/DoctorSearch";
 import Dependent from "./Components/patientfolder/Dependent";
 import Medicalrecords from "./Components/patientfolder/Medicalrecords";
-import ChangepasswordPatient from "./Components/patientfolder/ChangePasswordPatient";
+import ChangePasswordPatient from "./Components/patientfolder/ChangePasswordPatient";
 
 // App changed
 function App() {
@@ -59,7 +59,7 @@ function App() {
           <Route path="dependent" element={<Dependent />} />
           <Route path="medical-records" element={<Medicalrecords />} />
           <Route path="profile-settings" element={<Profilesettings />} />
-          <Route path="change-password" element={<ChangepasswordPatient />} />
+          <Route path="change-password" element={<ChangePasswordPatient />} />
         </Route>
       </Routes>
       {shouldShowNavbarAndFooter && <Footer />}
