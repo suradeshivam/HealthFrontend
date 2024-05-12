@@ -571,7 +571,7 @@ export default function Dashboard() {
                                                 className="avatar avatar-sm me-2">
                                                 <img
                                                   className="avatar-img rounded-circle"
-                                                  src="assets/img/patients/patient.jpg"
+                                                  src={ patient.patient.profilePicture || "assets/img/patients/patient.jpg"}
                                                   alt="User Image"
                                                 />
                                               </a>
@@ -686,7 +686,7 @@ export default function Dashboard() {
                                                 className="avatar avatar-sm me-2">
                                                 <img
                                                   className="avatar-img rounded-circle"
-                                                  src="assets/img/patients/patient6.jpg"
+                                                  src={ patient.patient.profilePicture || "assets/img/patients/patient.jpg"}
                                                   alt="User Image"
                                                 />
                                               </a>
@@ -789,7 +789,7 @@ export default function Dashboard() {
                                                   className="avatar avatar-sm me-2">
                                                   <img
                                                     className="avatar-img rounded-circle"
-                                                    src="assets/img/patients/patient6.jpg"
+                                                    src={ patient.patient.profilePicture || "assets/img/patients/patient.jpg"}
                                                     alt="User Image"
                                                   />
                                                 </a>

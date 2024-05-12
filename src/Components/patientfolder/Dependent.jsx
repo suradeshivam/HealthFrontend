@@ -119,15 +119,7 @@ export default function Dependent() {
   return (
     <div>
   
-  <link href="assets/img/favicon.png" rel="icon" />
-  <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
-  <link
-    rel="stylesheet"
-    href="assets/plugins/fontawesome/css/fontawesome.min.css"
-  />
-  <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css" />
-  <link rel="stylesheet" href="assets/plugins/jquery-ui/jquery-ui.min.css" />
-  <link rel="stylesheet" href="assets/css/custom.css" />
+  
   <div className="main-wrapper ">
     
     <div className="breadcrumb-bar-two">
@@ -135,22 +127,13 @@ export default function Dependent() {
         <div className="row align-items-center inner-banner">
           <div className="col-md-12 col-12 text-center">
             <h2 className="breadcrumb-title">Dashboard</h2>
-            <nav aria-label="breadcrumb" className="page-breadcrumb">
-              <ol className="breadcrumb">
-                <li className="breadcrumb-item">
-                  <a href="index.html">Home</a>
-                </li>
-                <li className="breadcrumb-item" aria-current="page">
-                  Dashboard
-                </li>
-              </ol>
-            </nav>
+           
           </div>
         </div>
       </div>
     </div>
     <div className="content">
-      <div className="container-fluid">
+      <div className="container">
         <div className="row">
           <div className="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
             <div className="profile-sidebar">

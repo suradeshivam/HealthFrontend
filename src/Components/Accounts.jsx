@@ -25,7 +25,7 @@ export default function Accounts() {
       setUpiIdError(''); // Clear any existing error
     } else {
       // Check if the input matches the regex pattern
-      if (/^[0-9A-Za-z.-]{2,256}@[A-Za-z]{2,64}$/.test(upiIdValue)) {
+      if (/^[0-9A-Za-z.-]{2,256}@[A-Za-z]{2,64}₹/.test(upiIdValue)) {
         setUpiId(upiIdValue); // Set the valid UPI ID
         setUpiIdError(''); // Clear any existing error
       } else {
@@ -39,7 +39,7 @@ export default function Accounts() {
     e.preventDefault();
   
     // Check if the UPI ID is valid
-    if (/^[0-9A-Za-z.-]{2,256}@[A-Za-z]{2,64}$/.test(upiId)) {
+    if (/^[0-9A-Za-z.-]{2,256}@[A-Za-z]{2,64}₹/.test(upiId)) {
       console.log('Account Name:', accountName);
       console.log('Bank Name:', bankName);
       console.log('UPI ID:', upiId);
@@ -434,17 +434,17 @@ export default function Accounts() {
                         <div className="row">
                           <div className="col-lg-6">
                             <div className="account-card bg-success-light">
-                              <span>$90.48</span> Earned
+                              <span>₹90.48</span> Earned
                             </div>
                           </div>
                           <div className="col-lg-6">
                             <div className="account-card bg-warning-light">
-                              <span>$0.00</span> Requested
+                              <span>₹0.00</span> Requested
                             </div>
                           </div>
                           <div className="col-lg-6">
                             <div className="account-card bg-purple-light">
-                              <span>$90.48</span> Balance
+                              <span>₹90.48</span> Balance
                             </div>
                           </div>
                           <div className="col-md-12 text-center">
@@ -553,7 +553,7 @@ export default function Accounts() {
                     id="request_amount"
                     className="form-control"
                     maxLength={6}
-                    oninput="if (!window.__cfRLUnblockHandlers) return false; this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                    oninput="if (!window.__cfRLUnblockHandlers) return false; this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '₹1');"
                     data-cf-modified-9d2aab87120ae1d3fdeb4d9f-=""
                   />
                   <span className="help-block" />

@@ -10,16 +10,19 @@ export default function Footer() {
             <div className="col-lg-3 col-md-4">
               <div className="footer-widget footer-about">
                 <div className="footer-logo">
-                  <Link to={"/"}>
-                    <a>
-                      <h4>TwinDoc</h4>
-                    </a>
+                  <Link to="/index" className="navbar-brand logo">
+                    <img
+                      src="assets/img/favicon/20240505_203516.png"
+                      className="img-fluid"
+                      alt="Logo"
+                    />
                   </Link>
                 </div>
                 <div className="footer-about-content">
                   <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore.
+                    Discover seamless online doctor appointments with TwinsDoc.
+                    Book trusted professionals instantly and prioritize your
+                    well-being from home.
                   </p>
                 </div>
               </div>
@@ -31,13 +34,14 @@ export default function Footer() {
                     <h2 className="footer-title">For Patients</h2>
                     <ul>
                       <li>
-                        <a>Search for Doctors</a>
+                        <Link to="/search2">Search for Doctors</Link>
+                      </li>
+
+                      <li>
+                        <Link to="/login">Login</Link>
                       </li>
                       <li>
-                        <Link to={"/login"}>Login</Link>
-                      </li>
-                      <li>
-                        <Link to={"signup"}>Register</Link>
+                        <Link to="/patient-signup">Register</Link>
                       </li>
                     </ul>
                   </div>
@@ -47,15 +51,10 @@ export default function Footer() {
                     <h2 className="footer-title">For Doctors</h2>
                     <ul>
                       <li>
-                        <a>Appointments</a>
+                        <Link to="/login">Login</Link>
                       </li>
                       <li>
-                        <a>Chat</a>
-                      </li>
-                      <li>
-                        <Link to={"/login"}>
-                          <a>Login</a>
-                        </Link>
+                        <Link to="/doctor-signup">Doctor Register</Link>
                       </li>
                     </ul>
                   </div>
@@ -66,18 +65,24 @@ export default function Footer() {
                     <div className="footer-contact-info">
                       <div className="footer-address">
                         <p>
-                          <i className="feather-map-pin" /> 3556 Beech Street,
-                          USA
+                          <i className="feather-map-pin" /> Govind Galaxy, Nasik
+                          MH 422002 India
                         </p>
                       </div>
                       <div className="footer-address">
                         <p>
-                          <i className="feather-phone-call" /> +1 315 369 5943
+                          <i className="feather-phone-call" /> +918983633057
                         </p>
                       </div>
                       <div className="footer-address mb-0">
                         <p>
-                          <i className="feather-mail" /> <a>email</a>
+                          <i className="feather-mail" />{" "}
+                          <a
+                            href="connect@twinsistech.com"
+                            className="_cf_email_"
+                          >
+                            connect@twinsistech.com
+                          </a>
                         </p>
                       </div>
                     </div>
@@ -121,6 +126,34 @@ export default function Footer() {
                       <a href="javascript:void(0);">
                         <i className="fab fa-linkedin-in" />
                       </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="footer-bottom">
+        <div className="container">
+          <div className="copyright">
+            <div className="row">
+              <div className="col-md-6 col-lg-6">
+                <div className="copyright-text">
+                  <p className="mb-0">
+                    {" "}
+                    Copyright © 2024 <a>TwinsisTech</a> All Rights Reserved
+                  </p>
+                </div>
+              </div>
+              <div className="col-md-6 col-lg-6">
+                <div className="copyright-menu">
+                  <ul className="policy-menu">
+                    <li>
+                      <a href="privacy-policy.html">Privacy Policy</a>
+                    </li>
+                    <li>
+                      <Link to="/terms&con">Terms and Conditions</Link>
                     </li>
                   </ul>
                 </div>

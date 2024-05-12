@@ -387,90 +387,14 @@ export default function Profilesettings() {
 
   return (
     <>
-      {/* Mirrored from doccure.dreamstechnologies.com/html/template/profile-settings.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 16 Apr 2024 16:46:25 GMT */}
-      <meta charSet="utf-8" />
-      <title>Doccure</title>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta
-        name="description"
-        content="The responsive professional Doccure template offers many features, like scheduling appointments with  top doctors, clinics, and hospitals via voice, video call & chat."
-      />
-      <meta
-        name="keywords"
-        content="practo clone, doccure, doctor appointment, Practo clone html template, doctor booking template"
-      />
-      <meta
-        name="author"
-        content="Practo Clone HTML Template - Doctor Booking Template"
-      />
-      <meta
-        property="og:url"
-        content="https://doccure.dreamstechnologies.com/html/"
-      />
-      <meta property="og:type" content="website" />
-      <meta
-        property="og:title"
-        content="Doctors Appointment HTML Website Templates | Doccure"
-      />
-      <meta
-        property="og:description"
-        content="The responsive professional Doccure template offers many features, like scheduling appointments with  top doctors, clinics, and hospitals via voice, video call & chat."
-      />
-      <meta property="og:image" content="assets/img/preview-banner.jpg" />
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta
-        property="twitter:domain"
-        content="https://doccure.dreamstechnologies.com/html/"
-      />
-      <meta
-        property="twitter:url"
-        content="https://doccure.dreamstechnologies.com/html/"
-      />
-      <meta
-        name="twitter:title"
-        content="Doctors Appointment HTML Website Templates | Doccure"
-      />
-      <meta
-        name="twitter:description"
-        content="The responsive professional Doccure template offers many features, like scheduling appointments with  top doctors, clinics, and hospitals via voice, video call & chat."
-      />
-      <meta name="twitter:image" content="assets/img/preview-banner.jpg" />
-      <link href="assets/img/favicon.png" rel="icon" />
-      <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
-      <link
-        rel="stylesheet"
-        href="assets/plugins/fontawesome/css/fontawesome.min.css"
-      />
-      <link
-        rel="stylesheet"
-        href="assets/plugins/fontawesome/css/all.min.css"
-      />
-      <link rel="stylesheet" href="assets/css/feather.css" />
-      <link
-        rel="stylesheet"
-        href="assets/css/bootstrap-datetimepicker.min.css"
-      />
-      <link
-        rel="stylesheet"
-        href="assets/plugins/select2/css/select2.min.css"
-      />
-      <link rel="stylesheet" href="assets/css/custom.css" />
+
       <div className="main-wrapper">
         <div className="breadcrumb-bar-two">
           <div className="container">
             <div className="row align-items-center inner-banner">
               <div className="col-md-12 col-12 text-center">
                 <h2 className="breadcrumb-title">Profile Settings</h2>
-                <nav aria-label="breadcrumb" className="page-breadcrumb">
-                  <ol className="breadcrumb">
-                    <li className="breadcrumb-item">
-                      <a href="index.html">Home</a>
-                    </li>
-                    <li className="breadcrumb-item" aria-current="page">
-                      Profile Settings
-                    </li>
-                  </ol>
-                </nav>
+                
               </div>
             </div>
           </div>
@@ -508,7 +432,7 @@ export default function Profilesettings() {
                   <div className="dashboard-widget">
                     <nav className="dashboard-menu">
                       <ul>
-                        <li className="active">
+                        <li >
                           <Link to="/user">
                             <i className="fas fa-columns" />
                             <span>Dashboard</span>
@@ -537,7 +461,7 @@ export default function Profilesettings() {
                         </li>
                        
 
-                        <li>
+                        <li className="active">
                           <Link to="/patientprofile">
                             <i className="fas fa-user-cog" />
                             <span>Profile Settings</span>
@@ -674,12 +598,12 @@ export default function Profilesettings() {
                               type="text"
                               className="form-control"
                               name="age"
-                              value={formData.age}
+                              value={formData?.age}
                               onChange={handleChange}
                             />
                             {errors.age && (
                               <span style={{ color: "red", fontSize: "13px" }}>
-                                {errors.age}
+                                {errors?.age}
                               </span>
                             )}
                           </div>
@@ -744,7 +668,7 @@ export default function Profilesettings() {
                               type="text"
                               className="form-control"
                               name="height"
-                              value={formData.height}
+                              value={formData?.height}
                               onChange={handleChange}
                             />
                           </div>
@@ -756,7 +680,7 @@ export default function Profilesettings() {
                               type="text"
                               className="form-control"
                               name="weight"
-                              value={formData.weight}
+                              value={formData?.weight}
                               onChange={handleChange}
                             />
                           </div>
@@ -971,7 +895,7 @@ export default function Profilesettings() {
           </div>
         </div>
       </div>
-      {/* Mirrored from doccure.dreamstechnologies.com/html/template/profile-settings.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 16 Apr 2024 16:46:25 GMT */}
+      {/* Mirrored from TwinsisTech.dreamstechnologies.com/html/template/profile-settings.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 16 Apr 2024 16:46:25 GMT */}
     </>
   );
 }

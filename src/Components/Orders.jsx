@@ -15,82 +15,14 @@ export default function Orderslist() {
 
   return (
     <>
-      {/* Mirrored from doccure.dreamstechnologies.com/html/template/orders-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 16 Apr 2024 16:48:29 GMT */}
-      <meta charSet="utf-8" />
-      <title>Doccure</title>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta
-        name="description"
-        content="The responsive professional Doccure template offers many features, like scheduling appointments with  top doctors, clinics, and hospitals via voice, video call & chat."
-      />
-      <meta
-        name="keywords"
-        content="practo clone, doccure, doctor appointment, Practo clone html template, doctor booking template"
-      />
-      <meta
-        name="author"
-        content="Practo Clone HTML Template - Doctor Booking Template"
-      />
-      <meta
-        property="og:url"
-        content="https://doccure.dreamstechnologies.com/html/"
-      />
-      <meta property="og:type" content="website" />
-      <meta
-        property="og:title"
-        content="Doctors Appointment HTML Website Templates | Doccure"
-      />
-      <meta
-        property="og:description"
-        content="The responsive professional Doccure template offers many features, like scheduling appointments with  top doctors, clinics, and hospitals via voice, video call & chat."
-      />
-      <meta property="og:image" content="assets/img/preview-banner.jpg" />
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta
-        property="twitter:domain"
-        content="https://doccure.dreamstechnologies.com/html/"
-      />
-      <meta
-        property="twitter:url"
-        content="https://doccure.dreamstechnologies.com/html/"
-      />
-      <meta
-        name="twitter:title"
-        content="Doctors Appointment HTML Website Templates | Doccure"
-      />
-      <meta
-        name="twitter:description"
-        content="The responsive professional Doccure template offers many features, like scheduling appointments with  top doctors, clinics, and hospitals via voice, video call & chat."
-      />
-      <meta name="twitter:image" content="assets/img/preview-banner.jpg" />
-      <link href="assets/img/favicon.png" rel="icon" />
-      <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
-      <link
-        rel="stylesheet"
-        href="assets/plugins/fontawesome/css/fontawesome.min.css"
-      />
-      <link
-        rel="stylesheet"
-        href="assets/plugins/fontawesome/css/all.min.css"
-      />
-      <link rel="stylesheet" href="assets/css/feather.css" />
-      <link rel="stylesheet" href="assets/css/custom.css" />
+    
       <div className="main-wrapper">
         <div className="breadcrumb-bar-two">
           <div className="container">
             <div className="row align-items-center inner-banner">
               <div className="col-md-12 col-12 text-center">
                 <h2 className="breadcrumb-title">Orders</h2>
-                <nav aria-label="breadcrumb" className="page-breadcrumb">
-                  <ol className="breadcrumb">
-                    <li className="breadcrumb-item">
-                      <a href="index.html">Home</a>
-                    </li>
-                    <li className="breadcrumb-item" aria-current="page">
-                      Orders
-                    </li>
-                  </ol>
-                </nav>
+                
               </div>
             </div>
           </div>
@@ -127,7 +59,7 @@ export default function Orderslist() {
                   <div className="dashboard-widget">
                     <nav className="dashboard-menu">
                       <ul>
-                        <li className="active">
+                        <li className="">
                           <Link to="/user">
                             <i className="fas fa-columns" />
                             <span>Dashboard</span>
@@ -164,9 +96,9 @@ export default function Orderslist() {
                             <span>Dependent</span>
                           </Link>
                         </li>
-                        <li>
+                        <li className="active">
                           <Link to="/orders">
-                            <i className="fas fa-list-alt" />
+                            <i className="fas fa-list-alt " />
                             <span>Orders</span>
                             <small className="unread-msg">6</small>
                           </Link>
@@ -374,174 +306,9 @@ export default function Orderslist() {
             </div>
           </div>
         </div>
-        <footer className="footer footer-one">
-          <div className="footer-top">
-            <div className="container">
-              <div className="row">
-                <div className="col-lg-3 col-md-4">
-                  <div className="footer-widget footer-about">
-                    <div className="footer-logo">
-                      <a href="index.html">
-                        <img src="assets/img/logo.png" alt="logo" />
-                      </a>
-                    </div>
-                    <div className="footer-about-content">
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-lg-6">
-                  <div className="row">
-                    <div className="col-lg-3 col-md-4">
-                      <div className="footer-widget footer-menu">
-                        <h2 className="footer-title">For Patients</h2>
-                        <ul>
-                          <li>
-                            <a href="search.html">Search for Doctors</a>
-                          </li>
-                          <li>
-                            <a href="login.html">Login</a>
-                          </li>
-                          <li>
-                            <a href="register.html">Register</a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <div className="col-lg-3 col-md-4">
-                      <div className="footer-widget footer-menu">
-                        <h2 className="footer-title">For Doctors</h2>
-                        <ul>
-                          <li>
-                            <a href="appointments.html">Appointments</a>
-                          </li>
-                          <li>
-                            <a href="chat.html">Chat</a>
-                          </li>
-                          <li>
-                            <a href="login.html">Login</a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <div className="col-lg-6 col-md-4">
-                      <div className="footer-widget footer-contact">
-                        <h2 className="footer-title">Contact Us</h2>
-                        <div className="footer-contact-info">
-                          <div className="footer-address">
-                            <p>
-                              <i className="feather-map-pin" /> 3556 Beech
-                              Street, USA
-                            </p>
-                          </div>
-                          <div className="footer-address">
-                            <p>
-                              <i className="feather-phone-call" /> +1 315 369
-                              5943
-                            </p>
-                          </div>
-                          <div className="footer-address mb-0">
-                            <p>
-                              <i className="feather-mail" />{" "}
-                              <a
-                                href="https://doccure.dreamstechnologies.com/cdn-cgi/l/email-protection"
-                                className="__cf_email__"
-                                data-cfemail="492d262a2a3c3b2c092c31282439252c672a2624">
-                                [email&nbsp;protected]
-                              </a>
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-lg-3 col-md-7">
-                  <div className="footer-widget">
-                    <h2 className="footer-title">Join Our Newsletter</h2>
-                    <div className="subscribe-form">
-                      <form action="#">
-                        <input
-                          type="email"
-                          className="form-control"
-                          placeholder="Enter Email"
-                        />
-                        <button type="submit" className="btn">
-                          Submit
-                        </button>
-                      </form>
-                    </div>
-                    <div className="social-icon">
-                      <ul>
-                        <li>
-                          <a href="javascript:void(0);">
-                            <i className="fab fa-facebook" />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="javascript:void(0);">
-                            <i className="fab fa-instagram" />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="javascript:void(0);">
-                            <i className="fab fa-twitter" />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="javascript:void(0);">
-                            <i className="fab fa-linkedin-in" />
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="footer-bottom">
-            <div className="container">
-              <div className="copyright">
-                <div className="row">
-                  <div className="col-md-6 col-lg-6">
-                    <div className="copyright-text">
-                      <p className="mb-0">
-                        {" "}
-                        Copyright © 2024{" "}
-                        <a
-                          href="https://themeforest.net/user/dreamstechnologies/portfolio"
-                          target="_blank">
-                          Dreamstechnologies.
-                        </a>{" "}
-                        All Rights Reserved
-                      </p>
-                    </div>
-                  </div>
-                  <div className="col-md-6 col-lg-6">
-                    <div className="copyright-menu">
-                      <ul className="policy-menu">
-                        <li>
-                          <a href="privacy-policy.html">Privacy Policy</a>
-                        </li>
-                        <li>
-                          <a href="terms-condition.html">
-                            Terms and Conditions
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </footer>
+        
       </div>
-      {/* Mirrored from doccure.dreamstechnologies.com/html/template/orders-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 16 Apr 2024 16:48:29 GMT */}
+      {/* Mirrored from TwinsisTech.dreamstechnologies.com/html/template/orders-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 16 Apr 2024 16:48:29 GMT */}
     </>
   );
 }

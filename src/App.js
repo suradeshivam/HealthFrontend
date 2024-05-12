@@ -25,6 +25,11 @@ import Dependent from "./Components/patientfolder/Dependent";
 import Medicalrecords from "./Components/patientfolder/Medicalrecords";
 import ChangePasswordPatient from "./Components/patientfolder/ChangePasswordPatient";
 import HomePage from "./HomePage";
+import Doctorprofile from "./Components/patientfolder/Doctorprofile";
+import { Checkbox } from "@mui/material";
+import Checkout from "./Components/patientfolder/Checkout";
+import Bookingsuccess from "./Components/patientfolder/BookingSuccess";
+import Invoiceview from "./Components/patientfolder/InvoiceView";
 
 // App changed
 function App() {
@@ -53,14 +58,20 @@ function App() {
           <Route path="room/:roomID" element={<Room />} />
           <Route path="appointment" element={<Appointment />} />
 
-          {/* Patient Routs */}
+          {/* Patient DashBoard Routs */}
           <Route path="user" element={<Patientdashboard />} />
-          <Route path="orders" element={<Orders />} />
-          <Route path="docsearch" element={<DoctorSearch />} />
           <Route path="dependent" element={<Dependent />} />
           <Route path="medical-records" element={<Medicalrecords />} />
+          <Route path="orders" element={<Orders />} />
           <Route path="profile-settings" element={<Profilesettings />} />
           <Route path="change-password" element={<ChangePasswordPatient />} />
+
+          {/* Patient Route */}
+          <Route path="docsearch" element={<DoctorSearch />} />
+          <Route path="booking" element={<Doctorprofile />} />
+          <Route path="checkout" element={<Checkout />} />
+          <Route path="booking-success" element={<Bookingsuccess />} />
+          <Route path="invoice-view" element={<Invoiceview />} />
         </Route>
       </Routes>
       {shouldShowNavbarAndFooter && <Footer />}

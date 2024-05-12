@@ -6,88 +6,7 @@ import FilterDisplay from "./FilterDisplay";
 import axios from "axios";
 
 export default function DoctorSearch() {
-  //   const [doctors, setDoctors] = useState([
-
-
-  //     {
-  //       id: 1,
-  //       name: "Dr. Suresh Joshi",
-  //       image: "assets/img/doctors/doctor-13.jpg",
-  //       speciality: "MBBS, Dentist",
-  //       location: "Andheri West - Mumbai, India",
-  //       experience: "20 Years of Experience",
-  //       gender: "Male",
-  //       availability: "Available Today",
-  //       rating: 4.5,
-  //       reviews: 35,
-  //       fee: 1500,
-  //     },
-  //     {
-  //       id: 2,
-  //       name: "Dr. Abhijit Dey",
-  //       image: "assets/img/doctors/doctor-14.jpg",
-  //       speciality: "BDS, MDS - Oral & Maxillofacial Surgery",
-  //       location: "Andheri West - Mumbai, India",
-  //       experience: "15 Years of Experience",
-  //       gender: "Male",
-  //       availability: "Available Tomorrow",
-  //       rating: 4.3,
-  //       reviews: 22,
-  //       fee: 2800,
-  //     },
-  //     {
-  //       id: 3,
-  //       name: "Dr. Sofia Brient",
-  //       image: "assets/img/doctors/doctor-15.jpg",
-  //       speciality: "MBBS, Dentist",
-  //       location: "Andheri West - Mumbai, India",
-  //       experience: "20 Years of Experience",
-  //       gender: "Female",
-  //       availability: "Available Today",
-  //       rating: 4.5,
-  //       reviews: 35,
-  //       fee: 1500,
-  //     },
-  //     {
-  //       id: 4,
-  //       name: "Dr. Johny Rita",
-  //       image: "assets/img/doctors/doctor-16.jpg",
-  //       speciality: "MBBS, Dentist",
-  //       location: "Andheri West - Mumbai, India",
-  //       experience: "20 Years of Experience",
-  //       gender: "Male",
-  //       availability: "Available Today",
-  //       rating: 4.5,
-  //       reviews: 35,
-  //       fee: 1500,
-  //     },
-  //     {
-  //       id: 5,
-  //       name: "Dr. Deborai Angel",
-  //       image: "assets/img/doctors/doctor-17.jpg",
-  //       speciality: "MBBS, Dentist",
-  //       location: "Andheri West - Mumbai, India",
-  //       experience: "20 Years of Experience",
-  //       gender: "Female",
-  //       availability: "Available Today",
-  //       rating: 4.5,
-  //       reviews: 35,
-  //       fee: 1500,
-  //     },
-  //     {
-  //       id: 6,
-  //       name: "Dr. Shree Ram",
-  //       image: "assets/img/doctors/doctor-17.jpg",
-  //       speciality: "MBBS, Dentist",
-  //       location: "Andheri West - Mumbai, India",
-  //       experience: "20 Years of Experience",
-  //       availability: "Available Today",
-  //       rating: 4.5,
-  //       reviews: 35,
-  //       fee: 1500,
-  //     },
-  //   ]);
-
+  
   // All Filters Logic
 
   // Filter state for gender and sorting
@@ -149,9 +68,6 @@ export default function DoctorSearch() {
 
 
   const selectedFeeFilter = () => {
-    // const filteredDoctors = filterDoctor.filter(
-    //   (doctor) => doctor.fee >= value[0] && doctor.fee <= value[1]
-    // );
     const filteredDoctors = filterDoctor.filter(
       (doctor) => doctor.fee <= feeRange[0] && doctor.fee <= feeRange[1]
     );
@@ -182,11 +98,8 @@ export default function DoctorSearch() {
     }
 
     if (value === "1-5") {
-      // filteredDoctors = doctors.filter(
         return doctor.yearOfExperience >= 1 && doctor.yearOfExperience <= 5
-      // );
     } else if (value === "5+") {
-      // filteredDoctors = doctors.filter((doctor) => doctor.yearOfExperience > 5);
       return doctor.yearOfExperience > 5;
     }
     return true;
@@ -264,16 +177,7 @@ export default function DoctorSearch() {
             <div className="row align-items-center inner-banner">
               <div className="col-md-12 col-12 text-center">
                 <h2 className="breadcrumb-title">Search Doctors</h2>
-                <nav aria-label="breadcrumb" className="page-breadcrumb">
-                  <ol className="breadcrumb">
-                    <li className="breadcrumb-item">
-                      <a href="index.html">Home</a>
-                    </li>
-                    <li className="breadcrumb-item" aria-current="page">
-                      Search Doctors
-                    </li>
-                  </ol>
-                </nav>
+               
               </div>
             </div>
           </div>
@@ -338,11 +242,30 @@ export default function DoctorSearch() {
                                     Female
                                   </label>
                                 </li>
+                                <li>
+                                  <label className="custom_check d-inline-flex">
+                                    <input
+                                      type="radio"
+                                      name="Other"
+                                      checked={
+                                        filters.selectedGender === "Other"
+                                      }
+                                      onChange={() =>
+                                        handleFilterChange(
+                                          "selectedGender",
+                                          "Other"
+                                        )
+                                      }
+                                    />
+                                    <span className="checkmark" />
+                                    Other
+                                  </label>
+                                </li>
                               </ul>
                             </div>
                           </div>
                         </div>
-                        {/* <div className="filter-grid">
+                        <div className="filter-grid">
                           <h4>
                             <a href="#collapsetwo" data-bs-toggle="collapse">
                               Availability
@@ -371,30 +294,12 @@ export default function DoctorSearch() {
                                     Available Tomorrow
                                   </label>
                                 </li>
-                                <li>
-                                  <label className="custom_check d-inline-flex">
-                                    <input
-                                      type="checkbox"
-                                      name="availability"
-                                    />
-                                    <span className="checkmark" />
-                                    Available in Next 7 Days
-                                  </label>
-                                </li>
-                                <li>
-                                  <label className="custom_check d-inline-flex">
-                                    <input
-                                      type="checkbox"
-                                      name="availability"
-                                    />
-                                    <span className="checkmark" />
-                                    Available in Next 30 Days
-                                  </label>
-                                </li>
+                              
+                                
                               </ul>
                             </div>
                           </div>
-                        </div> */}
+                        </div>
                         <div className="filter-grid">
                       <h4>
                         <a href="#collapsethree" data-bs-toggle="collapse">
@@ -440,7 +345,7 @@ export default function DoctorSearch() {
                         </div>
                       </div>
                     </div>
-                        {/* <div className="filter-grid">
+                        <div className="filter-grid">
                           <h4>
                             <a href="#collapsefour" data-bs-toggle="collapse">
                               Speciality
@@ -473,7 +378,7 @@ export default function DoctorSearch() {
                               </ul>
                             </div>
                           </div>
-                        </div> */}
+                        </div>
                         <div className="filter-grid">
                           <h4>
                             <a href="#collapsefive" data-bs-toggle="collapse">
@@ -536,7 +441,7 @@ export default function DoctorSearch() {
                             <div className="filter-collapse">
                               <ul>
                                 <li>
-                                  {/* <div className=" rating_custom_check d-inline-flex"> */}
+                                  
                                   <label className="custom_check rating_custom_check d-inline-flex">
                                     <input
                                       type="radio"
@@ -559,11 +464,11 @@ export default function DoctorSearch() {
                                       <span className="rating-count">(40)</span>
                                     </div>
                                   </label>
-                                  {/* </div> */}
+                                  
                                 </li>
                                 <li>
                                   <label className="custom_check rating_custom_check d-inline-flex">
-                                    {/* <div className=" rating_custom_check d-inline-flex"> */}
+                                    
                                     <input
                                       type="radio"
                                       name="rating"
@@ -584,12 +489,12 @@ export default function DoctorSearch() {
                                       <i className="fas fa-star" />
                                       <span className="rating-count">(35)</span>
                                     </div>
-                                    {/* </div> */}
+                                   
                                   </label>
                                 </li>
                                 <li>
                                   <label className="custom_check rating_custom_check d-inline-flex">
-                                    {/* <div className=" rating_custom_check d-inline-flex"> */}
+                                    
                                     <input
                                       type="radio"
                                       name="rating"
@@ -610,12 +515,12 @@ export default function DoctorSearch() {
                                       <i className="fas fa-star" />
                                       <span className="rating-count">(20)</span>
                                     </div>
-                                    {/* </div> */}
+                                    
                                   </label>
                                 </li>
                                 <li>
                                   <label className="custom_check rating_custom_check d-inline-flex">
-                                    {/* <div className=" rating_custom_check d-inline-flex"> */}
+                                   
                                     <input
                                       type="radio"
                                       name="rating"
@@ -636,12 +541,12 @@ export default function DoctorSearch() {
                                       <i className="fas fa-star" />
                                       <span className="rating-count">(10)</span>
                                     </div>
-                                    {/* </div> */}
+                                    
                                   </label>
                                 </li>
                                 <li>
                                   <label className="custom_check rating_custom_check d-inline-flex">
-                                    {/* <div className=" rating_custom_check d-inline-flex"> */}
+                                    
                                     <input
                                       type="radio"
                                       name="rating"
@@ -662,60 +567,13 @@ export default function DoctorSearch() {
                                       <i className="fas fa-star" />
                                       <span className="rating-count">(05)</span>
                                     </div>
-                                    {/* </div> */}
+                                   
                                   </label>
                                 </li>
                               </ul>
                             </div>
                           </div>
                         </div>
-                        {/* <div className="filter-grid">
-                          <h4>
-                            <a href="#collapseeight" data-bs-toggle="collapse">
-                              Languages
-                            </a>
-                          </h4>
-                          <div id="collapseeight" className="collapse show">
-                            <div className="filter-collapse">
-                              <ul>
-                                <li>
-                                  <label className="custom_check d-inline-flex">
-                                    <input type="checkbox" name="language" />
-                                    <span className="checkmark" />
-                                    English
-                                  </label>
-                                </li>
-                                <li>
-                                  <label className="custom_check d-inline-flex">
-                                    <input type="checkbox" name="language" />
-                                    <span className="checkmark" />
-                                    Hindi
-                                  </label>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div> */}
-                        {/* <div className="filter-btn apply-btn">
-                          <div className="row">
-                            <div className="col-6">
-                              <a
-                                href="javascript:void(0);"
-                                className="btn btn-primary"
-                              >
-                                Apply
-                              </a>
-                            </div>
-                            <div className="col-6">
-                              <a
-                                href="javascript:void(0);"
-                                className="btn btn-outline-primary"
-                              >
-                                Reset
-                              </a>
-                            </div>
-                          </div>
-                        </div> */}
                       </div>
                     </div>
                   </div>
@@ -732,20 +590,7 @@ export default function DoctorSearch() {
                               Andheri West - Mumbai, India{" "}
                             </p>
                           </div>
-                          {/* <div className="doctor-filter-availability">
-                            <p>Availability</p>
-                            <div className="status-toggle status-tog">
-                              <input
-                                type="checkbox"
-                                id="status_6"
-                                className="check"
-                              />
-                              <label htmlFor="status_6" className="checktoggle">
-                                checkbox
-                              </label>
-                            </div>
-                          </div> */}
-                        </div>
+                                                  </div>
                         <div className="doctor-filter-option">
                           <div className="doctor-filter-sort">
                             <p>Sort</p>
@@ -776,53 +621,6 @@ export default function DoctorSearch() {
                     {/* Doctor map */}
 
                     <FilterDisplay filterData={filterDoctor} />
-
-                    {/* <div className="row">
-                      <div className="col-sm-12">
-                        <div className="blog-pagination rev-page">
-                          <nav>
-                            <ul className="pagination justify-content-center">
-                              <li className="page-item disabled">
-                                <a
-                                  className="page-link page-prev"
-                                  href="#"
-                                  tabIndex={-1}
-                                >
-                                  <i className="feather-chevrons-left me-1" />{" "}
-                                  PREV
-                                </a>
-                              </li>
-                              <li className="page-item active">
-                                <a className="page-link" href="#">
-                                  1
-                                </a>
-                              </li>
-                              <li className="page-item">
-                                <a className="page-link" href="#">
-                                  2
-                                </a>
-                              </li>
-                              <li className="page-item">
-                                <a className="page-link" href="#">
-                                  ...
-                                </a>
-                              </li>
-                              <li className="page-item">
-                                <a className="page-link" href="#">
-                                  10
-                                </a>
-                              </li>
-                              <li className="page-item">
-                                <a className="page-link page-next" href="#">
-                                  NEXT{" "}
-                                  <i className="feather-chevrons-right ms-1" />
-                                </a>
-                              </li>
-                            </ul>
-                          </nav>
-                        </div>
-                      </div>
-                    </div> */}
                   </div>
                 </div>
               </div>

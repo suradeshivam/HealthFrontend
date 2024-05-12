@@ -4,66 +4,6 @@ import Pagination from "./Pagination";
 export default function Patientdashboard() {
   return (
     <>
-      {/* Mirrored from doccure.dreamstechnologies.com/html/template/change-password.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 16 Apr 2024 16:46:25 GMT */}
-      <meta charSet="utf-8" />
-      <title>Doccure</title>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta
-        name="description"
-        content="The responsive professional Doccure template offers many features, like scheduling appointments with  top doctors, clinics, and hospitals via voice, video call & chat."
-      />
-      <meta
-        name="keywords"
-        content="practo clone, doccure, doctor appointment, Practo clone html template, doctor booking template"
-      />
-      <meta
-        name="author"
-        content="Practo Clone HTML Template - Doctor Booking Template"
-      />
-      <meta
-        property="og:url"
-        content="https://doccure.dreamstechnologies.com/html/"
-      />
-      <meta property="og:type" content="website" />
-      <meta
-        property="og:title"
-        content="Doctors Appointment HTML Website Templates | Doccure"
-      />
-      <meta
-        property="og:description"
-        content="The responsive professional Doccure template offers many features, like scheduling appointments with  top doctors, clinics, and hospitals via voice, video call & chat."
-      />
-      <meta property="og:image" content="assets/img/preview-banner.jpg" />
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta
-        property="twitter:domain"
-        content="https://doccure.dreamstechnologies.com/html/"
-      />
-      <meta
-        property="twitter:url"
-        content="https://doccure.dreamstechnologies.com/html/"
-      />
-      <meta
-        name="twitter:title"
-        content="Doctors Appointment HTML Website Templates | Doccure"
-      />
-      <meta
-        name="twitter:description"
-        content="The responsive professional Doccure template offers many features, like scheduling appointments with  top doctors, clinics, and hospitals via voice, video call & chat."
-      />
-      <meta name="twitter:image" content="assets/img/preview-banner.jpg" />
-      <link href="assets/img/favicon.png" rel="icon" />
-      <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
-      <link
-        rel="stylesheet"
-        href="assets/plugins/fontawesome/css/fontawesome.min.css"
-      />
-      <link
-        rel="stylesheet"
-        href="assets/plugins/fontawesome/css/all.min.css"
-      />
-      <link rel="stylesheet" href="assets/css/feather.css" />
-      <link rel="stylesheet" href="assets/css/custom.css" />
       <div className="main-wrapper">
         <header className="header header-custom header-fixed header-one">
           <div className="container">
@@ -1295,7 +1235,7 @@ export default function Patientdashboard() {
                             <p>
                               <i className="feather-mail" />{" "}
                               <a
-                                href="https://doccure.dreamstechnologies.com/cdn-cgi/l/email-protection"
+                                href="https://TwinsisTech.dreamstechnologies.com/cdn-cgi/l/email-protection"
                                 className="__cf_email__"
                                 data-cfemail="70141f1313050215301508111d001c155e131f1d">
                                 [email&nbsp;protected]
@@ -1389,7 +1329,7 @@ export default function Patientdashboard() {
           </div>
         </footer>
       </div>
-      {/* Mirrored from doccure.dreamstechnologies.com/html/template/change-password.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 16 Apr 2024 16:46:25 GMT */}
+      {/* Mirrored from TwinsisTech.dreamstechnologies.com/html/template/change-password.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 16 Apr 2024 16:46:25 GMT */}
     </>
   );
 }

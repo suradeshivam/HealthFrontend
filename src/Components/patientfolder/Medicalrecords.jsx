@@ -163,16 +163,7 @@ export default function Medicalrecords() {
         <div className="row align-items-center inner-banner">
           <div className="col-md-12 col-12 text-center">
             <h2 className="breadcrumb-title">Medical Records</h2>
-            <nav aria-label="breadcrumb" className="page-breadcrumb">
-              <ol className="breadcrumb">
-                <li className="breadcrumb-item">
-                  <a href="index.html">Home</a>
-                </li>
-                <li className="breadcrumb-item" aria-current="page">
-                  Medical Records
-                </li>
-              </ol>
-            </nav>
+            
           </div>
         </div>
       </div>
@@ -405,19 +396,7 @@ export default function Medicalrecords() {
               </div>
             </div>
             <div className="row">
-              <div className="col-12 col-md-6">
-                <div className="mb-3">
-                  <label className="mb-2">Hospital Name</label>
-                  <input
-                    type="text"
-                    name="hospital"
-                    className="form-control"
-                    placeholder="Enter name here.."
-                    value={formData.hospital}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
+             
               <div className="col">
               <div className="col-12">
                 <div className="mb-3">
@@ -465,24 +444,7 @@ export default function Medicalrecords() {
                 </div>
               </div>
             </div>
-            <div className="row">
-              <div className="col-12">
-                <div className="mb-3">
-                  <label className="mb-2">Symptoms</label>
-                  <input
-                    type="text"
-                    data-role="tagsinput"
-                    className="input-tags form-control"
-                    name="symptoms"
-                    id="symptoms"
-                    placeholder="Enter Symptoms here.."
-                    value={formData.symptoms}
-                onChange={handleInputChange}
-
-                  />
-                </div>
-              </div>
-            </div>
+           
             <div className="row">
               <div className="col-12 col-md-6">
                 <div className="mb-3">

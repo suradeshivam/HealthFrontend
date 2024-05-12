@@ -50,12 +50,12 @@ const FilterDisplay = ({ filterData }) => {
               <div className="doc-info-right">
                 <div className="clini-infos">
                   <ul>
-                    {/* <li>
+                    <li>
                       <i className="feather-clock available-icon" />
                       <span className="available-date">
-                        {doctor.availability}
+                        Avaliable Today
                       </span>
-                    </li> */}
+                    </li>
                           <li>
                             {/* Display rating and reviews */}
                             <div className="reviews-ratings">
