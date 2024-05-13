@@ -26,7 +26,6 @@ import Medicalrecords from "./Components/patientfolder/Medicalrecords";
 import ChangePasswordPatient from "./Components/patientfolder/ChangePasswordPatient";
 import HomePage from "./HomePage";
 import Doctorprofile from "./Components/patientfolder/Doctorprofile";
-import { Checkbox } from "@mui/material";
 import Checkout from "./Components/patientfolder/Checkout";
 import Bookingsuccess from "./Components/patientfolder/BookingSuccess";
 import Invoiceview from "./Components/patientfolder/InvoiceView";
