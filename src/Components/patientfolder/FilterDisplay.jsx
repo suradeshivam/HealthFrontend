@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Pagination from "../Pagination";
+import { OrderState } from "../../Contexts";
 
 const FilterDisplay = ({ filterData }) => {
-
+  const { setSelectedDoctor } = OrderState();
   // Pagination Logic
   const [itemsPerPage] = useState(5);
   const [currentPageToday, setCurrentPageToday] = useState(1);
@@ -24,7 +25,10 @@ const FilterDisplay = ({ filterData }) => {
                 <div className="doctor-img">
                   <a href="doctor-profile.html">
                     <img
-                       src={doctor?.profilePicture || "assets/img/doctors/doctor-thumb-02.jpg"}
+                      src={
+                        doctor?.profilePicture ||
+                        "assets/img/doctors/doctor-thumb-02.jpg"
+                      }
                       className="img-fluid"
                       alt={doctor.name}
                     />
@@ -39,10 +43,11 @@ const FilterDisplay = ({ filterData }) => {
                   <div className="clinic-details">
                     <p className="doc-location">
                       <i className="feather-map-pin" />
-                      {doctor.city} {" "} {doctor.contry}
+                      {doctor.city} {doctor.contry}
                     </p>
                     <p className="doc-location">
-                      <i className="feather-award" /> {doctor.yearOfExperience}  Years of Experience
+                      <i className="feather-award" /> {doctor.yearOfExperience}{" "}
+                      Years of Experience
                     </p>
                   </div>
                 </div>
@@ -52,23 +57,31 @@ const FilterDisplay = ({ filterData }) => {
                   <ul>
                     <li>
                       <i className="feather-clock available-icon" />
-                      <span className="available-date">
-                        Avaliable Today
-                      </span>
+                      <span className="available-date">Avaliable Today</span>
                     </li>
-                          <li>
-                            {/* Display rating and reviews */}
-                            <div className="reviews-ratings">
-                              <p>
-                                <span>
-                                    {console.log(doctor.reviews.reduce((acc, review) => acc + review.rating, 0))}
-                                  <i className="fas fa-star" /> 
-                                  {Math.round(doctor.reviews.reduce((acc, review) => acc + review.rating, 0) / doctor.reviews.length) || 0}
-                                </span>{" "}
-                                ({doctor.reviews.length} Reviews)
-                              </p>
-                            </div>
-                          </li>
+                    <li>
+                      {/* Display rating and reviews */}
+                      <div className="reviews-ratings">
+                        <p>
+                          <span>
+                            {console.log(
+                              doctor.reviews.reduce(
+                                (acc, review) => acc + review.rating,
+                                0
+                              )
+                            )}
+                            <i className="fas fa-star" />
+                            {Math.round(
+                              doctor.reviews.reduce(
+                                (acc, review) => acc + review.rating,
+                                0
+                              ) / doctor.reviews.length
+                            ) || 0}
+                          </span>{" "}
+                          ({doctor.reviews.length} Reviews)
+                        </p>
+                      </div>
+                    </li>
                     <li>
                       ₹ {doctor.fees}{" "}
                       <i className="feather-info available-info-icon" />
@@ -76,7 +89,10 @@ const FilterDisplay = ({ filterData }) => {
                   </ul>
                 </div>
                 <div className="clinic-booking book-appoint">
-                  <Link className="btn btn-primary" to="/booking">
+                  <Link
+                    className="btn btn-primary"
+                    onClick={() => setSelectedDoctor(doctor.userId._id)}
+                    to="/booking">
                     Book Appointment
                   </Link>
                 </div>

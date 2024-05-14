@@ -6,6 +6,7 @@ const OrderContext = createContext();
 
 const Context = ({ children }) => {
   const [sideOpen, setSideOpen] = useState(false);
+  const [selectedDoctor, setSelectedDoctor] = useState()
   const [selectedPatient, setselectedPatient] = useState(null);
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({});
@@ -35,6 +36,8 @@ const Context = ({ children }) => {
   return (
     <OrderContext.Provider
       value={{
+        selectedDoctor,
+        setSelectedDoctor,
         sideOpen,
         setSideOpen,
         role,

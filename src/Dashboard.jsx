@@ -95,7 +95,7 @@ export default function Dashboard() {
   const getAllAppointments = async (id, isAuthenticated) => {
     try {
       const data = await axios.post(
-        "https://healthbackend-3xh2.onrender.com/appointment/appointments",
+        "http://localhost:5000/appointment/appointments",
         {
           doctorId: id,
         },
@@ -132,9 +132,12 @@ export default function Dashboard() {
         }
       });
 
-      setToday((prevState) => [...prevState, ...todayAppointmentsArray]);
-      setUpcoming((prevState) => [...prevState, ...upcomingAppointmentsArray]);
-      setAppointments((prevState) => [...prevState, ...pastAppointmentsArray]);
+      console.log(todayAppointmentsArray);
+      console.log(upcomingAppointmentsArray);
+      console.log(pastAppointmentsArray);
+      setToday(todayAppointmentsArray);
+      setUpcoming(upcomingAppointmentsArray);
+      setAppointments(pastAppointmentsArray);
     } catch (error) {
       console.log(error);
     }
@@ -473,7 +476,7 @@ export default function Dashboard() {
                                               {patient.date
                                                 ? new Date(
                                                     patient.date
-                                                  ).toLocaleDateString("en-US")
+                                                  ).toDateString()
                                                 : "Date not available"}{" "}
                                               <span className="d-block text-info">
                                                 {patient.date
@@ -601,7 +604,7 @@ export default function Dashboard() {
                                               </h2>
                                             </td>
                                             <td>
-                                              {patient.date
+                                              {/* {patient.date
                                                 ? new Date(
                                                     patient.date
                                                   ).toLocaleDateString("en-US")
@@ -614,7 +617,10 @@ export default function Dashboard() {
                                                       "en-US"
                                                     )
                                                   : "Time not available"}
-                                              </span>
+                                              </span> */}
+                                              {new Date(
+                                                patient.date
+                                              ).toDateString(patient.date)}
                                             </td>
 
                                             <td style={{ textAlign: "center" }}>
