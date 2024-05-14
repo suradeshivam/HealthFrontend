@@ -707,8 +707,16 @@ export default function DoctorProfile() {
     }
   };
 
+  const getPdf = async () => {
+    const pdf =
+      "http://localhost:5000/files/1715146045722-149767159Project Management (1).pdf";
+
+    setFilePreview(pdf);
+  };
+
   useEffect(() => {
     getDocInfo();
+    getPdf();
   }, []);
 
   useEffect(() => {
