@@ -30,8 +30,9 @@ export default function Dashboard() {
   const [currentPageHistory, setCurrentPageHistory] = useState(1);
 
   const [patientSelect, setPatientSelect] = useState(null);
-  let todayCount = 0;
-  let upcomingCount = 0;
+  let [todayCount,setTodayCount] = useState(0);;
+  let [upcomingCount,setUpcomingCount] = useState(0);
+  let [totalCount,setTotalCount] = useState(0);
   // console.log(upcoming)
 
   const handleLogout = () => {
@@ -139,15 +140,19 @@ export default function Dashboard() {
             upcomingArray.push(data);
             // setUpcoming((prevUpcoming) => [...prevUpcoming, data]);
           }
+          setUpcomingCount(upcomingArray.length)
+          setTodayCount(today.length)
           setUpcoming(upcomingArray);
-          console.log(upcoming)
+          // console.log(upcoming)
           setToday(todayArray);
         });
       } else {
         setAppointments(data.data.result);
+        // console.log(Object.keys(data.data.result).length);
+        setTotalCount(Object.keys(data.data.result).length);
+        console.log(data.data.result);
       }
-      // console.log(data.data.result);
-      // console.log(today)
+      // console.log("totalCount" ,totalCount)
       // console.log(upcoming)
       // console.log(appointments);
     } catch (error) {
@@ -439,7 +444,7 @@ export default function Dashboard() {
                                 <div className="dash-widget-info">
                                   <h6>Total Patient</h6>
 
-                                  <h3>2</h3>
+                                  <h3>{totalCount}</h3>
                                   <p className="text-muted">Till Today</p>
                                 </div>
                               </div>
@@ -459,7 +464,7 @@ export default function Dashboard() {
                                 </div>
                                 <div className="dash-widget-info">
                                   <h6>Today Patient</h6>
-                                  <h3>{1}</h3>
+                                  <h3>{todayCount}</h3>
                                   <p className="text-muted">
                                     {new Date().toLocaleDateString("en-US")}
                                   </p>
@@ -481,9 +486,9 @@ export default function Dashboard() {
                                 </div>
                                 <div className="dash-widget-info">
                                   <h6>Appoinments</h6>
-                                  <h3>2</h3>
+                                  <h3>{upcomingCount}</h3>
                                   <p className="text-muted">
-                                    {new Date().toLocaleDateString("en-US")}
+                                    {new Date().toLocaleDateString("en-US")} Onwards
                                   </p>
                                 </div>
                               </div>
