@@ -1,7 +1,29 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import axios from "axios";
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { OrderState } from "../../Contexts";
 
 export default function Doctorprofile() {
+  const { selectedDoctor, setSelectedDoctor } = OrderState();
+
+  const getSingleDoctorProfile = async () => {
+    const isAuthenticated = localStorage.getItem("token");
+    const doctor = await axios.get(
+      `http://localhost:5000/patient/search/${selectedDoctor}`,
+      {
+        headers: {
+          authorization: isAuthenticated,
+        },
+      }
+    );
+
+    console.log(doctor);
+  };
+
+  useEffect(() => {
+    getSingleDoctorProfile();
+  }, []);
+
   return (
     <div>
       <div className="main-wrapper">
@@ -10,7 +32,6 @@ export default function Doctorprofile() {
             <div className="row align-items-center inner-banner">
               <div className="col-md-12 col-12 text-center">
                 <h2 className="breadcrumb-title">Doctor Profile</h2>
-                
               </div>
             </div>
           </div>
@@ -47,22 +68,20 @@ export default function Doctorprofile() {
                         <i className="fas fa-star filled" />
                         <i className="fas fa-star filled" />
                         <i className="fas fa-star" />
-                        <span className="d-inline-block average-rating">(35)</span>
+                        <span className="d-inline-block average-rating">
+                          (35)
+                        </span>
                       </div>
                       <div className="clinic-details">
                         <p className="doc-location">
-                          <i className="fas fa-map-marker-alt" /> Newyork, USA {" "}
-                          
+                          <i className="fas fa-map-marker-alt" /> Newyork, USA{" "}
                         </p>
-                       
                       </div>
-                      
                     </div>
                   </div>
                   <div className="doc-info-right">
                     <div className="clini-infos">
                       <ul>
-                        
                         <li>
                           <i className="far fa-comment" /> 35 Reviews
                         </li>
@@ -70,11 +89,12 @@ export default function Doctorprofile() {
                           <i className="fas fa-map-marker-alt" /> Newyork, USA
                         </li>
                         <li>
-                          <i className="far fa-money-bill-alt" /> ₹ 100 per Appointment{" "}
+                          <i className="far fa-money-bill-alt" /> ₹ 100 per
+                          Appointment{" "}
                         </li>
                       </ul>
                     </div>
-                    
+
                     <div className="clinic-booking">
                       <Link className="apt-btn" to="/checkout">
                         Book Appointment
@@ -92,8 +112,7 @@ export default function Doctorprofile() {
                       <a
                         className="nav-link active"
                         href="#doc_business_hours"
-                        data-bs-toggle="tab"
-                      >
+                        data-bs-toggle="tab">
                         Schedule
                       </a>
                     </li>
@@ -101,44 +120,37 @@ export default function Doctorprofile() {
                       <a
                         className="nav-link "
                         href="#doc_overview"
-                        data-bs-toggle="tab"
-                      >
+                        data-bs-toggle="tab">
                         Overview
                       </a>
                     </li>
-                  
+
                     <li className="nav-item">
                       <a
                         className="nav-link"
                         href="#doc_reviews"
-                        data-bs-toggle="tab"
-                      >
+                        data-bs-toggle="tab">
                         Reviews
                       </a>
                     </li>
-
                   </ul>
                 </nav>
                 <div className="tab-content pt-0">
-                  <div
-                    role="tabpanel"
-                    id="doc_overview"
-                    className="tab-pane"
-                  >
+                  <div role="tabpanel" id="doc_overview" className="tab-pane">
                     <div className="row">
                       <div className="col-md-12 col-lg-9">
                         <div className="widget about-widget">
                           <h4 className="widget-title">About Me</h4>
                           <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                            sed do eiusmod tempor incididunt ut labore et dolore
-                            magna aliqua. Ut enim ad minim veniam, quis nostrud
-                            exercitation ullamco laboris nisi ut aliquip ex ea
-                            commodo consequat. Duis aute irure dolor in
-                            reprehenderit in voluptate velit esse cillum dolore eu
-                            fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-                            non proident, sunt in culpa qui officia deserunt mollit
-                            anim id est laborum.
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit, sed do eiusmod tempor incididunt ut labore et
+                            dolore magna aliqua. Ut enim ad minim veniam, quis
+                            nostrud exercitation ullamco laboris nisi ut aliquip
+                            ex ea commodo consequat. Duis aute irure dolor in
+                            reprehenderit in voluptate velit esse cillum dolore
+                            eu fugiat nulla pariatur. Excepteur sint occaecat
+                            cupidatat non proident, sunt in culpa qui officia
+                            deserunt mollit anim id est laborum.
                           </p>
                         </div>
                         <div className="widget education-widget">
@@ -189,12 +201,9 @@ export default function Doctorprofile() {
                                     <a href="#/" className="name">
                                       10 Years of Medical Experience
                                     </a>
-                                    
                                   </div>
                                 </div>
                               </li>
-                             
-                              
                             </ul>
                           </div>
                         </div>
@@ -212,7 +221,6 @@ export default function Doctorprofile() {
                                     <h4 className="exp-title">
                                       Humanitarian Award
                                     </h4>
-                                  
                                   </div>
                                 </div>
                               </li>
@@ -227,7 +235,6 @@ export default function Doctorprofile() {
                                       Certificate for International Volunteer
                                       Service
                                     </h4>
-                                   
                                   </div>
                                 </div>
                               </li>
@@ -241,14 +248,13 @@ export default function Doctorprofile() {
                                     <h4 className="exp-title">
                                       The Dental Professional of The Year Award
                                     </h4>
-                                   
                                   </div>
                                 </div>
                               </li>
                             </ul>
                           </div>
                         </div>
-                       
+
                         <div className="service-list">
                           <h4>Specializations</h4>
                           <ul className="clearfix">
@@ -263,7 +269,7 @@ export default function Doctorprofile() {
                       </div>
                     </div>
                   </div>
-                 
+
                   <div role="tabpanel" id="doc_reviews" className="tab-pane ">
                     <div className="widget review-listing">
                       <ul className="comments-list">
@@ -291,15 +297,15 @@ export default function Doctorprofile() {
                                 </div>
                               </div>
                               <p className="recommended">
-                                <i className="far fa-thumbs-up" /> I recommend the
-                                doctor
+                                <i className="far fa-thumbs-up" /> I recommend
+                                the doctor
                               </p>
                               <p className="comment-content">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing
-                                elit, sed do eiusmod tempor incididunt ut labore et
-                                dolore magna aliqua. Ut enim ad minim veniam, quis
-                                nostrud exercitation. Curabitur non nulla sit amet
-                                nisl tempus
+                                Lorem ipsum dolor sit amet, consectetur
+                                adipisicing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut
+                                enim ad minim veniam, quis nostrud exercitation.
+                                Curabitur non nulla sit amet nisl tempus
                               </p>
                               <div className="comment-reply">
                                 <a className="comment-btn" href="#">
@@ -344,9 +350,9 @@ export default function Doctorprofile() {
                                   <p className="comment-content">
                                     Lorem ipsum dolor sit amet, consectetur
                                     adipisicing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua. Ut
-                                    enim ad minim veniam. Curabitur non nulla sit
-                                    amet nisl tempus
+                                    incididunt ut labore et dolore magna aliqua.
+                                    Ut enim ad minim veniam. Curabitur non nulla
+                                    sit amet nisl tempus
                                   </p>
                                   <div className="comment-reply">
                                     <a className="comment-btn" href="#">
@@ -391,11 +397,11 @@ export default function Doctorprofile() {
                                 </div>
                               </div>
                               <p className="comment-content">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing
-                                elit, sed do eiusmod tempor incididunt ut labore et
-                                dolore magna aliqua. Ut enim ad minim veniam, quis
-                                nostrud exercitation. Curabitur non nulla sit amet
-                                nisl tempus
+                                Lorem ipsum dolor sit amet, consectetur
+                                adipisicing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut
+                                enim ad minim veniam, quis nostrud exercitation.
+                                Curabitur non nulla sit amet nisl tempus
                               </p>
                               <div className="comment-reply">
                                 <a className="comment-btn" href="#">
@@ -421,24 +427,20 @@ export default function Doctorprofile() {
                         </a>
                       </div>
                     </div>
-                  
                   </div>
                   <div
                     role="tabpanel"
                     id="doc_business_hours"
-                    className="tab-pane  show active "
-                  >
+                    className="tab-pane  show active ">
                     <div className="row">
                       <div className="container">
                         <div className="row">
                           <div className="col-12">
-
                             <div className="row">
                               <div className="col-12 col-sm-4 col-md-6">
                                 <h4 className="mb-1">11 November 2023</h4>
                                 <p className="text-muted">Monday</p>
                               </div>
-                              
                             </div>
                             <div className="card booking-schedule schedule-widget">
                               <div className="schedule-header">
@@ -454,43 +456,64 @@ export default function Doctorprofile() {
                                         <li>
                                           <span>Mon</span>
                                           <span className="slot-date">
-                                            11 Nov <small className="slot-year">2023</small>
+                                            11 Nov{" "}
+                                            <small className="slot-year">
+                                              2023
+                                            </small>
                                           </span>
                                         </li>
                                         <li>
                                           <span>Tue</span>
                                           <span className="slot-date">
-                                            12 Nov <small className="slot-year">2023</small>
+                                            12 Nov{" "}
+                                            <small className="slot-year">
+                                              2023
+                                            </small>
                                           </span>
                                         </li>
                                         <li>
                                           <span>Wed</span>
                                           <span className="slot-date">
-                                            13 Nov <small className="slot-year">2023</small>
+                                            13 Nov{" "}
+                                            <small className="slot-year">
+                                              2023
+                                            </small>
                                           </span>
                                         </li>
                                         <li>
                                           <span>Thu</span>
                                           <span className="slot-date">
-                                            14 Nov <small className="slot-year">2023</small>
+                                            14 Nov{" "}
+                                            <small className="slot-year">
+                                              2023
+                                            </small>
                                           </span>
                                         </li>
                                         <li>
                                           <span>Fri</span>
                                           <span className="slot-date">
-                                            15 Nov <small className="slot-year">2023</small>
+                                            15 Nov{" "}
+                                            <small className="slot-year">
+                                              2023
+                                            </small>
                                           </span>
                                         </li>
                                         <li>
                                           <span>Sat</span>
                                           <span className="slot-date">
-                                            16 Nov <small className="slot-year">2023</small>
+                                            16 Nov{" "}
+                                            <small className="slot-year">
+                                              2023
+                                            </small>
                                           </span>
                                         </li>
                                         <li>
                                           <span>Sun</span>
                                           <span className="slot-date">
-                                            17 Nov <small className="slot-year">2023</small>
+                                            17 Nov{" "}
+                                            <small className="slot-year">
+                                              2023
+                                            </small>
                                           </span>
                                         </li>
                                         <li className="right-arrow">
@@ -556,7 +579,9 @@ export default function Doctorprofile() {
                                           <a className="timing" href="#">
                                             <span>9:00</span> <span>AM</span>
                                           </a>
-                                          <a className="timing selected" href="#">
+                                          <a
+                                            className="timing selected"
+                                            href="#">
                                             <span>10:00</span> <span>AM</span>
                                           </a>
                                           <a className="timing" href="#">
@@ -591,7 +616,6 @@ export default function Doctorprofile() {
                                 </div>
                               </div>
                             </div>
-
                           </div>
                         </div>
                       </div>
@@ -602,7 +626,6 @@ export default function Doctorprofile() {
             </div>
           </div>
         </div>
-
       </div>
       <div className="modal  call-modal" id="voice_call">
         <div className="modal-dialog modal-dialog-centered" role="document">
@@ -625,14 +648,12 @@ export default function Doctorprofile() {
                         href="javascript:void(0);"
                         className="btn call-item call-end"
                         data-bs-dismiss="modal"
-                        aria-label="Close"
-                      >
+                        aria-label="Close">
                         <i className="material-icons">call_end</i>
                       </a>
                       <a
                         href="voice-call.html"
-                        className="btn call-item call-start"
-                      >
+                        className="btn call-item call-start">
                         <i className="material-icons">call</i>
                       </a>
                     </div>
@@ -664,14 +685,12 @@ export default function Doctorprofile() {
                         href="javascript:void(0);"
                         className="btn call-item call-end"
                         data-bs-dismiss="modal"
-                        aria-label="Close"
-                      >
+                        aria-label="Close">
                         <i className="material-icons">call_end</i>
                       </a>
                       <a
                         href="video-call.html"
-                        className="btn call-item call-start"
-                      >
+                        className="btn call-item call-start">
                         <i className="material-icons">videocam</i>
                       </a>
                     </div>
@@ -684,6 +703,5 @@ export default function Doctorprofile() {
       </div>
       {/* Mirrored from TwinsisTech.dreamstechnologies.com/html/template/doctor-profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 16 Apr 2024 16:46:15 GMT */}
     </div>
-
-  )
+  );
 }

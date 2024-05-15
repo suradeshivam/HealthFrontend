@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Pagination from "./Pagination";
+import axios from "axios";
 export default function Patientdashboard() {
   const [currentPageToday, setCurrentPageToday] = useState(1);
   const [currentPageUpcoming, setCurrentPageUpcoming] = useState(1);
@@ -8,209 +9,213 @@ export default function Patientdashboard() {
   const [itemsPerPage] = useState(5);
   const [patientInfo, setPatientInfo] = useState("");
   const [userInfo, setUserInfo] = useState("");
+  const [appointments, setAppointments] = useState([]);
+  const [upcoming, setUpcoming] = useState([]);
+  const [today, setToday] = useState([]);
 
   const navigate = useNavigate();
 
-  const tableData = [
-    {
-      doctorName: "Dr. Jai",
-      specialty: "Dental",
-      appointmentDate: "14 Nov 2023",
-      appointmentTime: "10.00 AM",
-      BookingDate: "12 Nov 2023",
-      consultationFee: "$160",
-      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-    },
-    {
-      doctorName: "Dr. Ruby Perrin",
-      specialty: "Dental",
-      appointmentDate: "14 Nov 2023",
-      appointmentTime: "10.00 AM",
-      BookingDate: "12 Nov 2023",
-      consultationFee: "$160",
-      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-    },
-    {
-      doctorName: "Dr. Ruby Perrin",
-      specialty: "Dental",
-      appointmentDate: "14 Nov 2023",
-      appointmentTime: "10.00 AM",
-      BookingDate: "12 Nov 2023",
-      consultationFee: "$160",
-      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-    },
-    {
-      doctorName: "Dr. Ruby Perrin",
-      specialty: "Dental",
-      appointmentDate: "14 Nov 2023",
-      appointmentTime: "10.00 AM",
-      BookingDate: "12 Nov 2023",
-      consultationFee: "$160",
-      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-    },
-    {
-      doctorName: "Dr. Ruby Perrin",
-      specialty: "Dental",
-      appointmentDate: "14 Nov 2023",
-      appointmentTime: "10.00 AM",
-      BookingDate: "12 Nov 2023",
-      consultationFee: "$160",
-      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-    },
-    {
-      doctorName: "Dr. Ruby Perrin",
-      specialty: "Dental",
-      appointmentDate: "14 Nov 2023",
-      appointmentTime: "10.00 AM",
-      BookingDate: "12 Nov 2023",
-      consultationFee: "$160",
-      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-    },
-  ];
-  const upcoming = [
-    {
-      doctorName: "Dr. Shree",
-      specialty: "Dental",
-      appointmentDate: "14 Nov 2023",
-      appointmentTime: "10.00 AM",
-      BookingDate: "12 Nov 2023",
-      consultationFee: "$160",
-      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-    },
-    {
-      doctorName: "Dr. Ruby Perrin",
-      specialty: "Dental",
-      appointmentDate: "14 Nov 2023",
-      appointmentTime: "10.00 AM",
-      BookingDate: "12 Nov 2023",
-      consultationFee: "$160",
-      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-    },
-    {
-      doctorName: "Dr. Ruby Perrin",
-      specialty: "Dental",
-      appointmentDate: "14 Nov 2023",
-      appointmentTime: "10.00 AM",
-      BookingDate: "12 Nov 2023",
-      consultationFee: "$160",
-      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-    },
-    {
-      doctorName: "Dr. Ruby Perrin",
-      specialty: "Dental",
-      appointmentDate: "14 Nov 2023",
-      appointmentTime: "10.00 AM",
-      BookingDate: "12 Nov 2023",
-      consultationFee: "$160",
-      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-    },
-    {
-      doctorName: "Dr. Ruby Perrin",
-      specialty: "Dental",
-      appointmentDate: "14 Nov 2023",
-      appointmentTime: "10.00 AM",
-      BookingDate: "12 Nov 2023",
-      consultationFee: "$160",
-      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-    },
-    {
-      doctorName: "Dr. Ruby Perrin",
-      specialty: "Dental",
-      appointmentDate: "14 Nov 2023",
-      appointmentTime: "10.00 AM",
-      BookingDate: "12 Nov 2023",
-      consultationFee: "$160",
-      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-    },
-    {
-      doctorName: "Dr. Ruby Perrin",
-      specialty: "Dental",
-      appointmentDate: "14 Nov 2023",
-      appointmentTime: "10.00 AM",
-      BookingDate: "12 Nov 2023",
-      consultationFee: "$160",
-      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-    },
-  ];
-  const history = [
-    {
-      doctorName: "Dr. Ram",
-      specialty: "Dental",
-      appointmentDate: "14 Nov 2023",
-      appointmentTime: "10.00 AM",
-      BookingDate: "12 Nov 2023",
-      consultationFee: "$160",
-      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-    },
-    {
-      doctorName: "Dr. Ruby Perrin",
-      specialty: "Dental",
-      appointmentDate: "14 Nov 2023",
-      appointmentTime: "10.00 AM",
-      BookingDate: "12 Nov 2023",
-      consultationFee: "$160",
-      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-    },
-    {
-      doctorName: "Dr. Ruby Perrin",
-      specialty: "Dental",
-      appointmentDate: "14 Nov 2023",
-      appointmentTime: "10.00 AM",
-      BookingDate: "12 Nov 2023",
-      consultationFee: "$160",
-      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-    },
-    {
-      doctorName: "Dr. Ruby Perrin",
-      specialty: "Dental",
-      appointmentDate: "14 Nov 2023",
-      appointmentTime: "10.00 AM",
-      BookingDate: "12 Nov 2023",
-      consultationFee: "$160",
-      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-    },
-    {
-      doctorName: "Dr. Ruby Perrin",
-      specialty: "Dental",
-      appointmentDate: "14 Nov 2023",
-      appointmentTime: "10.00 AM",
-      BookingDate: "12 Nov 2023",
-      consultationFee: "$160",
-      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-    },
-    {
-      doctorName: "Dr. Ruby Perrin",
-      specialty: "Dental",
-      appointmentDate: "14 Nov 2023",
-      appointmentTime: "10.00 AM",
-      BookingDate: "12 Nov 2023",
-      consultationFee: "$160",
-      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-    },
-    {
-      doctorName: "Dr. Ruby Perrin",
-      specialty: "Dental",
-      appointmentDate: "14 Nov 2023",
-      appointmentTime: "10.00 AM",
-      BookingDate: "12 Nov 2023",
-      consultationFee: "$160",
-      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-    },
-    {
-      doctorName: "Dr. Ruby Perrin",
-      specialty: "Dental",
-      appointmentDate: "14 Nov 2023",
-      appointmentTime: "10.00 AM",
-      BookingDate: "12 Nov 2023",
-      consultationFee: "$160",
-      avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-    },
-  ];
+  // const tableData = [
+  //   {
+  //     doctorName: "Dr. Jai",
+  //     specialty: "Dental",
+  //     appointmentDate: "14 Nov 2023",
+  //     appointmentTime: "10.00 AM",
+  //     BookingDate: "12 Nov 2023",
+  //     consultationFee: "$160",
+  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+  //   },
+  //   {
+  //     doctorName: "Dr. Ruby Perrin",
+  //     specialty: "Dental",
+  //     appointmentDate: "14 Nov 2023",
+  //     appointmentTime: "10.00 AM",
+  //     BookingDate: "12 Nov 2023",
+  //     consultationFee: "$160",
+  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+  //   },
+  //   {
+  //     doctorName: "Dr. Ruby Perrin",
+  //     specialty: "Dental",
+  //     appointmentDate: "14 Nov 2023",
+  //     appointmentTime: "10.00 AM",
+  //     BookingDate: "12 Nov 2023",
+  //     consultationFee: "$160",
+  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+  //   },
+  //   {
+  //     doctorName: "Dr. Ruby Perrin",
+  //     specialty: "Dental",
+  //     appointmentDate: "14 Nov 2023",
+  //     appointmentTime: "10.00 AM",
+  //     BookingDate: "12 Nov 2023",
+  //     consultationFee: "$160",
+  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+  //   },
+  //   {
+  //     doctorName: "Dr. Ruby Perrin",
+  //     specialty: "Dental",
+  //     appointmentDate: "14 Nov 2023",
+  //     appointmentTime: "10.00 AM",
+  //     BookingDate: "12 Nov 2023",
+  //     consultationFee: "$160",
+  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+  //   },
+  //   {
+  //     doctorName: "Dr. Ruby Perrin",
+  //     specialty: "Dental",
+  //     appointmentDate: "14 Nov 2023",
+  //     appointmentTime: "10.00 AM",
+  //     BookingDate: "12 Nov 2023",
+  //     consultationFee: "$160",
+  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+  //   },
+  // ];
+
+  // const upcoming = [
+  //   {
+  //     doctorName: "Dr. Shree",
+  //     specialty: "Dental",
+  //     appointmentDate: "14 Nov 2023",
+  //     appointmentTime: "10.00 AM",
+  //     BookingDate: "12 Nov 2023",
+  //     consultationFee: "$160",
+  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+  //   },
+  //   {
+  //     doctorName: "Dr. Ruby Perrin",
+  //     specialty: "Dental",
+  //     appointmentDate: "14 Nov 2023",
+  //     appointmentTime: "10.00 AM",
+  //     BookingDate: "12 Nov 2023",
+  //     consultationFee: "$160",
+  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+  //   },
+  //   {
+  //     doctorName: "Dr. Ruby Perrin",
+  //     specialty: "Dental",
+  //     appointmentDate: "14 Nov 2023",
+  //     appointmentTime: "10.00 AM",
+  //     BookingDate: "12 Nov 2023",
+  //     consultationFee: "$160",
+  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+  //   },
+  //   {
+  //     doctorName: "Dr. Ruby Perrin",
+  //     specialty: "Dental",
+  //     appointmentDate: "14 Nov 2023",
+  //     appointmentTime: "10.00 AM",
+  //     BookingDate: "12 Nov 2023",
+  //     consultationFee: "$160",
+  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+  //   },
+  //   {
+  //     doctorName: "Dr. Ruby Perrin",
+  //     specialty: "Dental",
+  //     appointmentDate: "14 Nov 2023",
+  //     appointmentTime: "10.00 AM",
+  //     BookingDate: "12 Nov 2023",
+  //     consultationFee: "$160",
+  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+  //   },
+  //   {
+  //     doctorName: "Dr. Ruby Perrin",
+  //     specialty: "Dental",
+  //     appointmentDate: "14 Nov 2023",
+  //     appointmentTime: "10.00 AM",
+  //     BookingDate: "12 Nov 2023",
+  //     consultationFee: "$160",
+  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+  //   },
+  //   {
+  //     doctorName: "Dr. Ruby Perrin",
+  //     specialty: "Dental",
+  //     appointmentDate: "14 Nov 2023",
+  //     appointmentTime: "10.00 AM",
+  //     BookingDate: "12 Nov 2023",
+  //     consultationFee: "$160",
+  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+  //   },
+  // ];
+  // const history = [
+  //   {
+  //     doctorName: "Dr. Ram",
+  //     specialty: "Dental",
+  //     appointmentDate: "14 Nov 2023",
+  //     appointmentTime: "10.00 AM",
+  //     BookingDate: "12 Nov 2023",
+  //     consultationFee: "$160",
+  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+  //   },
+  //   {
+  //     doctorName: "Dr. Ruby Perrin",
+  //     specialty: "Dental",
+  //     appointmentDate: "14 Nov 2023",
+  //     appointmentTime: "10.00 AM",
+  //     BookingDate: "12 Nov 2023",
+  //     consultationFee: "$160",
+  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+  //   },
+  //   {
+  //     doctorName: "Dr. Ruby Perrin",
+  //     specialty: "Dental",
+  //     appointmentDate: "14 Nov 2023",
+  //     appointmentTime: "10.00 AM",
+  //     BookingDate: "12 Nov 2023",
+  //     consultationFee: "$160",
+  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+  //   },
+  //   {
+  //     doctorName: "Dr. Ruby Perrin",
+  //     specialty: "Dental",
+  //     appointmentDate: "14 Nov 2023",
+  //     appointmentTime: "10.00 AM",
+  //     BookingDate: "12 Nov 2023",
+  //     consultationFee: "$160",
+  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+  //   },
+  //   {
+  //     doctorName: "Dr. Ruby Perrin",
+  //     specialty: "Dental",
+  //     appointmentDate: "14 Nov 2023",
+  //     appointmentTime: "10.00 AM",
+  //     BookingDate: "12 Nov 2023",
+  //     consultationFee: "$160",
+  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+  //   },
+  //   {
+  //     doctorName: "Dr. Ruby Perrin",
+  //     specialty: "Dental",
+  //     appointmentDate: "14 Nov 2023",
+  //     appointmentTime: "10.00 AM",
+  //     BookingDate: "12 Nov 2023",
+  //     consultationFee: "$160",
+  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+  //   },
+  //   {
+  //     doctorName: "Dr. Ruby Perrin",
+  //     specialty: "Dental",
+  //     appointmentDate: "14 Nov 2023",
+  //     appointmentTime: "10.00 AM",
+  //     BookingDate: "12 Nov 2023",
+  //     consultationFee: "$160",
+  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+  //   },
+  //   {
+  //     doctorName: "Dr. Ruby Perrin",
+  //     specialty: "Dental",
+  //     appointmentDate: "14 Nov 2023",
+  //     appointmentTime: "10.00 AM",
+  //     BookingDate: "12 Nov 2023",
+  //     consultationFee: "$160",
+  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
+  //   },
+  // ];
 
   // Today Appointment
   const todayStartIndex = (currentPageToday - 1) * itemsPerPage;
   const todayEndIndex = currentPageToday * itemsPerPage;
-  const todayAppointments = tableData.slice(todayStartIndex, todayEndIndex);
+  const todayAppointments = today.slice(todayStartIndex, todayEndIndex);
 
   // Upcoming Section
   const upcomingStartIndex = (currentPageUpcoming - 1) * itemsPerPage;
@@ -223,24 +228,81 @@ export default function Patientdashboard() {
   // History Section
   const historyStartIndex = (currentPageHistory - 1) * itemsPerPage;
   const historyEndIndex = currentPageHistory * itemsPerPage;
-  const historyAppointments = history.slice(historyStartIndex, historyEndIndex);
+  const historyAppointments = appointments.slice(
+    historyStartIndex,
+    historyEndIndex
+  );
 
   const paginate1 = (pageNumber) => setCurrentPageToday(pageNumber);
   const paginate2 = (pageNumber) => setCurrentPageUpcoming(pageNumber);
   const paginate3 = (pageNumber) => setCurrentPageHistory(pageNumber);
 
-  useEffect(() => {
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    if (userInfo.role !== "user") {
-      navigate("/");
+  const getAllAppointments = async (id, isAuthenticated) => {
+    console.log(id);
+    try {
+      const data = await axios.post(
+        "http://localhost:5000/appointment/patientappointments",
+        {
+          patientId: id,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: isAuthenticated,
+          },
+        }
+      );
+
+      console.log(data);
+      const appointments = data.data.result;
+      const today = new Date();
+      const todayAppointmentsArray = [];
+      const upcomingAppointmentsArray = [];
+      const pastAppointmentsArray = [];
+      console.log(today + 6000000);
+      today.setHours(0, 0, 0, 0);
+
+      appointments.forEach((appointment) => {
+        const appointmentDate = new Date(appointment.date);
+        console.log(appointment.date, appointmentDate);
+        if (appointmentDate < today) {
+          pastAppointmentsArray.push(appointment);
+        } else {
+          // const currentDate = today;
+          // currentDate.setHours(0, 0, 0, 0);
+          if (appointmentDate.toDateString() === today.toDateString()) {
+            todayAppointmentsArray.push(appointment);
+          } else {
+            upcomingAppointmentsArray.push(appointment);
+          }
+        }
+      });
+
+      console.log(todayAppointmentsArray);
+      console.log(upcomingAppointmentsArray);
+      console.log(pastAppointmentsArray);
+      setToday(todayAppointmentsArray);
+      setUpcoming(upcomingAppointmentsArray);
+      setAppointments(pastAppointmentsArray);
+    } catch (error) {
+      console.log(error);
     }
-  }, []);
+  };
 
   useEffect(() => {
     const patientInfo = JSON.parse(localStorage.getItem("patientInfo"));
     setPatientInfo(patientInfo);
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     setUserInfo(userInfo);
+    const isAuthenticated = localStorage.getItem("token");
+    console.log(patientInfo);
+    console.log(patientInfo._id);
+    if (patientInfo) {
+      getAllAppointments(patientInfo.patient._id, isAuthenticated);
+    }
+    if (userInfo.role !== "user") {
+      navigate("/");
+    }
   }, []);
 
   return (
@@ -313,7 +375,6 @@ export default function Patientdashboard() {
             <div className="row align-items-center inner-banner">
               <div className="col-md-12 col-12 text-center">
                 <h2 className="breadcrumb-title">Dashboard</h2>
-                
               </div>
             </div>
           </div>
@@ -587,7 +648,7 @@ export default function Patientdashboard() {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {todayAppointments.map((row, index) => (
+                                  {today.map((row, index) => (
                                     <tr key={index}>
                                       <td>
                                         <h2 className="table-avatar">
@@ -631,7 +692,7 @@ export default function Patientdashboard() {
                               </table>
                               <Pagination
                                 itemsPerPage={itemsPerPage}
-                                totalItems={tableData.length}
+                                totalItems={today.length}
                                 paginate={paginate1}
                               />
                             </div>
@@ -655,7 +716,7 @@ export default function Patientdashboard() {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {upcomingAppointments.map((row, index) => (
+                                  {upcoming.map((row, index) => (
                                     <tr key={index}>
                                       <td>
                                         <h2 className="table-avatar">
@@ -669,15 +730,17 @@ export default function Patientdashboard() {
                                             />
                                           </a>
                                           <a href="doctor-profile.html">
-                                            {row.doctorName}{" "}
-                                            <span>{row.specialty}</span>
+                                            {row.doctor.userId.name}{" "}
+                                            <span>
+                                              {row.doctor.specialization}
+                                            </span>
                                           </a>
                                         </h2>
                                       </td>
                                       <td>
-                                        {row.appointmentDate}{" "}
+                                        {row.date}{" "}
                                         <span className="d-block text-info">
-                                          {row.appointmentTime}
+                                          {row.date}
                                         </span>
                                       </td>
                                       <td>{row.BookingDate}</td>
@@ -721,7 +784,7 @@ export default function Patientdashboard() {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {historyAppointments.map((row, index) => (
+                                  {appointments.map((row, index) => (
                                     <tr key={index}>
                                       <td>
                                         <h2 className="table-avatar">
@@ -765,7 +828,7 @@ export default function Patientdashboard() {
                               </table>
                               <Pagination
                                 itemsPerPage={itemsPerPage}
-                                totalItems={history.length}
+                                totalItems={appointments.length}
                                 paginate={paginate3}
                               />
                             </div>

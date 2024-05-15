@@ -34,6 +34,7 @@ export default function Dashboard() {
   let [upcomingCount,setUpcomingCount] = useState(0);
   let [totalCount,setTotalCount] = useState(0);
   // console.log(upcoming)
+  // console.log(upcoming)
 
   const handleLogout = () => {
     console.log("in here");
@@ -108,18 +109,18 @@ export default function Dashboard() {
         }
       );
 
-      console.log(data);
+      // console.log(data);
       const appointments = data.data.result;
       const today = new Date();
       const todayAppointmentsArray = [];
       const upcomingAppointmentsArray = [];
       const pastAppointmentsArray = [];
-      console.log(today + 6000000);
+      // console.log(today + 6000000);
       today.setHours(0, 0, 0, 0);
 
       appointments.forEach((appointment) => {
         const appointmentDate = new Date(appointment.date);
-        console.log(appointment.date, appointmentDate);
+        // console.log(appointment.date, appointmentDate);
         if (appointmentDate < today) {
           pastAppointmentsArray.push(appointment);
         } else {
@@ -127,7 +128,7 @@ export default function Dashboard() {
           // currentDate.setHours(0, 0, 0, 0);
           if (appointmentDate.toDateString() === today.toDateString()) {
             todayAppointmentsArray.push(appointment);
-          } else if (appointmentDate>today){
+          } else {
             upcomingAppointmentsArray.push(appointment);
           }
         }
@@ -136,16 +137,16 @@ export default function Dashboard() {
       setUpcomingCount(upcomingAppointmentsArray.length)
       setTodayCount(todayAppointmentsArray.length)
       setTotalCount(pastAppointmentsArray.length)
-      
-      setToday((prevState) => [...prevState, ...todayAppointmentsArray]);
-      setUpcoming((prevState) => [...prevState, ...upcomingAppointmentsArray]);
-      setAppointments((prevState) => [...prevState, ...pastAppointmentsArray]);
+
+
+      setToday(todayAppointmentsArray);
+      setUpcoming(upcomingAppointmentsArray);
+      setAppointments(pastAppointmentsArray);
     } catch (error) {
       console.log(error);
     }
   };
-  
-  console.log(totalCount,todayCount,upcomingCount)
+
   // Pagination Logic
 
   // Get Patients
@@ -355,7 +356,7 @@ export default function Dashboard() {
                                   <h6>Today Patient</h6>
                                   <h3>{todayCount}</h3>
                                   <p className="text-muted">
-                                    {new Date().toLocaleDateString("en-US")}
+                                  {new Date().toDateString()}
                                   </p>
                                 </div>
                               </div>
@@ -377,7 +378,7 @@ export default function Dashboard() {
                                   <h6>Appoinments</h6>
                                   <h3>{upcomingCount}</h3>
                                   <p className="text-muted">
-                                    {new Date().toLocaleDateString("en-US")} Onwards
+                                  {new Date().toDateString()} Onwards
                                   </p>
                                 </div>
                               </div>
@@ -476,11 +477,9 @@ export default function Dashboard() {
                                               </h2>
                                             </td>
                                             <td>
-                                              {patient.date
-                                                ? new Date(
-                                                    patient.date
-                                                  ).toLocaleDateString("en-US")
-                                                : "Date not available"}{" "}
+                                            {new Date(
+                                                patient.date
+                                              ).toDateString(patient.date)} {" "}
                                               <span className="d-block text-info">
                                                 {patient.date
                                                   ? new Date(
@@ -607,7 +606,7 @@ export default function Dashboard() {
                                               </h2>
                                             </td>
                                             <td>
-                                              {patient.date
+                                              {/* {patient.date
                                                 ? new Date(
                                                     patient.date
                                                   ).toLocaleDateString("en-US")
@@ -620,7 +619,10 @@ export default function Dashboard() {
                                                       "en-US"
                                                     )
                                                   : "Time not available"}
-                                              </span>
+                                              </span> */}
+                                              {new Date(
+                                                patient.date
+                                              ).toDateString(patient.date)}
                                             </td>
 
                                             <td style={{ textAlign: "center" }}>
@@ -724,13 +726,9 @@ export default function Dashboard() {
                                                 </h2>
                                               </td>
                                               <td>
-                                                {patient.date
-                                                  ? new Date(
-                                                      patient.date
-                                                    ).toLocaleDateString(
-                                                      "en-US"
-                                                    )
-                                                  : "Date not available"}{" "}
+                                              {new Date(
+                                                patient.date
+                                              ).toDateString(patient.date)}{" "}
                                                 <span className="d-block text-info">
                                                   {patient.date
                                                     ? new Date(
