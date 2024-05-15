@@ -707,8 +707,16 @@ export default function DoctorProfile() {
     }
   };
 
+  const getPdf = async () => {
+    const pdf =
+      "http://localhost:5000/files/1715146045722-149767159Project Management (1).pdf";
+
+    setFilePreview(pdf);
+  };
+
   useEffect(() => {
     getDocInfo();
+    getPdf();
   }, []);
 
   useEffect(() => {
@@ -755,7 +763,10 @@ export default function DoctorProfile() {
                   <div className="profile-info-widget">
                     <a href="#" className="booking-doc-img">
                       <img
-                        src={doctorInfo?.profilePicture || "assets/img/doctors/doctor-thumb-02.jpg"}
+                        src={
+                          doctorInfo?.profilePicture ||
+                          "assets/img/doctors/doctor-thumb-02.jpg"
+                        }
                         alt="assets/img/doctors/doctor-thumb-02.jpg"
                       />
                     </a>

@@ -93,180 +93,60 @@ export default function Dashboard() {
   // Api Calling
 
   // Past data
-  const getAllAppointments = async (id, isAuthenticated, past) => {
+  const getAllAppointments = async (id, isAuthenticated) => {
     try {
       const data = await axios.post(
         "https://healthbackend-3xh2.onrender.com/appointment/appointments",
         {
           doctorId: id,
-          past: past,
         },
         {
           headers: {
             "Content-Type": "application/json",
-
-            // "Authorization":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjE5MmU0MzRmMGRjMjQ3MjJhZGM2ZDkiLCJlbWFpbCI6ImRvY3RvcjNAZ21haWwuY29tIiwiaWF0IjoxNzEyOTI5MTc2LCJleHAiOjE3MTMwMTU1NzZ9.F3sIqBUGYcArItg4t7sQGDObuEcig5NvfSwQx2L4wpQ",
             Authorization: isAuthenticated,
           },
         }
       );
 
-      console.log(data)
+      console.log(data);
+      const appointments = data.data.result;
+      const today = new Date();
+      const todayAppointmentsArray = [];
+      const upcomingAppointmentsArray = [];
+      const pastAppointmentsArray = [];
+      console.log(today + 6000000);
+      today.setHours(0, 0, 0, 0);
 
-      if (past === false) {
-        const datastore = data.data.result;
-
-        const todayDate = new Date().toLocaleDateString("en-US");
-        console.log(todayDate);
-
-        let upcomingArray = [];
-        let todayArray = [];
-        // console.log(datastore)
-
-        datastore.forEach((data) => {
-          // console.log(new Date(data.date).toLocaleDateString("en-US"))
-          // console.log(new Date().toLocaleDateString("en-US"))
-          const appointmentDate = new Date(data.date).toLocaleDateString(
-            "en-US"
-          );
-          // console.log(appointmentDate, data.date);
-          if (todayDate === appointmentDate) {
-            // console.log(data)
-            todayArray.push(data);
-            // setToday((prevToday) => [...prevToday, data])
-            // console.log(today)
-          } else {
-            // console.log(data);
-            upcomingArray.push(data);
-            // setUpcoming((prevUpcoming) => [...prevUpcoming, data]);
+      appointments.forEach((appointment) => {
+        const appointmentDate = new Date(appointment.date);
+        console.log(appointment.date, appointmentDate);
+        if (appointmentDate < today) {
+          pastAppointmentsArray.push(appointment);
+        } else {
+          // const currentDate = today;
+          // currentDate.setHours(0, 0, 0, 0);
+          if (appointmentDate.toDateString() === today.toDateString()) {
+            todayAppointmentsArray.push(appointment);
+          } else if (appointmentDate>today){
+            upcomingAppointmentsArray.push(appointment);
           }
-          setUpcomingCount(upcomingArray.length)
-          setTodayCount(today.length)
-          setUpcoming(upcomingArray);
-          // console.log(upcoming)
-          setToday(todayArray);
-        });
-      } else {
-        setAppointments(data.data.result);
-        // console.log(Object.keys(data.data.result).length);
-        setTotalCount(Object.keys(data.data.result).length);
-        console.log(data.data.result);
-      }
-      // console.log("totalCount" ,totalCount)
-      // console.log(upcoming)
-      // console.log(appointments);
+        }
+      });
+
+      setUpcomingCount(upcomingAppointmentsArray.length)
+      setTodayCount(todayAppointmentsArray.length)
+      setTotalCount(pastAppointmentsArray.length)
+      
+      setToday((prevState) => [...prevState, ...todayAppointmentsArray]);
+      setUpcoming((prevState) => [...prevState, ...upcomingAppointmentsArray]);
+      setAppointments((prevState) => [...prevState, ...pastAppointmentsArray]);
     } catch (error) {
       console.log(error);
     }
   };
-
-  const patients = [
-    {
-      name: "Richard Wilson",
-      id: "#PT0016",
-      date: "2024-04-29",
-      time: "15:30",
-    },
-    {
-      name: "Charlene Reed",
-      id: "#PT0001",
-      date: "2024-04-29",
-      time: "14:00",
-    },
-    {
-      name: "Charlene Reed",
-      id: "#PT0001",
-      date: "2024-04-29",
-      time: "14:00",
-    },
-    {
-      name: "Charlene Reed",
-      id: "#PT0001",
-      date: "2024-04-29",
-      time: "14:00",
-    },
-    {
-      name: "Charlene Reed",
-      id: "#PT0001",
-      date: "2024-04-29",
-      time: "14:00",
-    },
-    {
-      name: "Charlene Reed",
-      id: "#PT0001",
-      date: "2024-04-29",
-      time: "14:00",
-    },
-    {
-      name: "Charlene Reed",
-      id: "#PT0001",
-      date: "2024-04-29",
-      time: "14:00",
-    },
-    {
-      name: "Charlene Reed",
-      id: "#PT0001",
-      date: "2024-04-29",
-      time: "14:00",
-    },
-    {
-      name: "Charlene Reed",
-      id: "#PT0001",
-      date: "2024-04-29",
-      time: "14:00",
-    },
-    {
-      name: "Travis Trimble",
-      id: "#PT0002",
-      date: "2024-04-29",
-      time: "14:00",
-    },
-    {
-      name: "Carl Kelly",
-      id: "#PT0003",
-      date: "2024-04-29",
-      time: "14:00",
-    },
-    {
-      name: "Michelli Fairfax",
-      id: "#PT0009",
-      date: "2024-04-29",
-      time: "14:00",
-    },
-    {
-      name: "Gina More ",
-      id: "#PT0003",
-      date: "2024-04-29",
-      time: "14:00",
-    },
-    {
-      name: "Gina More ",
-      id: "#PT0003",
-      date: "2024-04-29",
-      time: "14:00",
-    },
-    {
-      name: "Gina More ",
-      id: "#PT0003",
-      date: "2024-04-29",
-      time: "14:00",
-    },
-    {
-      name: "Gina More ",
-      id: "#PT0003",
-      date: "2024-04-29",
-      time: "14:00",
-    },
-    {
-      name: "Gina More ",
-      id: "#PT0003",
-      date: "2024-04-29",
-      time: "14:00",
-    },
-  ];
-
+  
+  console.log(totalCount,todayCount,upcomingCount)
   // Pagination Logic
- 
 
   // Get Patients
   // const indexOfLastItem = currentPage * itemsPerPage;
@@ -277,17 +157,23 @@ export default function Dashboard() {
   const todayStartIndex = (currentPageToday - 1) * itemsPerPage;
   const todayEndIndex = currentPageToday * itemsPerPage;
   const todayAppointments = today.slice(todayStartIndex, todayEndIndex);
-  
+
   // Upcoming Section
   const upcomingStartIndex = (currentPageUpcoming - 1) * itemsPerPage;
   const upcomingEndIndex = currentPageUpcoming * itemsPerPage;
-  const upcomingAppointments = upcoming.slice(upcomingStartIndex, upcomingEndIndex);
-  
+  const upcomingAppointments = upcoming.slice(
+    upcomingStartIndex,
+    upcomingEndIndex
+  );
+
   // History Section
   const historyStartIndex = (currentPageHistory - 1) * itemsPerPage;
   const historyEndIndex = currentPageHistory * itemsPerPage;
-  const historyAppointments = appointments.slice(historyStartIndex, historyEndIndex);
-  
+  const historyAppointments = appointments.slice(
+    historyStartIndex,
+    historyEndIndex
+  );
+
   const paginate1 = (pageNumber) => setCurrentPageToday(pageNumber);
   const paginate2 = (pageNumber) => setCurrentPageUpcoming(pageNumber);
   const paginate3 = (pageNumber) => setCurrentPageHistory(pageNumber);
@@ -307,7 +193,7 @@ export default function Dashboard() {
     // Error in _id
     if (doctorInfo) {
       setDoctorInfo(doctorInfo);
-      getAllAppointments(doctorInfo._id, isAuthenticated, false);
+      getAllAppointments(doctorInfo._id, isAuthenticated);
     }
   }, []);
 
@@ -343,7 +229,10 @@ export default function Dashboard() {
                     <div className="profile-info-widget">
                       <a href="#" className="booking-doc-img">
                         <img
-                          src={doctorInfo?.profilePicture || "assets/img/doctors/doctor-thumb-02.jpg"}
+                          src={
+                            doctorInfo?.profilePicture ||
+                            "assets/img/doctors/doctor-thumb-02.jpg"
+                          }
                           alt="assets/img/doctors/doctor-thumb-02.jpg"
                         />
                       </a>
@@ -538,14 +427,7 @@ export default function Dashboard() {
                             <a
                               className="nav-link"
                               href="#history-appointments"
-                              data-bs-toggle="tab"
-                              onClick={() =>
-                                getAllAppointments(
-                                  doctorInfo._id,
-                                  isAuthenticated,
-                                  true
-                                )
-                              }>
+                              data-bs-toggle="tab">
                               History
                             </a>
                           </li>
@@ -567,93 +449,103 @@ export default function Dashboard() {
                                       </tr>
                                     </thead>
                                     <tbody>
-                                      {todayAppointments.map((patient, index) => (
-                                        <tr>
-                                          <td>
-                                            <h2 className="table-avatar">
-                                              <a
-                                                href="patient-profile.html"
-                                                className="avatar avatar-sm me-2">
-                                                <img
-                                                  className="avatar-img rounded-circle"
-                                                  src={ patient.patient.profilePicture || "assets/img/patients/patient.jpg"}
-                                                  alt="User Image"
-                                                />
-                                              </a>
-                                              <a href="patient-profile.html">
-                                                {patient.patient.userId.name}{" "}
-                                                <span>
-                                                  {patient.patient.userId._id}
-                                                </span>
-                                              </a>
-                                            </h2>
-                                          </td>
-                                          <td>
-                                            {patient.date
-                                              ? new Date(
-                                                  patient.date
-                                                ).toLocaleDateString("en-US")
-                                              : "Date not available"}{" "}
-                                            <span className="d-block text-info">
+                                      {todayAppointments.map(
+                                        (patient, index) => (
+                                          <tr>
+                                            <td>
+                                              <h2 className="table-avatar">
+                                                <a
+                                                  href="patient-profile.html"
+                                                  className="avatar avatar-sm me-2">
+                                                  <img
+                                                    className="avatar-img rounded-circle"
+                                                    src={
+                                                      patient.patient
+                                                        .profilePicture ||
+                                                      "assets/img/patients/patient.jpg"
+                                                    }
+                                                    alt="User Image"
+                                                  />
+                                                </a>
+                                                <a href="patient-profile.html">
+                                                  {patient.patient.userId.name}{" "}
+                                                  <span>
+                                                    {patient.patient.userId._id}
+                                                  </span>
+                                                </a>
+                                              </h2>
+                                            </td>
+                                            <td>
                                               {patient.date
                                                 ? new Date(
                                                     patient.date
-                                                  ).toLocaleTimeString("en-US")
-                                                : "Time not available"}
-                                            </span>
-                                          </td>
-
-                                          <td style={{ textAlign: "center" }}>
-                                            <div
-                                              className="table-action"
-                                              style={{
-                                                display: "flex",
-                                                gap: "1rem",
-                                              }}>
-                                              <div>
-                                                <form
-                                                  onSubmit={submitCode}
-                                                  className="">
-                                                  <button className="btn btn-sm bg-success-light">
-                                                    <i className="fas fa-check" />{" "}
-                                                    Join
-                                                  </button>
-                                                </form>
-                                              </div>
-                                              <div className="appointment-action">
-                                                <button
-                                                  className="btn btn-sm bg-danger-light"
-                                                  data-bs-toggle="modal"
-                                                  data-bs-target="#appt_details"
-                                                  disabled={isRescheduleEnabled(
-                                                    patient
-                                                  )}
-                                                  onClick={() => {
-                                                    setSelectedDate(
+                                                  ).toLocaleDateString("en-US")
+                                                : "Date not available"}{" "}
+                                              <span className="d-block text-info">
+                                                {patient.date
+                                                  ? new Date(
                                                       patient.date
-                                                    );
-                                                    setSelectedTime(
-                                                      patient.time
-                                                    );
-                                                  }}>
-                                                  <i className="fas fa-calendar-alt" />{" "}
-                                                  Reschedule
-                                                </button>
+                                                    ).toLocaleTimeString(
+                                                      "en-US"
+                                                    )
+                                                  : "Time not available"}
+                                              </span>
+                                            </td>
+
+                                            <td style={{ textAlign: "center" }}>
+                                              <div
+                                                className="table-action"
+                                                style={{
+                                                  display: "flex",
+                                                  gap: "1rem",
+                                                }}>
+                                                <div>
+                                                  <form
+                                                    onSubmit={submitCode}
+                                                    className="">
+                                                    <button className="btn btn-sm bg-success-light">
+                                                      <i className="fas fa-check" />{" "}
+                                                      Join
+                                                    </button>
+                                                  </form>
+                                                </div>
+                                                <div className="appointment-action">
+                                                  <button
+                                                    className="btn btn-sm bg-danger-light"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#appt_details"
+                                                    disabled={isRescheduleEnabled(
+                                                      patient
+                                                    )}
+                                                    onClick={() => {
+                                                      setSelectedDate(
+                                                        patient.date
+                                                      );
+                                                      setSelectedTime(
+                                                        patient.time
+                                                      );
+                                                    }}>
+                                                    <i className="fas fa-calendar-alt" />{" "}
+                                                    Reschedule
+                                                  </button>
+                                                </div>
+                                                <div>
+                                                  <button
+                                                    className="btn btn-sm bg-info-light"
+                                                    onClick={() =>
+                                                      handlePatientSelect(
+                                                        patient
+                                                      )
+                                                    }>
+                                                    <i className="far fa-eye" />{" "}
+                                                    View
+                                                  </button>
+                                                </div>
                                               </div>
-                                              <div>
-                                                <button
-                                                  className="btn btn-sm bg-info-light"
-                                                  onClick={() =>
-                                                    handlePatientSelect(patient)
-                                                  }>
-                                                  <i className="far fa-eye" />{" "}
-                                                  View
-                                                </button>
-                                              </div>
-                                            </div>
-                                          </td>
-                                        </tr>
-                                      ))}
+                                            </td>
+                                          </tr>
+                                        )
+                                      )}
                                       {/* {selectedPatientValue && <Appointment selectedPatient={selectedPatient} />} */}
                                     </tbody>
                                   </table>
@@ -682,68 +574,81 @@ export default function Dashboard() {
                                       </tr>
                                     </thead>
                                     <tbody>
-                                      {upcomingAppointments.map((patient, index) => (
-                                        <tr key={index}>
-                                          <td>
-                                            <h2 className="table-avatar">
-                                              <a
-                                                href="patient-profile.html"
-                                                className="avatar avatar-sm me-2">
-                                                <img
-                                                  className="avatar-img rounded-circle"
-                                                  src={ patient.patient.profilePicture || "assets/img/patients/patient.jpg"}
-                                                  alt="User Image"
-                                                />
-                                              </a>
-                                              <a href="patient-profile.html">
-                                                {patient.patient?.userId?.name}{" "}
-                                                <span>
-                                                  {patient.patient?.userId?._id}
-                                                </span>
-                                              </a>
-                                            </h2>
-                                          </td>
-                                          <td>
-                                            {patient.date
-                                              ? new Date(
-                                                  patient.date
-                                                ).toLocaleDateString("en-US")
-                                              : "Date not available"}{" "}
-                                            <span className="d-block text-info">
+                                      {upcomingAppointments.map(
+                                        (patient, index) => (
+                                          <tr key={index}>
+                                            <td>
+                                              <h2 className="table-avatar">
+                                                <a
+                                                  href="patient-profile.html"
+                                                  className="avatar avatar-sm me-2">
+                                                  <img
+                                                    className="avatar-img rounded-circle"
+                                                    src={
+                                                      patient.patient
+                                                        .profilePicture ||
+                                                      "assets/img/patients/patient.jpg"
+                                                    }
+                                                    alt="User Image"
+                                                  />
+                                                </a>
+                                                <a href="patient-profile.html">
+                                                  {
+                                                    patient.patient?.userId
+                                                      ?.name
+                                                  }{" "}
+                                                  <span>
+                                                    {
+                                                      patient.patient?.userId
+                                                        ?._id
+                                                    }
+                                                  </span>
+                                                </a>
+                                              </h2>
+                                            </td>
+                                            <td>
                                               {patient.date
                                                 ? new Date(
                                                     patient.date
-                                                  ).toLocaleTimeString("en-US")
-                                                : "Time not available"}
-                                            </span>
-                                          </td>
+                                                  ).toLocaleDateString("en-US")
+                                                : "Date not available"}{" "}
+                                              <span className="d-block text-info">
+                                                {patient.date
+                                                  ? new Date(
+                                                      patient.date
+                                                    ).toLocaleTimeString(
+                                                      "en-US"
+                                                    )
+                                                  : "Time not available"}
+                                              </span>
+                                            </td>
 
-                                          <td style={{ textAlign: "center" }}>
-                                            <div
-                                              className="table-action"
-                                              style={{
-                                                display: "flex",
-                                                gap: "1rem",
-                                              }}>
-                                              <div className="appointment-action">
-                                                <button
-                                                  className="btn btn-sm bg-danger-light"
-                                                  data-bs-toggle="modal"
-                                                  data-bs-target="#appt_details"
-                                                  disabled={isRescheduleEnabled(
-                                                    patient
-                                                  )}>
-                                                  <i className="fas fa-calendar-alt" />{" "}
-                                                  Reschedule
-                                                </button>
+                                            <td style={{ textAlign: "center" }}>
+                                              <div
+                                                className="table-action"
+                                                style={{
+                                                  display: "flex",
+                                                  gap: "1rem",
+                                                }}>
+                                                <div className="appointment-action">
+                                                  <button
+                                                    className="btn btn-sm bg-danger-light"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#appt_details"
+                                                    disabled={isRescheduleEnabled(
+                                                      patient
+                                                    )}>
+                                                    <i className="fas fa-calendar-alt" />{" "}
+                                                    Reschedule
+                                                  </button>
 
-                                                {showModal && (
-                                                  <Reschedule
-                                                    closeModal={closeModal}
-                                                  />
-                                                )}
-                                              </div>
-                                              {/* <div>
+                                                  {showModal && (
+                                                    <Reschedule
+                                                      closeModal={closeModal}
+                                                    />
+                                                  )}
+                                                </div>
+                                                {/* <div>
                                                 <button
                                                   className="btn btn-sm bg-info-light"
                                                   onClick={() =>
@@ -753,10 +658,11 @@ export default function Dashboard() {
                                                   View
                                                 </button>
                                               </div> */}
-                                            </div>
-                                          </td>
-                                        </tr>
-                                      ))}
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        )
+                                      )}
                                     </tbody>
                                   </table>
                                 </div>
@@ -785,66 +691,81 @@ export default function Dashboard() {
                                     </thead>
                                     <tbody>
                                       {appointments[0] &&
-                                        historyAppointments.map((patient, index) => (
-                                          <tr key={index}>
-                                            <td>
-                                              <h2 className="table-avatar">
-                                                <a
-                                                  href="patient-profile.html"
-                                                  className="avatar avatar-sm me-2">
-                                                  <img
-                                                    className="avatar-img rounded-circle"
-                                                    src={ patient.patient.profilePicture || "assets/img/patients/patient.jpg"}
-                                                    alt="User Image"
-                                                  />
-                                                </a>
-                                                <a href="patient-profile.html">
-                                                  {patient.patient?.userId?.name}{" "}
-                                                  <span>
-                                                    {patient.patient?.userId?._id}
-                                                  </span>
-                                                </a>
-                                              </h2>
-                                            </td>
-                                            <td>
-                                              {patient.date
-                                                ? new Date(
-                                                    patient.date
-                                                  ).toLocaleDateString("en-US")
-                                                : "Date not available"}{" "}
-                                              <span className="d-block text-info">
+                                        historyAppointments.map(
+                                          (patient, index) => (
+                                            <tr key={index}>
+                                              <td>
+                                                <h2 className="table-avatar">
+                                                  <a
+                                                    href="patient-profile.html"
+                                                    className="avatar avatar-sm me-2">
+                                                    <img
+                                                      className="avatar-img rounded-circle"
+                                                      src={
+                                                        patient.patient
+                                                          .profilePicture ||
+                                                        "assets/img/patients/patient.jpg"
+                                                      }
+                                                      alt="User Image"
+                                                    />
+                                                  </a>
+                                                  <a href="patient-profile.html">
+                                                    {
+                                                      patient.patient?.userId
+                                                        ?.name
+                                                    }{" "}
+                                                    <span>
+                                                      {
+                                                        patient.patient?.userId
+                                                          ?._id
+                                                      }
+                                                    </span>
+                                                  </a>
+                                                </h2>
+                                              </td>
+                                              <td>
                                                 {patient.date
                                                   ? new Date(
-                                                      patient?.date
-                                                    ).toLocaleTimeString(
+                                                      patient.date
+                                                    ).toLocaleDateString(
                                                       "en-US"
                                                     )
-                                                  : "Time not available"}
-                                              </span>
-                                            </td>
-                                            <td style={{ textAlign: "center" }}>
-                                              <div
-                                                className="table-action"
-                                                style={{
-                                                  display: "flex",
-                                                  gap: "1rem",
-                                                }}>
-                                                <div>
-                                                  <button
-                                                    className="btn btn-sm bg-info-light"
-                                                    onClick={() =>
-                                                      handlePatientSelect(
-                                                        patient
+                                                  : "Date not available"}{" "}
+                                                <span className="d-block text-info">
+                                                  {patient.date
+                                                    ? new Date(
+                                                        patient?.date
+                                                      ).toLocaleTimeString(
+                                                        "en-US"
                                                       )
-                                                    }>
-                                                    <i className="far fa-eye" />{" "}
-                                                    View
-                                                  </button>
+                                                    : "Time not available"}
+                                                </span>
+                                              </td>
+                                              <td
+                                                style={{ textAlign: "center" }}>
+                                                <div
+                                                  className="table-action"
+                                                  style={{
+                                                    display: "flex",
+                                                    gap: "1rem",
+                                                  }}>
+                                                  <div>
+                                                    <button
+                                                      className="btn btn-sm bg-info-light"
+                                                      onClick={() =>
+                                                        handlePatientSelect(
+                                                          patient
+                                                        )
+                                                      }>
+                                                      <i className="far fa-eye" />{" "}
+                                                      View
+                                                    </button>
+                                                  </div>
                                                 </div>
-                                              </div>
-                                            </td>
-                                          </tr>
-                                        ))}
+                                              </td>
+                                            </tr>
+                                          )
+                                        )}
                                       {patientSelect && (
                                         <Appointment patient={patientSelect} />
                                       )}
