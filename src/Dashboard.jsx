@@ -95,7 +95,7 @@ export default function Dashboard() {
   const getAllAppointments = async (id, isAuthenticated) => {
     try {
       const data = await axios.post(
-        "http://localhost:5000/appointment/appointments",
+        "https://healthbackend-3xh2.onrender.com/appointment/appointments",
         {
           doctorId: id,
         },
@@ -106,14 +106,11 @@ export default function Dashboard() {
           },
         }
       );
-
-      console.log(data);
       const appointments = data.data.result;
       const today = new Date();
       const todayAppointmentsArray = [];
       const upcomingAppointmentsArray = [];
       const pastAppointmentsArray = [];
-      console.log(today + 6000000);
       today.setHours(0, 0, 0, 0);
 
       appointments.forEach((appointment) => {
@@ -131,10 +128,6 @@ export default function Dashboard() {
           }
         }
       });
-
-      console.log(todayAppointmentsArray);
-      console.log(upcomingAppointmentsArray);
-      console.log(pastAppointmentsArray);
       setToday(todayAppointmentsArray);
       setUpcoming(upcomingAppointmentsArray);
       setAppointments(pastAppointmentsArray);
