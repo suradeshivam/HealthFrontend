@@ -4,6 +4,7 @@ import Pagination from "../Pagination";
 import data from "./data";
 import FilterDisplay from "./FilterDisplay";
 import axios from "axios";
+import { OrderState } from "../../Contexts";
 
 export default function DoctorSearch() {
   
@@ -11,14 +12,16 @@ export default function DoctorSearch() {
 
   // Filter state for gender and sorting
 
-  const location = useLocation();
-  const docFilters = location.state?.docFilters || "";
+  const {homeDocFilter, setHomeDocFilter,selectedSpecialist,setSelectedSpecialist,selectedLocation, setSelectedLocation } = OrderState();
+
+  // const location = useLocation();
+  // const docFilters = location.state?.docFilters || "";
   console.log("1");
-  console.log(docFilters);
+  console.log(homeDocFilter);
 
 
   const [doctors, setDoctors] = useState(data);
-  const [filterDoctor, setFilterDoctor] = useState(docFilters);
+  const [filterDoctor, setFilterDoctor] = useState([]);
   const [filters, setFilters] = useState({
     selectedGender: "",
     selectedExperience: "",
@@ -29,6 +32,8 @@ export default function DoctorSearch() {
 
 
   const [docFilter, setDocFilter] = useState("");
+  const [allDoctor, setAllDoctor] = useState([]);
+  // const [filterDoctor, setfilterDoctor] = useState([]);
   const [feeRange, setFeeRange] = useState([1500, 5000]);
 
   const handleFeeChange = (event) => {
@@ -142,6 +147,51 @@ export default function DoctorSearch() {
 
     setFilterDoctor(filteredDoctors);
   };
+
+  const getAllDoctors = async () => {
+    const isAuthenticated = localStorage.getItem("token");
+    try {
+      const response = await axios.get(
+        "https://healthbackend-3xh2.onrender.com/patient/search",
+        {
+          headers: {
+            isvalidrequest: "twinsistech",
+            authorization: isAuthenticated,
+          },
+        }
+      );
+  
+      
+      console.log(response);
+      // setDocFilter(response.data.result);
+      setAllDoctor(response.data.result);
+
+      handleSearchFilter(response.data.result);
+      // setFilterDoctor(response.data.result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSearchFilter = (result) => {
+    // Filter doctors based on selected specialist and location
+    console.log(allDoctor)
+    const filteredDoctors = result?.filter((doctors) => {
+      const specialistMatch = selectedSpecialist === '' || doctors.specialization === selectedSpecialist;
+      const locationMatch = selectedLocation === '' || doctors.city === selectedLocation;
+      return specialistMatch && locationMatch;
+    });
+    console.log(filteredDoctors);
+    setFilterDoctor(filteredDoctors);
+  };
+
+  console.log(filterDoctor)
+
+  useEffect ( ()=>{
+
+    getAllDoctors();
+  
+  },[]);
 
  
   return (

@@ -336,8 +336,8 @@ export default function Patientprofile() {
                           DOB{" "}
                           <span>
                             {new Date(
-                              selectedPatient.patient?.dob
-                            ).toLocaleDateString("en-US")}
+                                                selectedPatient.patient?.dob
+                                              ).toDateString(selectedPatient.patient?.dob)}
                           </span>
                         </li>
                         <li>

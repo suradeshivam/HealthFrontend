@@ -15,6 +15,7 @@ const Context = ({ children }) => {
   const [height, setHeight] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [role, setRole] = useState("");
+  const [homeDocFilter, setHomeDocFilter] = useState([]);
   const [prescriptions, setPrescriptions] = useState([
     {
       name: "",
@@ -27,6 +28,20 @@ const Context = ({ children }) => {
     },
   ]);
   const [updatedObservations, setUpdatedObservations] = useState([]);
+  const [selectedSpecialist, setSelectedSpecialist] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState('');
+
+  const [selectedSlotDay, setSelectedSlotDay] = useState('');
+  const [selectedSlotTime, setSelectedSlotTime] = useState('');
+
+  
+
+  const [symptoms, setSymptoms] = useState([]);
+  const [temperature, setTemperature] = useState('');
+  const [bloodpresure, setBloodpresure] = useState('');
+  const [heartRate, setHeartRate] = useState('');
+  const [reportFiles, setReportFiles] = useState([]);
+  const [pdfRefs, setPdfRefs] = useState([]);
 
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("userinfo"));
@@ -58,6 +73,30 @@ const Context = ({ children }) => {
         setIsLoggedIn,
         doctorInfo,
         setDoctorInfo,
+        homeDocFilter,
+         setHomeDocFilter,
+         selectedSpecialist, 
+         setSelectedSpecialist,
+         selectedLocation, 
+         setSelectedLocation,
+         symptoms, 
+         setSymptoms,
+         temperature,
+          setTemperature,
+          bloodpresure, 
+          setBloodpresure,
+          heartRate, 
+          setHeartRate,
+          reportFiles,
+           setReportFiles,
+           pdfRefs, 
+           setPdfRefs,
+           selectedSlotDay, 
+           setSelectedSlotDay,
+           selectedSlotTime,
+            setSelectedSlotTime 
+
+
       }}>
       {children}
     </OrderContext.Provider>

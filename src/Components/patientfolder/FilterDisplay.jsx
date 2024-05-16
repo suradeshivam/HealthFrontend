@@ -91,7 +91,7 @@ const FilterDisplay = ({ filterData }) => {
                 <div className="clinic-booking book-appoint">
                   <Link
                     className="btn btn-primary"
-                    onClick={() => setSelectedDoctor(doctor.userId._id)}
+                    onClick={() => setSelectedDoctor(doctor)}
                     to="/booking">
                     Book Appointment
                   </Link>

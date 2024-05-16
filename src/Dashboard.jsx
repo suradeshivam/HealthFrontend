@@ -30,8 +30,10 @@ export default function Dashboard() {
   const [currentPageHistory, setCurrentPageHistory] = useState(1);
 
   const [patientSelect, setPatientSelect] = useState(null);
-  let todayCount = 0;
-  let upcomingCount = 0;
+  let [todayCount, setTodayCount] = useState(0);
+  let [upcomingCount, setUpcomingCount] = useState(0);
+  let [totalCount, setTotalCount] = useState(0);
+  // console.log(upcoming)
   // console.log(upcoming)
 
   const handleLogout = () => {
@@ -106,16 +108,19 @@ export default function Dashboard() {
           },
         }
       );
+
+      // console.log(data);
       const appointments = data.data.result;
       const today = new Date();
       const todayAppointmentsArray = [];
       const upcomingAppointmentsArray = [];
       const pastAppointmentsArray = [];
+      // console.log(today + 6000000);
       today.setHours(0, 0, 0, 0);
 
       appointments.forEach((appointment) => {
         const appointmentDate = new Date(appointment.date);
-        console.log(appointment.date, appointmentDate);
+        // console.log(appointment.date, appointmentDate);
         if (appointmentDate < today) {
           pastAppointmentsArray.push(appointment);
         } else {
@@ -128,6 +133,11 @@ export default function Dashboard() {
           }
         }
       });
+
+      setUpcomingCount(upcomingAppointmentsArray.length);
+      setTodayCount(todayAppointmentsArray.length);
+      setTotalCount(pastAppointmentsArray.length);
+
       setToday(todayAppointmentsArray);
       setUpcoming(upcomingAppointmentsArray);
       setAppointments(pastAppointmentsArray);
@@ -323,7 +333,7 @@ export default function Dashboard() {
                                 <div className="dash-widget-info">
                                   <h6>Total Patient</h6>
 
-                                  <h3>2</h3>
+                                  <h3>{totalCount}</h3>
                                   <p className="text-muted">Till Today</p>
                                 </div>
                               </div>
@@ -343,9 +353,9 @@ export default function Dashboard() {
                                 </div>
                                 <div className="dash-widget-info">
                                   <h6>Today Patient</h6>
-                                  <h3>{1}</h3>
+                                  <h3>{todayCount}</h3>
                                   <p className="text-muted">
-                                    {new Date().toLocaleDateString("en-US")}
+                                    {new Date().toDateString()}
                                   </p>
                                 </div>
                               </div>
@@ -365,9 +375,9 @@ export default function Dashboard() {
                                 </div>
                                 <div className="dash-widget-info">
                                   <h6>Appoinments</h6>
-                                  <h3>2</h3>
+                                  <h3>{upcomingCount}</h3>
                                   <p className="text-muted">
-                                    {new Date().toLocaleDateString("en-US")}
+                                    {new Date().toDateString()} Onwards
                                   </p>
                                 </div>
                               </div>
@@ -466,11 +476,9 @@ export default function Dashboard() {
                                               </h2>
                                             </td>
                                             <td>
-                                              {patient.date
-                                                ? new Date(
-                                                    patient.date
-                                                  ).toDateString()
-                                                : "Date not available"}{" "}
+                                              {new Date(
+                                                patient.date
+                                              ).toDateString(patient.date)}{" "}
                                               <span className="d-block text-info">
                                                 {patient.date
                                                   ? new Date(
@@ -717,13 +725,11 @@ export default function Dashboard() {
                                                 </h2>
                                               </td>
                                               <td>
-                                                {patient.date
-                                                  ? new Date(
-                                                      patient.date
-                                                    ).toLocaleDateString(
-                                                      "en-US"
-                                                    )
-                                                  : "Date not available"}{" "}
+                                                {new Date(
+                                                  patient.date
+                                                ).toDateString(
+                                                  patient.date
+                                                )}{" "}
                                                 <span className="d-block text-info">
                                                   {patient.date
                                                     ? new Date(

@@ -29,6 +29,7 @@ import Doctorprofile from "./Components/patientfolder/Doctorprofile";
 import Checkout from "./Components/patientfolder/Checkout";
 import Bookingsuccess from "./Components/patientfolder/BookingSuccess";
 import Invoiceview from "./Components/patientfolder/InvoiceView";
+import AppointmentDetails from "./Components/patientfolder/AppointmentDetails"
 
 // App changed
 function App() {
@@ -67,6 +68,7 @@ function App() {
 
           {/* Patient Route */}
           <Route path="docsearch" element={<DoctorSearch />} />
+          <Route path="appointmentdetails" element={<AppointmentDetails />} />
           <Route path="booking" element={<Doctorprofile />} />
           <Route path="checkout" element={<Checkout />} />
           <Route path="booking-success" element={<Bookingsuccess />} />
