@@ -1,7 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { OrderState } from '../../Contexts'
 
 export default function Checkout() {
+
+  const {symptoms,temperature,bloodpresure, heartRate , reportFiles, pdfRefs,selectedSlotDay,selectedSlotTime } = OrderState();
+
+
+  console.log(symptoms,temperature,bloodpresure, heartRate , reportFiles, pdfRefs,selectedSlotDay,selectedSlotTime )
+
+
   return (
     <>
   <div className="main-wrapper">

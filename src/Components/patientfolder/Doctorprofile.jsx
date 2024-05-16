@@ -1,24 +1,63 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { OrderState } from "../../Contexts";
 
 export default function Doctorprofile() {
-  const { selectedDoctor, setSelectedDoctor } = OrderState();
+  const { selectedDoctor, setSelectedDoctor,selectedSlotDay, setSelectedSlotDay,selectedSlotTime, setSelectedSlotTime  } = OrderState();
+  const [singleDoctor, setSingleDoctor] = useState([]);
+  const [selectedSlot, setSelectedSlot] = useState(null);
+  const [selectedDay, setSelectedDay] = useState(null);
+
+  const handleSlotSelect = (index,slot,selectedDay) => {
+    setSelectedSlot(index);
+    setSelectedSlotDay(selectedDay)
+    setSelectedSlotTime(slot)
+  };
+
+  console.log(selectedDoctor)
+
+  const renderStars = (count) => {
+    const stars = [];
+    for (let i = 0; i < count; i++) {
+      stars.push(<i key={i} className="fas fa-star filled" />);
+    }
+    for (let i = count; i < 5; i++) {
+      stars.push(<i key={i} className="fas fa-star" />);
+    }
+    return stars;
+  };
+
+  // Schedule Code
+
+  const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  const currentDate = new Date();
+  const currentDayIndex  = currentDate.getDay();
+  const currentDay = daysOfWeek[currentDayIndex];
+  const todayDate = currentDate.getDate();
+  const month = currentDate.getMonth();
+  const todayYear = currentDate.getFullYear();
+
+  const handleDayClick = (day) => {
+    setSelectedDay(day);
+};
+
 
   const getSingleDoctorProfile = async () => {
     const isAuthenticated = localStorage.getItem("token");
     const doctor = await axios.get(
-      `http://localhost:5000/patient/search/${selectedDoctor}`,
+      `https://healthbackend-3xh2.onrender.com/patient/search/${selectedDoctor}`,
       {
         headers: {
           authorization: isAuthenticated,
         },
       }
     );
-
-    console.log(doctor);
+    // console.log(doctor);
+    setSingleDoctor(doctor.data.result.doctor);
   };
+
+  console.log(singleDoctor)
 
   useEffect(() => {
     getSingleDoctorProfile();
@@ -50,19 +89,23 @@ export default function Doctorprofile() {
                       />
                     </div>
                     <div className="doc-info-cont">
-                      <h4 className="doc-name">Dr. Darren Elder</h4>
+                      <h4 className="doc-name">Dr. {singleDoctor?.userId?.name}</h4>
                       <p className="doc-speciality">
-                        BDS, MDS - Oral &amp; Maxillofacial Surgery
+                      {singleDoctor &&
+                              singleDoctor?.educationDetails &&
+                              singleDoctor?.educationDetails.map((edu, index) => (
+                                <p key={index}>{edu.qualification}</p>
+                              ))} &amp; {singleDoctor?.specialization}
                       </p>
-                      <p className="doc-department">
+                      {/* <p className="doc-department">
                         <img
                           src="assets/img/specialities/specialities-05.png"
                           className="img-fluid"
                           alt="Speciality"
                         />
                         Dentist
-                      </p>
-                      <div className="rating">
+                      </p> */}
+                      {/* <div className="rating">
                         <i className="fas fa-star filled" />
                         <i className="fas fa-star filled" />
                         <i className="fas fa-star filled" />
@@ -71,10 +114,10 @@ export default function Doctorprofile() {
                         <span className="d-inline-block average-rating">
                           (35)
                         </span>
-                      </div>
+                      </div> */}
                       <div className="clinic-details">
                         <p className="doc-location">
-                          <i className="fas fa-map-marker-alt" /> Newyork, USA{" "}
+                          <i className="fas fa-map-marker-alt" /> {singleDoctor?.city}, {singleDoctor?.contry}{" "}
                         </p>
                       </div>
                     </div>
@@ -83,20 +126,20 @@ export default function Doctorprofile() {
                     <div className="clini-infos">
                       <ul>
                         <li>
-                          <i className="far fa-comment" /> 35 Reviews
+                          <i className="far fa-comment" /> 
+                          {singleDoctor?.reviews?.length} {" "}
+                           Reviews
                         </li>
+                       
                         <li>
-                          <i className="fas fa-map-marker-alt" /> Newyork, USA
-                        </li>
-                        <li>
-                          <i className="far fa-money-bill-alt" /> ₹ 100 per
+                          <i className="far fa-money-bill-alt" /> ₹ {singleDoctor?.fees} per
                           Appointment{" "}
                         </li>
                       </ul>
                     </div>
 
                     <div className="clinic-booking">
-                      <Link className="apt-btn" to="/checkout">
+                      <Link className="apt-btn" to="/appointmentdetails">
                         Book Appointment
                       </Link>
                     </div>
@@ -142,36 +185,34 @@ export default function Doctorprofile() {
                         <div className="widget about-widget">
                           <h4 className="widget-title">About Me</h4>
                           <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua. Ut enim ad minim veniam, quis
-                            nostrud exercitation ullamco laboris nisi ut aliquip
-                            ex ea commodo consequat. Duis aute irure dolor in
-                            reprehenderit in voluptate velit esse cillum dolore
-                            eu fugiat nulla pariatur. Excepteur sint occaecat
-                            cupidatat non proident, sunt in culpa qui officia
-                            deserunt mollit anim id est laborum.
+                          {singleDoctor?.about}
                           </p>
                         </div>
                         <div className="widget education-widget">
                           <h4 className="widget-title">Education</h4>
                           <div className="experience-box">
                             <ul className="experience-list">
-                              <li>
+
+                            {singleDoctor &&
+                              singleDoctor?.educationDetails &&
+                              singleDoctor?.educationDetails.map((edu, index) => (
+                                                     
+                              <li key={index}>
                                 <div className="experience-user">
                                   <div className="before-circle" />
                                 </div>
                                 <div className="experience-content">
                                   <div className="timeline-content">
                                     <a href="#/" className="name">
-                                      American Dental Medical University
+                                      {edu?.collegeName}
                                     </a>
-                                    <div>BDS</div>
-                                    <span className="time">1998 - 2003</span>
+                                    <div>{edu.qualification}</div>
+                                    <span className="time">{edu.yearOfCompletion}</span>
                                   </div>
                                 </div>
                               </li>
-                              <li>
+                              ))} 
+                              {/* <li>
                                 <div className="experience-user">
                                   <div className="before-circle" />
                                 </div>
@@ -184,7 +225,7 @@ export default function Doctorprofile() {
                                     <span className="time">2003 - 2005</span>
                                   </div>
                                 </div>
-                              </li>
+                              </li> */}
                             </ul>
                           </div>
                         </div>
@@ -199,7 +240,7 @@ export default function Doctorprofile() {
                                 <div className="experience-content">
                                   <div className="timeline-content">
                                     <a href="#/" className="name">
-                                      10 Years of Medical Experience
+                                    {singleDoctor?.yearOfExperience} Years of Medical Experience
                                     </a>
                                   </div>
                                 </div>
@@ -211,20 +252,24 @@ export default function Doctorprofile() {
                           <h4 className="widget-title">Awards</h4>
                           <div className="experience-box">
                             <ul className="experience-list">
-                              <li>
+                            {singleDoctor &&
+                              singleDoctor?.achievement &&
+                              singleDoctor?.achievement.map((edu, index) => (
+                              <li key={index}>
                                 <div className="experience-user">
                                   <div className="before-circle" />
                                 </div>
                                 <div className="experience-content">
                                   <div className="timeline-content">
-                                    <p className="exp-year">July 2023</p>
+                                    <p className="exp-year">{edu?.year}</p>
                                     <h4 className="exp-title">
-                                      Humanitarian Award
+                                    {edu?.name}
                                     </h4>
                                   </div>
                                 </div>
                               </li>
-                              <li>
+                              ))}
+                              {/* <li>
                                 <div className="experience-user">
                                   <div className="before-circle" />
                                 </div>
@@ -250,7 +295,7 @@ export default function Doctorprofile() {
                                     </h4>
                                   </div>
                                 </div>
-                              </li>
+                              </li> */}
                             </ul>
                           </div>
                         </div>
@@ -258,12 +303,13 @@ export default function Doctorprofile() {
                         <div className="service-list">
                           <h4>Specializations</h4>
                           <ul className="clearfix">
-                            <li>Children Care</li>
-                            <li>Dental Care</li>
+                           
+                            <li> {singleDoctor?.specialization}</li>
+                            {/* <li>Dental Care</li>
                             <li>Oral and Maxillofacial Surgery </li>
                             <li>Orthodontist</li>
                             <li>Periodontist</li>
-                            <li>Prosthodontics</li>
+                            <li>Prosthodontics</li> */}
                           </ul>
                         </div>
                       </div>
@@ -272,160 +318,40 @@ export default function Doctorprofile() {
 
                   <div role="tabpanel" id="doc_reviews" className="tab-pane ">
                     <div className="widget review-listing">
-                      <ul className="comments-list">
-                        <li>
-                          <div className="comment">
-                            <img
-                              className="avatar avatar-sm rounded-circle"
-                              alt="User Image"
-                              src="assets/img/patients/patient.jpg"
-                            />
-                            <div className="comment-body">
-                              <div className="meta-data">
-                                <span className="comment-author">
-                                  Richard Wilson
-                                </span>
-                                <span className="comment-date">
-                                  Reviewed 2 Days ago
-                                </span>
-                                <div className="review-count rating">
-                                  <i className="fas fa-star filled" />
-                                  <i className="fas fa-star filled" />
-                                  <i className="fas fa-star filled" />
-                                  <i className="fas fa-star filled" />
-                                  <i className="fas fa-star" />
-                                </div>
-                              </div>
-                              <p className="recommended">
-                                <i className="far fa-thumbs-up" /> I recommend
-                                the doctor
-                              </p>
-                              <p className="comment-content">
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipisicing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Ut
-                                enim ad minim veniam, quis nostrud exercitation.
-                                Curabitur non nulla sit amet nisl tempus
-                              </p>
-                              <div className="comment-reply">
-                                <a className="comment-btn" href="#">
-                                  <i className="fas fa-reply" /> Reply
-                                </a>
-                                <p className="recommend-btn">
-                                  <span>Recommend?</span>
-                                  <a href="#" className="like-btn">
-                                    <i className="far fa-thumbs-up" /> Yes
-                                  </a>
-                                  <a href="#" className="dislike-btn">
-                                    <i className="far fa-thumbs-down" /> No
-                                  </a>
-                                </p>
-                              </div>
+                    <ul className="comment-list">
+                  {selectedDay && singleDoctor?.reviews && singleDoctor?.reviews.map((comment, index) => (
+                    <li key={index}>
+                      <div className="comment">
+                        <img
+                          className="avatar rounded-circle"
+                          alt="User Image"
+                          src={"assets/img/patients/patient8.jpg"}
+                        />
+                        <div className="comment-body" style={{ width: "100%" }}>
+                          <div className="meta-data">
+                            <span className="comment-author">
+                              {comment.patientName}
+                            </span>
+                            <div className="review-count rating">
+                              {renderStars(comment.rating)}
                             </div>
+                            <span className="comment-date">
+                              Reviewed 1 Week ago
+                            </span>
                           </div>
-                          <ul className="comments-reply">
-                            <li>
-                              <div className="comment">
-                                <img
-                                  className="avatar avatar-sm rounded-circle"
-                                  alt="User Image"
-                                  src="assets/img/patients/patient1.jpg"
-                                />
-                                <div className="comment-body">
-                                  <div className="meta-data">
-                                    <span className="comment-author">
-                                      Charlene Reed
-                                    </span>
-                                    <span className="comment-date">
-                                      Reviewed 3 Days ago
-                                    </span>
-                                    <div className="review-count rating">
-                                      <i className="fas fa-star filled" />
-                                      <i className="fas fa-star filled" />
-                                      <i className="fas fa-star filled" />
-                                      <i className="fas fa-star filled" />
-                                      <i className="fas fa-star" />
-                                    </div>
-                                  </div>
-                                  <p className="comment-content">
-                                    Lorem ipsum dolor sit amet, consectetur
-                                    adipisicing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua.
-                                    Ut enim ad minim veniam. Curabitur non nulla
-                                    sit amet nisl tempus
-                                  </p>
-                                  <div className="comment-reply">
-                                    <a className="comment-btn" href="#">
-                                      <i className="fas fa-reply" /> Reply
-                                    </a>
-                                    <p className="recommend-btn">
-                                      <span>Recommend?</span>
-                                      <a href="#" className="like-btn">
-                                        <i className="far fa-thumbs-up" /> Yes
-                                      </a>
-                                      <a href="#" className="dislike-btn">
-                                        <i className="far fa-thumbs-down" /> No
-                                      </a>
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                            </li>
-                          </ul>
-                        </li>
-                        <li>
-                          <div className="comment">
-                            <img
-                              className="avatar avatar-sm rounded-circle"
-                              alt="User Image"
-                              src="assets/img/patients/patient2.jpg"
-                            />
-                            <div className="comment-body">
-                              <div className="meta-data">
-                                <span className="comment-author">
-                                  Travis Trimble
-                                </span>
-                                <span className="comment-date">
-                                  Reviewed 4 Days ago
-                                </span>
-                                <div className="review-count rating">
-                                  <i className="fas fa-star filled" />
-                                  <i className="fas fa-star filled" />
-                                  <i className="fas fa-star filled" />
-                                  <i className="fas fa-star filled" />
-                                  <i className="fas fa-star" />
-                                </div>
-                              </div>
-                              <p className="comment-content">
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipisicing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Ut
-                                enim ad minim veniam, quis nostrud exercitation.
-                                Curabitur non nulla sit amet nisl tempus
-                              </p>
-                              <div className="comment-reply">
-                                <a className="comment-btn" href="#">
-                                  <i className="fas fa-reply" /> Reply
-                                </a>
-                                <p className="recommend-btn">
-                                  <span>Recommend?</span>
-                                  <a href="#" className="like-btn">
-                                    <i className="far fa-thumbs-up" /> Yes
-                                  </a>
-                                  <a href="#" className="dislike-btn">
-                                    <i className="far fa-thumbs-down" /> No
-                                  </a>
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-                      </ul>
-                      <div className="all-feedback text-center">
+                          <p className="comment-content">
+                            {comment.description}
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+                      {/* <div className="all-feedback text-center">
                         <a href="#" className="btn btn-primary btn-sm">
                           Show all feedback <strong>(167)</strong>
                         </a>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                   <div
@@ -453,16 +379,20 @@ export default function Doctorprofile() {
                                             <i className="fa fa-chevron-left" />
                                           </a>
                                         </li>
-                                        <li>
-                                          <span>Mon</span>
+                                        {daysOfWeek.map((day , index) => (
+                                                                                 
+                                      <li key={index} onClick={() => handleDayClick(day)}>
+                                          <span>{day}</span>
                                           <span className="slot-date">
-                                            11 Nov{" "}
+                                          {currentDayIndex === index ? "Today" : null} {/* Display "Today" for the current day */}
+                                {index === 0 ? todayDate  : todayDate + index}
                                             <small className="slot-year">
-                                              2023
+                                            {"-"}{todayYear}
                                             </small>
                                           </span>
                                         </li>
-                                        <li>
+                                         ))}
+                                        {/* <li>
                                           <span>Tue</span>
                                           <span className="slot-date">
                                             12 Nov{" "}
@@ -515,7 +445,7 @@ export default function Doctorprofile() {
                                               2023
                                             </small>
                                           </span>
-                                        </li>
+                                        </li> */}
                                         <li className="right-arrow">
                                           <a href="javascript:void(0)">
                                             <i className="fa fa-chevron-right" />
@@ -531,18 +461,19 @@ export default function Doctorprofile() {
                                   <div className="col-md-12">
                                     <div className="time-slot">
                                       <ul className="clearfix">
-                                        <li>
-                                          <a className="timing" href="#">
-                                            <span>9:00</span> <span>AM</span>
+                                        {console.log(selectedDay)}
+                                        {selectedDay && singleDoctor?.schedules[selectedDay.toLowerCase()].filter(slot => !slot.isBooked).map((slot,index) =>(
+
+                                        
+                                        <li key={index}>
+                                          <a className={`timing ${(selectedSlot=== index  && selectedDay === selectedSlotDay) ? 'selected' : ''}`} onClick={() => handleSlotSelect(index,slot.time,selectedDay)} >
+                                          <span>{slot.time.split(" ")[0]}</span> <span>{slot.time.split(" ")[1]}</span>
+                                            
                                           </a>
-                                          <a className="timing" href="#">
-                                            <span>10:00</span> <span>AM</span>
-                                          </a>
-                                          <a className="timing" href="#">
-                                            <span>11:00</span> <span>AM</span>
-                                          </a>
+                                        
                                         </li>
-                                        <li>
+                                        ))}
+                                        {/* <li>
                                           <a className="timing" href="#">
                                             <span>9:00</span> <span>AM</span>
                                           </a>
@@ -609,7 +540,7 @@ export default function Doctorprofile() {
                                           <a className="timing" href="#">
                                             <span>11:00</span> <span>AM</span>
                                           </a>
-                                        </li>
+                                        </li> */}
                                       </ul>
                                     </div>
                                   </div>
