@@ -33,6 +33,7 @@ const Context = ({ children }) => {
 
   const [selectedSlotDay, setSelectedSlotDay] = useState('');
   const [selectedSlotTime, setSelectedSlotTime] = useState('');
+  const [selectedDate, setSelectedDate] = useState('');
 
   
 
@@ -94,8 +95,9 @@ const Context = ({ children }) => {
            selectedSlotDay, 
            setSelectedSlotDay,
            selectedSlotTime,
-            setSelectedSlotTime 
-
+            setSelectedSlotTime,
+            selectedDate, 
+            setSelectedDate
 
       }}>
       {children}

@@ -79,10 +79,10 @@ export default function Dashboard() {
     closeModal();
   };
 
-  const submitCode = (e) => {
-    e.preventDefault();
-    const roomId = uuidv4();
-    navigate(`/room/${roomId}`);
+  const submitCode = (meetingId) => {
+    // console.log(meetingId)
+    // const roomId = uuidv4();
+    navigate(`/room/${meetingId}`);
   };
 
   const handleViewAppointment = (e, patientData) => {
@@ -498,14 +498,13 @@ export default function Dashboard() {
                                                   gap: "1rem",
                                                 }}>
                                                 <div>
-                                                  <form
-                                                    onSubmit={submitCode}
-                                                    className="">
-                                                    <button className="btn btn-sm bg-success-light">
+                                                
+                                                    <button className="btn btn-sm bg-success-light"
+                                                        onClick={()=>submitCode(patient?.meetingId)}
+                                                    >
                                                       <i className="fas fa-check" />{" "}
                                                       Join
                                                     </button>
-                                                  </form>
                                                 </div>
                                                 <div className="appointment-action">
                                                   <button

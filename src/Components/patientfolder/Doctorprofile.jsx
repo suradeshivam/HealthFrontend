@@ -11,10 +11,12 @@ export default function Doctorprofile() {
     setSelectedSlotDay,
     selectedSlotTime,
     setSelectedSlotTime,
+    selectedDate, 
+    setSelectedDate
   } = OrderState();
   const [singleDoctor, setSingleDoctor] = useState([]);
   const [selectedSlot, setSelectedSlot] = useState(null);
-  const [selectedDay, setSelectedDay] = useState(null);
+
 
   const handleSlotSelect = (index, slot, selectedDay) => {
     setSelectedSlot(index);
@@ -46,16 +48,52 @@ export default function Doctorprofile() {
     "Saturday",
     "Sunday",
   ];
-  const currentDate = new Date();
-  const currentDayIndex = currentDate.getDay();
-  const currentDay = daysOfWeek[currentDayIndex];
-  const todayDate = currentDate.getDate();
-  const month = currentDate.getMonth();
-  const todayYear = currentDate.getFullYear();
 
-  const handleDayClick = (day) => {
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  
+  const currentDate = new Date();
+
+  const currentDayIndex = currentDate.getDay();
+  const todayDate = currentDate.getDate();
+  const currentMonth = currentDate.getMonth();
+  const todayYear = currentDate.getFullYear();
+  const dayIndex = currentDate.getDay()
+
+  const [selectedDay, setSelectedDay] = useState(null);
+  console.log(currentDate.getDay());
+  
+
+  const handleDayClick = (day,index) => {
     setSelectedDay(day);
+    setSelectedDate(dates[index])
   };
+
+  const getFormattedDate = (date, month, year) => {
+    const formattedDate = date < 10 ? `0${date}` : date;
+    const formattedMonth = month < 9 ? `0${month + 1}` : month + 1;
+    return `${formattedDate}-${formattedMonth}-${year}`;
+  };
+  
+  const renderDates = () => {
+    const dates = [];
+    for (let i = 0; i < daysOfWeek.length; i++) {
+      const date = new Date(currentDate);
+      date.setDate(todayDate + i);
+      dates.push(getFormattedDate(date.getDate(), date.getMonth(), date.getFullYear()));
+    }
+    return dates;
+  };
+  
+  const dates = renderDates();
+
+  const renderDayName = (index) => {
+    const dayIndex = (currentDayIndex + index - 1) % 7;
+    return daysOfWeek[dayIndex];
+  };
+  
 
   const getSingleDoctorProfile = async () => {
     const isAuthenticated = localStorage.getItem("token");
@@ -97,7 +135,10 @@ export default function Doctorprofile() {
                   <div className="doc-info-left">
                     <div className="doctor-img">
                       <img
-                        src="assets/img/doctors/doctor-thumb-02.jpg"
+                        src={
+                          singleDoctor?.profilePicture ||
+                          "assets/img/doctors/doctor-thumb-02.jpg"
+                        }
                         className="img-fluid"
                         alt="User Image"
                       />
@@ -385,8 +426,8 @@ export default function Doctorprofile() {
                           <div className="col-12">
                             <div className="row">
                               <div className="col-12 col-sm-4 col-md-6">
-                                <h4 className="mb-1">11 November 2023</h4>
-                                <p className="text-muted">Monday</p>
+                                <h4 className="mb-1">{`${todayDate}-${monthNames[currentMonth]}-${todayYear}`}</h4>
+                                <p className="text-muted">{daysOfWeek[dayIndex-1]}</p>
                               </div>
                             </div>
                             <div className="card booking-schedule schedule-widget">
@@ -403,77 +444,21 @@ export default function Doctorprofile() {
                                         {daysOfWeek.map((day, index) => (
                                           <li
                                             key={index}
-                                            onClick={() => handleDayClick(day)}>
-                                            <span>{day}</span>
+                                            onClick={() => handleDayClick(renderDayName(index),index)}
+                                            // className={selectedDay != null ? "selected" : ""}
+                                            
+                                            >
+                                            
+                                            <span>{renderDayName(index)}</span>
+                                            
                                             <span className="slot-date">
-                                              {currentDayIndex === index
-                                                ? "Today"
-                                                : null}{" "}
-                                              {/* Display "Today" for the current day */}
-                                              {index === 0
-                                                ? todayDate
-                                                : todayDate + index}
-                                              <small className="slot-year">
-                                                {"-"}
-                                                {todayYear}
-                                              </small>
+                                              {index === 0 ? "Today " :null}
+                                              {dates[index]}
+                                              {/* <small className="slot-year">- {todayYear}</small> */}
                                             </span>
                                           </li>
                                         ))}
-                                        {/* <li>
-                                          <span>Tue</span>
-                                          <span className="slot-date">
-                                            12 Nov{" "}
-                                            <small className="slot-year">
-                                              2023
-                                            </small>
-                                          </span>
-                                        </li>
-                                        <li>
-                                          <span>Wed</span>
-                                          <span className="slot-date">
-                                            13 Nov{" "}
-                                            <small className="slot-year">
-                                              2023
-                                            </small>
-                                          </span>
-                                        </li>
-                                        <li>
-                                          <span>Thu</span>
-                                          <span className="slot-date">
-                                            14 Nov{" "}
-                                            <small className="slot-year">
-                                              2023
-                                            </small>
-                                          </span>
-                                        </li>
-                                        <li>
-                                          <span>Fri</span>
-                                          <span className="slot-date">
-                                            15 Nov{" "}
-                                            <small className="slot-year">
-                                              2023
-                                            </small>
-                                          </span>
-                                        </li>
-                                        <li>
-                                          <span>Sat</span>
-                                          <span className="slot-date">
-                                            16 Nov{" "}
-                                            <small className="slot-year">
-                                              2023
-                                            </small>
-                                          </span>
-                                        </li>
-                                        <li>
-                                          <span>Sun</span>
-                                          <span className="slot-date">
-                                            17 Nov{" "}
-                                            <small className="slot-year">
-                                              2023
-                                            </small>
-                                          </span>
-                                        </li> */}
+                                        
                                         <li className="right-arrow">
                                           <a href="javascript:void(0)">
                                             <i className="fa fa-chevron-right" />

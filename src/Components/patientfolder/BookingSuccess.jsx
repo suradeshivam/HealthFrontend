@@ -1,7 +1,23 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { OrderState } from '../../Contexts';
 
 export default function Bookingsuccess() {
+
+  const {
+    selectedDoctor,
+    symptoms,
+    temperature,
+    bloodpresure,
+    heartRate,
+    reportFiles,
+    pdfRefs,
+    selectedSlotDay,
+    selectedSlotTime,
+    selectedDate,
+  } = OrderState();
+
+
   return (
     <>
 
@@ -26,8 +42,8 @@ export default function Bookingsuccess() {
                   <i className="fas fa-check" />
                   <h3>Appointment booked Successfully!</h3>
                   <p>
-                    Appointment booked with <strong>Dr. Darren Elder</strong>
-                    <br /> on <strong>12 Nov 2023 5:00PM to 6:00PM</strong>
+                    Appointment booked with <strong>Dr. {selectedDoctor?.userId?.name}</strong>
+                    <br /> on <strong>{selectedDate} {" "} {selectedSlotTime}</strong>
                   </p>
                   <Link
                     to="/invoice-view"

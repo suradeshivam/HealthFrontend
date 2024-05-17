@@ -241,7 +241,7 @@ export default function Patientdashboard() {
     console.log(id);
     try {
       const data = await axios.post(
-        "http://localhost:5000/appointment/patientappointments",
+        "https://healthbackend-3xh2.onrender.com/appointment/patientappointments",
         {
           patientId: id,
         },
@@ -288,6 +288,13 @@ export default function Patientdashboard() {
       console.log(error);
     }
   };
+
+  console.log(today)
+
+  const handleJoin = (meetingId) => {
+    // console.log(meetingId);
+    navigate(`/room/${meetingId}`);
+  }
 
   useEffect(() => {
     const patientInfo = JSON.parse(localStorage.getItem("patientInfo"));
@@ -389,7 +396,7 @@ export default function Patientdashboard() {
                       <a href="#" className="booking-doc-img">
                         <img
                           src={
-                            patientInfo?.profilePicture ||
+                            patientInfo.patient?.profilePicture ||
                             "assets/img/doctors/doctor-thumb-02.jpg"
                           }
                           alt="assets/img/patients/patient.jpg"
@@ -641,14 +648,12 @@ export default function Patientdashboard() {
                                 <thead>
                                   <tr>
                                     <th>Doctor</th>
-                                    <th>Appt Date</th>
-                                    <th>Booking Date</th>
-                                    <th>Amount</th>
+                                    <th>Apt Date & Time</th>
                                     <th>Action</th>
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {today.map((row, index) => (
+                                  {today?.map((row, index) => (
                                     <tr key={index}>
                                       <td>
                                         <h2 className="table-avatar">
@@ -657,28 +662,29 @@ export default function Patientdashboard() {
                                             className="avatar avatar-sm me-2">
                                             <img
                                               className="avatar-img rounded-circle"
-                                              src={row.avatarSrc}
+                                              src={
+                                                row?.doctor?.profilePicture ||
+                                                "assets/img/doctors/doctor-thumb-02.jpg"
+                                              }
                                               alt="User Image"
                                             />
                                           </a>
                                           <a href="doctor-profile.html">
-                                            {row.doctorName}{" "}
-                                            <span>{row.specialty}</span>
+                                            {row?.doctor.userId.name}{" "}
+                                            <span>{row.doctor.specialization}</span>
                                           </a>
                                         </h2>
                                       </td>
                                       <td>
-                                        {row.appointmentDate}{" "}
-                                        <span className="d-block text-info">
-                                          {row.appointmentTime}
-                                        </span>
+                                      {new Date(
+                                                row.date
+                                              ).toDateString(row?.date)}
                                       </td>
-                                      <td>{row.BookingDate}</td>
-                                      <td>{row.consultationFee}</td>
+                                    
                                       <td>
                                         <div className="table-action">
-                                          <button className="btn btn-sm bg-info-light me-2">
-                                            <i className="fas fa-sign-in-alt" />{" "}
+                                          <button className="btn btn-sm bg-info-light me-2" onClick={() => handleJoin(row?.meetingId)}>
+                                            
                                             Join
                                           </button>
                                           <button className="btn btn-sm bg-info-light">
@@ -709,9 +715,7 @@ export default function Patientdashboard() {
                                 <thead>
                                   <tr>
                                     <th>Doctor</th>
-                                    <th>Appt Date</th>
-                                    <th>Booking Date</th>
-                                    <th>Amount</th>
+                                    <th>Appointment Date and Time</th>
                                     <th>Action</th>
                                   </tr>
                                 </thead>
@@ -725,7 +729,10 @@ export default function Patientdashboard() {
                                             className="avatar avatar-sm me-2">
                                             <img
                                               className="avatar-img rounded-circle"
-                                              src={row.avatarSrc}
+                                              src={
+                                                row?.doctor?.profilePicture ||
+                                                "assets/img/doctors/doctor-thumb-02.jpg"
+                                              }
                                               alt="User Image"
                                             />
                                           </a>
@@ -743,8 +750,6 @@ export default function Patientdashboard() {
                                           {row.date}
                                         </span>
                                       </td>
-                                      <td>{row.BookingDate}</td>
-                                      <td>{row.consultationFee}</td>
                                       <td>
                                         <div className="table-action">
                                           <button className="btn btn-sm bg-info-light me-2">
@@ -793,7 +798,10 @@ export default function Patientdashboard() {
                                             className="avatar avatar-sm me-2">
                                             <img
                                               className="avatar-img rounded-circle"
-                                              src={row.avatarSrc}
+                                              src={
+                                                row?.doctor?.profilePicture ||
+                                                "assets/img/doctors/doctor-thumb-02.jpg"
+                                              }
                                               alt="User Image"
                                             />
                                           </a>
