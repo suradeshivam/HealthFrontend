@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Pagination from "./Pagination";
 import axios from "axios";
+import { OrderState } from "../Contexts";
 export default function Patientdashboard() {
   const [currentPageToday, setCurrentPageToday] = useState(1);
   const [currentPageUpcoming, setCurrentPageUpcoming] = useState(1);
@@ -12,6 +13,8 @@ export default function Patientdashboard() {
   const [appointments, setAppointments] = useState([]);
   const [upcoming, setUpcoming] = useState([]);
   const [today, setToday] = useState([]);
+
+  const { setSelectedAppointment } = OrderState();
 
   const navigate = useNavigate();
 
@@ -296,6 +299,11 @@ export default function Patientdashboard() {
     navigate(`/room/${meetingId}`);
   };
 
+  const handleAppointmentSelect = (appointment) => {
+    setSelectedAppointment(appointment);
+    navigate("/patientappointment");
+  };
+
   useEffect(() => {
     const patientInfo = JSON.parse(localStorage.getItem("patientInfo"));
     setPatientInfo(patientInfo);
@@ -303,12 +311,14 @@ export default function Patientdashboard() {
     setUserInfo(userInfo);
     const isAuthenticated = localStorage.getItem("token");
     if (patientInfo) {
-      getAllAppointments(patientInfo._id, isAuthenticated);
+      getAllAppointments(patientInfo?._id, isAuthenticated);
     }
     if (userInfo.role !== "user") {
       navigate("/");
     }
   }, []);
+
+  console.log(upcoming);
 
   return (
     <>
@@ -401,15 +411,14 @@ export default function Patientdashboard() {
                         />
                       </a>
                       <div className="profile-det-info">
-                        <h3>Patient</h3>
+                        <h3>{patientInfo?.userId?.name}</h3>
                         <div className="patient-details">
                           <h5>
                             <i className="fas fa-birthday-cake" />
-                            {new Date(patientInfo?.dob).toLocaleDateString(
-                              "en-GB",
-                              { day: "2-digit", month: "long", year: "numeric" }
+                            {new Date(patientInfo?.dob).toDateString(
+                              patientInfo?.dob
                             )}
-                            ,{patientInfo?.age} years
+                            , {patientInfo?.age} years
                           </h5>
                           <h5 className="mb-0">
                             <i className="fas fa-map-marker-alt" />{" "}
@@ -487,7 +496,7 @@ export default function Patientdashboard() {
                 </div>
               </div>
               <div className="col-md-7 col-lg-8 col-xl-9">
-                <div className="row">
+                {/* <div className="row">
                   <div className="col-12 col-md-6 col-lg-4 col-xl-3 patient-dashboard-top">
                     <div className="card">
                       <div className="card-body text-center">
@@ -554,7 +563,7 @@ export default function Patientdashboard() {
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 <div className="row patient-graph-col">
                   <div className="col-12"></div>
                 </div>
@@ -651,7 +660,7 @@ export default function Patientdashboard() {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {today?.map((row, index) => (
+                                  {todayAppointments?.map((row, index) => (
                                     <tr key={index}>
                                       <td>
                                         <h2 className="table-avatar">
@@ -690,9 +699,6 @@ export default function Patientdashboard() {
                                             }>
                                             Join
                                           </button>
-                                          <button className="btn btn-sm bg-info-light">
-                                            <i className="far fa-eye" /> View
-                                          </button>
                                         </div>
                                       </td>
                                     </tr>
@@ -719,11 +725,11 @@ export default function Patientdashboard() {
                                   <tr>
                                     <th>Doctor</th>
                                     <th>Appointment Date and Time</th>
-                                    <th>Action</th>
+                                    {/* <th>Action</th> */}
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {upcoming.map((row, index) => (
+                                  {upcomingAppointments.map((row, index) => (
                                     <tr key={index}>
                                       <td>
                                         <h2 className="table-avatar">
@@ -748,12 +754,11 @@ export default function Patientdashboard() {
                                         </h2>
                                       </td>
                                       <td>
-                                        {row.date}{" "}
-                                        <span className="d-block text-info">
-                                          {row.date}
-                                        </span>
+                                        {new Date(row.date).toDateString(
+                                          row?.date
+                                        )}
                                       </td>
-                                      <td>
+                                      {/* <td>
                                         <div className="table-action">
                                           <button className="btn btn-sm bg-info-light me-2">
                                             <i className="fas fa-sign-in-alt" />{" "}
@@ -763,7 +768,7 @@ export default function Patientdashboard() {
                                             <i className="far fa-eye" /> View
                                           </button>
                                         </div>
-                                      </td>
+                                      </td> */}
                                     </tr>
                                   ))}
                                 </tbody>
@@ -785,14 +790,12 @@ export default function Patientdashboard() {
                                 <thead>
                                   <tr>
                                     <th>Doctor</th>
-                                    <th>Appt Date</th>
-                                    <th>Booking Date</th>
-                                    <th>Amount</th>
+                                    <th>Appointment Date and Time</th>
                                     <th>Action</th>
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {appointments.map((row, index) => (
+                                  {historyAppointments.map((row, index) => (
                                     <tr key={index}>
                                       <td>
                                         <h2 className="table-avatar">
@@ -809,28 +812,30 @@ export default function Patientdashboard() {
                                             />
                                           </a>
                                           <a href="doctor-profile.html">
-                                            {row.doctorName}{" "}
-                                            <span>{row.specialty}</span>
+                                            {row?.doctor?.userId?.name}{" "}
+                                            <span>
+                                              {row?.doctor?.specialization}
+                                            </span>
                                           </a>
                                         </h2>
                                       </td>
                                       <td>
-                                        {row.appointmentDate}{" "}
-                                        <span className="d-block text-info">
-                                          {row.appointmentTime}
-                                        </span>
+                                        {new Date(row?.date).toDateString(
+                                          row?.date
+                                        )}
                                       </td>
-                                      <td>{row.BookingDate}</td>
-                                      <td>{row.consultationFee}</td>
                                       <td>
                                         <div className="table-action">
-                                          <button className="btn btn-sm bg-info-light me-2">
-                                            <i className="fas fa-sign-in-alt" />{" "}
-                                            Join
-                                          </button>
-                                          <button className="btn btn-sm bg-info-light">
+                                          <button
+                                            className="btn btn-sm bg-info-light me-2"
+                                            onClick={() =>
+                                              handleAppointmentSelect(row)
+                                            }>
                                             <i className="far fa-eye" /> View
                                           </button>
+                                          {/* <button className="btn btn-sm bg-info-light">
+                                            <i className="far fa-eye" /> 
+                                          </button> */}
                                         </div>
                                       </td>
                                     </tr>

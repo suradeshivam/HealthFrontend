@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 
 const Room = () => {
   const { roomID } = useParams();
+
+  const [showNotePad , setShowNotePad] = useState(true);
 
   // Function to handle meeting div reference
   const meetingRef = React.useRef(null);
@@ -33,7 +35,14 @@ const Room = () => {
   // Call initializeMeeting when component mounts
   React.useEffect(() => {
     initializeMeeting();
+
+    const patientInfo = JSON.parse(localStorage.getItem('patientInfo'));
+
+    if(patientInfo)
+    setShowNotePad(false);
   }, []);
+
+  
 
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
@@ -49,6 +58,8 @@ const Room = () => {
         ></div>
 
         {/* Notepad container */}
+
+        { showNotePad &&
         <div
           style={{
             flex: 1,
@@ -64,6 +75,7 @@ const Room = () => {
             placeholder="Start typing..."
           ></textarea>
         </div>
+}
       </div>
     </div>
   );

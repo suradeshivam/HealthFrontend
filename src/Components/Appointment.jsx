@@ -255,7 +255,7 @@ export default function Patientprofile() {
           <div className="container">
             <div className="row align-items-center inner-banner">
               <div className="col-md-12 col-12 text-center">
-                <h2 className="breadcrumb-title">Profile</h2>
+                <h2 className="breadcrumb-title">Appointment</h2>
 
                 <nav aria-label="breadcrumb" className="page-breadcrumb">
                   <ol className="breadcrumb">
@@ -263,7 +263,7 @@ export default function Patientprofile() {
                       <a href="index.html">Home</a>
                     </li>
                     <li className="breadcrumb-item" aria-current="page">
-                      Profile
+                      Appointment
                     </li>
                   </ol>
                 </nav>
@@ -1658,7 +1658,7 @@ export default function Patientprofile() {
                   </h5>
                   {selectedPatient.patient?.allergies.map((allergy, index) => (
                     <ul key={index} className="list-unstyled">
-                      <li>{allergy?.name}</li>
+                      <li>{allergy}</li>
                       {/* Add more allergies here */}
                     </ul>
                   ))}

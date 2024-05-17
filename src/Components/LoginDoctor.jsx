@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -125,7 +127,7 @@ export default function LoginDoctor() {
                 <div className="row align-items-center justify-content-center">
                   <div className="col-md-7 col-lg-6 login-left">
                     <img
-                      src="assets/img/login.png"
+                      src="assets/img/login-banner.png"
                       className="img-fluid"
                       alt="TwinDoc Login"
                     />
@@ -154,7 +156,7 @@ export default function LoginDoctor() {
                       </div>
                       <div className="mb-2">
                         <label className="mt-2">Enter Your Password</label>
-                        <div className="d-flex">
+                        <div className="pass-group d-flex">
                           <input
                             placeholder="Password"
                             type={showPassword ? "text" : "password"}
@@ -165,18 +167,15 @@ export default function LoginDoctor() {
                                   "Password must contain at least 8 characters, one uppercase letter, one number, and one special character",
                               },
                             })}
-                            className="form-control floating"
+                            className="form-control pass-input"
                           />
-                          <button
-                            type="button"
+                          <span
                             onClick={() => setShowPassword(!showPassword)}
-                            className="">
-                            {showPassword ? (
-                              <FiEyeOff className="text-gray-500" />
-                            ) : (
-                              <FiEye className="text-gray-500" />
-                            )}
-                          </button>
+                            className="toggle-password">
+                            <FontAwesomeIcon
+                              icon={showPassword ? faEyeSlash : faEye}
+                            />
+                          </span>
                           {errors.password && (
                             <p className="text-red-500 text-xs italic">
                               {errors.password.message}

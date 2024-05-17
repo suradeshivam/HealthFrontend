@@ -43,6 +43,9 @@ const Context = ({ children }) => {
   const [heartRate, setHeartRate] = useState('');
   const [reportFiles, setReportFiles] = useState([]);
   const [pdfRefs, setPdfRefs] = useState([]);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
+
+  
 
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("userinfo"));
@@ -97,7 +100,9 @@ const Context = ({ children }) => {
            selectedSlotTime,
             setSelectedSlotTime,
             selectedDate, 
-            setSelectedDate
+            setSelectedDate,
+            selectedAppointment,
+            setSelectedAppointment
 
       }}>
       {children}

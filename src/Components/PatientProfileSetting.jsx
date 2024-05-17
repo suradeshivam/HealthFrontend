@@ -7,14 +7,13 @@ import "react-toastify/dist/ReactToastify.css";
 export default function Profilesettings() {
   const [pic, setPic] = useState("assets/img/doctors/doctor-thumb-02.jpg");
   const [preview, setPreview] = useState();
-   const [patientInfo, setPatientInfo] = useState("");
+  const [patientInfo, setPatientInfo] = useState("");
   const [userInfo, setUserInfo] = useState("");
-  
 
   // const userInfo = JSON.parse( localStorage.getItem("userInfo"));
 
   const [formData, setFormData] = useState({
-    userId:"",
+    userId: "",
     name: "",
     email: "",
     dob: "", //
@@ -23,11 +22,11 @@ export default function Profilesettings() {
     gender: "", //
     mobile: "",
     height: "", //
-    weight: "",  //
+    weight: "", //
     allergies: [""],
     medicalHistory: [{ diseaseName: "", year: "" }],
     addressLine1: "",
-    profilePicture:"",
+    profilePicture: "",
     city: "",
     state: "",
     zip: "",
@@ -82,8 +81,9 @@ export default function Profilesettings() {
           if (res.status === 200) {
             setPic(res.data.result);
             setFormData({
-              ...formData, profilePicture:res.data.result
-            })
+              ...formData,
+              profilePicture: res.data.result,
+            });
             console.log(res.data.result);
           }
           toast(res.data.message);
@@ -116,8 +116,6 @@ export default function Profilesettings() {
       });
     }
   };
-
-
 
   const handleAllergies = () => {
     setFormData((prevState) => ({
@@ -166,60 +164,57 @@ export default function Profilesettings() {
       ...prevState,
       medicalHistory: updatedmedicalHistory,
     }));
-    
   };
 
   const getPatientInfo = async () => {
-
-    
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     const patientInfo = JSON.parse(localStorage.getItem("patientInfo"));
 
-    if(patientInfo){
-  setFormData({
-    userId:userInfo?._id,
-    name: userInfo?.name || "",
-    email: userInfo?.email || "",
-    profilePicture:patientInfo?.profilePicture || "assets/img/doctors/doctor-thumb-02.jpg",
-    mobile: userInfo?.mobileNumber || "",
-    dob: patientInfo?.dob || "",
-    age:  String(patientInfo?.age) || "",
-    bloodType: patientInfo?.bloodType || "",
-    gender: patientInfo?.gender || "",
-    height:  String(patientInfo?.height) || "",
-    weight:  String(patientInfo?.weight) || "",
-    allergies: patientInfo?.allergies || [],
-    medicalHistory: patientInfo?.medicalHistory || [],
-    addressLine1: patientInfo?.addressLine1 || "",
-    city: patientInfo?.city || "",
-    state: patientInfo?.state || "",
-    zip: patientInfo?.zip || "",
-    contry: patientInfo?.contry || "",
-  })
-  }else{
-  setFormData({
-    userId:userInfo?._id,
-    name: userInfo?.name || "",
-    email: userInfo?.email || "",
-    mobile: userInfo?.mobileNumber || "",
-    dob: "",
-    age: "",
-    bloodType: "",
-    gender: "",
-    height: "",
-    weight: "",
-    allergies: [""],
-    medicalHistory: [{ diseaseName: "", year: "" }],
-    addressLine1: "",
-    city: "",
-    state: "",
-    zip: "",
-    contry: "",
-  });
-}
-
-}
-
+    if (patientInfo) {
+      setFormData({
+        userId: patientInfo?.userId?._id,
+        name: patientInfo?.userId?.name || "",
+        email: patientInfo?.userId?.email || "",
+        profilePicture:
+          patientInfo?.profilePicture ||
+          "assets/img/doctors/doctor-thumb-02.jpg",
+        mobile: patientInfo?.userId?.mobileNumber || "",
+        dob: patientInfo?.dob || "",
+        age: String(patientInfo?.age) || "",
+        bloodType: patientInfo?.bloodType || "",
+        gender: patientInfo?.gender || "",
+        height: String(patientInfo?.height) || "",
+        weight: String(patientInfo?.weight) || "",
+        allergies: patientInfo?.allergies || [],
+        medicalHistory: patientInfo?.medicalHistory || [],
+        addressLine1: patientInfo?.addressLine1 || "",
+        city: patientInfo?.city || "",
+        state: patientInfo?.state || "",
+        zip: patientInfo?.zip || "",
+        contry: patientInfo?.contry || "",
+      });
+    } else {
+      setFormData({
+        userId: userInfo?._id,
+        name: userInfo?.name || "",
+        email: userInfo?.email || "",
+        mobile: userInfo?.mobileNumber || "",
+        dob: "",
+        age: "",
+        bloodType: "",
+        gender: "",
+        height: "",
+        weight: "",
+        allergies: [""],
+        medicalHistory: [{ diseaseName: "", year: "" }],
+        addressLine1: "",
+        city: "",
+        state: "",
+        zip: "",
+        contry: "",
+      });
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -288,16 +283,15 @@ export default function Profilesettings() {
     const patientInfo = JSON.parse(localStorage.getItem("patientInfo"));
 
     setFormData({
-      ...formData , userId:userInfo._id
-    })
-    console.log(formData)
+      ...formData,
+      userId: userInfo._id,
+    });
+    console.log(patientInfo);
 
     try {
-
       if (patientInfo) {
-        console.log("1");
         const updatedPatient = await axios.put(
-          `https://healthbackend-3xh2.onrender.com/patient/${patientInfo.userId}`,
+          `https://healthbackend-3xh2.onrender.com/patient/${patientInfo?.userId?._id}`,
           formData,
           {
             headers: {
@@ -305,7 +299,7 @@ export default function Profilesettings() {
               Authorization: isAuthenticated,
             },
           }
-        );  
+        );
         console.log(updatedPatient);
         localStorage.setItem(
           "patientInfo",
@@ -327,40 +321,35 @@ export default function Profilesettings() {
           transition: Bounce,
         });
       } else {
+        const user = await axios.post(
+          `https://healthbackend-3xh2.onrender.com/patient/create`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: isAuthenticated,
+            },
+          }
+        );
 
-      const user = await axios.post(
-        `https://healthbackend-3xh2.onrender.com/patient/create`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: isAuthenticated,
-          },
-        }
-      );
+        console.log(user);
+        localStorage.setItem("patientInfo", JSON.stringify(user.data.result));
 
-      console.log(user);
-      localStorage.setItem(
-        "patientInfo",
-        JSON.stringify(user.data.result)
-      );
-
-      toast("Profile Created Successfully!!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
-    }
-     
+        toast("Profile Created Successfully!!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      }
     } catch (error) {
       console.log(error);
-       toast.error(error.response.data.message, {
+      toast.error(error.response.data.message, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -379,22 +368,20 @@ export default function Profilesettings() {
   }, []);
 
   useEffect(() => {
-    const patientInfo = JSON.parse(localStorage.getItem('patientInfo'))
-    setPatientInfo(patientInfo)
-    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
-    setUserInfo(userInfo)
+    const patientInfo = JSON.parse(localStorage.getItem("patientInfo"));
+    setPatientInfo(patientInfo);
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    setUserInfo(userInfo);
   }, []);
 
   return (
     <>
-
       <div className="main-wrapper">
         <div className="breadcrumb-bar-two">
           <div className="container">
             <div className="row align-items-center inner-banner">
               <div className="col-md-12 col-12 text-center">
                 <h2 className="breadcrumb-title">Profile Settings</h2>
-                
               </div>
             </div>
           </div>
@@ -402,28 +389,33 @@ export default function Profilesettings() {
         <div className="content">
           <div className="container">
             <div className="row">
-            <ToastContainer />
+              <ToastContainer />
               <div className="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
                 <div className="profile-sidebar">
                   <div className="widget-profile pro-widget-content">
                     <div className="profile-info-widget">
                       <a href="#" className="booking-doc-img">
                         <img
-                           src={patientInfo?.profilePicture || "assets/img/doctors/doctor-thumb-02.jpg"}
-                           alt={"assets/img/patients/patient1.jpg"}
+                          src={
+                            patientInfo?.profilePicture ||
+                            "assets/img/doctors/doctor-thumb-02.jpg"
+                          }
+                          alt="assets/img/patients/patient.jpg"
                         />
                       </a>
                       <div className="profile-det-info">
-                        <h3>Richard Wilson</h3>
+                        <h3>{patientInfo?.userId?.name}</h3>
                         <div className="patient-details">
                           <h5>
                             <i className="fas fa-birthday-cake" />
-                             {
-                             new Date(patientInfo?.dob).toLocaleDateString('en-GB', { day: '2-digit',month: 'long',year: 'numeric'})},
-                            {patientInfo?.age} years
+                            {new Date(patientInfo?.dob).toDateString(
+                              patientInfo?.dob
+                            )}
+                            , {patientInfo?.age} years
                           </h5>
                           <h5 className="mb-0">
-                            <i className="fas fa-map-marker-alt" /> {patientInfo?.city}, {patientInfo?.contry}
+                            <i className="fas fa-map-marker-alt" />{" "}
+                            {patientInfo?.city}, {patientInfo?.contry}
                           </h5>
                         </div>
                       </div>
@@ -432,7 +424,7 @@ export default function Profilesettings() {
                   <div className="dashboard-widget">
                     <nav className="dashboard-menu">
                       <ul>
-                        <li >
+                        <li>
                           <Link to="/user">
                             <i className="fas fa-columns" />
                             <span>Dashboard</span>
@@ -459,7 +451,6 @@ export default function Profilesettings() {
                             <span>Add Medical Records</span>
                           </Link>
                         </li>
-                       
 
                         <li className="active">
                           <Link to="/patientprofile">
@@ -495,29 +486,33 @@ export default function Profilesettings() {
                             <div className="change-avatar">
                               <div className="profile-img">
                                 <img
-                                  src={preview ? preview : formData.profilePicture || "assets/img/doctors/doctor-thumb-02.jpg"}
+                                  src={
+                                    preview
+                                      ? preview
+                                      : patientInfo?.profilePicture ||
+                                        "assets/img/doctors/doctor-thumb-02.jpg"
+                                  }
                                   alt="User Image"
-                                  
                                 />
                               </div>
                               <div className="upload-img">
-                              <div className="change-photo-btn">
-                                <span>
-                                  <i className="fa fa-upload" /> Upload Photo
-                                </span>
-                                <input
-                                  type="file"
-                                  className="upload"
-                                  accept=".png, .jpg, .jpeg"
-                                  onChange={(e) =>
-                                    uploadImage(e.target.files[0])
-                                  }
-                                />
+                                <div className="change-photo-btn">
+                                  <span>
+                                    <i className="fa fa-upload" /> Upload Photo
+                                  </span>
+                                  <input
+                                    type="file"
+                                    className="upload"
+                                    accept=".png, .jpg, .jpeg"
+                                    onChange={(e) =>
+                                      uploadImage(e.target.files[0])
+                                    }
+                                  />
+                                </div>
+                                <small className="form-text text-muted">
+                                  Allowed JPG, PNG and JPEG. Max size of 2MB
+                                </small>
                               </div>
-                              <small className="form-text text-muted">
-                                Allowed JPG, PNG and JPEG. Max size of 2MB
-                              </small>
-                            </div>
                             </div>
                           </div>
                         </div>
@@ -535,7 +530,6 @@ export default function Profilesettings() {
                             />
                           </div>
                         </div>
-
                         <div className="col-12 col-md-6">
                           <div className="mb-3">
                             <label className="mb-2">
@@ -550,7 +544,6 @@ export default function Profilesettings() {
                             />
                           </div>
                         </div>
-                        
                         {/* <div className="col-12 col-md-6">
                           <div className="mb-3">
                             <label className="mb-2">
@@ -581,8 +574,7 @@ export default function Profilesettings() {
                               />
                               {errors.dob && (
                                 <span
-                                  style={{ color: "red", fontSize: "13px" }}
-                                >
+                                  style={{ color: "red", fontSize: "13px" }}>
                                   {errors.dob}
                                 </span>
                               )}
@@ -618,8 +610,7 @@ export default function Profilesettings() {
                               className="form-select form-control"
                               name="bloodType"
                               value={formData.bloodType}
-                              onChange={handleChange}
-                            >
+                              onChange={handleChange}>
                               <option>A-</option>
                               <option>A+</option>
                               <option>B-</option>
@@ -645,8 +636,7 @@ export default function Profilesettings() {
                               className="form-select form-control"
                               name="gender"
                               value={formData.gender}
-                              onChange={handleChange}
-                            >
+                              onChange={handleChange}>
                               <option>Select</option>
                               <option>Male</option>
                               <option>Female</option>
@@ -659,8 +649,6 @@ export default function Profilesettings() {
                             </span>
                           )}
                         </div>
-                        
-                        
                         <div className="col-12 col-md-6">
                           <div className="mb-3">
                             <label className="mb-2">Height(ft)</label>
@@ -699,9 +687,7 @@ export default function Profilesettings() {
                             />
                           </div>
                         </div>
-
-
-<br/>
+                        <br />
                         <div className="col-12 col-md-6">
                           {/* <div style={{ display: 'flex', flexWrap: 'wrap', gap:"4px" }}> */}
                           {formData.allergies.map((allergy, index) => (
@@ -731,52 +717,70 @@ export default function Profilesettings() {
                           <div className="add-more mt-2">
                             <a
                               className="add-education"
-                              onClick={handleAllergies}
-                            >
+                              onClick={handleAllergies}>
                               <i className="fa fa-plus-circle" /> Add More
                             </a>
                           </div>
                         </div>
-
-                        
-                       <div className="col-12 col-md-6">
-  {formData.medicalHistory.map((diseaseNameItem, index) => (
-    <div className="mb-3 " key={index}>
-      <label className="mb-2">Previous diseaseName {index + 1}</label>
-      <div className="d-flex gap-3 "> {/* Use d-flex class to display items in a row */}
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Previous diseaseName"
-          value={diseaseNameItem.diseaseName}
-          onChange={(e) => handleChangemedicalHistory(e, index, 'diseaseName')}
-        />
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Year"
-          value={diseaseNameItem.year}
-          onChange={(e) => handleChangemedicalHistory(e, index, 'year')}
-        />
-            </div>
-        {index !== 0 && (
-          <div className="remove-education">
-            <a onClick={() => handleRemovemedicalHistory(index)}>
-              <i className="fa fa-minus-circle" /> Remove
-            </a>
-          </div>
-        )}
-    </div>
-  ))}
-  <div className="add-more mt-2">
-    <a className="add-education" onClick={handlemedicalHistory}>
-      <i className="fa fa-plus-circle" /> Add More
-    </a>
-  </div>
-</div>
-
-
-                        
+                        <div className="col-12 col-md-6">
+                          {formData.medicalHistory.map(
+                            (diseaseNameItem, index) => (
+                              <div className="mb-3 " key={index}>
+                                <label className="mb-2">
+                                  Previous diseaseName {index + 1}
+                                </label>
+                                <div className="d-flex gap-3 ">
+                                  {" "}
+                                  {/* Use d-flex class to display items in a row */}
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Previous diseaseName"
+                                    value={diseaseNameItem.diseaseName}
+                                    onChange={(e) =>
+                                      handleChangemedicalHistory(
+                                        e,
+                                        index,
+                                        "diseaseName"
+                                      )
+                                    }
+                                  />
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Year"
+                                    value={diseaseNameItem.year}
+                                    onChange={(e) =>
+                                      handleChangemedicalHistory(
+                                        e,
+                                        index,
+                                        "year"
+                                      )
+                                    }
+                                  />
+                                </div>
+                                {index !== 0 && (
+                                  <div className="remove-education">
+                                    <a
+                                      onClick={() =>
+                                        handleRemovemedicalHistory(index)
+                                      }>
+                                      <i className="fa fa-minus-circle" />{" "}
+                                      Remove
+                                    </a>
+                                  </div>
+                                )}
+                              </div>
+                            )
+                          )}
+                          <div className="add-more mt-2">
+                            <a
+                              className="add-education"
+                              onClick={handlemedicalHistory}>
+                              <i className="fa fa-plus-circle" /> Add More
+                            </a>
+                          </div>
+                        </div>
                         <br />
                         <br />
                         <br /> <br />
@@ -786,7 +790,8 @@ export default function Profilesettings() {
                           <div className="mb-3">
                             <h4 className="card-title">Address Line</h4>
                             <label className="mb-2">
-                              Address Line <span className="text-danger"> *</span>
+                              Address Line{" "}
+                              <span className="text-danger"> *</span>
                             </label>
                             <input
                               type="text"
@@ -882,8 +887,7 @@ export default function Profilesettings() {
                       <div className="submit-section">
                         <button
                           type="submit"
-                          className="btn btn-primary submit-btn"
-                        >
+                          className="btn btn-primary submit-btn">
                           Save Changes
                         </button>
                       </div>

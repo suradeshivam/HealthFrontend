@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { OrderState } from "../../Contexts";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Bounce, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Checkout() {
   const [PatientInfo, setPatientInfo] = useState(null);
@@ -87,7 +89,7 @@ export default function Checkout() {
       const result = await axios.post(
         `http://localhost:5000/appointment/create`,
         {
-          patientId: patientInfo.patient._id,
+          patientId: patientInfo._id,
           doctorId: selectedDoctor._id,
           slot: selectedSlotTime,
           date: date,
@@ -107,6 +109,7 @@ export default function Checkout() {
       );
 
       console.log(result);
+      toast("Appointment Created Successfully");
       navigate("/booking-success");
     } catch (error) {
       console.log(error);
@@ -133,6 +136,7 @@ export default function Checkout() {
         <div className="content">
           <div className="container">
             <div className="row">
+              <ToastContainer />
               <div className="col-md-7 col-lg-8">
                 <div className="card">
                   <div className="card-body">
@@ -256,9 +260,9 @@ export default function Checkout() {
                           </div>
                         </div>
                         <div className="clinic-booking col-md-4 mt-3">
-                          <button className="apt-btn" onClick={handleSubmit}>
+                          <Link className="apt-btn" onClick={handleSubmit}>
                             Confirm & Pay
-                          </button>
+                          </Link>
                         </div>
                       </div>
                     </div>
