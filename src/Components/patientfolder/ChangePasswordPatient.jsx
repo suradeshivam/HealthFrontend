@@ -3,7 +3,9 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { toast, Bounce, ToastContainer } from "react-toastify";
 import axios from "axios";
-import { FiEye, FiEyeOff } from "react-icons/fi";
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 export default function ChangePasswordPatient() {
   const [patientInfo, setPatientInfo] = useState("");
@@ -108,66 +110,8 @@ export default function ChangePasswordPatient() {
 
   return (
     <>
-      {/* Mirrored from TwinsisTech.dreamstechnologies.com/html/template/change-password.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 16 Apr 2024 16:46:25 GMT */}
-      <meta charSet="utf-8" />
-      <title>TwinsisTech</title>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta
-        name="description"
-        content="The responsive professional TwinsisTech template offers many features, like scheduling appointments with  top doctors, clinics, and hospitals via voice, video call & chat."
-      />
-      <meta
-        name="keywords"
-        content="practo clone, TwinsisTech, doctor appointment, Practo clone html template, doctor booking template"
-      />
-      <meta
-        name="author"
-        content="Practo Clone HTML Template - Doctor Booking Template"
-      />
-      <meta
-        property="og:url"
-        content="https://TwinsisTech.dreamstechnologies.com/html/"
-      />
-      <meta property="og:type" content="website" />
-      <meta
-        property="og:title"
-        content="Doctors Appointment HTML Website Templates | TwinsisTech"
-      />
-      <meta
-        property="og:description"
-        content="The responsive professional TwinsisTech template offers many features, like scheduling appointments with  top doctors, clinics, and hospitals via voice, video call & chat."
-      />
-      <meta property="og:image" content="assets/img/preview-banner.jpg" />
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta
-        property="twitter:domain"
-        content="https://TwinsisTech.dreamstechnologies.com/html/"
-      />
-      <meta
-        property="twitter:url"
-        content="https://TwinsisTech.dreamstechnologies.com/html/"
-      />
-      <meta
-        name="twitter:title"
-        content="Doctors Appointment HTML Website Templates | TwinsisTech"
-      />
-      <meta
-        name="twitter:description"
-        content="The responsive professional TwinsisTech template offers many features, like scheduling appointments with  top doctors, clinics, and hospitals via voice, video call & chat."
-      />
-      <meta name="twitter:image" content="assets/img/preview-banner.jpg" />
-      <link href="assets/img/favicon.png" rel="icon" />
-      <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
-      <link
-        rel="stylesheet"
-        href="assets/plugins/fontawesome/css/fontawesome.min.css"
-      />
-      <link
-        rel="stylesheet"
-        href="assets/plugins/fontawesome/css/all.min.css"
-      />
-      <link rel="stylesheet" href="assets/css/feather.css" />
-      <link rel="stylesheet" href="assets/css/custom.css" />
+   
+    
       <div className="main-wrapper">
         <div className="breadcrumb-bar-two">
           <div className="container">
@@ -231,13 +175,7 @@ export default function ChangePasswordPatient() {
                             <span>Dependent</span>
                           </Link>
                         </li>
-                        {/* <li>
-                      <a href="chat.html">
-                        <i className="fas fa-comments" />
-                        <span>Message</span>
-                        <small className="unread-msg">23</small>
-                      </a>
-                    </li> */}
+                    
 
                         <li>
                           <Link to="/orders">
@@ -283,7 +221,7 @@ export default function ChangePasswordPatient() {
                       <div className="col-md-12 col-lg-6">
                         <div className="mb-3">
                           <label className="mb-2">Old Passworddddd</label>
-                          <div className="d-flex">
+                          <div className="pass-group d-flex">
                             <input
                               value={oldPassword}
                               type={showOldPassword ? "text" : "password"}
@@ -297,20 +235,17 @@ export default function ChangePasswordPatient() {
                                 },
                               })}
                               onChange={(e) => setOldPassword(e.target.value)}
-                              className="form-control"
+                              className="form-control pass-input"
                             />
-                            <button
-                              type="button"
+                            <span
+                           
                               onClick={() =>
                                 setShowOldPassword(!showOldPassword)
                               }
-                              className="">
-                              {showOldPassword ? (
-                                <FiEyeOff className="text-gray-500" />
-                              ) : (
-                                <FiEye className="text-gray-500" />
-                              )}
-                            </button>
+                              className="toggle-password">
+                              <FontAwesomeIcon icon={showOldPassword ? 
+                            faEyeSlash : faEye}/>
+                            </span>
                             {errors.password && (
                               <p className="text-red-500 text-xs italic">
                                 {errors.password.message}
@@ -320,7 +255,7 @@ export default function ChangePasswordPatient() {
                         </div>
                         <div className="mb-3">
                           <label className="mb-2">New Password</label>
-                          <div className="d-flex">
+                          <div className="pass-group d-flex">
                             <input
                               value={newPassword}
                               type={showPassword ? "text" : "password"}
@@ -334,18 +269,14 @@ export default function ChangePasswordPatient() {
                                 },
                               })}
                               onChange={(e) => setNewPassword(e.target.value)}
-                              className="form-control"
+                              className="form-control pass-input"
                             />
-                            <button
-                              type="button"
+                            <span
+                              
                               onClick={() => setShowPassword(!showPassword)}
-                              className="">
-                              {showPassword ? (
-                                <FiEyeOff className="text-gray-500" />
-                              ) : (
-                                <FiEye className="text-gray-500" />
-                              )}
-                            </button>
+                              className="toggle-password">
+                              <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                            </span>
                             {errors.password && (
                               <p className="text-red-500 text-xs italic">
                                 {errors.password.message}
@@ -355,7 +286,7 @@ export default function ChangePasswordPatient() {
                         </div>
                         <div className="mb-3">
                           <label className="mb-2">Confirm Password</label>
-                          <div className="d-flex">
+                          <div className="pass-group d-flex">
                             <input
                               value={confirmPassword}
                               type={showConfirmPassword ? "text" : "password"}
@@ -371,20 +302,15 @@ export default function ChangePasswordPatient() {
                               onChange={(e) =>
                                 setConfirmPassword(e.target.value)
                               }
-                              className="form-control"
+                              className="form-control pass-input"
                             />
-                            <button
-                              type="button"
+                            <span
                               onClick={() =>
                                 setShowConfirmPassword(!showConfirmPassword)
                               }
-                              className="">
-                              {showConfirmPassword ? (
-                                <FiEyeOff className="text-gray-500" />
-                              ) : (
-                                <FiEye className="text-gray-500" />
-                              )}
-                            </button>
+                              className="toggle-password">
+                               <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} />
+                            </span>
                             {errors.password && (
                               <p className="text-red-500 text-xs italic">
                                 {errors.password.message}

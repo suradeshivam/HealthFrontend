@@ -5,6 +5,8 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 export default function ChangePassword() {
   const {
@@ -154,12 +156,7 @@ export default function ChangePassword() {
                           <span>Dashboard</span>
                         </Link>
                       </li>
-                      {/* <li>
-                        <Link to="/appointments">
-                          <i className="fas fa-calendar-check" />
-                          <span>Appointments</span>
-                        </Link>
-                      </li> */}
+                   
                       <li>
                         <Link to="/schedule">
                           <i className="fas fa-hourglass-start" />
@@ -208,7 +205,7 @@ export default function ChangePassword() {
                     <div className="col-md-12 col-lg-6">
                       <div className="mb-3">
                         <label className="mb-2">Old Password</label>
-                        <div className="d-flex">
+                        <div className=" pass-group d-flex">
                           <input
                             value={oldPassword}
                             type={showOldPassword ? "text" : "password"}
@@ -222,18 +219,15 @@ export default function ChangePassword() {
                               },
                             })}
                             onChange={(e) => setOldPassword(e.target.value)}
-                            className="form-control"
+                            className="form-control pass-input"
                           />
-                          <button
-                            type="button"
+                          <span
+                           
                             onClick={() => setShowOldPassword(!showOldPassword)}
-                            className="">
-                            {showOldPassword ? (
-                              <FiEyeOff className="text-gray-500" />
-                            ) : (
-                              <FiEye className="text-gray-500" />
-                            )}
-                          </button>
+                            className="toggle-password">
+                            <FontAwesomeIcon icon={showOldPassword ? 
+                            faEyeSlash : faEye}/>
+                          </span>
                           {errors.password && (
                             <p className="text-red-500 text-xs italic">
                               {errors.password.message}
@@ -243,7 +237,7 @@ export default function ChangePassword() {
                       </div>
                       <div className="mb-3">
                         <label className="mb-2">New Password</label>
-                        <div className="d-flex">
+                        <div className="pass-group d-flex">
                           <input
                             value={newPassword}
                             type={showPassword ? "text" : "password"}
@@ -257,18 +251,14 @@ export default function ChangePassword() {
                               },
                             })}
                             onChange={(e) => setNewPassword(e.target.value)}
-                            className="form-control"
+                            className="form-control pass-input"
                           />
-                          <button
-                            type="button"
+                          <span
+                          
                             onClick={() => setShowPassword(!showPassword)}
-                            className="">
-                            {showPassword ? (
-                              <FiEyeOff className="text-gray-500" />
-                            ) : (
-                              <FiEye className="text-gray-500" />
-                            )}
-                          </button>
+                            className="toggle-password">
+                            <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                          </span>
                           {errors.password && (
                             <p className="text-red-500 text-xs italic">
                               {errors.password.message}
@@ -278,7 +268,7 @@ export default function ChangePassword() {
                       </div>
                       <div className="mb-3">
                         <label className="mb-2">Confirm Password</label>
-                        <div className="d-flex">
+                        <div className="pass-group d-flex">
                           <input
                             value={confirmPassword}
                             type={showConfirmPassword ? "text" : "password"}
@@ -292,20 +282,16 @@ export default function ChangePassword() {
                               },
                             })}
                             onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="form-control"
+                            className="form-control pass-input"
                           />
-                          <button
-                            type="button"
+                          <span
+                            
                             onClick={() =>
                               setShowConfirmPassword(!showConfirmPassword)
                             }
-                            className="">
-                            {showConfirmPassword ? (
-                              <FiEyeOff className="text-gray-500" />
-                            ) : (
-                              <FiEye className="text-gray-500" />
-                            )}
-                          </button>
+                            className="toggle-password">
+                           <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} />
+                          </span>
                           {errors.password && (
                             <p className="text-red-500 text-xs italic">
                               {errors.password.message}

@@ -3,9 +3,11 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-import { FiEye, FiEyeOff } from "react-icons/fi";
+
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 export default function DoctorRegister() {
   const location = useLocation();
@@ -97,8 +99,8 @@ export default function DoctorRegister() {
                       <h3>
                         {role === "doctor"
                           ? "Doctor Register"
-                          : "User Register"}
-                        <a href="register.html">Not a Doctor?</a>
+                          : "Patient Register"}
+                        <a href="register.html"></a>
                       </h3>
                     </div>
                     <form onSubmit={handleSubmit(onSubmit)}>
@@ -145,7 +147,7 @@ export default function DoctorRegister() {
                       </div>
                       <div className="mb-2">
                         <label className="mt-2">Create Password</label>
-                        <div className="d-flex">
+                        <div className="pass-group d-flex">
                           <input
                             type={showPassword ? "text" : "password"}
                             placeholder="Password"
@@ -158,18 +160,19 @@ export default function DoctorRegister() {
                                   "Password must contain at least 8 characters, one uppercase letter, one number, and one special character",
                               },
                             })}
-                            className="form-control floating"
+                            className="form-control pass-input"
+                            
+                          /> 
+                          <span
+                           
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="toggle-password">
+                            <FontAwesomeIcon icon={showPassword ? 
+                            faEyeSlash : faEye}
                           />
-                          <button
-                            type="button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            className="">
-                            {showPassword ? (
-                              <FiEyeOff className="text-gray-500" />
-                            ) : (
-                              <FiEye className="text-gray-500" />
-                            )}
-                          </button>
+                          
+                        </span>
+                         
                           {errors.password && (
                             <p className="text-red-500 text-xs italic">
                               {errors.password.message}
@@ -179,7 +182,7 @@ export default function DoctorRegister() {
                       </div>
                       <div className="mb-2">
                         <label className="mt-2">Confirm Password</label>
-                        <div className="d-flex">
+                        <div className=" pass-group d-flex">
                           <input
                             placeholder="Confirm Password"
                             type={showConfirmPassword ? "text" : "password"}
@@ -189,20 +192,18 @@ export default function DoctorRegister() {
                                 value === getValues("password") ||
                                 "Passwords do not match",
                             })}
-                            className="form-control floating"
+                            className="form-control pass-input"
                           />
-                          <button
-                            type="button"
+                          <span
+                           
                             onClick={() =>
                               setShowConfirmPassword((prev) => !prev)
                             }
-                            className="">
-                            {showConfirmPassword ? (
-                              <FiEyeOff className="text-gray-500" />
-                            ) : (
-                              <FiEye className="text-gray-500" />
-                            )}
-                          </button>
+                            className="toggle-password">
+                            <FontAwesomeIcon icon={showConfirmPassword ? (faEyeSlash)
+                             : (faEye)}
+                          />
+                          </span>
                           {errors.confirmPassword && (
                             <p className="text-red-500 text-xs italic">
                               {errors.confirmPassword.message}

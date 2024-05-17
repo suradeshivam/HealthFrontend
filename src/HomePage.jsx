@@ -182,11 +182,11 @@ useEffect ( ()=>{
                     <span />
                   </span>
                 </a>
-                <Link to="/index" className="navbar-brand logo">
+                <Link to="/" className="navbar-brand logo">
 
 
                    <img src="assets/img/favicon/20240505_203516.png" className="img-fluid" alt="Logo" /> 
-                  {/* <h3>TwinsDoc</h3> */}
+                  
                 </Link>
               </div>
 

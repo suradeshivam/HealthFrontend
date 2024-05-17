@@ -10,7 +10,7 @@ export default function Footer() {
             <div className="col-lg-3 col-md-4">
               <div className="footer-widget footer-about">
                 <div className="footer-logo">
-                  <Link to="/index" className="navbar-brand logo">
+                  <Link to="/" className="navbar-brand logo">
                     <img
                       src="assets/img/favicon/20240505_203516.png"
                       className="img-fluid"
@@ -34,14 +34,14 @@ export default function Footer() {
                     <h2 className="footer-title">For Patients</h2>
                     <ul>
                       <li>
-                        <Link to="/search2">Search for Doctors</Link>
+                        <Link to="/docsearch">Search for Doctors</Link>
                       </li>
 
                       <li>
                         <Link to="/login">Login</Link>
                       </li>
                       <li>
-                        <Link to="/patient-signup">Register</Link>
+                        <Link to="/signup?role=user">Register</Link>
                       </li>
                     </ul>
                   </div>
@@ -54,7 +54,7 @@ export default function Footer() {
                         <Link to="/login">Login</Link>
                       </li>
                       <li>
-                        <Link to="/doctor-signup">Doctor Register</Link>
+                        <Link to="/signup?role=doctor">Doctor Register</Link>
                       </li>
                     </ul>
                   </div>

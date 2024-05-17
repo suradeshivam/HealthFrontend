@@ -253,9 +253,9 @@ console.log(selectedDate);
                           </div>
                         </div>
                         <div className="clinic-booking col-md-4 mt-3">
-                          <button className="apt-btn" onClick={handleSubmit}>
+                          <Link className="apt-btn" onClick={handleSubmit}>
                             Confirm & Pay
-                          </button>
+                          </Link>
                         </div>
                       </div>
                     </div>
