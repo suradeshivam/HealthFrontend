@@ -53,7 +53,7 @@ export default function ChangePassword() {
     }
 
     const result = await axios.put(
-      `https://healthbackend-3xh2.onrender.com/doctor/${userId}/updatePassword`,
+      `http://localhost:5000/doctor/${userId}/updatePassword`,
       {
         oldPassword,
         newPassword,
@@ -126,7 +126,10 @@ export default function ChangePassword() {
                   <div className="profile-info-widget">
                     <a href="#" className="booking-doc-img">
                       <img
-                       src={doctorInfo?.profilePicture || "assets/img/doctors/doctor-thumb-02.jpg"}
+                        src={
+                          doctorInfo?.profilePicture ||
+                          "assets/img/doctors/doctor-thumb-02.jpg"
+                        }
                         alt="assets/img/doctors/doctor-thumb-02.jpg"
                       />
                     </a>

@@ -103,7 +103,7 @@ export default function DoctorProfile() {
         console.log(fileName, file);
 
         const result = await axios.post(
-          "https://healthbackend-3xh2.onrender.com/service/uploadPdf",
+          "http://localhost:5000/service/uploadPdf",
           formData,
           {
             headers: {
@@ -277,149 +277,6 @@ export default function DoctorProfile() {
     }
   };
 
-  // const handleSubmit = async () => {
-  //   const isAuthenticated = localStorage.getItem("token");
-  //   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  //   const docInfo = JSON.parse(localStorage.getItem("docInfo"));
-
-  //   // console.log(
-  //   //   // docInfo.userId._id,
-  //   //   userName,
-  //   //   yearOfExperience,
-  //   //   fees,
-  //   //   dob,
-  //   //   aboutMe,
-  //   //   specialization,
-  //   //   state,
-  //   //   awardsNAchievements,
-  //   //   licenceNumber,
-  //   //   yearLicenceNumber,
-  //   //   address1,
-  //   //   address2,
-  //   //   city,
-  //   //   postalCode,
-  //   //   country,
-  //   //   education,
-  //   //   clinicName,
-  //   //   clinicAddress,
-  //   //   gender
-  //   // );
-
-  //   try {
-  //     const parts = dob.split("-");
-
-  //     // Rearrange the parts to form the "YYYY-MM-DD" format
-  //     const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
-
-  //     console.log(formattedDate);
-  //     if (docInfo) {
-  //       console.log("1");
-  //       const updatedDoctor = await axios.put(
-  //         `https://healthbackend-3xh2.onrender.com/doctor/${docInfo.userId._id}/update`,
-  //         {
-  //           userId: docInfo.userId._id,
-  //           profilePicture: pic,
-  //           name: userName,
-  //           yearOfExperience: yearOfExperience,
-  //           fees: fees,
-  //           dob: formattedDate,
-  //           about: aboutMe,
-  //           specialization: specialization,
-  //           state: state,
-  //           achievement: awards,
-  //           licenseNumber: licenceNumber,
-  //           yearOfIssued: yearLicenceNumber,
-  //           addressLine1: address1,
-  //           addressLine2: address2,
-  //           city: city,
-  //           zip: postalCode,
-  //           contry: country,
-  //           educationDetails: education,
-  //           clinicName: clinicName,
-  //           clinicAddress: clinicAddress,
-  //           gender: gender,
-  //         },
-  //         {
-  //           headers: {
-  //             authorization: isAuthenticated,
-  //           },
-  //         }
-  //       );
-
-  //       console.log(updatedDoctor);
-  //       localStorage.setItem(
-  //         "docInfo",
-  //         JSON.stringify(updatedDoctor.data.result)
-  //       );
-  //       // setDoctorInfo(updatedDoctor.data.result);
-  //       // console.log(doctorInfo);
-  //       console.log("doctor updated success navigatingto docprofile");
-  //     } else {
-  //       console.log(dob);
-  //       const tempDate = dob;
-  //       const [day, month, year] = tempDate.split("-");
-  //       const dateObject = new Date(year, month - 1, day, 12, 0, 0); // Setting time to 12:00:00
-
-  //       const tempformatted = dateObject.toISOString();
-
-  //       console.log(formattedDate);
-  //       const user = await axios.post(
-  //         `https://healthbackend-3xh2.onrender.com/doctor/create`,
-  //         {
-  //           userId: userInfo._id,
-  //           profilePicture: pic,
-  //           name: userName,
-  //           yearOfExperience: yearOfExperience,
-  //           fees: fees,
-  //           dob: tempformatted,
-  //           about: aboutMe,
-  //           specialization: specialization,
-  //           state: state,
-  //           achievement: awards,
-  //           licenseNumber: licenceNumber,
-  //           yearOfIssued: yearLicenceNumber,
-  //           addressLine1: address1,
-  //           addressLine2: address2,
-  //           city: city,
-  //           zip: postalCode,
-  //           contry: country,
-  //           educationDetails: education,
-  //           clinicName: clinicName,
-  //           clinicAddress: clinicAddress,
-  //           gender: gender,
-  //         },
-  //         {
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //             Authorization: isAuthenticated,
-  //           },
-  //         }
-  //       );
-
-  //       console.log(user);
-  //       localStorage.setItem(
-  //         "docInfo",
-  //         JSON.stringify(user.data.result.doctor)
-  //       );
-
-  //       toast("Profile Created Successfully");
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //     toast.error(error.response.data.message, {
-  //       position: "top-right",
-  //       autoClose: 3000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //       theme: "light",
-  //       transition: Bounce,
-  //     });
-  //   }
-  // };
-
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
@@ -519,7 +376,7 @@ export default function DoctorProfile() {
       if (docInfo) {
         console.log("1");
         const updatedDoctor = await axios.put(
-          `https://healthbackend-3xh2.onrender.com/doctor/${docInfo.userId._id}/update`,
+          `http://localhost:5000/doctor/${docInfo.userId._id}/update`,
           {
             userId: docInfo.userId._id,
             name: userName,
@@ -572,7 +429,7 @@ export default function DoctorProfile() {
         });
       } else {
         const user = await axios.post(
-          `https://healthbackend-3xh2.onrender.com/doctor/create`,
+          `http://localhost:5000/doctor/create`,
           {
             userId: userInfo._id,
             name: userName,
@@ -646,7 +503,7 @@ export default function DoctorProfile() {
         setPreview(reader.result); // Set preview image
         try {
           const res = await axios.post(
-            "https://healthbackend-3xh2.onrender.com/service/uploadImage",
+            "http://localhost:5000/service/uploadImage",
             {
               imageUrl: reader.result, // Use reader.result directly here
             },

@@ -1,29 +1,35 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
-const generateTimeSlots = () =>{
+const generateTimeSlots = () => {
   const slots = [];
   const startTime = new Date().setHours(0, 0, 0, 0); // Start time at 00:00 AM
   const endTime = new Date().setHours(23, 59, 59, 999); // End time at 11:59 PM
 
   for (let time = startTime; time <= endTime; time += 30 * 60 * 1000) {
-    const startTimeString = new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
-    const endTimeString = new Date(time + 30 * 60 * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+    const startTimeString = new Date(time).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+    const endTimeString = new Date(time + 30 * 60 * 1000).toLocaleTimeString(
+      [],
+      { hour: "2-digit", minute: "2-digit", hour12: true }
+    );
     slots.push(`${startTimeString} to ${endTimeString}`);
   }
 
   return slots;
-}
+};
 
 export default function ScheduleTime() {
-  const [slotDuration, setSlotDuration] = useState('30 mins');
+  const [slotDuration, setSlotDuration] = useState("30 mins");
   const [copyToAllDays, setCopyToAllDays] = useState(false);
-    const [schedule, setSchedule] = useState({});
+  const [schedule, setSchedule] = useState({});
   const [selectedSlots, setSelectedSlots] = useState({
     sunday: [],
     monday: [],
@@ -31,42 +37,43 @@ export default function ScheduleTime() {
     wednesday: [],
     thursday: [],
     friday: [],
-    saturday: []
+    saturday: [],
   });
   const [doctorInfo, setDoctorInfo] = useState("");
 
   // console.log(selectedSlots)
 
   const handleSlotClick = (day, slot) => {
-
     const newSlot = {
       time: slot,
       isBooked: false,
     };
-  
-    const isSelected = selectedSlots[day].some((selectedSlot) => selectedSlot.time === newSlot.time);
-  
+
+    const isSelected = selectedSlots[day].some(
+      (selectedSlot) => selectedSlot.time === newSlot.time
+    );
+
     if (isSelected) {
       setSelectedSlots({
         ...selectedSlots,
-        [day]: selectedSlots[day].filter((selectedSlot) => selectedSlot.time !== newSlot.time)
+        [day]: selectedSlots[day].filter(
+          (selectedSlot) => selectedSlot.time !== newSlot.time
+        ),
       });
     } else {
       setSelectedSlots({
         ...selectedSlots,
-        [day]: [...selectedSlots[day], newSlot]
+        [day]: [...selectedSlots[day], newSlot],
       });
     }
   };
-
-  
 
   const handleCopySlotsToAllDays = () => {
     if (copyToAllDays) {
       const mondaySlots = selectedSlots.monday;
       const updatedTimeSlots = { ...selectedSlots };
-      Object.keys(updatedTimeSlots).forEach(day => {
-        if (day !== 'monday' && day !== 'sunday') {
+      Object.keys(updatedTimeSlots).forEach((day) => {
+        if (day !== "monday" && day !== "sunday") {
           updatedTimeSlots[day] = [...mondaySlots];
         }
       });
@@ -74,39 +81,36 @@ export default function ScheduleTime() {
     } else {
       const mondaySlots = selectedSlots.monday;
       const updatedTimeSlots = { ...selectedSlots };
-      console.log(updatedTimeSlots)
-      Object.keys(updatedTimeSlots).forEach(day => {
-        if (day !== 'monday' && day !== 'sunday') {
+      console.log(updatedTimeSlots);
+      Object.keys(updatedTimeSlots).forEach((day) => {
+        if (day !== "monday" && day !== "sunday") {
           updatedTimeSlots[day] = [...mondaySlots];
         }
       });
       setSelectedSlots(updatedTimeSlots);
     }
-    setCopyToAllDays(prevState => !prevState);
+    setCopyToAllDays((prevState) => !prevState);
   };
-  
 
-  const handleSubmit = async () =>{
-
+  const handleSubmit = async () => {
     const isAuthenticated = localStorage.getItem("token");
 
     try {
-      const response = await axios.put(`https://healthbackend-3xh2.onrender.com/doctor/${schedule.userId._id}/update`,
-      {
-        schedules:selectedSlots,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: isAuthenticated,
+      const response = await axios.put(
+        `http://localhost:5000/doctor/${schedule.userId._id}/update`,
+        {
+          schedules: selectedSlots,
         },
-      }
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: isAuthenticated,
+          },
+        }
       );
 
+      // console.log(response);
 
-      // console.log(response); 
-
-     
       toast("Time slots updated successfully.", {
         position: "top-right",
         autoClose: 3000,
@@ -120,12 +124,12 @@ export default function ScheduleTime() {
       });
 
       const doctor = await axios.get(
-        `https://healthbackend-3xh2.onrender.com/doctor/${schedule.userId._id}`,
-        
+        `http://localhost:5000/doctor/${schedule.userId._id}`,
+
         {
           headers: {
             "Content-Type": "application/json",
-             Authorization: isAuthenticated,
+            Authorization: isAuthenticated,
           },
         }
       );
@@ -134,9 +138,7 @@ export default function ScheduleTime() {
         "docInfo",
         JSON.stringify(doctor.data.result.doctor)
       );
-
     } catch (error) {
-      
       toast.error("Failed to update time slots. Please try again later.", {
         position: "top-right",
         autoClose: 3000,
@@ -149,8 +151,7 @@ export default function ScheduleTime() {
         transition: Bounce,
       });
     }
-
-  }
+  };
 
   const handleLogout = () => {
     console.log("in here");
@@ -168,22 +169,18 @@ export default function ScheduleTime() {
     }
   };
 
- 
-
-  useEffect (()=>{
-    const t = JSON.parse(localStorage.getItem('docInfo'))
-    if(t){
-    setSchedule(t)
-    setSelectedSlots(t.schedules);
-    setDoctorInfo(t)
+  useEffect(() => {
+    const t = JSON.parse(localStorage.getItem("docInfo"));
+    if (t) {
+      setSchedule(t);
+      setSelectedSlots(t.schedules);
+      setDoctorInfo(t);
     }
-  },[])
-
+  }, []);
 
   return (
     <>
       <div className="main-wrapper">
-        
         <div className="breadcrumb-bar-two">
           <div className="container">
             <div className="row align-items-center inner-banner">
@@ -206,14 +203,17 @@ export default function ScheduleTime() {
         <div className="content">
           <div className="container">
             <div className="row">
-        <ToastContainer />
+              <ToastContainer />
               <div className="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
                 <div className="profile-sidebar">
                   <div className="widget-profile pro-widget-content">
                     <div className="profile-info-widget">
                       <a href="#" className="booking-doc-img">
                         <img
-                          src={doctorInfo?.profilePicture || "assets/img/doctors/doctor-thumb-02.jpg"}
+                          src={
+                            doctorInfo?.profilePicture ||
+                            "assets/img/doctors/doctor-thumb-02.jpg"
+                          }
                           alt="assets/img/doctors/doctor-thumb-02.jpg"
                         />
                       </a>
@@ -221,10 +221,12 @@ export default function ScheduleTime() {
                         <h3>Dr. {doctorInfo?.userId?.name}</h3>
                         <div className="patient-details ">
                           <h5 className="mb-0 ">
-                          {doctorInfo && doctorInfo?.educationDetails && doctorInfo?.educationDetails.map((edu, index) => (
-                          <p  key={index}>{edu.qualification}</p>
-                          ))}
-                           {/* &amp; {doctorInfo?.specialization} */}
+                            {doctorInfo &&
+                              doctorInfo?.educationDetails &&
+                              doctorInfo?.educationDetails.map((edu, index) => (
+                                <p key={index}>{edu.qualification}</p>
+                              ))}
+                            {/* &amp; {doctorInfo?.specialization} */}
                           </h5>
                         </div>
                       </div>
@@ -313,10 +315,11 @@ export default function ScheduleTime() {
                             </div>
                           </div>
                           <input
-              type="checkbox"
-              checked={copyToAllDays}
-              onChange={handleCopySlotsToAllDays}
-            /> Copy Monday slots to all days except Sunday
+                            type="checkbox"
+                            checked={copyToAllDays}
+                            onChange={handleCopySlotsToAllDays}
+                          />{" "}
+                          Copy Monday slots to all days except Sunday
                           <div className="row">
                             <div className="col-md-12">
                               <div className="card schedule-widget mb-0">
@@ -397,21 +400,61 @@ export default function ScheduleTime() {
                                       </a> */}
                                     </h4>
 
-                                
-     <div className="doc-times" style={{ gap: '1px' }}>
-  {generateTimeSlots().map((timeSlot, index) => (
-    <button
-      className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['sunday']?.includes(timeSlot) ? '' : ''}`} 
-      key={index}
-      onClick={() => handleSlotClick('sunday', timeSlot)}
-      style={{borderColor: selectedSlots['sunday']?.some((s)=>s.time === timeSlot) ? '#42c0fb' : '',color: selectedSlots['sunday']?.some((s)=>s.time === timeSlot) ? '#ffffff' : '',  backgroundColor:selectedSlots['sunday']?.some((s)=>s.time === timeSlot) ?  "#42c0fb":'',
-              border:selectedSlots['sunday']?.some((s)=>s.time === timeSlot) ?  "1px solid #42c0fb":'' }}
-    >
-      {timeSlot}
-    </button>
-  ))}
-</div>
-                                    
+                                    <div
+                                      className="doc-times"
+                                      style={{ gap: "1px" }}>
+                                      {generateTimeSlots().map(
+                                        (timeSlot, index) => (
+                                          <button
+                                            className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${
+                                              selectedSlots["sunday"]?.includes(
+                                                timeSlot
+                                              )
+                                                ? ""
+                                                : ""
+                                            }`}
+                                            key={index}
+                                            onClick={() =>
+                                              handleSlotClick(
+                                                "sunday",
+                                                timeSlot
+                                              )
+                                            }
+                                            style={{
+                                              borderColor: selectedSlots[
+                                                "sunday"
+                                              ]?.some(
+                                                (s) => s.time === timeSlot
+                                              )
+                                                ? "#42c0fb"
+                                                : "",
+                                              color: selectedSlots[
+                                                "sunday"
+                                              ]?.some(
+                                                (s) => s.time === timeSlot
+                                              )
+                                                ? "#ffffff"
+                                                : "",
+                                              backgroundColor: selectedSlots[
+                                                "sunday"
+                                              ]?.some(
+                                                (s) => s.time === timeSlot
+                                              )
+                                                ? "#42c0fb"
+                                                : "",
+                                              border: selectedSlots[
+                                                "sunday"
+                                              ]?.some(
+                                                (s) => s.time === timeSlot
+                                              )
+                                                ? "1px solid #42c0fb"
+                                                : "",
+                                            }}>
+                                            {timeSlot}
+                                          </button>
+                                        )
+                                      )}
+                                    </div>
                                   </div>
                                   <div
                                     id="slot_monday"
@@ -427,21 +470,59 @@ export default function ScheduleTime() {
                                       </a> */}
                                     </h4>
 
-                                 
-                                <div className="doc-times gap-lg-1">
-  {generateTimeSlots().map((timeSlot, index) => (
-    <button
-      className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['monday']?.includes(timeSlot) ? '' : ''}`}
-      key={index} 
-      onClick={() => handleSlotClick('monday', timeSlot)}
-      style={{borderColor: selectedSlots['monday']?.some((s)=>s.time === timeSlot) ? '#42c0fb' : '',color: selectedSlots['monday']?.some((s)=>s.time === timeSlot) ? '#ffffff' : '',  backgroundColor:selectedSlots['monday']?.some((s)=>s.time === timeSlot) ?  "#42c0fb":'',
-              border:selectedSlots['monday']?.some((s)=>s.time === timeSlot) ?  "1px solid #42c0fb":'' }}
-    >
-      {timeSlot}
-    </button>
-  ))}
-</div>
-
+                                    <div className="doc-times gap-lg-1">
+                                      {generateTimeSlots().map(
+                                        (timeSlot, index) => (
+                                          <button
+                                            className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${
+                                              selectedSlots["monday"]?.includes(
+                                                timeSlot
+                                              )
+                                                ? ""
+                                                : ""
+                                            }`}
+                                            key={index}
+                                            onClick={() =>
+                                              handleSlotClick(
+                                                "monday",
+                                                timeSlot
+                                              )
+                                            }
+                                            style={{
+                                              borderColor: selectedSlots[
+                                                "monday"
+                                              ]?.some(
+                                                (s) => s.time === timeSlot
+                                              )
+                                                ? "#42c0fb"
+                                                : "",
+                                              color: selectedSlots[
+                                                "monday"
+                                              ]?.some(
+                                                (s) => s.time === timeSlot
+                                              )
+                                                ? "#ffffff"
+                                                : "",
+                                              backgroundColor: selectedSlots[
+                                                "monday"
+                                              ]?.some(
+                                                (s) => s.time === timeSlot
+                                              )
+                                                ? "#42c0fb"
+                                                : "",
+                                              border: selectedSlots[
+                                                "monday"
+                                              ]?.some(
+                                                (s) => s.time === timeSlot
+                                              )
+                                                ? "1px solid #42c0fb"
+                                                : "",
+                                            }}>
+                                            {timeSlot}
+                                          </button>
+                                        )
+                                      )}
+                                    </div>
                                   </div>
                                   <div
                                     id="slot_tuesday"
@@ -457,18 +538,58 @@ export default function ScheduleTime() {
                                       </a> */}
                                     </h4>
                                     <div className="doc-times gap-lg-1">
-  {generateTimeSlots().map((timeSlot, index) => (
-    <button
-      className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['tuesday']?.includes(timeSlot) ? '' : ''}`}
-      key={index}
-      onClick={() => handleSlotClick('tuesday', timeSlot)}
-      style={{borderColor: selectedSlots['tuesday']?.some((s)=>s.time === timeSlot) ? '#42c0fb' : '',color: selectedSlots['tuesday']?.some((s)=>s.time === timeSlot) ? '#ffffff' : '',  backgroundColor:selectedSlots['tuesday']?.some((s)=>s.time === timeSlot) ?  "#42c0fb":'',
-      border:selectedSlots['tuesday']?.some((s)=>s.time === timeSlot) ?  "1px solid #42c0fb":'' }}
-    >
-      {timeSlot}
-    </button>
-  ))}
-</div>
+                                      {generateTimeSlots().map(
+                                        (timeSlot, index) => (
+                                          <button
+                                            className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${
+                                              selectedSlots[
+                                                "tuesday"
+                                              ]?.includes(timeSlot)
+                                                ? ""
+                                                : ""
+                                            }`}
+                                            key={index}
+                                            onClick={() =>
+                                              handleSlotClick(
+                                                "tuesday",
+                                                timeSlot
+                                              )
+                                            }
+                                            style={{
+                                              borderColor: selectedSlots[
+                                                "tuesday"
+                                              ]?.some(
+                                                (s) => s.time === timeSlot
+                                              )
+                                                ? "#42c0fb"
+                                                : "",
+                                              color: selectedSlots[
+                                                "tuesday"
+                                              ]?.some(
+                                                (s) => s.time === timeSlot
+                                              )
+                                                ? "#ffffff"
+                                                : "",
+                                              backgroundColor: selectedSlots[
+                                                "tuesday"
+                                              ]?.some(
+                                                (s) => s.time === timeSlot
+                                              )
+                                                ? "#42c0fb"
+                                                : "",
+                                              border: selectedSlots[
+                                                "tuesday"
+                                              ]?.some(
+                                                (s) => s.time === timeSlot
+                                              )
+                                                ? "1px solid #42c0fb"
+                                                : "",
+                                            }}>
+                                            {timeSlot}
+                                          </button>
+                                        )
+                                      )}
+                                    </div>
                                   </div>
                                   <div
                                     id="slot_wednesday"
@@ -484,18 +605,58 @@ export default function ScheduleTime() {
                                       </a> */}
                                     </h4>
                                     <div className="doc-times gap-lg-1">
-  {generateTimeSlots().map((timeSlot, index) => (
-    <button
-      className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['wednesday']?.includes(timeSlot) ? '' : ''}`}
-      key={index}
-      onClick={() => handleSlotClick('wednesday', timeSlot)}
-      style={{borderColor: selectedSlots['wednesday']?.some((s)=>s.time === timeSlot) ? '#42c0fb' : '',color: selectedSlots['wednesday']?.some((s)=>s.time === timeSlot) ? '#ffffff' : '',  backgroundColor:selectedSlots['wednesday']?.some((s)=>s.time === timeSlot) ?  "#42c0fb":'',
-              border:selectedSlots['wednesday']?.some((s)=>s.time === timeSlot) ?  "1px solid #42c0fb":'' }}
-    >
-      {timeSlot}
-    </button>
-  ))}
-</div>
+                                      {generateTimeSlots().map(
+                                        (timeSlot, index) => (
+                                          <button
+                                            className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${
+                                              selectedSlots[
+                                                "wednesday"
+                                              ]?.includes(timeSlot)
+                                                ? ""
+                                                : ""
+                                            }`}
+                                            key={index}
+                                            onClick={() =>
+                                              handleSlotClick(
+                                                "wednesday",
+                                                timeSlot
+                                              )
+                                            }
+                                            style={{
+                                              borderColor: selectedSlots[
+                                                "wednesday"
+                                              ]?.some(
+                                                (s) => s.time === timeSlot
+                                              )
+                                                ? "#42c0fb"
+                                                : "",
+                                              color: selectedSlots[
+                                                "wednesday"
+                                              ]?.some(
+                                                (s) => s.time === timeSlot
+                                              )
+                                                ? "#ffffff"
+                                                : "",
+                                              backgroundColor: selectedSlots[
+                                                "wednesday"
+                                              ]?.some(
+                                                (s) => s.time === timeSlot
+                                              )
+                                                ? "#42c0fb"
+                                                : "",
+                                              border: selectedSlots[
+                                                "wednesday"
+                                              ]?.some(
+                                                (s) => s.time === timeSlot
+                                              )
+                                                ? "1px solid #42c0fb"
+                                                : "",
+                                            }}>
+                                            {timeSlot}
+                                          </button>
+                                        )
+                                      )}
+                                    </div>
                                   </div>
                                   <div
                                     id="slot_thursday"
@@ -511,18 +672,58 @@ export default function ScheduleTime() {
                                       </a> */}
                                     </h4>
                                     <div className="doc-times gap-lg-1">
-  {generateTimeSlots().map((timeSlot, index) => (
-    <button
-      className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['thursday']?.includes(timeSlot) ? '' : ''}`}
-      key={index}
-      onClick={() => handleSlotClick('thursday', timeSlot)}
-      style={{borderColor: selectedSlots['thursday']?.some((s)=>s.time === timeSlot) ? '#42c0fb' : '',color: selectedSlots['thursday']?.some((s)=>s.time === timeSlot) ? '#ffffff' : '',  backgroundColor:selectedSlots['thursday']?.some((s)=>s.time === timeSlot) ?  "#42c0fb":'',
-              border:selectedSlots['thursday']?.some((s)=>s.time === timeSlot) ?  "1px solid #42c0fb":'' }}
-    >
-      {timeSlot}
-    </button>
-  ))}
-</div>
+                                      {generateTimeSlots().map(
+                                        (timeSlot, index) => (
+                                          <button
+                                            className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${
+                                              selectedSlots[
+                                                "thursday"
+                                              ]?.includes(timeSlot)
+                                                ? ""
+                                                : ""
+                                            }`}
+                                            key={index}
+                                            onClick={() =>
+                                              handleSlotClick(
+                                                "thursday",
+                                                timeSlot
+                                              )
+                                            }
+                                            style={{
+                                              borderColor: selectedSlots[
+                                                "thursday"
+                                              ]?.some(
+                                                (s) => s.time === timeSlot
+                                              )
+                                                ? "#42c0fb"
+                                                : "",
+                                              color: selectedSlots[
+                                                "thursday"
+                                              ]?.some(
+                                                (s) => s.time === timeSlot
+                                              )
+                                                ? "#ffffff"
+                                                : "",
+                                              backgroundColor: selectedSlots[
+                                                "thursday"
+                                              ]?.some(
+                                                (s) => s.time === timeSlot
+                                              )
+                                                ? "#42c0fb"
+                                                : "",
+                                              border: selectedSlots[
+                                                "thursday"
+                                              ]?.some(
+                                                (s) => s.time === timeSlot
+                                              )
+                                                ? "1px solid #42c0fb"
+                                                : "",
+                                            }}>
+                                            {timeSlot}
+                                          </button>
+                                        )
+                                      )}
+                                    </div>
                                   </div>
                                   <div
                                     id="slot_friday"
@@ -538,18 +739,58 @@ export default function ScheduleTime() {
                                       </a> */}
                                     </h4>
                                     <div className="doc-times gap-lg-1">
-  {generateTimeSlots().map((timeSlot, index) => (
-    <button
-      className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['friday']?.includes(timeSlot) ? '' : ''}`}
-      key={index}
-      onClick={() => handleSlotClick('friday', timeSlot)}
-      style={{borderColor: selectedSlots['friday']?.some((s)=>s.time === timeSlot) ? '#42c0fb' : '',color: selectedSlots['friday']?.some((s)=>s.time === timeSlot) ? '#ffffff' : '',  backgroundColor:selectedSlots['friday']?.some((s)=>s.time === timeSlot) ?  "#42c0fb":'',
-              border:selectedSlots['friday']?.some((s)=>s.time === timeSlot) ?  "1px solid #42c0fb":'' }}
-    >
-      {timeSlot}
-    </button>
-  ))}
-</div>
+                                      {generateTimeSlots().map(
+                                        (timeSlot, index) => (
+                                          <button
+                                            className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${
+                                              selectedSlots["friday"]?.includes(
+                                                timeSlot
+                                              )
+                                                ? ""
+                                                : ""
+                                            }`}
+                                            key={index}
+                                            onClick={() =>
+                                              handleSlotClick(
+                                                "friday",
+                                                timeSlot
+                                              )
+                                            }
+                                            style={{
+                                              borderColor: selectedSlots[
+                                                "friday"
+                                              ]?.some(
+                                                (s) => s.time === timeSlot
+                                              )
+                                                ? "#42c0fb"
+                                                : "",
+                                              color: selectedSlots[
+                                                "friday"
+                                              ]?.some(
+                                                (s) => s.time === timeSlot
+                                              )
+                                                ? "#ffffff"
+                                                : "",
+                                              backgroundColor: selectedSlots[
+                                                "friday"
+                                              ]?.some(
+                                                (s) => s.time === timeSlot
+                                              )
+                                                ? "#42c0fb"
+                                                : "",
+                                              border: selectedSlots[
+                                                "friday"
+                                              ]?.some(
+                                                (s) => s.time === timeSlot
+                                              )
+                                                ? "1px solid #42c0fb"
+                                                : "",
+                                            }}>
+                                            {timeSlot}
+                                          </button>
+                                        )
+                                      )}
+                                    </div>
                                   </div>
                                   <div
                                     id="slot_saturday"
@@ -565,18 +806,58 @@ export default function ScheduleTime() {
                                       </a> */}
                                     </h4>
                                     <div className="doc-times gap-lg-1">
-  {generateTimeSlots().map((timeSlot, index) => (
-    <button
-      className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${selectedSlots['saturday']?.includes(timeSlot) ? '' : ''}`}
-      key={index}
-      onClick={() => handleSlotClick('saturday', timeSlot)}
-      style={{borderColor: selectedSlots['saturday']?.some((s)=>s.time === timeSlot) ? '#42c0fb' : '',color: selectedSlots['saturday']?.some((s)=>s.time === timeSlot) ? '#ffffff' : '',  backgroundColor:selectedSlots['saturday']?.some((s)=>s.time === timeSlot) ?  "#42c0fb":'',
-              border:selectedSlots['saturday']?.some((s)=>s.time === timeSlot) ?  "1px solid #42c0fb":'' }}
-    >
-      {timeSlot}
-    </button>
-  ))}
-</div>
+                                      {generateTimeSlots().map(
+                                        (timeSlot, index) => (
+                                          <button
+                                            className={`col-lg-2 col-md-4 mx-auto doc-slot-list ${
+                                              selectedSlots[
+                                                "saturday"
+                                              ]?.includes(timeSlot)
+                                                ? ""
+                                                : ""
+                                            }`}
+                                            key={index}
+                                            onClick={() =>
+                                              handleSlotClick(
+                                                "saturday",
+                                                timeSlot
+                                              )
+                                            }
+                                            style={{
+                                              borderColor: selectedSlots[
+                                                "saturday"
+                                              ]?.some(
+                                                (s) => s.time === timeSlot
+                                              )
+                                                ? "#42c0fb"
+                                                : "",
+                                              color: selectedSlots[
+                                                "saturday"
+                                              ]?.some(
+                                                (s) => s.time === timeSlot
+                                              )
+                                                ? "#ffffff"
+                                                : "",
+                                              backgroundColor: selectedSlots[
+                                                "saturday"
+                                              ]?.some(
+                                                (s) => s.time === timeSlot
+                                              )
+                                                ? "#42c0fb"
+                                                : "",
+                                              border: selectedSlots[
+                                                "saturday"
+                                              ]?.some(
+                                                (s) => s.time === timeSlot
+                                              )
+                                                ? "1px solid #42c0fb"
+                                                : "",
+                                            }}>
+                                            {timeSlot}
+                                          </button>
+                                        )
+                                      )}
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -585,10 +866,13 @@ export default function ScheduleTime() {
                         </div>
                       </div>
                       <div className=" text-center">
-    <button type="submit"   className="btn btn-primary" onClick={()=>handleSubmit()}>
-      Save The Changes
-    </button>
-  </div>
+                        <button
+                          type="submit"
+                          className="btn btn-primary"
+                          onClick={() => handleSubmit()}>
+                          Save The Changes
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -597,8 +881,6 @@ export default function ScheduleTime() {
           </div>
         </div>
       </div>
-
-     
     </>
   );
 }

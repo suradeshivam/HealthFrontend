@@ -289,12 +289,12 @@ export default function Patientdashboard() {
     }
   };
 
-  console.log(today)
+  console.log(today);
 
   const handleJoin = (meetingId) => {
     // console.log(meetingId);
     navigate(`/room/${meetingId}`);
-  }
+  };
 
   useEffect(() => {
     const patientInfo = JSON.parse(localStorage.getItem("patientInfo"));
@@ -302,10 +302,8 @@ export default function Patientdashboard() {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     setUserInfo(userInfo);
     const isAuthenticated = localStorage.getItem("token");
-    console.log(patientInfo);
-    console.log(patientInfo._id);
     if (patientInfo) {
-      getAllAppointments(patientInfo.patient._id, isAuthenticated);
+      getAllAppointments(patientInfo._id, isAuthenticated);
     }
     if (userInfo.role !== "user") {
       navigate("/");
@@ -396,7 +394,7 @@ export default function Patientdashboard() {
                       <a href="#" className="booking-doc-img">
                         <img
                           src={
-                            patientInfo.patient?.profilePicture ||
+                            patientInfo?.profilePicture ||
                             "assets/img/doctors/doctor-thumb-02.jpg"
                           }
                           alt="assets/img/patients/patient.jpg"
@@ -671,20 +669,25 @@ export default function Patientdashboard() {
                                           </a>
                                           <a href="doctor-profile.html">
                                             {row?.doctor.userId.name}{" "}
-                                            <span>{row.doctor.specialization}</span>
+                                            <span>
+                                              {row.doctor.specialization}
+                                            </span>
                                           </a>
                                         </h2>
                                       </td>
                                       <td>
-                                      {new Date(
-                                                row.date
-                                              ).toDateString(row?.date)}
+                                        {new Date(row.date).toDateString(
+                                          row?.date
+                                        )}
                                       </td>
-                                    
+
                                       <td>
                                         <div className="table-action">
-                                          <button className="btn btn-sm bg-info-light me-2" onClick={() => handleJoin(row?.meetingId)}>
-                                            
+                                          <button
+                                            className="btn btn-sm bg-info-light me-2"
+                                            onClick={() =>
+                                              handleJoin(row?.meetingId)
+                                            }>
                                             Join
                                           </button>
                                           <button className="btn btn-sm bg-info-light">

@@ -97,7 +97,7 @@ export default function Dashboard() {
   const getAllAppointments = async (id, isAuthenticated) => {
     try {
       const data = await axios.post(
-        "https://healthbackend-3xh2.onrender.com/appointment/appointments",
+        "http://localhost:5000/appointment/appointments",
         {
           doctorId: id,
         },
@@ -498,13 +498,16 @@ export default function Dashboard() {
                                                   gap: "1rem",
                                                 }}>
                                                 <div>
-                                                
-                                                    <button className="btn btn-sm bg-success-light"
-                                                        onClick={()=>submitCode(patient?.meetingId)}
-                                                    >
-                                                      <i className="fas fa-check" />{" "}
-                                                      Join
-                                                    </button>
+                                                  <button
+                                                    className="btn btn-sm bg-success-light"
+                                                    onClick={() =>
+                                                      submitCode(
+                                                        patient?.meetingId
+                                                      )
+                                                    }>
+                                                    <i className="fas fa-check" />{" "}
+                                                    Join
+                                                  </button>
                                                 </div>
                                                 <div className="appointment-action">
                                                   <button

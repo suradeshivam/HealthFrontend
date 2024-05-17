@@ -5,9 +5,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export default function Checkout() {
-
-  const [PatientInfo,setPatientInfo] = useState(null);
-  console.log(PatientInfo)
+  const [PatientInfo, setPatientInfo] = useState(null);
+  console.log(PatientInfo);
   const {
     selectedDoctor,
     symptoms,
@@ -36,59 +35,61 @@ export default function Checkout() {
   );
 
   function parseTime(timeStr) {
-    const [time, modifier] = timeStr.split(' ');
-    let [hours, minutes] = time.split(':').map(Number);
-  
-    if (modifier === 'PM' && hours !== 12) {
+    const [time, modifier] = timeStr.split(" ");
+    let [hours, minutes] = time.split(":").map(Number);
+
+    if (modifier === "PM" && hours !== 12) {
       hours += 12;
-    } else if (modifier === 'AM' && hours === 12) {
+    } else if (modifier === "AM" && hours === 12) {
       hours = 0;
     }
-  
+
     return { hours, minutes };
   }
-  
+
   function convertToISO(dateStr, startTimeStr) {
     // Parse the date
-    const [day, month, year] = dateStr.split('-').map(Number);
-  
+    const [day, month, year] = dateStr.split("-").map(Number);
+
     // Parse the start time
-    const { hours: startHours, minutes: startMinutes } = parseTime(startTimeStr);
-  
+    const { hours: startHours, minutes: startMinutes } =
+      parseTime(startTimeStr);
+
     // Create a new Date object
-    const date = new Date(Date.UTC(year, month - 1, day, startHours, startMinutes));
-  
+    const date = new Date(
+      Date.UTC(year, month - 1, day, startHours, startMinutes)
+    );
+
     // Convert to ISO string
     const isoString = date.toISOString();
-  
+
     return isoString;
   }
-  
-  const dateStr = '17-05-2024';
-  const startTimeStr = '12:00 AM';
-  
+
+  const dateStr = "17-05-2024";
+  const startTimeStr = "12:00 AM";
+
   const isoString = convertToISO(dateStr, startTimeStr);
 
-console.log(isoString);
-console.log(selectedDate);
-// console.log(selectedSlotTime.substring(0,9));
+  console.log(isoString);
+  console.log(selectedDate);
+  // console.log(selectedSlotTime.substring(0,9));
 
   const handleSubmit = async () => {
     const isAuthenticated = localStorage.getItem("token");
     const patientInfo = JSON.parse(localStorage.getItem("patientInfo"));
     console.log(selectedDoctor, patientInfo);
 
-    console.log(selectedSlotTime.substring(0,9));
-    const date = convertToISO(selectedDate,selectedSlotTime.substring(0,9));
-    
+    console.log(selectedSlotTime.substring(0, 9));
+    const date = convertToISO(selectedDate, selectedSlotTime.substring(0, 9));
 
     try {
       const result = await axios.post(
-        `https://healthbackend-3xh2.onrender.com/appointment/create`,
+        `http://localhost:5000/appointment/create`,
         {
           patientId: patientInfo.patient._id,
           doctorId: selectedDoctor._id,
-          slot : selectedSlotTime,
+          slot: selectedSlotTime,
           date: date,
           vitals: {
             heartRate: heartRate,
@@ -112,12 +113,10 @@ console.log(selectedDate);
     }
   };
 
-  useEffect (() =>{
-
+  useEffect(() => {
     const patientInfo = JSON.parse(localStorage.getItem("patientInfo"));
     setPatientInfo(patientInfo);
-
-  },[]);
+  }, []);
   return (
     <>
       <div className="main-wrapper">
@@ -144,7 +143,11 @@ console.log(selectedDate);
                           <div className="col-md-6 col-sm-12">
                             <div className="mb-3 card-label">
                               <label className="mb-2">Name</label>
-                              <input className="form-control" value={PatientInfo?.patient?.name} type="text" />
+                              <input
+                                className="form-control"
+                                value={PatientInfo?.patient?.name}
+                                type="text"
+                              />
                             </div>
                           </div>
 

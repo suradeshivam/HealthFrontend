@@ -29,7 +29,6 @@ export default function Patientprofile() {
   };
 
   const deleteObservation = (index) => {
-    
     const newObservations = [...observations];
     newObservations.splice(index, 1);
     setObservations(newObservations);
@@ -107,7 +106,7 @@ export default function Patientprofile() {
       console.log("1");
 
       const response = await axios.put(
-        "https://healthbackend-3xh2.onrender.com/appointment/prescription",
+        "http://localhost:5000/appointment/prescription",
         {
           appointmentId: selectedPatient._id,
           newPrescription: prescriptions,
@@ -158,7 +157,7 @@ export default function Patientprofile() {
     console.log("askahu");
     const isAuthenticated = localStorage.getItem("token");
     const response = await axios.get(
-      `https://healthbackend-3xh2.onrender.com/appointment/${selectedPatient._id}`,
+      `http://localhost:5000/appointment/${selectedPatient._id}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -176,14 +175,14 @@ export default function Patientprofile() {
     navigate("/doctor"); // Navigate to Dashboard page when the back button is clicked
   };
 
-//   console.log(observations) 
+  //   console.log(observations)
 
   const handleSaveObservation = async () => {
     const appointmentId = selectedPatient._id;
     const isAuthenticated = localStorage.getItem("token");
     try {
       const observationres = await axios.put(
-        `https://healthbackend-3xh2.onrender.com/appointment/observation/`,
+        `http://localhost:5000/appointment/observation/`,
         {
           appointmentId: appointmentId,
           newObservations: observations,
@@ -208,10 +207,9 @@ export default function Patientprofile() {
         theme: "light",
         transition: Bounce,
       });
-   
 
       const appointment = await axios.get(
-        `https://healthbackend-3xh2.onrender.com/appointment/${appointmentId}`,
+        `http://localhost:5000/appointment/${appointmentId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -224,33 +222,32 @@ export default function Patientprofile() {
       setSingleAppointment(appointment.data.result);
     } catch (error) {
       console.log(error);
-        toast.error("Internal Server Error", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          transition: Bounce,
-        });
+      toast.error("Internal Server Error", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   };
 
   // console.log(singleAppointment)
 
   useEffect(() => {
-      getOneAppointment();
-      const doctorInfo = JSON.parse(localStorage.getItem("docInfo"));
-      if (doctorInfo) {
+    getOneAppointment();
+    const doctorInfo = JSON.parse(localStorage.getItem("docInfo"));
+    if (doctorInfo) {
       setDoctorInfo(doctorInfo);
     }
     setPrescriptions(selectedPatient?.prescriptions);
     setObservations(selectedPatient?.observations);
   }, []);
 
-  
   return (
     <div>
       <div className="main-wrapper">
@@ -336,8 +333,8 @@ export default function Patientprofile() {
                           DOB{" "}
                           <span>
                             {new Date(
-                                                selectedPatient.patient?.dob
-                                              ).toDateString(selectedPatient.patient?.dob)}
+                              selectedPatient.patient?.dob
+                            ).toDateString(selectedPatient.patient?.dob)}
                           </span>
                         </li>
                         <li>
@@ -375,7 +372,6 @@ export default function Patientprofile() {
                     </li>
                   </ul>
                 </div>
-              
               </div>
               <div className="col-md-7 col-lg-8 col-xl-9">
                 <div className="row">
@@ -391,7 +387,7 @@ export default function Patientprofile() {
                         </div>
                         <h5>Heart Rate</h5>
                         <h6>
-                        {selectedPatient?.vitals?.heartRate}  <sub>bpm</sub>
+                          {selectedPatient?.vitals?.heartRate} <sub>bpm</sub>
                         </h6>
                       </div>
                     </div>
@@ -408,7 +404,7 @@ export default function Patientprofile() {
                         </div>
                         <h5>Body Temperature</h5>
                         <h6>
-                        {selectedPatient?.vitals?.temparature} <sub>C</sub>
+                          {selectedPatient?.vitals?.temparature} <sub>C</sub>
                         </h6>
                       </div>
                     </div>
@@ -440,7 +436,8 @@ export default function Patientprofile() {
                         </div>
                         <h5>Blood Pressure</h5>
                         <h6>
-                        {selectedPatient?.vitals?.bloodPressure}  <sub>mg/dl</sub>
+                          {selectedPatient?.vitals?.bloodPressure}{" "}
+                          <sub>mg/dl</sub>
                         </h6>
                       </div>
                     </div>
@@ -593,7 +590,7 @@ export default function Patientprofile() {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                {/* {observations.map((observation, index) => (
+                                  {/* {observations.map((observation, index) => (
               <>
                 <div className="modal-body">
                   <textarea
@@ -614,51 +611,51 @@ export default function Patientprofile() {
                 </div>
               </>
             ))} */}
-                                   {observations.map((observation, index) => (
-                                <tr className=" " key={index}>
-                                  <td className="text-sm mt-2 p-4  ">
-                                  <textarea
-                    className="form-control"
-                    rows="5"
-                                      name="name"
-                                      value={observation}
-                                      onChange={(e) => handleObservationChange(e, index)}
-                                      disabled={!isEditing}
-                                    //   className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
-                                    ></textarea>
-                                  </td>
-                                  <td className="flex gap-1 border-l-2 mt-2 justify-center d-flex flex-row">
-                                    {/* <button className="sm:text-white font-bold text-green-500 sm:bg-green-500  p-1 px-2 sm:p-1 sm:px-3 sm:text-sm rounded-lg">Edit</button> */}
+                                  {observations.map((observation, index) => (
+                                    <tr className=" " key={index}>
+                                      <td className="text-sm mt-2 p-4  ">
+                                        <textarea
+                                          className="form-control"
+                                          rows="5"
+                                          name="name"
+                                          value={observation}
+                                          onChange={(e) =>
+                                            handleObservationChange(e, index)
+                                          }
+                                          disabled={!isEditing}
+                                          //   className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+                                        ></textarea>
+                                      </td>
+                                      <td className="flex gap-1 border-l-2 mt-2 justify-center d-flex flex-row">
+                                        {/* <button className="sm:text-white font-bold text-green-500 sm:bg-green-500  p-1 px-2 sm:p-1 sm:px-3 sm:text-sm rounded-lg">Edit</button> */}
+                                        <div>
+                                          <button
+                                            className="btn btn-primary patient-graph-box"
+                                            onClick={handleEditClick}>
+                                            <MdOutlineSaveAlt className="mt-1" />
+                                            Edit
+                                          </button>
+                                        </div>
+                                        <button
+                                          className="btn mb-1 bg-danger-light patient-graph-box"
+                                          onClick={() =>
+                                            deleteObservation(index)
+                                          }>
+                                          Delete
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  ))}
+                                  <div className="flex justify-between p-4">
                                     <div>
-              <button
-                className="btn btn-primary patient-graph-box"
-                onClick={handleEditClick} 
-                >
-                
-                <MdOutlineSaveAlt className="mt-1" />
-                Edit
-              </button>
-            </div>
-                                  <button className="btn mb-1 bg-danger-light patient-graph-box" onClick={()=>deleteObservation(index)}>Delete</button>
-                                  
-                                    
-                                  </td>
-                                </tr>
-                              ))}
-                               <div className="flex justify-between p-4">
-                             
-                              <div>
-              <button
-                className="btn btn-primary patient-graph-box"
-                onClick={handleSaveObservation}
-                >
-                
-                <MdOutlineSaveAlt className="mt-1" />
-                Save
-              </button>
-            </div>
-                           
-                              </div>
+                                      <button
+                                        className="btn btn-primary patient-graph-box"
+                                        onClick={handleSaveObservation}>
+                                        <MdOutlineSaveAlt className="mt-1" />
+                                        Save
+                                      </button>
+                                    </div>
+                                  </div>
                                 </tbody>
                               </table>
                             </div>
@@ -1519,7 +1516,6 @@ export default function Patientprofile() {
             </div>
           </div>
         </div>
-
       </div>
       <div className="modal fade custom-modal" id="add_medical_records">
         <div
@@ -1784,8 +1780,6 @@ export default function Patientprofile() {
           </div>
         </div>
       </div>
-
-     
     </div>
   );
 }

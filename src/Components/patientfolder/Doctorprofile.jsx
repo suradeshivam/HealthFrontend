@@ -11,12 +11,11 @@ export default function Doctorprofile() {
     setSelectedSlotDay,
     selectedSlotTime,
     setSelectedSlotTime,
-    selectedDate, 
-    setSelectedDate
+    selectedDate,
+    setSelectedDate,
   } = OrderState();
   const [singleDoctor, setSingleDoctor] = useState([]);
   const [selectedSlot, setSelectedSlot] = useState(null);
-
 
   const handleSlotSelect = (index, slot, selectedDay) => {
     setSelectedSlot(index);
@@ -50,25 +49,34 @@ export default function Doctorprofile() {
   ];
 
   const monthNames = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
-  
+
   const currentDate = new Date();
 
   const currentDayIndex = currentDate.getDay();
   const todayDate = currentDate.getDate();
   const currentMonth = currentDate.getMonth();
   const todayYear = currentDate.getFullYear();
-  const dayIndex = currentDate.getDay()
+  const dayIndex = currentDate.getDay();
 
   const [selectedDay, setSelectedDay] = useState(null);
   console.log(currentDate.getDay());
-  
 
-  const handleDayClick = (day,index) => {
+  const handleDayClick = (day, index) => {
     setSelectedDay(day);
-    setSelectedDate(dates[index])
+    setSelectedDate(dates[index]);
   };
 
   const getFormattedDate = (date, month, year) => {
@@ -76,29 +84,30 @@ export default function Doctorprofile() {
     const formattedMonth = month < 9 ? `0${month + 1}` : month + 1;
     return `${formattedDate}-${formattedMonth}-${year}`;
   };
-  
+
   const renderDates = () => {
     const dates = [];
     for (let i = 0; i < daysOfWeek.length; i++) {
       const date = new Date(currentDate);
       date.setDate(todayDate + i);
-      dates.push(getFormattedDate(date.getDate(), date.getMonth(), date.getFullYear()));
+      dates.push(
+        getFormattedDate(date.getDate(), date.getMonth(), date.getFullYear())
+      );
     }
     return dates;
   };
-  
+
   const dates = renderDates();
 
   const renderDayName = (index) => {
     const dayIndex = (currentDayIndex + index - 1) % 7;
     return daysOfWeek[dayIndex];
   };
-  
 
   const getSingleDoctorProfile = async () => {
     const isAuthenticated = localStorage.getItem("token");
     const doctor = await axios.get(
-      `https://healthbackend-3xh2.onrender.com/patient/search/${selectedDoctor.userId._id}`,
+      `http://localhost:5000/patient/search/${selectedDoctor.userId._id}`,
       {
         headers: {
           authorization: isAuthenticated,
@@ -427,7 +436,9 @@ export default function Doctorprofile() {
                             <div className="row">
                               <div className="col-12 col-sm-4 col-md-6">
                                 <h4 className="mb-1">{`${todayDate}-${monthNames[currentMonth]}-${todayYear}`}</h4>
-                                <p className="text-muted">{daysOfWeek[dayIndex-1]}</p>
+                                <p className="text-muted">
+                                  {daysOfWeek[dayIndex - 1]}
+                                </p>
                               </div>
                             </div>
                             <div className="card booking-schedule schedule-widget">
@@ -444,21 +455,24 @@ export default function Doctorprofile() {
                                         {daysOfWeek.map((day, index) => (
                                           <li
                                             key={index}
-                                            onClick={() => handleDayClick(renderDayName(index),index)}
+                                            onClick={() =>
+                                              handleDayClick(
+                                                renderDayName(index),
+                                                index
+                                              )
+                                            }
                                             // className={selectedDay != null ? "selected" : ""}
-                                            
-                                            >
-                                            
+                                          >
                                             <span>{renderDayName(index)}</span>
-                                            
+
                                             <span className="slot-date">
-                                              {index === 0 ? "Today " :null}
+                                              {index === 0 ? "Today " : null}
                                               {dates[index]}
                                               {/* <small className="slot-year">- {todayYear}</small> */}
                                             </span>
                                           </li>
                                         ))}
-                                        
+
                                         <li className="right-arrow">
                                           <a href="javascript:void(0)">
                                             <i className="fa fa-chevron-right" />

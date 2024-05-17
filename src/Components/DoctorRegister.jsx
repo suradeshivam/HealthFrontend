@@ -52,11 +52,9 @@ export default function DoctorRegister() {
       // Include status field set to "active"
       data.status = "active";
 
-      console.log("in here");
-
       // Send form data to backend
       const response = await axios.post(
-        "https://healthbackend-3xh2.onrender.com/user/signup",
+        "http://localhost:5000/user/signup",
         data,
         {
           headers: {
@@ -65,9 +63,7 @@ export default function DoctorRegister() {
         }
       );
 
-      // setLoading(false); // Set loading to false after successful submission
-      console.log("Form submitted:", data);
-      console.log("Response from backend:", response.data);
+      toast("Account Create Successfully");
 
       // Navigate to the OTP page after successful signup
       navigate("/login", { state: { phoneNumber: data.mobileNumber } });
@@ -85,6 +81,7 @@ export default function DoctorRegister() {
             <div className="col-md-8 offset-md-2">
               <div className="account-content">
                 <div className="row align-items-center justify-content-center">
+                  <ToastContainer />
                   <div className="col-md-7 col-lg-6 login-left">
                     <img
                       src="assets/img/login-banner.png"
