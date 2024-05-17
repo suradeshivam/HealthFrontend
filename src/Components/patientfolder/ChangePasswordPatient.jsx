@@ -134,26 +134,25 @@ export default function ChangePasswordPatient() {
                       <a href="#" className="booking-doc-img">
                         <img
                           src={
-                            patientInfo.patient?.profilePicture ||
+                            patientInfo?.profilePicture ||
                             "assets/img/doctors/doctor-thumb-02.jpg"
                           }
                           alt="assets/img/patients/patient.jpg"
                         />
                       </a>
                       <div className="profile-det-info">
-                        <h3>{patientInfo?.patient?.userId?.name}</h3>
+                        <h3>{patientInfo?.userId?.name}</h3>
                         <div className="patient-details">
                           <h5>
                             <i className="fas fa-birthday-cake" />
-                           
-                            {new Date(patientInfo?.patient?.dob).toDateString(
-                              patientInfo?.patient?.dob
+                            {new Date(patientInfo?.dob).toDateString(
+                              patientInfo?.dob
                             )}
-                            , {patientInfo?.patient?.age} years
+                            , {patientInfo?.age} years
                           </h5>
                           <h5 className="mb-0">
                             <i className="fas fa-map-marker-alt" />{" "}
-                            {patientInfo?.patient?.city}, {patientInfo?.patient?.contry}
+                            {patientInfo?.city}, {patientInfo?.contry}
                           </h5>
                         </div>
                       </div>

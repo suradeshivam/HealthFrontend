@@ -97,7 +97,7 @@ export default function Dashboard() {
   const getAllAppointments = async (id, isAuthenticated) => {
     try {
       const data = await axios.post(
-        "http://localhost:5000/appointment/appointments",
+        "https://healthbackend-3xh2.onrender.com/appointment/appointments",
         {
           doctorId: id,
         },

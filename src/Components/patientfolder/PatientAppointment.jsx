@@ -7,7 +7,8 @@ export default function SinglePhysicianDisplay() {
     const {selectedAppointment} = OrderState();
     
     const [patientInfo, setPatientInfo] = useState("");
-    
+    const [singleAppointmentDetails, setSingleAppointmentDetails] = useState([]);
+
   const [prescriptions, setPrescriptions] = useState([
     {
       date: '14 Nov 2023',
@@ -208,6 +209,7 @@ export default function SinglePhysicianDisplay() {
           );
     
           console.log(appointment);
+          setSingleAppointmentDetails(appointment?.data?.result)
           
         } catch (error) {
         console.log(error);
@@ -216,6 +218,7 @@ export default function SinglePhysicianDisplay() {
 
   }
 
+//   console.log(singleAppointmentDetails)
   useEffect(() => {
     const patientInfo = JSON.parse(localStorage.getItem("patientInfo"));
     setPatientInfo(patientInfo);
@@ -258,26 +261,26 @@ export default function SinglePhysicianDisplay() {
                       <a href="#" className="booking-doc-img">
                         <img
                           src={
-                            patientInfo.patient?.profilePicture ||
+                            patientInfo?.profilePicture ||
                             "assets/img/doctors/doctor-thumb-02.jpg"
                           }
                           alt="assets/img/patients/patient.jpg"
                         />
                       </a>
                       <div className="profile-det-info">
-                        <h3>{patientInfo?.patient?.userId?.name}</h3>
+                        <h3>{patientInfo?.userId?.name}</h3>
                         <div className="patient-details">
                           <h5>
                             <i className="fas fa-birthday-cake" />
                            
-                            {new Date(patientInfo?.patient?.dob).toDateString(
+                            {new Date(patientInfo?.dob).toDateString(
                               patientInfo?.patient?.dob
                             )}
-                            , {patientInfo?.patient?.age} years
+                            , {patientInfo?.age} years
                           </h5>
                           <h5 className="mb-0">
                             <i className="fas fa-map-marker-alt" />{" "}
-                            {patientInfo?.patient?.city}, {patientInfo?.patient?.contry}
+                            {patientInfo?.city}, {patientInfo?.contry}
                           </h5>
                         </div>
                       </div>
@@ -393,42 +396,26 @@ export default function SinglePhysicianDisplay() {
             <table className="table table-hover table-center mb-0">
               <thead>
                 <tr>
-                  <th>Date</th>
+                  <th>Index</th>
                   <th>Name</th>
-                  <th>Created by</th>
-                  <th>Action</th>
+                  <th>Quantities</th>
+                  <th>Time</th>
                 </tr>
               </thead>
               <tbody>
-                {prescriptions.map((prescription, index) => (
+                {singleAppointmentDetails?.prescriptions?.map((prescription, index) => (
                   <tr key={index}>
-                    <td>{prescription.date}</td>
+                    <td>{index+1}</td>
                     <td>{prescription.name}</td>
                     <td>
-                      <h2 className="table-avatar">
-                        <a href={prescription.doctor.profileLink} className="avatar avatar-sm me-2">
-                          <img className="avatar-img rounded-circle" src={prescription.doctor.avatar} alt="User Image" />
-                        </a>
-                        <a href={prescription.doctor.profileLink}>
-                          {prescription.doctor.name} <span>{prescription.doctor.specialty}</span>
-                        </a>
-                      </h2>
+                      {prescription.quantity}
                     </td>
                     <td>
-                      <div className="table-action">
-                      
-                      <a
-                          href="#"
-                          className="btn btn-sm bg-info-light"
-                          data-bs-toggle="modal"
-                          data-bs-target="#appt_details"
-                       >
-                         <i className="far fa-eye" /> View
-                      </a>
-                        <a href="javascript:void(0);" className="btn btn-sm bg-danger-light">
-                          <i className="far fa-trash-alt" />
-                        </a>
-                      </div>
+                    {prescription.times.map((time, index) => (
+                        <span key={index}>
+                        {time} {" "}
+                        </span>
+                    ))}
                     </td>
                   </tr>
                 ))}
@@ -500,32 +487,18 @@ export default function SinglePhysicianDisplay() {
             <thead>
               <tr>
                 <th>Sr No</th>
-                <th>Name</th>
-                <th>Date</th>
-                <th>Action</th>
+                <th>Observation</th>
+                
               </tr>
             </thead>
             <tbody>
-              {observations.map((observation, index) => (
+              {singleAppointmentDetails?.observations?.map((observation, index) => (
                 <tr key={index}>
                   <td>
-                    <a href={observation.srNo}>{observation.srNo}</a>
+                    {index+1}
                   </td>
-                  <td>{observation.name}</td>
-                  <td>{observation.date}</td>
-                  <td>
-                    <div className="table-action">
-                       
-                    <a
-                          href="#"
-                          className="btn btn-sm bg-info-light"
-                          data-bs-toggle="modal"
-                          data-bs-target="#observation"
-                       >
-                         <i className="far fa-eye" /> View
-                      </a>
-                    </div>
-                  </td>
+                  <td>{observation}</td>
+                  
                 </tr>
               ))}
             </tbody>

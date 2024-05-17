@@ -192,7 +192,7 @@ export default function Accounts() {
     if (docInfo) {
       try {
         const response = await axios.post(
-          "http://localhost:5000/appointment/analytics/",
+          "https://healthbackend-3xh2.onrender.com/appointment/analytics/",
 
           {
             userId: docInfo?.userId?._id,

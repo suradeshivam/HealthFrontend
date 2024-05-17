@@ -97,7 +97,7 @@ export default function ScheduleTime() {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/doctor/${schedule.userId._id}/update`,
+        `https://healthbackend-3xh2.onrender.com/doctor/${schedule.userId._id}/update`,
         {
           schedules: selectedSlots,
         },
@@ -124,7 +124,7 @@ export default function ScheduleTime() {
       });
 
       const doctor = await axios.get(
-        `http://localhost:5000/doctor/${schedule.userId._id}`,
+        `https://healthbackend-3xh2.onrender.com/doctor/${schedule.userId._id}`,
 
         {
           headers: {
