@@ -290,14 +290,13 @@ export default function Profilesettings() {
     setFormData({
       ...formData , userId:userInfo._id
     })
-    console.log(formData)
+    console.log(patientInfo)
 
     try {
-
       if (patientInfo) {
-        console.log("1");
+        console.log(patientInfo?.patient?.userId?._id);
         const updatedPatient = await axios.put(
-          `https://healthbackend-3xh2.onrender.com/patient/${patientInfo.userId}`,
+          `https://healthbackend-3xh2.onrender.com/patient/${patientInfo?.patient?.userId?._id}`,
           formData,
           {
             headers: {
@@ -374,6 +373,8 @@ export default function Profilesettings() {
     }
   };
 
+
+
   useEffect(() => {
     getPatientInfo();
   }, []);
@@ -406,24 +407,30 @@ export default function Profilesettings() {
               <div className="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
                 <div className="profile-sidebar">
                   <div className="widget-profile pro-widget-content">
-                    <div className="profile-info-widget">
+                  <div className="profile-info-widget">
                       <a href="#" className="booking-doc-img">
                         <img
-                           src={patientInfo?.profilePicture || "assets/img/doctors/doctor-thumb-02.jpg"}
-                           alt={"assets/img/patients/patient1.jpg"}
+                          src={
+                            patientInfo.patient?.profilePicture ||
+                            "assets/img/doctors/doctor-thumb-02.jpg"
+                          }
+                          alt="assets/img/patients/patient.jpg"
                         />
                       </a>
                       <div className="profile-det-info">
-                        <h3>Richard Wilson</h3>
+                        <h3>{patientInfo?.patient?.userId?.name}</h3>
                         <div className="patient-details">
                           <h5>
                             <i className="fas fa-birthday-cake" />
-                             {
-                             new Date(patientInfo?.dob).toLocaleDateString('en-GB', { day: '2-digit',month: 'long',year: 'numeric'})},
-                            {patientInfo?.age} years
+                           
+                            {new Date(patientInfo?.patient?.dob).toDateString(
+                              patientInfo?.patient?.dob
+                            )}
+                            , {patientInfo?.patient?.age} years
                           </h5>
                           <h5 className="mb-0">
-                            <i className="fas fa-map-marker-alt" /> {patientInfo?.city}, {patientInfo?.contry}
+                            <i className="fas fa-map-marker-alt" />{" "}
+                            {patientInfo?.patient?.city}, {patientInfo?.patient?.contry}
                           </h5>
                         </div>
                       </div>
@@ -495,7 +502,7 @@ export default function Profilesettings() {
                             <div className="change-avatar">
                               <div className="profile-img">
                                 <img
-                                  src={preview ? preview : formData.profilePicture || "assets/img/doctors/doctor-thumb-02.jpg"}
+                                  src={preview ? preview : patientInfo?.patient?.profilePicture || "assets/img/doctors/doctor-thumb-02.jpg"}
                                   alt="User Image"
                                   
                                 />

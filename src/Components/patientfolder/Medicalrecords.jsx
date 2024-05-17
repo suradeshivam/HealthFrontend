@@ -177,21 +177,27 @@ export default function Medicalrecords() {
               <div className="profile-info-widget">
                       <a href="#" className="booking-doc-img">
                         <img
-                         src={patientInfo?.profilePicture || "assets/img/doctors/doctor-thumb-02.jpg"}
+                          src={
+                            patientInfo.patient?.profilePicture ||
+                            "assets/img/doctors/doctor-thumb-02.jpg"
+                          }
                           alt="assets/img/patients/patient.jpg"
                         />
                       </a>
                       <div className="profile-det-info">
-                        <h3>Patient</h3>
+                        <h3>{patientInfo?.patient?.userId?.name}</h3>
                         <div className="patient-details">
                           <h5>
                             <i className="fas fa-birthday-cake" />
-                             {
-                             new Date(patientInfo?.dob).toLocaleDateString('en-GB', { day: '2-digit',month: 'long',year: 'numeric'})},
-                            {patientInfo?.age} years
+                           
+                            {new Date(patientInfo?.patient?.dob).toDateString(
+                              patientInfo?.patient?.dob
+                            )}
+                            , {patientInfo?.patient?.age} years
                           </h5>
                           <h5 className="mb-0">
-                            <i className="fas fa-map-marker-alt" /> {patientInfo?.city}, {patientInfo?.contry}
+                            <i className="fas fa-map-marker-alt" />{" "}
+                            {patientInfo?.patient?.city}, {patientInfo?.patient?.contry}
                           </h5>
                         </div>
                       </div>

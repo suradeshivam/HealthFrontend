@@ -30,6 +30,9 @@ import Checkout from "./Components/patientfolder/Checkout";
 import Bookingsuccess from "./Components/patientfolder/BookingSuccess";
 import Invoiceview from "./Components/patientfolder/InvoiceView";
 import AppointmentDetails from "./Components/patientfolder/AppointmentDetails"
+import SinglePhysicianDisplay from "./Components/patientfolder/PatientAppointment"
+import Privacypolicy from "./Components/PrivacyPolicy";
+import Termscondition from "./Components/TermsConditions";
 
 // App changed
 function App() {
@@ -58,6 +61,10 @@ function App() {
           <Route path="room/:roomID" element={<Room />} />
           <Route path="appointment" element={<Appointment />} />
 
+          {/* Privacy Policy and Terms and Conditions */}
+          <Route path="privacypolicy" element={<Privacypolicy />} />
+          <Route path="termscondition" element={<Termscondition />} />
+
           {/* Patient DashBoard Routs */}
           <Route path="user" element={<Patientdashboard />} />
           <Route path="dependent" element={<Dependent />} />
@@ -65,6 +72,7 @@ function App() {
           <Route path="orders" element={<Orders />} />
           <Route path="profile-settings" element={<Profilesettings />} />
           <Route path="change-password" element={<ChangePasswordPatient />} />
+          <Route path="patientappointment" element={<SinglePhysicianDisplay />} />
 
           {/* Patient Route */}
           <Route path="docsearch" element={<DoctorSearch />} />
