@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { OrderState } from "../../Contexts";
+import axios from "axios";
 
 export default function Checkout() {
   const [name, setName] = useState("");
@@ -9,6 +11,51 @@ export default function Checkout() {
   const [phone, setPhone] = useState("");
   const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
+  const [patientInfo, setPatientInfo] = useState();
+  const {
+    selectedDoctor,
+    selectedSlotTime,
+    selectedDate,
+    symptoms,
+    temperature,
+    bloodpresure,
+    heartRate,
+    reportFiles,
+    pdfRefs,
+    selectedSlotDay,
+  } = OrderState();
+
+  function parseTime(timeStr) {
+    const [time, modifier] = timeStr.split(" ");
+    let [hours, minutes] = time.split(":").map(Number);
+
+    if (modifier === "PM" && hours !== 12) {
+      hours += 12;
+    } else if (modifier === "AM" && hours === 12) {
+      hours = 0;
+    }
+
+    return { hours, minutes };
+  }
+
+  function convertToISO(dateStr, startTimeStr) {
+    // Parse the date
+    const [day, month, year] = dateStr.split("-").map(Number);
+
+    // Parse the start time
+    const { hours: startHours, minutes: startMinutes } =
+      parseTime(startTimeStr);
+
+    // Create a new Date object
+    const date = new Date(
+      Date.UTC(year, month - 1, day, startHours, startMinutes)
+    );
+
+    // Convert to ISO string
+    const isoString = date.toISOString();
+
+    return isoString;
+  }
 
   const validateEmail = (email) => {
     const re = /\S+@\S+\.\S+/;
@@ -16,11 +63,7 @@ export default function Checkout() {
   };
 
   const handlePayment = () => {
-    if (!name || !email || !phone) {
-      toast.error("Please fill in all required fields.");
-      return;
-    }
-    if (!validateEmail(email)) {
+    if (!validateEmail(patientInfo?.userId?.email)) {
       toast.error("Please enter a valid email address.");
       return;
     }
@@ -40,17 +83,16 @@ export default function Checkout() {
       handler: function (response) {
         if (response.razorpay_payment_id) {
           toast.success("Payment successful!");
-          setTimeout(() => {
-            navigate("/booking-success");
-          }, 3000);
+
+          handleSubmit();
         } else {
           toast.error("Payment failed. Please try again.");
         }
       },
       prefill: {
-        name: name,
-        email: email,
-        contact: phone,
+        name: selectedDoctor?.userId?.name || name,
+        email: selectedDoctor?.userId?.email || email,
+        contact: selectedDoctor?.userId?.mobileNumber || phone,
       },
       notes: {
         address: "Razorpay Corporate Office",
@@ -63,6 +105,54 @@ export default function Checkout() {
     const rzp1 = new window.Razorpay(options);
     rzp1.open();
   };
+
+  const handleSubmit = async () => {
+    const isAuthenticated = localStorage.getItem("token");
+    const patientInfo = JSON.parse(localStorage.getItem("patientInfo"));
+    console.log(selectedDoctor, patientInfo);
+
+    console.log(selectedSlotTime.substring(0, 9));
+    const date = convertToISO(selectedDate, selectedSlotTime.substring(0, 9));
+
+    try {
+      const result = await axios.post(
+        `https://healthbackend-3xh2.onrender.com/appointment/create`,
+        {
+          patientId: patientInfo._id,
+          doctorId: selectedDoctor._id,
+          slot: selectedSlotTime,
+          date: date,
+          vitals: {
+            heartRate: heartRate,
+            bloodPressure: bloodpresure,
+            temparature: temperature,
+          },
+          symptoms: symptoms,
+          consent: true,
+        },
+        {
+          headers: {
+            authorization: isAuthenticated,
+          },
+        }
+      );
+
+      console.log(result);
+      toast("Appointment Created Successfully");
+      navigate("/booking-success");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(patientInfo);
+
+  useEffect(() => {
+    const patientInfo = JSON.parse(localStorage.getItem("patientInfo"));
+    if (patientInfo) {
+      setPatientInfo(patientInfo);
+    }
+  }, []);
 
   return (
     <div>
@@ -94,7 +184,8 @@ export default function Checkout() {
                               <input
                                 className="form-control"
                                 type="text"
-                                value={name}
+                                readOnly
+                                value={patientInfo?.userId?.name}
                                 onChange={(e) =>
                                   setName(
                                     e.target.value.replace(/[^A-Za-z]/gi, " ")
@@ -113,7 +204,8 @@ export default function Checkout() {
                               <input
                                 className="form-control"
                                 type="email"
-                                value={email}
+                                readOnly
+                                value={patientInfo?.userId?.email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 autoComplete="email"
                                 required
@@ -128,7 +220,8 @@ export default function Checkout() {
                               <input
                                 className="form-control"
                                 type="tel"
-                                value={phone}
+                                readOnly
+                                value={patientInfo?.userId?.mobileNumber}
                                 onChange={(e) =>
                                   setPhone(
                                     e.target.value
@@ -182,13 +275,18 @@ export default function Checkout() {
                     <div className="booking-doc-info">
                       <a href="doctor-profile.html" className="booking-doc-img">
                         <img
-                          src="assets/img/doctors/doctor-thumb-02.jpg"
+                          src={
+                            selectedDoctor?.profilePicture ||
+                            "assets/img/doctors/doctor-thumb-02.jpg"
+                          }
                           alt="User Image"
                         />
                       </a>
                       <div className="booking-info">
                         <h4>
-                          <a href="doctor-profile.html">Dr. Darren Elder</a>
+                          <a href="doctor-profile.html">
+                            Dr. {selectedDoctor?.userId?.name}
+                          </a>
                         </h4>
                         <div className="rating">
                           <i className="fas fa-star filled" />
@@ -202,7 +300,8 @@ export default function Checkout() {
                         </div>
                         <div className="clinic-details">
                           <p className="doc-location">
-                            <i className="fas fa-map-marker-alt" /> Newyork, USA
+                            <i className="fas fa-map-marker-alt" />{" "}
+                            {selectedDoctor?.city}, {selectedDoctor?.contry}
                           </p>
                         </div>
                       </div>
@@ -211,15 +310,15 @@ export default function Checkout() {
                       <div className="booking-item-wrap">
                         <ul className="booking-date">
                           <li>
-                            Date :<span> 16 Nov 2023</span>
+                            Date :<span> {selectedDate}</span>
                           </li>
                           <li>
-                            Time :<span> 10:00 AM</span>
+                            Time :<span>{selectedSlotTime}</span>
                           </li>
                         </ul>
                         <ul className="booking-fee">
                           <li>
-                            Consulting Fee <span>₹ 100</span>
+                            Consulting Fee <span>₹ {selectedDoctor?.fees}</span>
                           </li>
                           <li>
                             Booking Fee <span>₹ 10</span>
@@ -232,7 +331,9 @@ export default function Checkout() {
                           <ul className="booking-total-list">
                             <li>
                               <span>Total</span>
-                              <span className="total-cost">₹ 160</span>
+                              <span className="total-cost">
+                                ₹ {selectedDoctor?.fees + 10 + 50}
+                              </span>
                             </li>
                           </ul>
                         </div>

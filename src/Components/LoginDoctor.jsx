@@ -3,7 +3,6 @@ import { FaUserInjured, FaUserMd } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { FiEye, FiEyeOff } from "react-icons/fi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { Bounce, ToastContainer, toast } from "react-toastify";
@@ -16,17 +15,14 @@ export default function LoginDoctor() {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
-  // const { setLoading } = useLoading();
   const [showPassword, setShowPassword] = useState(false);
-  // const { isLoggedIn, setIsLoggedIn } = OrderState();
+  const [isLoading, setIsLoading] = useState(false); // State for loading indicator
 
   const onSubmit = useCallback(
     async (data) => {
+      setIsLoading(true); // Set loading state to true upon form submission
       toast("Please wait while we are fetching your data");
-      // setLoading(true);
-
       try {
-        // Send form data to backend
         const response = await axios.post(
           "https://healthbackend-3xh2.onrender.com/user/signin",
           data,
@@ -38,25 +34,22 @@ export default function LoginDoctor() {
         );
 
         console.log(response);
-        const user = response.data.result.user;
+        const user = response?.data?.result?.user;
 
-        // Saving TOken
-        await localStorage.setItem("token", response.data.result.token);
+        await localStorage.setItem("token", response?.data?.result?.token);
 
         if (user.createdProfile && user.role === "doctor") {
           const doctor = await axios.get(
             `https://healthbackend-3xh2.onrender.com/doctor/${user._id}`,
-
             {
               headers: {
                 "Content-Type": "application/json",
-                Authorization: response.data.result.token,
+                Authorization: response?.data.result.token,
               },
             }
           );
 
           toast("Data fetched successfully");
-          // Store the token securely
           await localStorage.setItem(
             "docInfo",
             JSON.stringify(doctor.data.result.doctor)
@@ -64,22 +57,20 @@ export default function LoginDoctor() {
         } else if (user.createdProfile && user.role === "user") {
           const patient = await axios.get(
             `https://healthbackend-3xh2.onrender.com/patient/${user._id}`,
-
             {
               headers: {
                 "Content-Type": "application/json",
-                Authorization: response.data.result.token,
+                Authorization: response?.data.result.token,
               },
             }
           );
 
           toast("Data fetched successfully");
-          // Store the token securely
           await localStorage.setItem(
             "patientInfo",
             JSON.stringify(patient.data.result.patient)
           );
-          console.log(patient.data.result.patient);
+          console.log(patient.data.result);
         }
         await localStorage.setItem("userInfo", JSON.stringify(user));
         const role = user.role;
@@ -94,7 +85,7 @@ export default function LoginDoctor() {
           navigate("/dashboard");
         }
       } catch (error) {
-        // setLoading(false);
+        setIsLoading(false); // Reset loading state upon error
         console.error("Error submitting form:", error);
         toast.error(error.response.data.message, {
           position: "top-right",
@@ -107,7 +98,6 @@ export default function LoginDoctor() {
           theme: "light",
           transition: Bounce,
         });
-        // Handle error, show error message, etc.
       }
     },
     [navigate]
@@ -116,6 +106,7 @@ export default function LoginDoctor() {
   const togglePasswordVisibility = useCallback(() => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   }, []);
+
   return (
     <div className="main-wrapper">
       <div className="content top-space">
@@ -127,8 +118,8 @@ export default function LoginDoctor() {
                 <div className="row align-items-center justify-content-center">
                   <div className="col-md-7 col-lg-6 login-left">
                     <img
-                      src="assets/img/login-banner.png"
-                      className="img-fluid"
+                      src="assets/img/bg/pic.jpg"
+                      className="img-fluid my-5 "
                       alt="TwinDoc Login"
                     />
                   </div>
@@ -170,7 +161,7 @@ export default function LoginDoctor() {
                             className="form-control pass-input"
                           />
                           <span
-                            onClick={() => setShowPassword(!showPassword)}
+                            onClick={togglePasswordVisibility}
                             className="toggle-password">
                             <FontAwesomeIcon
                               icon={showPassword ? faEyeSlash : faEye}
@@ -186,10 +177,13 @@ export default function LoginDoctor() {
                       <div className="text-end">
                         <a className="forgot-link">Forgot Password ?</a>
                       </div>
+                      {/* Use isLoading state to conditionally render button text */}
                       <button
                         className="btn btn-primary w-100 btn-lg login-btn"
-                        type="submit">
-                        Login
+                        type="submit"
+                        disabled={isLoading} // Disable button when loading
+                      >
+                        {isLoading ? "Processing..." : "Login"}
                       </button>
                       <div className="login-or">
                         <span className="or-line" />
@@ -209,16 +203,18 @@ export default function LoginDoctor() {
                       </div>
                       <div className="text-center dont-have">
                         Don’t have an account?<br></br>
-                        <Link
-                          to="/signup?role=doctor" // Include role parameter for Doctor signup
-                          className="m-2">
-                          <FaUserMd className="" /> Sign up as a Doctor
-                        </Link>
-                        <Link
-                          to="/signup?role=user" // Include role parameter for Patient signup
-                          className="">
-                          <FaUserInjured /> Sign up as a Patient
-                        </Link>
+                        <div className="mt-3">
+                          <Link
+                            to="/signup?role=doctor" // Include role parameter for Doctor signup
+                            className="m-2">
+                            <FaUserMd className="" /> Sign up as a Doctor
+                          </Link>
+                          <Link
+                            to="/signup?role=user" // Include role parameter for Patient signup
+                            className="mx-2">
+                            <FaUserInjured /> Sign up as a Patient
+                          </Link>
+                        </div>
                       </div>
                     </form>
                   </div>

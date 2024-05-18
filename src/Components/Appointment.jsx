@@ -248,6 +248,68 @@ export default function Patientprofile() {
     setObservations(selectedPatient?.observations);
   }, []);
 
+  // AI predictions
+  const [generatedText, setGeneratedText] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isProgressVisible, setProgressVisible] = useState(false);
+  const [isResultVisible, setResultVisible] = useState(false);
+
+  useEffect(() => {
+    // Call API with default symptoms on component mount
+    const defaultSymptoms = "fever cough cold";
+    getGeneratedText(defaultSymptoms);
+  }, []); // Empty dependency array to trigger only once on mount
+
+  // Function to call API and generate text
+  const getGeneratedText = async (prompt) => {
+    setErrorMessage(""); // Clear previous error messages
+    setProgressVisible(true);
+
+    const generatedText = await generateText(prompt);
+
+    setGeneratedText(generatedText);
+    setResultVisible(true);
+    setProgressVisible(false);
+  };
+
+  // Function to call API and generate text
+  const generateText = async (prompt) => {
+    const url =
+      "https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=AIzaSyAOw_9JeI-xld7WL3pEtFotq9HyuC9pBiw"; // Replace with your API key
+    const data = {
+      contents: [
+        {
+          role: "user",
+          parts: [
+            {
+              text:
+                prompt +
+                "Predict the disease from this list of symptoms. Provide a four-line description including the disease name and list all symptoms provided by the user in response",
+            },
+          ],
+        },
+      ],
+    };
+
+    const headers = { "Content-Type": "application/json" };
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to generate content.");
+    }
+
+    const result = await response.json();
+    let generatedText = result["candidates"][0]["content"]["parts"][0]["text"];
+    // Remove or trim stars from the generated text
+    generatedText = generatedText.replace(/\*/g, "").trim();
+    return generatedText;
+  };
+
   return (
     <div>
       <div className="main-wrapper">
@@ -365,7 +427,9 @@ export default function Patientprofile() {
                       <div class="submit-section mt-2 text-center">
                         <button
                           type="submit"
-                          class="btn btn-secondary submit-btn">
+                          class="btn btn-secondary submit-btn"
+                          data-bs-toggle="modal"
+                          data-bs-target="#ai-prediction">
                           Click to Predict
                         </button>
                       </div>
@@ -573,7 +637,7 @@ export default function Patientprofile() {
                         <div className="card card-table mb-0">
                           <div className="card-body">
                             <div className="table-responsive">
-                              <table className="table table-hover table-center mb-0">
+                              <table className="table  table-center mb-0">
                                 <thead>
                                   <tr>
                                     <th>Observation Notes</th>
@@ -1775,6 +1839,40 @@ export default function Patientprofile() {
                     }
                   })()}
                 </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="modal fade custom-modal" id="ai-prediction">
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">AI Prediction</h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"></button>
+            </div>
+            <div className="modal-body">
+              <div className="container">
+                <h2>
+                  <b>Healthcare AI</b>
+                </h2>
+                <div
+                  className="result my-3"
+                  id="result"
+                  style={{ display: isResultVisible ? "block" : "none" }}>
+                  <h5>Response:</h5>
+                  <strong>
+                    <p id="generatedText">{generatedText}</p>
+                  </strong>
+                </div>
+                <div id="errorMessage" className="error-message">
+                  {errorMessage}
+                </div>
               </div>
             </div>
           </div>

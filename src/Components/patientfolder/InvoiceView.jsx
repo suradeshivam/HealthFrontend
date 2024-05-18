@@ -34,7 +34,7 @@ export default function Invoiceview() {
                       <div className="col-md-6">
                         <div className="invoice-logo">
                           <img
-                            src="assets/img/favicon/TwinsDoc_logo.png"
+                            src="assets/img/favicon/20240505_203516.png"
                             className="img-fluid"
                             alt="Logo"
                           />

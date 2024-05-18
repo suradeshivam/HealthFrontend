@@ -9,16 +9,6 @@ export default function Contactus() {
             <div className="row align-items-center inner-banner">
               <div className="col-md-12 col-12 text-center">
                 <h2 className="breadcrumb-title">Contact Us</h2>
-                <nav aria-label="breadcrumb" className="page-breadcrumb">
-                  <ol className="breadcrumb">
-                    <li className="breadcrumb-item">
-                      <a href="index.html">Home</a>
-                    </li>
-                    <li className="breadcrumb-item" aria-current="page">
-                      Contact Us
-                    </li>
-                  </ol>
-                </nav>
               </div>
             </div>
           </div>

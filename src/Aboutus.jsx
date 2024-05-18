@@ -2,6 +2,7 @@ import React from "react";
 import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
+import { Link } from "react-router-dom";
 
 export default function Aboutus() {
   return (
@@ -12,16 +13,6 @@ export default function Aboutus() {
             <div className="row align-items-center inner-banner">
               <div className="col-md-12 col-12 text-center">
                 <h2 className="breadcrumb-title">About Us</h2>
-                <nav aria-label="breadcrumb" className="page-breadcrumb">
-                  <ol className="breadcrumb">
-                    <li className="breadcrumb-item">
-                      <a href="index.html">Home</a>
-                    </li>
-                    <li className="breadcrumb-item" aria-current="page">
-                      About Us
-                    </li>
-                  </ol>
-                </nav>
               </div>
             </div>
           </div>
@@ -226,9 +217,9 @@ export default function Aboutus() {
                       home. Experience hassle-free healthcare tailored to your
                       needs with Twinsdoc.
                     </p>
-                    <a href="contact-us.html" className="btn btn-primary">
+                    <Link to="/contactus" className="btn btn-primary">
                       Contact With Us
-                    </a>
+                    </Link>
                   </div>
                 </div>
                 <div className="col-lg-5 col-md-12">
