@@ -22,6 +22,8 @@ export default function Accounts() {
   const [upiIdError, setUpiIdError] = useState();
   const [doctorInfo, setDoctorInfo] = useState("");
   const [dataRevenues, setDataRevenues] = useState(null);
+  const [income, setIncome] = useState();
+
 
   const docInfo = JSON.parse(localStorage.getItem("docInfo"));
 
@@ -206,7 +208,8 @@ export default function Accounts() {
         );
 
         console.log(response.data.result);
-        const { appointmentCounts } = response.data.result;
+        const { appointmentCounts,income,canceledAppointments,totalAppointmentsAttended } = response.data.result;
+        setIncome(income);
         // const updatedCounts = {};
 
         // 2024-05 6
@@ -420,27 +423,16 @@ export default function Accounts() {
                         <div className="row">
                           <div className="col-lg-6">
                             <div className="account-card bg-success-light">
-                              <span>₹90.48</span> Earned
+                              <span>₹{income }</span> Earned
                             </div>
                           </div>
-                          <div className="col-lg-6">
-                            <div className="account-card bg-warning-light">
-                              <span>₹0.00</span> Requested
-                            </div>
-                          </div>
+                         
                           <div className="col-lg-6">
                             <div className="account-card bg-purple-light">
                               <span>₹90.48</span> Balance
                             </div>
                           </div>
-                          <div className="col-md-12 text-center">
-                            <a
-                              href="#payment_request_modal"
-                              className="btn btn-primary request_btn"
-                              data-bs-toggle="modal">
-                              Payment Request
-                            </a>
-                          </div>
+                        
                         </div>
                       </div>
                     </div>
