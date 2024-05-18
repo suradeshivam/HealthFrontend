@@ -19,13 +19,9 @@ export default function Patientprofile() {
   const navigate = useNavigate();
 
   const [doctorInfo, setDoctorInfo] = useState("");
-  const [generatedText, setGeneratedText] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [isProgressVisible, setProgressVisible] = useState(false);
-  const [isResultVisible, setResultVisible] = useState(false);
   const [showPrediction, setshowPrediction] = useState(false);
 
-  // console.log(patient)
+  console.log(selectedPatient)
 
   const [observations, setObservations] = useState([]);
 
@@ -241,7 +237,43 @@ export default function Patientprofile() {
     }
   };
 
-  // Event listener for form submission
+  // console.log(singleAppointment)
+
+  useEffect(() => {
+    getOneAppointment();
+    const doctorInfo = JSON.parse(localStorage.getItem("docInfo"));
+    if (doctorInfo) {
+      setDoctorInfo(doctorInfo);
+    }
+    setPrescriptions(selectedPatient?.prescriptions);
+    setObservations(selectedPatient?.observations);
+  }, []);
+
+  // AI predictions
+  const [generatedText, setGeneratedText] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isProgressVisible, setProgressVisible] = useState(false);
+  const [isResultVisible, setResultVisible] = useState(false);
+
+  // useEffect(() => {
+  //   // Call API with default symptoms on component mount
+  //   const defaultSymptoms = "fever cough cold";
+  //   getGeneratedText(defaultSymptoms);
+  // }, []); // Empty dependency array to trigger only once on mount
+
+  // Function to call API and generate text
+  const getGeneratedText = async (prompt) => {
+    setErrorMessage(""); // Clear previous error messages
+    setProgressVisible(true);
+
+    const generatedText = await generateText(prompt);
+
+    setGeneratedText(generatedText);
+    setResultVisible(true);
+    setProgressVisible(false);
+  };
+
+  // Function to call API and generate text
   const handleSubmit = (event) => {
     event.preventDefault(); // Prevent form submission
 
@@ -310,20 +342,6 @@ export default function Patientprofile() {
     return generatedText;
   };
 
-  // console.log(singleAppointment)
-
-  useEffect(() => {
-    getOneAppointment();
-    const doctorInfo = JSON.parse(localStorage.getItem("docInfo"));
-    if (doctorInfo) {
-      setDoctorInfo(doctorInfo);
-    }
-    setPrescriptions(selectedPatient?.prescriptions);
-    setObservations(selectedPatient?.observations);
-  }, []);
-
-  console.log(selectedPatient)
-
   return (
     <div>
       <div className="main-wrapper">
@@ -352,8 +370,7 @@ export default function Patientprofile() {
             <div>
               <button
                 onClick={handleBack}
-                className="btn btn-primary patient-graph-box"
-              >
+                className="btn btn-primary patient-graph-box">
                 {" "}
                 <IoIosArrowBack />
                 Back to Dashboard
@@ -440,39 +457,34 @@ export default function Patientprofile() {
                   <ul className="list-group list-group-flush">
                     <li className="list-group-item">
                       <div class="submit-section mt-2 text-center">
-                        <input
+                      <input
                           type="text"
                           id="prompt"
-                          value={selectedPatient.symptoms}
+                          value={selectedPatient?.symptoms}
                           maxLength="100"
                           required
-                          className="hidden"
+                          className="hidden d-none"
                         />
-                        <h1 >
-                          Generate Predicted Disease
-                        </h1>
-                        <form id="chatForm" onSubmit={handleSubmit}>
+                         <form id="chatForm" onSubmit={handleSubmit}>
                           <button
-                            class="btn btn-secondary submit-btn"
-                            id="submitButton"
                             type="submit"
+                            id="submitButton"
+                            class="btn btn-secondary submit-btn"
+                            data-bs-toggle="modal"
+                            data-bs-target="#ai-prediction"
                             onClick={() => {
                               setshowPrediction(true);
                             }}
                           >
                             Click to Predict
                           </button>
-                          <br />
-                          {showPrediction && (
-                            <h1>
-                              AI Predicted Results <br />
-                              {generatedText}
-                            </h1>
-                          )}
+                          
                         </form>
                         {/* <button
                           type="submit"
-                          class="btn btn-secondary submit-btn">
+                          class="btn btn-secondary submit-btn"
+                          data-bs-toggle="modal"
+                          data-bs-target="#ai-prediction">
                           Click to Predict
                         </button> */}
                       </div>
@@ -565,8 +577,7 @@ export default function Patientprofile() {
                               href="#"
                               className="graph-box"
                               data-bs-toggle="modal"
-                              data-bs-target="#graph1"
-                            >
+                              data-bs-target="#graph1">
                               <div>
                                 <h4>Symptoms</h4>
                               </div>
@@ -583,8 +594,7 @@ export default function Patientprofile() {
                               href="#"
                               className="graph-box pink-graph"
                               data-bs-toggle="modal"
-                              data-bs-target="#graph2"
-                            >
+                              data-bs-target="#graph2">
                               <div>
                                 <h4>Allergies</h4>
                               </div>
@@ -601,8 +611,7 @@ export default function Patientprofile() {
                               href="#"
                               className="graph-box sky-blue-graph"
                               data-bs-toggle="modal"
-                              data-bs-target="#graph3"
-                            >
+                              data-bs-target="#graph3">
                               <div>
                                 <h4>Medical Records</h4>
                               </div>
@@ -619,8 +628,7 @@ export default function Patientprofile() {
                               href="#"
                               className="graph-box orange-graph"
                               data-bs-toggle="modal"
-                              data-bs-target="#graph4"
-                            >
+                              data-bs-target="#graph4">
                               <div>
                                 <h4>BMI</h4>
                               </div>
@@ -645,8 +653,7 @@ export default function Patientprofile() {
                           <a
                             className="nav-link active"
                             href="#pat_appointments"
-                            data-bs-toggle="tab"
-                          >
+                            data-bs-toggle="tab">
                             Observations
                           </a>
                         </li>
@@ -654,8 +661,7 @@ export default function Patientprofile() {
                           <a
                             className="nav-link"
                             href="#pat_prescriptions"
-                            data-bs-toggle="tab"
-                          >
+                            data-bs-toggle="tab">
                             Prescriptions
                           </a>
                         </li>
@@ -664,8 +670,7 @@ export default function Patientprofile() {
                           <a
                             className="nav-link"
                             href="#pat_reports"
-                            data-bs-toggle="tab"
-                          >
+                            data-bs-toggle="tab">
                             Reports
                           </a>
                         </li>
@@ -674,8 +679,7 @@ export default function Patientprofile() {
                           <a
                             className="nav-link"
                             href="#pat_billing"
-                            data-bs-toggle="tab"
-                          >
+                            data-bs-toggle="tab">
                             Encounters
                           </a>
                         </li>
@@ -684,12 +688,11 @@ export default function Patientprofile() {
                     <div className="tab-content pt-0">
                       <div
                         id="pat_appointments"
-                        className="tab-pane fade show active"
-                      >
+                        className="tab-pane fade show active">
                         <div className="card card-table mb-0">
                           <div className="card-body">
                             <div className="table-responsive">
-                              <table className="table table-hover table-center mb-0">
+                              <table className="table  table-center mb-0">
                                 <thead>
                                   <tr>
                                     <th>Observation Notes</th>
@@ -698,8 +701,7 @@ export default function Patientprofile() {
                                       <a
                                         href="javascript:void(0);"
                                         className="add-hours"
-                                        onClick={handleAddObservation}
-                                      >
+                                        onClick={handleAddObservation}>
                                         <i className="fa fa-plus-circle" /> Add
                                         Observation
                                       </a>
@@ -748,8 +750,7 @@ export default function Patientprofile() {
                                         <div>
                                           <button
                                             className="btn btn-primary patient-graph-box"
-                                            onClick={handleEditClick}
-                                          >
+                                            onClick={handleEditClick}>
                                             <MdOutlineSaveAlt className="mt-1" />
                                             Edit
                                           </button>
@@ -758,8 +759,7 @@ export default function Patientprofile() {
                                           className="btn mb-1 bg-danger-light patient-graph-box"
                                           onClick={() =>
                                             deleteObservation(index)
-                                          }
-                                        >
+                                          }>
                                           Delete
                                         </button>
                                       </td>
@@ -769,8 +769,7 @@ export default function Patientprofile() {
                                     <div>
                                       <button
                                         className="btn btn-primary patient-graph-box"
-                                        onClick={handleSaveObservation}
-                                      >
+                                        onClick={handleSaveObservation}>
                                         <MdOutlineSaveAlt className="mt-1" />
                                         Save
                                       </button>
@@ -817,8 +816,7 @@ export default function Patientprofile() {
                               <div className="add-more-item text-end">
                                 <a
                                   onClick={addPrescription}
-                                  className="add-prescription"
-                                >
+                                  className="add-prescription">
                                   <i className="fa fa-plus-circle" /> Add More
                                 </a>
                               </div>
@@ -931,8 +929,7 @@ export default function Patientprofile() {
                                                   onClick={() =>
                                                     removePrescription(index)
                                                   }
-                                                  className="btn bg-danger-light trash"
-                                                >
+                                                  className="btn bg-danger-light trash">
                                                   <i className="far fa-trash-alt" />
                                                 </button>
                                               </td>
@@ -948,8 +945,7 @@ export default function Patientprofile() {
                                 <div className="col-md-12 text-end">
                                   <div
                                     className="signature-wrap"
-                                    onClick={handleSignatureClick}
-                                  >
+                                    onClick={handleSignatureClick}>
                                     <div
                                       className="signature"
                                       style={{
@@ -959,8 +955,7 @@ export default function Patientprofile() {
                                         color: isSignatureClicked
                                           ? "green"
                                           : "black",
-                                      }}
-                                    >
+                                      }}>
                                       {isSignatureClicked ? (
                                         <i className="fas fa-check-circle fa-2x"></i>
                                       ) : (
@@ -984,14 +979,12 @@ export default function Patientprofile() {
                                     <button
                                       type="submit"
                                       onClick={handlePrecriptionSubmit}
-                                      className="btn btn-primary submit-btn"
-                                    >
+                                      className="btn btn-primary submit-btn">
                                       Save
                                     </button>
                                     <button
                                       type="reset"
-                                      className="btn btn-secondary submit-btn"
-                                    >
+                                      className="btn btn-secondary submit-btn">
                                       Clear
                                     </button>
                                   </div>
@@ -1030,8 +1023,7 @@ export default function Patientprofile() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2"
-                                        >
+                                          className="avatar avatar-sm me-2">
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-01.jpg"
@@ -1047,14 +1039,12 @@ export default function Patientprofile() {
                                       <div className="table-action">
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light"
-                                        >
+                                          className="btn btn-sm bg-info-light">
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light"
-                                        >
+                                          className="btn btn-sm bg-primary-light">
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -1073,8 +1063,7 @@ export default function Patientprofile() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2"
-                                        >
+                                          className="avatar avatar-sm me-2">
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-02.jpg"
@@ -1090,14 +1079,12 @@ export default function Patientprofile() {
                                       <div className="table-action">
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light"
-                                        >
+                                          className="btn btn-sm bg-info-light">
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light"
-                                        >
+                                          className="btn btn-sm bg-primary-light">
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -1116,8 +1103,7 @@ export default function Patientprofile() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2"
-                                        >
+                                          className="avatar avatar-sm me-2">
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-03.jpg"
@@ -1134,14 +1120,12 @@ export default function Patientprofile() {
                                       <div className="table-action">
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light"
-                                        >
+                                          className="btn btn-sm bg-info-light">
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light"
-                                        >
+                                          className="btn btn-sm bg-primary-light">
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -1160,8 +1144,7 @@ export default function Patientprofile() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2"
-                                        >
+                                          className="avatar avatar-sm me-2">
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-04.jpg"
@@ -1177,14 +1160,12 @@ export default function Patientprofile() {
                                       <div className="table-action">
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light"
-                                        >
+                                          className="btn btn-sm bg-info-light">
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light"
-                                        >
+                                          className="btn btn-sm bg-primary-light">
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -1203,8 +1184,7 @@ export default function Patientprofile() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2"
-                                        >
+                                          className="avatar avatar-sm me-2">
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-05.jpg"
@@ -1221,14 +1201,12 @@ export default function Patientprofile() {
                                       <div className="table-action">
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light"
-                                        >
+                                          className="btn btn-sm bg-info-light">
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light"
-                                        >
+                                          className="btn btn-sm bg-primary-light">
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -1247,8 +1225,7 @@ export default function Patientprofile() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2"
-                                        >
+                                          className="avatar avatar-sm me-2">
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-06.jpg"
@@ -1265,14 +1242,12 @@ export default function Patientprofile() {
                                       <div className="table-action">
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light"
-                                        >
+                                          className="btn btn-sm bg-info-light">
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light"
-                                        >
+                                          className="btn btn-sm bg-primary-light">
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -1291,8 +1266,7 @@ export default function Patientprofile() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2"
-                                        >
+                                          className="avatar avatar-sm me-2">
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-07.jpg"
@@ -1308,14 +1282,12 @@ export default function Patientprofile() {
                                       <div className="table-action">
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light"
-                                        >
+                                          className="btn btn-sm bg-info-light">
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light"
-                                        >
+                                          className="btn btn-sm bg-primary-light">
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -1334,8 +1306,7 @@ export default function Patientprofile() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2"
-                                        >
+                                          className="avatar avatar-sm me-2">
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-08.jpg"
@@ -1352,14 +1323,12 @@ export default function Patientprofile() {
                                       <div className="table-action">
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light"
-                                        >
+                                          className="btn btn-sm bg-info-light">
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light"
-                                        >
+                                          className="btn btn-sm bg-primary-light">
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -1378,8 +1347,7 @@ export default function Patientprofile() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2"
-                                        >
+                                          className="avatar avatar-sm me-2">
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-09.jpg"
@@ -1395,14 +1363,12 @@ export default function Patientprofile() {
                                       <div className="table-action">
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light"
-                                        >
+                                          className="btn btn-sm bg-info-light">
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light"
-                                        >
+                                          className="btn btn-sm bg-primary-light">
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -1421,8 +1387,7 @@ export default function Patientprofile() {
                                       <h2 className="table-avatar">
                                         <a
                                           href="doctor-profile.html"
-                                          className="avatar avatar-sm me-2"
-                                        >
+                                          className="avatar avatar-sm me-2">
                                           <img
                                             className="avatar-img rounded-circle"
                                             src="assets/img/doctors/doctor-thumb-10.jpg"
@@ -1438,14 +1403,12 @@ export default function Patientprofile() {
                                       <div className="table-action">
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-info-light"
-                                        >
+                                          className="btn btn-sm bg-info-light">
                                           <i className="far fa-eye" /> View
                                         </a>
                                         <a
                                           href="javascript:void(0);"
-                                          className="btn btn-sm bg-primary-light"
-                                        >
+                                          className="btn btn-sm bg-primary-light">
                                           <i className="fas fa-print" /> Print
                                         </a>
                                       </div>
@@ -1676,8 +1639,7 @@ export default function Patientprofile() {
       <div className="modal fade custom-modal" id="add_medical_records">
         <div
           className="modal-dialog modal-dialog-centered modal-lg"
-          role="document"
-        >
+          role="document">
           <div className="modal-content">
             <div className="modal-header">
               <h3 className="modal-title">Medical Records</h3>
@@ -1713,8 +1675,7 @@ export default function Patientprofile() {
                   <button
                     type="button"
                     className="btn btn-secondary submit-btn"
-                    data-bs-dismiss="modal"
-                  >
+                    data-bs-dismiss="modal">
                     Cancel
                   </button>
                 </div>
@@ -1729,8 +1690,7 @@ export default function Patientprofile() {
         tabIndex={-1}
         role="dialog"
         style={{ display: "none" }}
-        aria-hidden="true"
-      >
+        aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header">
@@ -1739,8 +1699,7 @@ export default function Patientprofile() {
                 type="button"
                 className="btn-close"
                 data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
+                aria-label="Close"></button>
             </div>
             {/* {observations.map((observation, index) => (
               <>
@@ -1776,8 +1735,7 @@ export default function Patientprofile() {
                 type="button"
                 className="btn-close btn-close-black"
                 data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
+                aria-label="Close"></button>
             </div>
             <div className="modal-body">
               <div className="card">
@@ -1809,8 +1767,7 @@ export default function Patientprofile() {
                 type="button"
                 className="btn-close"
                 data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
+                aria-label="Close"></button>
             </div>
             <div className="modal-body">
               <div className="card border-0">
@@ -1841,8 +1798,7 @@ export default function Patientprofile() {
                 type="button"
                 class="btn-close"
                 data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
+                aria-label="Close"></button>
             </div>
             <div class="modal-body">
               <div class="table-responsive">
@@ -1850,7 +1806,7 @@ export default function Patientprofile() {
                   <thead>
                     <tr>
                       <th>Record ID</th>
-                      <th>Date</th>
+                      <th>Year</th>
                       <th>Type</th>
                     </tr>
                   </thead>
@@ -1860,7 +1816,7 @@ export default function Patientprofile() {
                         <tr>
                           <td key={index}>{index + 1}</td>
                           <td>
-                            {new Date(medhis?.date).toLocaleDateString("en-US")}
+                            {medhis?.year}
                           </td>
                           <td>{medhis?.diseaseName}</td>
                         </tr>
@@ -1907,8 +1863,7 @@ export default function Patientprofile() {
                 type="button"
                 className="btn-close"
                 data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
+                aria-label="Close"></button>
             </div>
             <div className="modal-body">
               <div id="weight-status">
@@ -1939,6 +1894,46 @@ export default function Patientprofile() {
                     }
                   })()}
                 </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="modal fade custom-modal" id="ai-prediction">
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">AI Prediction</h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"></button>
+            </div>
+            <div className="modal-body">
+              <div className="container">
+                <h2>
+                  <b>Healthcare AI</b>
+                </h2>
+                <div
+                  className="result my-3"
+                  id="result"
+                  style={{ display: isResultVisible ? "block" : "none" }}>
+                  <h5>Response:</h5>
+                  <strong>
+                  {showPrediction && (
+                    <p id="generatedText">
+                      
+                      {generatedText}
+                      
+                      </p>
+                      )}
+                  </strong>
+                </div>
+                <div id="errorMessage" className="error-message">
+                  {errorMessage}
+                </div>
               </div>
             </div>
           </div>

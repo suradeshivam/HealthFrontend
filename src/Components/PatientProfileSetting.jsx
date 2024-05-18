@@ -33,6 +33,22 @@ export default function Profilesettings() {
     contry: "",
   });
 
+  const handleLogout = () => {
+    console.log("in here");
+    const userInfo = localStorage.getItem("userInfo");
+    if (userInfo) {
+      localStorage.removeItem("userInfo");
+    }
+    const token = localStorage.getItem("token");
+    if (token) {
+      localStorage.removeItem("token");
+    }
+    const patientInfo = localStorage.getItem("patientInfo");
+    if (patientInfo) {
+      localStorage.removeItem("patientInfo");
+    }
+  };
+
   const [errors, setErrors] = useState({
     dob: "",
     age: "",
@@ -465,7 +481,7 @@ export default function Profilesettings() {
                           </Link>
                         </li>
                         <li>
-                          <Link to="/login">
+                          <Link to="/login" onClick={handleLogout}>
                             <i className="fas fa-sign-out-alt" />
                             <span>Logout</span>
                           </Link>
@@ -537,6 +553,7 @@ export default function Profilesettings() {
                             </label>
                             <input
                               type="text"
+                              readOnly
                               className="form-control"
                               name="mobile"
                               value={formData.mobile}
@@ -544,20 +561,6 @@ export default function Profilesettings() {
                             />
                           </div>
                         </div>
-                        {/* <div className="col-12 col-md-6">
-                          <div className="mb-3">
-                            <label className="mb-2">
-                              Last Name <span className="text-danger"> *</span>
-                            </label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              name="lastName"
-                              value={formData.lastName}
-                              onChange={handleChange}
-                            />
-                          </div>
-                        </div> */}
                         <div className="col-12 col-md-6">
                           <div className="mb-3">
                             <label className="mb-2">
@@ -680,6 +683,7 @@ export default function Profilesettings() {
                             </label>
                             <input
                               type="email"
+                              readOnly
                               className="form-control"
                               name="email"
                               value={formData.email}

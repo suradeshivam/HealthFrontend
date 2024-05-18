@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import { toast, Bounce, ToastContainer } from "react-toastify";
 import axios from "axios";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 export default function ChangePasswordPatient() {
   const [patientInfo, setPatientInfo] = useState("");
@@ -29,6 +29,22 @@ export default function ChangePasswordPatient() {
     setUserInfo(userInfo);
     setUserId(userInfo._id);
   }, []);
+
+  const handleLogout = () => {
+    console.log("in here");
+    const userInfo = localStorage.getItem("userInfo");
+    if (userInfo) {
+      localStorage.removeItem("userInfo");
+    }
+    const token = localStorage.getItem("token");
+    if (token) {
+      localStorage.removeItem("token");
+    }
+    const patientInfo = localStorage.getItem("patientInfo");
+    if (patientInfo) {
+      localStorage.removeItem("patientInfo");
+    }
+  };
 
   const {
     register,
@@ -84,22 +100,6 @@ export default function ChangePasswordPatient() {
     setNewPassword("");
   };
 
-  const handleLogout = () => {
-    console.log("in here");
-    const userInfo = localStorage.getItem("userInfo");
-    if (userInfo) {
-      localStorage.removeItem("userInfo");
-    }
-    const token = localStorage.getItem("token");
-    if (token) {
-      localStorage.removeItem("token");
-    }
-    const docInfo = localStorage.getItem("docInfo");
-    if (docInfo) {
-      localStorage.removeItem("docInfo");
-    }
-  };
-
   // useEffect(() => {
   //   const doctorInfo = JSON.parse(localStorage.getItem("docInfo"));
   //   // Error in _id
@@ -110,15 +110,12 @@ export default function ChangePasswordPatient() {
 
   return (
     <>
-   
-    
       <div className="main-wrapper">
         <div className="breadcrumb-bar-two">
           <div className="container">
             <div className="row align-items-center inner-banner">
               <div className="col-md-12 col-12 text-center">
                 <h2 className="breadcrumb-title">Change Password</h2>
-                
               </div>
             </div>
           </div>
@@ -175,7 +172,6 @@ export default function ChangePasswordPatient() {
                             <span>Dependent</span>
                           </Link>
                         </li>
-                    
 
                         <li>
                           <Link to="/orders">
@@ -204,7 +200,7 @@ export default function ChangePasswordPatient() {
                           </Link>
                         </li>
                         <li>
-                          <Link to="/login">
+                          <Link to="/login" onClick={handleLogout}>
                             <i className="fas fa-sign-out-alt" />
                             <span>Logout</span>
                           </Link>
@@ -238,13 +234,13 @@ export default function ChangePasswordPatient() {
                               className="form-control pass-input"
                             />
                             <span
-                           
                               onClick={() =>
                                 setShowOldPassword(!showOldPassword)
                               }
                               className="toggle-password">
-                              <FontAwesomeIcon icon={showOldPassword ? 
-                            faEyeSlash : faEye}/>
+                              <FontAwesomeIcon
+                                icon={showOldPassword ? faEyeSlash : faEye}
+                              />
                             </span>
                             {errors.password && (
                               <p className="text-red-500 text-xs italic">
@@ -272,10 +268,11 @@ export default function ChangePasswordPatient() {
                               className="form-control pass-input"
                             />
                             <span
-                              
                               onClick={() => setShowPassword(!showPassword)}
                               className="toggle-password">
-                              <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                              <FontAwesomeIcon
+                                icon={showPassword ? faEyeSlash : faEye}
+                              />
                             </span>
                             {errors.password && (
                               <p className="text-red-500 text-xs italic">
@@ -309,7 +306,9 @@ export default function ChangePasswordPatient() {
                                 setShowConfirmPassword(!showConfirmPassword)
                               }
                               className="toggle-password">
-                               <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} />
+                              <FontAwesomeIcon
+                                icon={showConfirmPassword ? faEyeSlash : faEye}
+                              />
                             </span>
                             {errors.password && (
                               <p className="text-red-500 text-xs italic">

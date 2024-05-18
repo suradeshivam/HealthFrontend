@@ -386,7 +386,8 @@ export default function Doctorprofile() {
                   <div role="tabpanel" id="doc_reviews" className="tab-pane ">
                     <div className="widget review-listing">
                       <ul className="comment-list">
-                        {selectedDay &&
+                        {console.log(singleDoctor)}
+                        {
                           singleDoctor?.reviews &&
                           singleDoctor?.reviews.map((comment, index) => (
                             <li key={index}>
@@ -452,7 +453,7 @@ export default function Doctorprofile() {
                                             <i className="fa fa-chevron-left" />
                                           </a>
                                         </li>
-                                        {daysOfWeek.map((day, index) => (
+                                        {daysOfWeek?.map((day, index) => (
                                           <li
                                             key={index}
                                             onClick={() =>
@@ -488,13 +489,12 @@ export default function Doctorprofile() {
                                   <div className="col-md-12">
                                     <div className="time-slot">
                                       <ul className="clearfix">
-                                        {console.log(selectedDay)}
                                         {selectedDay &&
                                           singleDoctor?.schedules[
-                                            selectedDay.toLowerCase()
+                                            selectedDay?.toLowerCase()
                                           ]
-                                            .filter((slot) => !slot.isBooked)
-                                            .map((slot, index) => (
+                                            ?.filter((slot) => !slot.isBooked)
+                                            ?.map((slot, index) => (
                                               <li key={index}>
                                                 <a
                                                   className={`timing ${

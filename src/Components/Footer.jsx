@@ -79,8 +79,7 @@ export default function Footer() {
                           <i className="feather-mail" />{" "}
                           <a
                             href="connect@twinsistech.com"
-                            className="_cf_email_"
-                          >
+                            className="_cf_email_">
                             connect@twinsistech.com
                           </a>
                         </p>
@@ -150,7 +149,7 @@ export default function Footer() {
                 <div className="copyright-menu">
                   <ul className="policy-menu">
                     <li>
-                      <a href="privacy-policy.html">Privacy Policy</a>
+                      <Link to="privacy-policy">Privacy Policy</Link>
                     </li>
                     <li>
                       <Link to="/terms&con">Terms and Conditions</Link>

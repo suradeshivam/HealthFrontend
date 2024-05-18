@@ -26,7 +26,7 @@ export default function Navbar() {
             <div className="menu-header">
               <a href="index.html" className="menu-logo">
                 <img
-                  src="assets/img/logo.png"
+                  src="assets/img/favicon/20240505_203516.png"
                   className="img-fluid"
                   alt="Logo"
                 />
@@ -34,20 +34,24 @@ export default function Navbar() {
               <a
                 id="menu_close"
                 className="menu-close"
-                href="javascript:void(0);"
-              >
+                href="javascript:void(0);">
                 <i className="fas fa-times" />
               </a>
             </div>
             <ul className="main-nav" style={{ marginRight: "100px" }}>
               <li className="has-submenu ">
-                <a href="javascript:void(0);">About Us</a>
+                <Link to="/aboutus">About us</Link>
               </li>
               <li className="has-submenu">
                 <a href="javascript:void(0);">Services</a>
               </li>
               <li className="has-submenu">
-                <a href="javascript:void(0);">Contact</a>
+                <Link to="/contactus">Contact</Link>
+              </li>
+              <li className="has-submenu">
+                <a href="https://healthcareaii.netlify.app/" target="_blank">
+                  Healthcare AI
+                </a>
               </li>
             </ul>
           </div>
@@ -56,8 +60,7 @@ export default function Navbar() {
               <a
                 href="#"
                 className="dropdown-toggle nav-link p-0"
-                data-bs-toggle="dropdown"
-              >
+                data-bs-toggle="dropdown">
                 <i className="fa-solid fa-bell" />{" "}
                 <span className="badge">5</span>
               </a>
@@ -177,8 +180,7 @@ export default function Navbar() {
               <a
                 href="#"
                 className="dropdown-toggle nav-link"
-                data-bs-toggle="dropdown"
-              >
+                data-bs-toggle="dropdown">
                 <span className="user-img">
                   <img
                     className="rounded-circle"

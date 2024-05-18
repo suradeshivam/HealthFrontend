@@ -86,7 +86,7 @@ export default function DoctorRegister() {
                   <ToastContainer />
                   <div className="col-md-7 col-lg-6 login-left">
                     <img
-                      src="assets/img/login-banner.png"
+                      src="assets/img/bg/pic.jpg"
                       className="img-fluid"
                       alt="Login Banner"
                     />
