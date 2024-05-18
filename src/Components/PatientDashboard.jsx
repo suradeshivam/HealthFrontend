@@ -533,7 +533,17 @@ export default function Patientdashboard() {
                                           >
                                             Join
                                           </button>
+
+                                          <button
+                                            className="btn btn-sm bg-info-light me-2"
+                                            onClick={() =>
+                                              handleAppointmentSelect(row)
+                                            }
+                                          >
+                                            <i className="far fa-eye" /> View
+                                          </button>
                                         </div>
+                                       
                                       </td>
                                     </tr>
                                   ))}
