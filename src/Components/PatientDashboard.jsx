@@ -18,204 +18,22 @@ export default function Patientdashboard() {
 
   const navigate = useNavigate();
 
-  // const tableData = [
-  //   {
-  //     doctorName: "Dr. Jai",
-  //     specialty: "Dental",
-  //     appointmentDate: "14 Nov 2023",
-  //     appointmentTime: "10.00 AM",
-  //     BookingDate: "12 Nov 2023",
-  //     consultationFee: "$160",
-  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-  //   },
-  //   {
-  //     doctorName: "Dr. Ruby Perrin",
-  //     specialty: "Dental",
-  //     appointmentDate: "14 Nov 2023",
-  //     appointmentTime: "10.00 AM",
-  //     BookingDate: "12 Nov 2023",
-  //     consultationFee: "$160",
-  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-  //   },
-  //   {
-  //     doctorName: "Dr. Ruby Perrin",
-  //     specialty: "Dental",
-  //     appointmentDate: "14 Nov 2023",
-  //     appointmentTime: "10.00 AM",
-  //     BookingDate: "12 Nov 2023",
-  //     consultationFee: "$160",
-  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-  //   },
-  //   {
-  //     doctorName: "Dr. Ruby Perrin",
-  //     specialty: "Dental",
-  //     appointmentDate: "14 Nov 2023",
-  //     appointmentTime: "10.00 AM",
-  //     BookingDate: "12 Nov 2023",
-  //     consultationFee: "$160",
-  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-  //   },
-  //   {
-  //     doctorName: "Dr. Ruby Perrin",
-  //     specialty: "Dental",
-  //     appointmentDate: "14 Nov 2023",
-  //     appointmentTime: "10.00 AM",
-  //     BookingDate: "12 Nov 2023",
-  //     consultationFee: "$160",
-  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-  //   },
-  //   {
-  //     doctorName: "Dr. Ruby Perrin",
-  //     specialty: "Dental",
-  //     appointmentDate: "14 Nov 2023",
-  //     appointmentTime: "10.00 AM",
-  //     BookingDate: "12 Nov 2023",
-  //     consultationFee: "$160",
-  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-  //   },
-  // ];
+  const handleLogout = () => {
+    console.log("in here");
+    const userInfo = localStorage.getItem("userInfo");
+    if (userInfo) {
+      localStorage.removeItem("userInfo");
+    }
+    const token = localStorage.getItem("token");
+    if (token) {
+      localStorage.removeItem("token");
+    }
+    const patientInfo = localStorage.getItem("patientInfo");
+    if (patientInfo) {
+      localStorage.removeItem("patientInfo");
+    }
+  };
 
-  // const upcoming = [
-  //   {
-  //     doctorName: "Dr. Shree",
-  //     specialty: "Dental",
-  //     appointmentDate: "14 Nov 2023",
-  //     appointmentTime: "10.00 AM",
-  //     BookingDate: "12 Nov 2023",
-  //     consultationFee: "$160",
-  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-  //   },
-  //   {
-  //     doctorName: "Dr. Ruby Perrin",
-  //     specialty: "Dental",
-  //     appointmentDate: "14 Nov 2023",
-  //     appointmentTime: "10.00 AM",
-  //     BookingDate: "12 Nov 2023",
-  //     consultationFee: "$160",
-  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-  //   },
-  //   {
-  //     doctorName: "Dr. Ruby Perrin",
-  //     specialty: "Dental",
-  //     appointmentDate: "14 Nov 2023",
-  //     appointmentTime: "10.00 AM",
-  //     BookingDate: "12 Nov 2023",
-  //     consultationFee: "$160",
-  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-  //   },
-  //   {
-  //     doctorName: "Dr. Ruby Perrin",
-  //     specialty: "Dental",
-  //     appointmentDate: "14 Nov 2023",
-  //     appointmentTime: "10.00 AM",
-  //     BookingDate: "12 Nov 2023",
-  //     consultationFee: "$160",
-  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-  //   },
-  //   {
-  //     doctorName: "Dr. Ruby Perrin",
-  //     specialty: "Dental",
-  //     appointmentDate: "14 Nov 2023",
-  //     appointmentTime: "10.00 AM",
-  //     BookingDate: "12 Nov 2023",
-  //     consultationFee: "$160",
-  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-  //   },
-  //   {
-  //     doctorName: "Dr. Ruby Perrin",
-  //     specialty: "Dental",
-  //     appointmentDate: "14 Nov 2023",
-  //     appointmentTime: "10.00 AM",
-  //     BookingDate: "12 Nov 2023",
-  //     consultationFee: "$160",
-  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-  //   },
-  //   {
-  //     doctorName: "Dr. Ruby Perrin",
-  //     specialty: "Dental",
-  //     appointmentDate: "14 Nov 2023",
-  //     appointmentTime: "10.00 AM",
-  //     BookingDate: "12 Nov 2023",
-  //     consultationFee: "$160",
-  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-  //   },
-  // ];
-  // const history = [
-  //   {
-  //     doctorName: "Dr. Ram",
-  //     specialty: "Dental",
-  //     appointmentDate: "14 Nov 2023",
-  //     appointmentTime: "10.00 AM",
-  //     BookingDate: "12 Nov 2023",
-  //     consultationFee: "$160",
-  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-  //   },
-  //   {
-  //     doctorName: "Dr. Ruby Perrin",
-  //     specialty: "Dental",
-  //     appointmentDate: "14 Nov 2023",
-  //     appointmentTime: "10.00 AM",
-  //     BookingDate: "12 Nov 2023",
-  //     consultationFee: "$160",
-  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-  //   },
-  //   {
-  //     doctorName: "Dr. Ruby Perrin",
-  //     specialty: "Dental",
-  //     appointmentDate: "14 Nov 2023",
-  //     appointmentTime: "10.00 AM",
-  //     BookingDate: "12 Nov 2023",
-  //     consultationFee: "$160",
-  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-  //   },
-  //   {
-  //     doctorName: "Dr. Ruby Perrin",
-  //     specialty: "Dental",
-  //     appointmentDate: "14 Nov 2023",
-  //     appointmentTime: "10.00 AM",
-  //     BookingDate: "12 Nov 2023",
-  //     consultationFee: "$160",
-  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-  //   },
-  //   {
-  //     doctorName: "Dr. Ruby Perrin",
-  //     specialty: "Dental",
-  //     appointmentDate: "14 Nov 2023",
-  //     appointmentTime: "10.00 AM",
-  //     BookingDate: "12 Nov 2023",
-  //     consultationFee: "$160",
-  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-  //   },
-  //   {
-  //     doctorName: "Dr. Ruby Perrin",
-  //     specialty: "Dental",
-  //     appointmentDate: "14 Nov 2023",
-  //     appointmentTime: "10.00 AM",
-  //     BookingDate: "12 Nov 2023",
-  //     consultationFee: "$160",
-  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-  //   },
-  //   {
-  //     doctorName: "Dr. Ruby Perrin",
-  //     specialty: "Dental",
-  //     appointmentDate: "14 Nov 2023",
-  //     appointmentTime: "10.00 AM",
-  //     BookingDate: "12 Nov 2023",
-  //     consultationFee: "$160",
-  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-  //   },
-  //   {
-  //     doctorName: "Dr. Ruby Perrin",
-  //     specialty: "Dental",
-  //     appointmentDate: "14 Nov 2023",
-  //     appointmentTime: "10.00 AM",
-  //     BookingDate: "12 Nov 2023",
-  //     consultationFee: "$160",
-  //     avatarSrc: "assets/img/doctors/doctor-thumb-01.jpg",
-  //   },
-  // ];
-
-  // Today Appointment
   const todayStartIndex = (currentPageToday - 1) * itemsPerPage;
   const todayEndIndex = currentPageToday * itemsPerPage;
   const todayAppointments = today.slice(todayStartIndex, todayEndIndex);
@@ -485,7 +303,7 @@ export default function Patientdashboard() {
                           </Link>
                         </li>
                         <li>
-                          <Link to="/login">
+                          <Link to="/login" onClick={handleLogout}>
                             <i className="fas fa-sign-out-alt" />
                             <span>Logout</span>
                           </Link>

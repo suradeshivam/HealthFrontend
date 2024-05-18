@@ -1,28 +1,41 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 export default function Orderslist() {
-
   const [patientInfo, setPatientInfo] = useState("");
   const [userInfo, setUserInfo] = useState("");
 
   useEffect(() => {
-    const patientInfo = JSON.parse(localStorage.getItem('patientInfo'))
-    setPatientInfo(patientInfo)
-    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
-    setUserInfo(userInfo)
+    const patientInfo = JSON.parse(localStorage.getItem("patientInfo"));
+    setPatientInfo(patientInfo);
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    setUserInfo(userInfo);
   }, []);
+
+  const handleLogout = () => {
+    console.log("in here");
+    const userInfo = localStorage.getItem("userInfo");
+    if (userInfo) {
+      localStorage.removeItem("userInfo");
+    }
+    const token = localStorage.getItem("token");
+    if (token) {
+      localStorage.removeItem("token");
+    }
+    const patientInfo = localStorage.getItem("patientInfo");
+    if (patientInfo) {
+      localStorage.removeItem("patientInfo");
+    }
+  };
 
   return (
     <>
-    
       <div className="main-wrapper">
         <div className="breadcrumb-bar-two">
           <div className="container">
             <div className="row align-items-center inner-banner">
               <div className="col-md-12 col-12 text-center">
                 <h2 className="breadcrumb-title">Orders</h2>
-                
               </div>
             </div>
           </div>
@@ -33,7 +46,7 @@ export default function Orderslist() {
               <div className="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
                 <div className="profile-sidebar">
                   <div className="widget-profile pro-widget-content">
-                  <div className="profile-info-widget">
+                    <div className="profile-info-widget">
                       <a href="#" className="booking-doc-img">
                         <img
                           src={
@@ -95,7 +108,7 @@ export default function Orderslist() {
                             <span>Accounts</span>
                           </Link>
                         </li> */}
-                         <li>
+                        <li>
                           <Link to="/dependent">
                             <i className="fas fa-users" />
                             <span>Dependent</span>
@@ -114,7 +127,7 @@ export default function Orderslist() {
                             <span>Add Medical Records</span>
                           </Link>
                         </li>
-                       
+
                         <li>
                           <Link to="/profile-settings">
                             <i className="fas fa-user-cog" />
@@ -128,7 +141,7 @@ export default function Orderslist() {
                           </Link>
                         </li>
                         <li>
-                          <Link to="/login">
+                          <Link to="/login" onClick={handleLogout}>
                             <i className="fas fa-sign-out-alt" />
                             <span>Logout</span>
                           </Link>
@@ -311,7 +324,6 @@ export default function Orderslist() {
             </div>
           </div>
         </div>
-        
       </div>
       {/* Mirrored from TwinsisTech.dreamstechnologies.com/html/template/orders-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 16 Apr 2024 16:48:29 GMT */}
     </>

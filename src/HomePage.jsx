@@ -131,12 +131,15 @@ export default function Homepage() {
   const getAllDoctors = async () => {
     const isAuthenticated = localStorage.getItem("token");
     try {
-      const response = await axios.get("https://healthbackend-3xh2.onrender.com/patient/search", {
-        headers: {
-          isvalidrequest: "twinsistech",
-          authorization: isAuthenticated,
-        },
-      });
+      const response = await axios.get(
+        "https://healthbackend-3xh2.onrender.com/patient/search",
+        {
+          headers: {
+            isvalidrequest: "twinsistech",
+            authorization: isAuthenticated,
+          },
+        }
+      );
 
       console.log(response);
       // setDocFilter(response.data.result);
@@ -173,13 +176,12 @@ export default function Homepage() {
                     <span />
                   </span>
                 </a>
-                <Link to="/index" className="navbar-brand logo">
+                <Link to="/" className="navbar-brand logo">
                   <img
                     src="assets/img/favicon/20240505_203516.png"
                     className="img-fluid"
                     alt="Logo"
                   />
-                  {/* <h3>TwinsDoc</h3> */}
                 </Link>
               </div>
 
@@ -187,7 +189,7 @@ export default function Homepage() {
                 <div className="menu-header">
                   <a href="index.html" className="menu-logo">
                     <img
-                      src="assets/img/logo.png"
+                      src="assets/img/favicon/20240505_203516.png"
                       className="img-fluid"
                       alt="Logo"
                     />
@@ -202,13 +204,20 @@ export default function Homepage() {
 
                 <ul className="main-nav">
                   <li className="has-submenu ">
-                    <a href="javascript:void(0);">About Us</a>
+                    <Link to="/aboutus">About us</Link>
                   </li>
                   <li className="has-submenu">
                     <a href="javascript:void(0);">Services</a>
                   </li>
                   <li className="has-submenu">
-                    <a href="javascript:void(0);">Contact</a>
+                    <Link to="/contactus">Contact</Link>
+                  </li>
+                  <li className="has-submenu">
+                    <a
+                      href="https://healthcareaii.netlify.app/"
+                      target="_blank">
+                      Healthcare AI
+                    </a>
                   </li>
                 </ul>
               </div>
@@ -269,14 +278,7 @@ export default function Homepage() {
                       <i className="feather-search bficon" />
                       <div>
                         <select
-                          className="form-control"
-                          style={{
-                            border: "none",
-                            marginLeft: "10px",
-                            opacity: 1,
-                            transform: "scaleY(1)",
-                            display: "inline-block",
-                          }}
+                          className="form-control mx-2 border-0"
                           value={selectedSpecialist}
                           onChange={handleSpecialistChange}>
                           <option value="">Search doctors, specialists</option>
@@ -294,15 +296,7 @@ export default function Homepage() {
                       <i className="feather-map-pin" />
                       <div>
                         <select
-                          className="form-control"
-                          style={{
-                            border: "none",
-                            marginLeft: "30px",
-                            opacity: 1,
-                            transform: "scaleY(1)",
-                            display: "inline-block",
-                            width: "100%",
-                          }}
+                          className="form-control mx-3 border-0"
                           value={selectedLocation}
                           onChange={handleLocationChange}>
                           <option value="">Location</option>

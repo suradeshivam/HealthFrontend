@@ -7,18 +7,23 @@ import axios from "axios";
 import { OrderState } from "../../Contexts";
 
 export default function DoctorSearch() {
-  
   // All Filters Logic
 
   // Filter state for gender and sorting
 
-  const {homeDocFilter, setHomeDocFilter,selectedSpecialist,setSelectedSpecialist,selectedLocation, setSelectedLocation } = OrderState();
+  const {
+    homeDocFilter,
+    setHomeDocFilter,
+    selectedSpecialist,
+    setSelectedSpecialist,
+    selectedLocation,
+    setSelectedLocation,
+  } = OrderState();
 
   // const location = useLocation();
   // const docFilters = location.state?.docFilters || "";
   console.log("1");
   console.log(homeDocFilter);
-
 
   const [doctors, setDoctors] = useState(data);
   const [filterDoctor, setFilterDoctor] = useState([]);
@@ -29,19 +34,15 @@ export default function DoctorSearch() {
     selectedRating: [],
   });
 
-
-
   const [docFilter, setDocFilter] = useState("");
   const [allDoctor, setAllDoctor] = useState([]);
   // const [filterDoctor, setfilterDoctor] = useState([]);
   const [feeRange, setFeeRange] = useState([1500, 5000]);
 
   const handleFeeChange = (event) => {
-    
     const newFeeRange = parseInt(event.target.value);
     setFeeRange([newFeeRange, feeRange[1]]);
     filterDoctors(newFeeRange, feeRange[1]);
-
   };
 
   const filterDoctors = (minFee, maxFee) => {
@@ -71,16 +72,13 @@ export default function DoctorSearch() {
     }
   };
 
-
   const selectedFeeFilter = () => {
     const filteredDoctors = filterDoctor.filter(
       (doctor) => doctor.fee <= feeRange[0] && doctor.fee <= feeRange[1]
     );
 
     setFilterDoctor(filteredDoctors);
-  }
-
- 
+  };
 
   const sortFilteredDoctors = (value) => {
     const sortedDoctors = [...filterDoctor];
@@ -98,17 +96,17 @@ export default function DoctorSearch() {
   const experienceFilter = (value) => {
     let filteredDoctors = [...docFilter];
     filteredDoctors = filteredDoctors.filter((doctor) => {
-    if (filters.selectedGender && doctor.gender !== filters.selectedGender ) {
-      return false;
-    }
+      if (filters.selectedGender && doctor.gender !== filters.selectedGender) {
+        return false;
+      }
 
-    if (value === "1-5") {
-        return doctor.yearOfExperience >= 1 && doctor.yearOfExperience <= 5
-    } else if (value === "5+") {
-      return doctor.yearOfExperience > 5;
-    }
-    return true;
-  })
+      if (value === "1-5") {
+        return doctor.yearOfExperience >= 1 && doctor.yearOfExperience <= 5;
+      } else if (value === "5+") {
+        return doctor.yearOfExperience > 5;
+      }
+      return true;
+    });
 
     setFilterDoctor(filteredDoctors);
   };
@@ -118,32 +116,32 @@ export default function DoctorSearch() {
     const rating = parseInt(value);
 
     filteredDoctors = filteredDoctors.filter((doctor) => {
-      if (filters.selectedGender && doctor.gender !== filters.selectedGender ) {
+      if (filters.selectedGender && doctor.gender !== filters.selectedGender) {
         return false;
       }
       // Check if the doctor matches the selected experience filter
-    if (filters.selectedExperience) {
-      if (filters.selectedExperience === "1-5") {
-        if (
-          doctor.yearOfExperience < 1 ||
-          doctor.yearOfExperience > 5
-        ) {
-          return false;
-        }
-      } else if (filters.selectedExperience === "5+") {
-        if (doctor.yearOfExperience <= 5) {
-          return false;
+      if (filters.selectedExperience) {
+        if (filters.selectedExperience === "1-5") {
+          if (doctor.yearOfExperience < 1 || doctor.yearOfExperience > 5) {
+            return false;
+          }
+        } else if (filters.selectedExperience === "5+") {
+          if (doctor.yearOfExperience <= 5) {
+            return false;
+          }
         }
       }
-    }
-        if (Array.isArray(doctor.reviews)) {
-            const totalRating = doctor.reviews.reduce((acc, review) => acc + review.rating, 0);
-            const averageRating = Math.round(totalRating / doctor.reviews.length) || 0;
-            return averageRating === rating; 
-        }
-        return false; // Return false if reviews is not an array or empty
+      if (Array.isArray(doctor.reviews)) {
+        const totalRating = doctor.reviews.reduce(
+          (acc, review) => acc + review.rating,
+          0
+        );
+        const averageRating =
+          Math.round(totalRating / doctor.reviews.length) || 0;
+        return averageRating === rating;
+      }
+      return false; // Return false if reviews is not an array or empty
     });
-
 
     setFilterDoctor(filteredDoctors);
   };
@@ -160,8 +158,7 @@ export default function DoctorSearch() {
           },
         }
       );
-  
-      
+
       console.log(response);
       // setDocFilter(response.data.result);
       setAllDoctor(response.data.result);
@@ -175,49 +172,27 @@ export default function DoctorSearch() {
 
   const handleSearchFilter = (result) => {
     // Filter doctors based on selected specialist and location
-    console.log(allDoctor)
+    console.log(allDoctor);
     const filteredDoctors = result?.filter((doctors) => {
-      const specialistMatch = selectedSpecialist === '' || doctors.specialization === selectedSpecialist;
-      const locationMatch = selectedLocation === '' || doctors.city === selectedLocation;
+      const specialistMatch =
+        selectedSpecialist === "" ||
+        doctors.specialization === selectedSpecialist;
+      const locationMatch =
+        selectedLocation === "" || doctors.city === selectedLocation;
       return specialistMatch && locationMatch;
     });
     console.log(filteredDoctors);
     setFilterDoctor(filteredDoctors);
   };
 
-  console.log(filterDoctor)
+  console.log(filterDoctor);
 
-  useEffect ( ()=>{
-
+  useEffect(() => {
     getAllDoctors();
-  
-  },[]);
+  }, []);
 
- 
   return (
     <>
-      <title>TwinDoc</title>
-      <link
-        rel="shortcut icon"
-        href="assets/img/favicon.png"
-        type="image/x-icon"
-      />
-      <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
-      <link
-        rel="stylesheet"
-        href="assets/plugins/fontawesome/css/fontawesome.min.css"
-      />
-      <link
-        rel="stylesheet"
-        href="assets/plugins/fontawesome/css/all.min.css"
-      />
-      <link rel="stylesheet" href="assets/css/feather.css" />
-      <link
-        rel="stylesheet"
-        href="assets/plugins/select2/css/select2.min.css"
-      />
-      <link rel="stylesheet" href="assets/plugins/jquery-ui/jquery-ui.css" />
-      <link rel="stylesheet" href="assets/css/custom.css" />
       <div className="main-wrapper search-page">
         <header className="header header-custom header-fixed header-one">
           <div className="container"></div>
@@ -227,13 +202,13 @@ export default function DoctorSearch() {
             <div className="row align-items-center inner-banner">
               <div className="col-md-12 col-12 text-center">
                 <h2 className="breadcrumb-title">Search Doctors</h2>
-               
               </div>
             </div>
           </div>
         </div>
 
         {/* Filters */}
+
         <div className="doctor-content content">
           <div className="container">
             <div className="row">
@@ -344,57 +319,58 @@ export default function DoctorSearch() {
                                     Available Tomorrow
                                   </label>
                                 </li>
-                              
-                                
                               </ul>
                             </div>
                           </div>
                         </div>
                         <div className="filter-grid">
-                      <h4>
-                        <a href="#collapsethree" data-bs-toggle="collapse">
-                          Consultation Fee
-                        </a>
-                      </h4>
-                      <div id="collapsethree" className="collapse show">
-                        <div className="filter-collapse">
-                          <div className="filter-content filter-content-slider">
-                            
-                            <div className="slider-wrapper" >
-                              <div id="price-range" />
-                              <input type="range"
-                                min="0"
-                                max="5000"
-                                step="100"
-                                value={feeRange[0]}
-                                onChange={handleFeeChange}
-                                style={{
-                                  width: "100%", 
-                                  height: "10px", 
-                                  borderRadius: "5px", 
-                                  background: "#E9ECF1", 
-                                  outline: "none",
-                                  opacity: "0.7", 
-                                  transition: "opacity 0.2s",
-                                   
-                                  ":hover": {
-                                      opacity: "1", 
-                                  }
-                              }}/>
-                            </div>
-                            <div className="price-wrapper">
-                              <h6>
-                                Price :
-                                <span>
-                                   RS{feeRange[0]} <span id="pricerangemin" />
-                                  - {feeRange[1]} RS<span id="pricerangemax" />
-                                </span>
-                              </h6>
+                          <h4>
+                            <a href="#collapsethree" data-bs-toggle="collapse">
+                              Consultation Fee
+                            </a>
+                          </h4>
+                          <div id="collapsethree" className="collapse show">
+                            <div className="filter-collapse">
+                              <div className="filter-content filter-content-slider">
+                                <div className="slider-wrapper">
+                                  <div id="price-range" />
+                                  <input
+                                    type="range"
+                                    min="0"
+                                    max="5000"
+                                    step="100"
+                                    value={feeRange[0]}
+                                    onChange={handleFeeChange}
+                                    style={{
+                                      width: "100%",
+                                      height: "10px",
+                                      borderRadius: "5px",
+                                      background: "#E9ECF1",
+                                      outline: "none",
+                                      opacity: "0.7",
+                                      transition: "opacity 0.2s",
+
+                                      ":hover": {
+                                        opacity: "1",
+                                      },
+                                    }}
+                                  />
+                                </div>
+                                <div className="price-wrapper">
+                                  <h6>
+                                    Price :
+                                    <span>
+                                      RS{feeRange[0]}{" "}
+                                      <span id="pricerangemin" />- {feeRange[1]}{" "}
+                                      RS
+                                      <span id="pricerangemax" />
+                                    </span>
+                                  </h6>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
                         <div className="filter-grid">
                           <h4>
                             <a href="#collapsefour" data-bs-toggle="collapse">
@@ -491,7 +467,6 @@ export default function DoctorSearch() {
                             <div className="filter-collapse">
                               <ul>
                                 <li>
-                                  
                                   <label className="custom_check rating_custom_check d-inline-flex">
                                     <input
                                       type="radio"
@@ -514,11 +489,9 @@ export default function DoctorSearch() {
                                       <span className="rating-count">(40)</span>
                                     </div>
                                   </label>
-                                  
                                 </li>
                                 <li>
                                   <label className="custom_check rating_custom_check d-inline-flex">
-                                    
                                     <input
                                       type="radio"
                                       name="rating"
@@ -539,12 +512,10 @@ export default function DoctorSearch() {
                                       <i className="fas fa-star" />
                                       <span className="rating-count">(35)</span>
                                     </div>
-                                   
                                   </label>
                                 </li>
                                 <li>
                                   <label className="custom_check rating_custom_check d-inline-flex">
-                                    
                                     <input
                                       type="radio"
                                       name="rating"
@@ -565,12 +536,10 @@ export default function DoctorSearch() {
                                       <i className="fas fa-star" />
                                       <span className="rating-count">(20)</span>
                                     </div>
-                                    
                                   </label>
                                 </li>
                                 <li>
                                   <label className="custom_check rating_custom_check d-inline-flex">
-                                   
                                     <input
                                       type="radio"
                                       name="rating"
@@ -591,12 +560,10 @@ export default function DoctorSearch() {
                                       <i className="fas fa-star" />
                                       <span className="rating-count">(10)</span>
                                     </div>
-                                    
                                   </label>
                                 </li>
                                 <li>
                                   <label className="custom_check rating_custom_check d-inline-flex">
-                                    
                                     <input
                                       type="radio"
                                       name="rating"
@@ -617,7 +584,6 @@ export default function DoctorSearch() {
                                       <i className="fas fa-star" />
                                       <span className="rating-count">(05)</span>
                                     </div>
-                                   
                                   </label>
                                 </li>
                               </ul>
@@ -640,7 +606,7 @@ export default function DoctorSearch() {
                               Andheri West - Mumbai, India{" "}
                             </p>
                           </div>
-                                                  </div>
+                        </div>
                         <div className="doctor-filter-option">
                           <div className="doctor-filter-sort">
                             <p>Sort</p>
@@ -652,8 +618,7 @@ export default function DoctorSearch() {
                                     "sortOrder",
                                     e.target.value
                                   )
-                                }
-                              >
+                                }>
                                 <option value="">Select</option>
                                 <option value="ascending">
                                   Ascending Order
@@ -669,7 +634,6 @@ export default function DoctorSearch() {
                     </div>
 
                     {/* Doctor map */}
-
                     <FilterDisplay filterData={filterDoctor} />
                   </div>
                 </div>

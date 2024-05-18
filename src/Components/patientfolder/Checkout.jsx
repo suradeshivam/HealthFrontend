@@ -1,134 +1,77 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { OrderState } from "../../Contexts";
-import axios from "axios";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Bounce, ToastContainer, toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Checkout() {
-  const [PatientInfo, setPatientInfo] = useState(null);
-  console.log(PatientInfo);
-  const {
-    selectedDoctor,
-    symptoms,
-    temperature,
-    bloodpresure,
-    heartRate,
-    reportFiles,
-    pdfRefs,
-    selectedSlotDay,
-    selectedSlotTime,
-    selectedDate,
-  } = OrderState();
-
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
 
-  console.log(
-    symptoms,
-    temperature,
-    bloodpresure,
-    heartRate,
-    reportFiles,
-    pdfRefs,
-    selectedSlotDay,
-    selectedSlotTime,
-    selectedDate
-  );
-
-  function parseTime(timeStr) {
-    const [time, modifier] = timeStr.split(" ");
-    let [hours, minutes] = time.split(":").map(Number);
-
-    if (modifier === "PM" && hours !== 12) {
-      hours += 12;
-    } else if (modifier === "AM" && hours === 12) {
-      hours = 0;
-    }
-
-    return { hours, minutes };
-  }
-
-  function convertToISO(dateStr, startTimeStr) {
-    // Parse the date
-    const [day, month, year] = dateStr.split("-").map(Number);
-
-    // Parse the start time
-    const { hours: startHours, minutes: startMinutes } =
-      parseTime(startTimeStr);
-
-    // Create a new Date object
-    const date = new Date(
-      Date.UTC(year, month - 1, day, startHours, startMinutes)
-    );
-
-    // Convert to ISO string
-    const isoString = date.toISOString();
-
-    return isoString;
-  }
-
-  const dateStr = "17-05-2024";
-  const startTimeStr = "12:00 AM";
-
-  const isoString = convertToISO(dateStr, startTimeStr);
-
-  console.log(isoString);
-  console.log(selectedDate);
-  // console.log(selectedSlotTime.substring(0,9));
-
-  const handleSubmit = async () => {
-    const isAuthenticated = localStorage.getItem("token");
-    const patientInfo = JSON.parse(localStorage.getItem("patientInfo"));
-    console.log(selectedDoctor, patientInfo);
-
-    console.log(selectedSlotTime.substring(0, 9));
-    const date = convertToISO(selectedDate, selectedSlotTime.substring(0, 9));
-
-    try {
-      const result = await axios.post(
-        `https://healthbackend-3xh2.onrender.com/appointment/create`,
-        {
-          patientId: patientInfo._id,
-          doctorId: selectedDoctor._id,
-          slot: selectedSlotTime,
-          date: date,
-          vitals: {
-            heartRate: heartRate,
-            bloodPressure: bloodpresure,
-            temparature: temperature,
-          },
-          symptoms: symptoms,
-          consent: true,
-        },
-        {
-          headers: {
-            authorization: isAuthenticated,
-          },
-        }
-      );
-
-      console.log(result);
-      toast("Appointment Created Successfully");
-      navigate("/booking-success");
-    } catch (error) {
-      console.log(error);
-    }
+  const validateEmail = (email) => {
+    const re = /\S+@\S+\.\S+/;
+    return re.test(email);
   };
 
-  useEffect(() => {
-    const patientInfo = JSON.parse(localStorage.getItem("patientInfo"));
-    setPatientInfo(patientInfo);
-  }, []);
+  const handlePayment = () => {
+    if (!name || !email || !phone) {
+      toast.error("Please fill in all required fields.");
+      return;
+    }
+    if (!validateEmail(email)) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+    if (!isChecked) {
+      toast.error("Please accept the Terms & Conditions.");
+      return;
+    }
+
+    // Your payment handling logic
+    const options = {
+      key: "rzp_test_24yRxkxuRbu0WP",
+      amount: 16000,
+      currency: "INR",
+      name: "TwinsisTech",
+      description: "Fees",
+      image: "https://example.com/your_logo",
+      handler: function (response) {
+        if (response.razorpay_payment_id) {
+          toast.success("Payment successful!");
+          setTimeout(() => {
+            navigate("/booking-success");
+          }, 3000);
+        } else {
+          toast.error("Payment failed. Please try again.");
+        }
+      },
+      prefill: {
+        name: name,
+        email: email,
+        contact: phone,
+      },
+      notes: {
+        address: "Razorpay Corporate Office",
+      },
+      theme: {
+        color: "#0e82fd",
+      },
+    };
+
+    const rzp1 = new window.Razorpay(options);
+    rzp1.open();
+  };
+
   return (
-    <>
+    <div>
       <div className="main-wrapper">
         <div className="breadcrumb-bar-two">
           <div className="container">
             <div className="row align-items-center inner-banner">
               <div className="col-md-12 col-12 text-center">
                 <h2 className="breadcrumb-title">Checkout</h2>
-                <nav aria-label="breadcrumb" className="page-breadcrumb"></nav>
               </div>
             </div>
           </div>
@@ -136,136 +79,97 @@ export default function Checkout() {
         <div className="content">
           <div className="container">
             <div className="row">
-              <ToastContainer />
               <div className="col-md-7 col-lg-8">
                 <div className="card">
                   <div className="card-body">
-                    <div>
+                    <form>
                       <div className="info-widget">
                         <h4 className="card-title">Personal Information</h4>
                         <div className="row">
                           <div className="col-md-6 col-sm-12">
                             <div className="mb-3 card-label">
-                              <label className="mb-2">Name</label>
+                              <label className="mb-2">
+                                Name <span style={{ color: "red" }}>*</span>
+                              </label>
                               <input
                                 className="form-control"
-                                value={PatientInfo?.patient?.name}
                                 type="text"
+                                value={name}
+                                onChange={(e) =>
+                                  setName(
+                                    e.target.value.replace(/[^A-Za-z]/gi, " ")
+                                  )
+                                }
+                                autoComplete="name"
+                                required
                               />
                             </div>
                           </div>
-
                           <div className="col-md-6 col-sm-12">
                             <div className="mb-3 card-label">
-                              <label className="mb-2">Email</label>
-                              <input className="form-control" type="email" />
+                              <label className="mb-2">
+                                Email <span style={{ color: "red" }}>*</span>
+                              </label>
+                              <input
+                                className="form-control"
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                autoComplete="email"
+                                required
+                              />
                             </div>
                           </div>
                           <div className="col-md-6 col-sm-12">
                             <div className="mb-3 card-label">
-                              <label className="mb-2">Phone</label>
-                              <input className="form-control" type="text" />
+                              <label className="mb-2">
+                                Phone <span style={{ color: "red" }}>*</span>
+                              </label>
+                              <input
+                                className="form-control"
+                                type="tel"
+                                value={phone}
+                                onChange={(e) =>
+                                  setPhone(
+                                    e.target.value
+                                      .replace(/[^0-9+]/g, "")
+                                      .slice(0, 13)
+                                  )
+                                }
+                                autoComplete="tel"
+                                required
+                              />
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div className="payment-widget">
-                        <h4 className="card-title">Payment Method</h4>
-                        <div className="payment-list">
-                          <label className="payment-radio credit-card-option">
-                            <input
-                              type="radio"
-                              name="radio"
-                              defaultChecked=""
-                            />
-                            <span className="checkmark" />
-                            Credit card
+                      <div className="terms-accept">
+                        <div className="custom-checkbox">
+                          <input
+                            type="checkbox"
+                            id="terms_accept"
+                            checked={isChecked}
+                            onChange={() => setIsChecked(!isChecked)}
+                            required
+                          />
+                          {"  "}
+                          <label htmlFor="terms_accept">
+                            I have read and accept{" "}
+                            <a href="terms-condition.html">
+                              Terms &amp; Conditions
+                            </a>
                           </label>
-                          <div className="row">
-                            <div className="col-md-6">
-                              <div className="mb-3 card-label">
-                                <label htmlFor="card_name">Name on Card</label>
-                                <input
-                                  className="form-control"
-                                  id="card_name"
-                                  type="text"
-                                />
-                              </div>
-                            </div>
-                            <div className="col-md-6">
-                              <div className="mb-3 card-label">
-                                <label htmlFor="card_number">Card Number</label>
-                                <input
-                                  className="form-control"
-                                  id="card_number"
-                                  placeholder="1234 5678 9876 5432"
-                                  type="text"
-                                />
-                              </div>
-                            </div>
-                            <div className="col-md-4">
-                              <div className="mb-3 card-label">
-                                <label htmlFor="expiry_month">
-                                  Expiry Month
-                                </label>
-                                <input
-                                  className="form-control"
-                                  id="expiry_month"
-                                  placeholder="MM"
-                                  type="text"
-                                />
-                              </div>
-                            </div>
-                            <div className="col-md-4">
-                              <div className="mb-3 card-label">
-                                <label htmlFor="expiry_year">Expiry Year</label>
-                                <input
-                                  className="form-control"
-                                  id="expiry_year"
-                                  placeholder="YY"
-                                  type="text"
-                                />
-                              </div>
-                            </div>
-                            <div className="col-md-4">
-                              <div className="mb-3 card-label">
-                                <label htmlFor="cvv">CVV</label>
-                                <input
-                                  className="form-control"
-                                  id="cvv"
-                                  type="text"
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="payment-list">
-                          <label className="payment-radio paypal-option">
-                            <input type="radio" name="radio" />
-                            <span className="checkmark" />
-                            Paypal
-                          </label>
-                        </div>
-                        <div className="terms-accept">
-                          <div className="custom-checkbox">
-                            <input type="checkbox" id="terms_accept" />
-                            {"  "}
-                            {"  "}
-                            <label htmlFor="terms_accept">
-                              I have read and accept{" "}
-                              <a href="terms-condition.html">
-                                Terms &amp; Conditions
-                              </a>
-                            </label>
-                          </div>
-                        </div>
-                        <div className="clinic-booking col-md-4 mt-3">
-                          <Link className="apt-btn" onClick={handleSubmit}>
-                            Confirm & Pay
-                          </Link>
                         </div>
                       </div>
-                    </div>
+                      <div className="form-search-btn col-md-12">
+                        <button
+                          type="button"
+                          className="btn"
+                          onClick={handlePayment}>
+                          Confirm & Pay
+                        </button>
+                      </div>
+                    </form>
                   </div>
                 </div>
               </div>
@@ -341,7 +245,7 @@ export default function Checkout() {
           </div>
         </div>
       </div>
-      {/* Mirrored from TwinsisTech.dreamstechnologies.com/html/template/checkout.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 16 Apr 2024 16:46:18 GMT */}
-    </>
+      <ToastContainer />
+    </div>
   );
 }
