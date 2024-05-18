@@ -75,11 +75,11 @@ export default function Checkout() {
     // Your payment handling logic
     const options = {
       key: "rzp_test_24yRxkxuRbu0WP",
-      amount: 16000,
+      amount: (selectedDoctor?.fees*100) + (10 + 50)*100,
       currency: "INR",
       name: "TwinsisTech",
       description: "Fees",
-      image: "https://example.com/your_logo",
+      image: "assets/img/favicon/20240505_203516.png",
       handler: function (response) {
         if (response.razorpay_payment_id) {
           toast.success("Payment successful!");

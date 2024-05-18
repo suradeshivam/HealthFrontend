@@ -18,7 +18,7 @@ import {
 export default function Accounts() {
   const [accountName, setAccountName] = useState("Dr. Darren Elder");
   const [bankName, setBankName] = useState("Sbi");
-  const [upiId, setUpiId] = useState();
+  const [upiId, setUpiId] = useState("vaibhavw@oksbi");
   const [upiIdError, setUpiIdError] = useState();
   const [doctorInfo, setDoctorInfo] = useState("");
   const [dataRevenues, setDataRevenues] = useState(null);
@@ -381,7 +381,7 @@ export default function Accounts() {
                               <div className="info-list">
                                 <div className="title">Account Name</div>
                                 <div className="text" id="account_name">
-                                  {accountName}
+                                 Dr. {docInfo?.userId?.name}
                                 </div>
                               </div>
                             </div>

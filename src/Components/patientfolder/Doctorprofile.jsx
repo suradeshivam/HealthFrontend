@@ -267,7 +267,7 @@ export default function Doctorprofile() {
                                       </div>
                                       <div className="experience-content">
                                         <div className="timeline-content">
-                                          <a href="#/" className="name">
+                                          <a className="name">
                                             {edu?.collegeName}
                                           </a>
                                           <div>{edu.qualification}</div>
@@ -306,7 +306,7 @@ export default function Doctorprofile() {
                                 </div>
                                 <div className="experience-content">
                                   <div className="timeline-content">
-                                    <a href="#/" className="name">
+                                    <a className="name">
                                       {singleDoctor?.yearOfExperience} Years of
                                       Medical Experience
                                     </a>
@@ -462,9 +462,12 @@ export default function Doctorprofile() {
                                                 index
                                               )
                                             }
+                                          
                                             // className={selectedDay != null ? "selected" : ""}
                                           >
+                                            <a className=" name"> 
                                             <span>{renderDayName(index)}</span>
+                                            </a>
 
                                             <span className="slot-date">
                                               {index === 0 ? "Today " : null}
@@ -488,7 +491,7 @@ export default function Doctorprofile() {
                                 <div className="row">
                                   <div className="col-md-12">
                                     <div className="time-slot">
-                                      <ul className="clearfix">
+                                      <ul className="clearfix" >
                                         {selectedDay &&
                                           singleDoctor?.schedules[
                                             selectedDay?.toLowerCase()

@@ -393,7 +393,8 @@ export default function Patientdashboard() {
                           <a
                             className="nav-link active"
                             href="#pat_appointment"
-                            data-bs-toggle="tab">
+                            data-bs-toggle="tab"
+                          >
                             Appointments
                           </a>
                         </li>
@@ -433,7 +434,8 @@ export default function Patientdashboard() {
                           <a
                             className="nav-link active"
                             href="#today-appointments"
-                            data-bs-toggle="tab">
+                            data-bs-toggle="tab"
+                          >
                             Today
                           </a>
                         </li>
@@ -441,7 +443,8 @@ export default function Patientdashboard() {
                           <a
                             className="nav-link"
                             href="#upcoming-appointments"
-                            data-bs-toggle="tab">
+                            data-bs-toggle="tab"
+                          >
                             Upcoming
                           </a>
                         </li>
@@ -465,7 +468,8 @@ export default function Patientdashboard() {
                       <br />
                       <div
                         id="today-appointments"
-                        className="tab-pane fade show active">
+                        className="tab-pane fade show active"
+                      >
                         <div className="card card-table mb-0">
                           <div className="card-body">
                             <div className="table-responsive">
@@ -484,7 +488,8 @@ export default function Patientdashboard() {
                                         <h2 className="table-avatar">
                                           <a
                                             href="doctor-profile.html"
-                                            className="avatar avatar-sm me-2">
+                                            className="avatar avatar-sm me-2"
+                                          >
                                             <img
                                               className="avatar-img rounded-circle"
                                               src={
@@ -503,8 +508,18 @@ export default function Patientdashboard() {
                                         </h2>
                                       </td>
                                       <td>
-                                        {new Date(row.date).toDateString(
-                                          row?.date
+                                       
+
+{new Date(row.date).toLocaleString(
+                                          "en-US",
+                                          {
+                                            year: "numeric",
+                                            month: "short",
+                                            day: "numeric",
+                                            hour: "numeric",
+                                            minute: "numeric",
+                                            hour12: true,
+                                          }
                                         )}
                                       </td>
 
@@ -514,7 +529,8 @@ export default function Patientdashboard() {
                                             className="btn btn-sm bg-info-light me-2"
                                             onClick={() =>
                                               handleJoin(row?.meetingId)
-                                            }>
+                                            }
+                                          >
                                             Join
                                           </button>
                                         </div>
@@ -534,7 +550,8 @@ export default function Patientdashboard() {
                       </div>
                       <div
                         id="upcoming-appointments"
-                        className="tab-pane fade ">
+                        className="tab-pane fade "
+                      >
                         <div className="card card-table mb-0">
                           <div className="card-body">
                             <div className="table-responsive">
@@ -542,7 +559,7 @@ export default function Patientdashboard() {
                                 <thead>
                                   <tr>
                                     <th>Doctor</th>
-                                    <th>Appointment Date and Time</th>
+                                    <th>Appt. Date and Time</th>
                                     {/* <th>Action</th> */}
                                   </tr>
                                 </thead>
@@ -553,7 +570,8 @@ export default function Patientdashboard() {
                                         <h2 className="table-avatar">
                                           <a
                                             href="doctor-profile.html"
-                                            className="avatar avatar-sm me-2">
+                                            className="avatar avatar-sm me-2"
+                                          >
                                             <img
                                               className="avatar-img rounded-circle"
                                               src={
@@ -572,8 +590,19 @@ export default function Patientdashboard() {
                                         </h2>
                                       </td>
                                       <td>
-                                        {new Date(row.date).toDateString(
+                                        {/* {new Date(row.date).toDateString(
                                           row?.date
+                                        )} */}
+                                        {new Date(row.date).toLocaleString(
+                                          "en-US",
+                                          {
+                                            year: "numeric",
+                                            month: "short",
+                                            day: "numeric",
+                                            hour: "numeric",
+                                            minute: "numeric",
+                                            hour12: true,
+                                          }
                                         )}
                                       </td>
                                       {/* <td>
@@ -619,7 +648,8 @@ export default function Patientdashboard() {
                                         <h2 className="table-avatar">
                                           <a
                                             href="doctor-profile.html"
-                                            className="avatar avatar-sm me-2">
+                                            className="avatar avatar-sm me-2"
+                                          >
                                             <img
                                               className="avatar-img rounded-circle"
                                               src={
@@ -638,8 +668,16 @@ export default function Patientdashboard() {
                                         </h2>
                                       </td>
                                       <td>
-                                        {new Date(row?.date).toDateString(
-                                          row?.date
+                                      {new Date(row.date).toLocaleString(
+                                          "en-US",
+                                          {
+                                            year: "numeric",
+                                            month: "short",
+                                            day: "numeric",
+                                            hour: "numeric",
+                                            minute: "numeric",
+                                            hour12: true,
+                                          }
                                         )}
                                       </td>
                                       <td>
@@ -648,7 +686,8 @@ export default function Patientdashboard() {
                                             className="btn btn-sm bg-info-light me-2"
                                             onClick={() =>
                                               handleAppointmentSelect(row)
-                                            }>
+                                            }
+                                          >
                                             <i className="far fa-eye" /> View
                                           </button>
                                           {/* <button className="btn btn-sm bg-info-light">
@@ -1616,7 +1655,8 @@ export default function Patientdashboard() {
                 type="button"
                 className="btn-close"
                 data-bs-dismiss="modal"
-                aria-label="Close"></button>
+                aria-label="Close"
+              ></button>
             </div>
             <div className="modal-body">
               <div id="bmi-status" />
@@ -1633,7 +1673,8 @@ export default function Patientdashboard() {
                 type="button"
                 className="btn-close"
                 data-bs-dismiss="modal"
-                aria-label="Close"></button>
+                aria-label="Close"
+              ></button>
             </div>
             <div className="modal-body">
               <div id="heartrate-status" />
@@ -1650,7 +1691,8 @@ export default function Patientdashboard() {
                 type="button"
                 className="btn-close"
                 data-bs-dismiss="modal"
-                aria-label="Close"></button>
+                aria-label="Close"
+              ></button>
             </div>
             <div className="modal-body">
               <div id="fbc-status" />
@@ -1667,7 +1709,8 @@ export default function Patientdashboard() {
                 type="button"
                 className="btn-close"
                 data-bs-dismiss="modal"
-                aria-label="Close"></button>
+                aria-label="Close"
+              ></button>
             </div>
             <div className="modal-body">
               <div id="weight-status" />

@@ -24,7 +24,14 @@ export default function Invoiceview() {
             <div className="row align-items-center inner-banner">
               <div className="col-md-12 col-12 text-center">
                 <h2 className="breadcrumb-title">Invoice View</h2>
-               
+                <nav aria-label="breadcrumb" className="page-breadcrumb">
+                  <ol className="breadcrumb">
+
+                    <li className="breadcrumb-item" aria-current="page">
+                      <span>Go to </span> <Link to="/user">Dashboard</Link><hr />
+                    </li>
+                  </ol>
+                </nav>
               </div>
             </div>
           </div>
@@ -128,7 +135,7 @@ export default function Invoiceview() {
                                 <td>Video Call Booking</td>
                                 <td className="text-center">1</td>
                                 <td className="text-center">₹ 0</td>
-                                <td className="text-end">₹ 250</td>
+                                <td className="text-end">₹ 60</td>
                               </tr>
                             </tbody>
                           </table>
@@ -138,7 +145,7 @@ export default function Invoiceview() {
                         <div className="table-responsive">
                           <table className="invoice-table-two table">
                             <tbody>
-                              <tr>
+                              {/* <tr>
                                 <th>Subtotal:</th>
                                 <td>
                                   <span>₹ 350</span>
@@ -149,11 +156,11 @@ export default function Invoiceview() {
                                 <td>
                                   <span>-10%</span>
                                 </td>
-                              </tr>
+                              </tr> */}
                               <tr>
                                 <th>Total Amount:</th>
                                 <td>
-                                  <span>₹ {selectedDoctor?.fees + 250 + 350 /10}</span>
+                                  <span>₹ {selectedDoctor?.fees + 60 }</span>
                                 </td>
                               </tr>
                             </tbody>

@@ -444,7 +444,7 @@ export default function Dashboard() {
                                     <thead>
                                       <tr>
                                         <th>Patient Name</th>
-                                        <th>Appt Date</th>
+                                        <th>Appt Date and Time</th>
                                         <th>Action</th>
                                       </tr>
                                     </thead>
@@ -568,7 +568,7 @@ export default function Dashboard() {
                                     <thead>
                                       <tr>
                                         <th>Patient Name</th>
-                                        <th>Appt Date</th>
+                                        <th>Appt Date and Time</th>
 
                                         <th>Action</th>
                                       </tr>
@@ -621,9 +621,19 @@ export default function Dashboard() {
                                                     )
                                                   : "Time not available"}
                                               </span> */}
-                                              {new Date(
-                                                patient.date
-                                              ).toDateString(patient.date)}
+                                             
+
+{new Date(patient.date).toLocaleString(
+                                          "en-US",
+                                          {
+                                            year: "numeric",
+                                            month: "short",
+                                            day: "numeric",
+                                            hour: "numeric",
+                                            minute: "numeric",
+                                            hour12: true,
+                                          }
+                                        )}
                                             </td>
 
                                             <td style={{ textAlign: "center" }}>
@@ -687,7 +697,7 @@ export default function Dashboard() {
                                     <thead>
                                       <tr>
                                         <th>Patient Name</th>
-                                        <th>Appt Date</th>
+                                        <th>Appt Date and Time</th>
 
                                         <th>Action</th>
                                       </tr>
@@ -733,13 +743,19 @@ export default function Dashboard() {
                                                   patient.date
                                                 )}{" "}
                                                 <span className="d-block text-info">
-                                                  {patient.date
-                                                    ? new Date(
-                                                        patient?.date
-                                                      ).toLocaleTimeString(
-                                                        "en-US"
-                                                      )
-                                                    : "Time not available"}
+                                                 
+
+{new Date(patient.date).toLocaleString(
+                                          "en-US",
+                                          {
+                                            year: "numeric",
+                                            month: "short",
+                                            day: "numeric",
+                                            hour: "numeric",
+                                            minute: "numeric",
+                                            hour12: true,
+                                          }
+                                        )}
                                                 </span>
                                               </td>
                                               <td

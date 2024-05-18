@@ -102,6 +102,10 @@ export default function Profilesettings() {
             });
             console.log(res.data.result);
           }
+
+
+
+
           toast(res.data.message);
         } catch (error) {
           toast.error(error.message, {
@@ -349,7 +353,7 @@ export default function Profilesettings() {
         );
 
         console.log(user);
-        localStorage.setItem("patientInfo", JSON.stringify(user.data.result));
+        localStorage.setItem("patientInfo", JSON.stringify(user?.data?.result));
 
         toast("Profile Created Successfully!!", {
           position: "top-right",
