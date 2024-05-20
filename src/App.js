@@ -29,31 +29,19 @@ import Doctorprofile from "./Components/patientfolder/Doctorprofile";
 import Checkout from "./Components/patientfolder/Checkout";
 import Bookingsuccess from "./Components/patientfolder/BookingSuccess";
 import Invoiceview from "./Components/patientfolder/InvoiceView";
-import AppointmentDetails from "./Components/patientfolder/AppointmentDetails";
-import SinglePhysicianDisplay from "./Components/patientfolder/PatientAppointment";
+import AppointmentDetails from "./Components/patientfolder/AppointmentDetails"
+import SinglePhysicianDisplay from "./Components/patientfolder/PatientAppointment"
 import Privacypolicy from "./Components/PrivacyPolicy";
 import Termscondition from "./Components/TermsConditions";
-import Loader from "./Components/Loader";
-import Aboutus from "./Aboutus";
-import Contactus from "./Contactus";
-import { useEffect, useState } from "react";
 
 // App changed
 function App() {
   const location = useLocation();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const handleLoad = () => setLoading(false);
-    window.addEventListener("load", handleLoad);
-    return () => window.removeEventListener("load", handleLoad);
-  }, []);
 
   const shouldShowNavbarAndFooter = !location.pathname.includes("/room");
 
   return (
     <div className="m-0 p-0 bg-neutral-100">
-      {/* {loading && <Loader />} */}
       {shouldShowNavbarAndFooter && <Navbar />}
       <Routes>
         <Route path="" element={<HomePage />} />
@@ -84,10 +72,7 @@ function App() {
           <Route path="orders" element={<Orders />} />
           <Route path="profile-settings" element={<Profilesettings />} />
           <Route path="change-password" element={<ChangePasswordPatient />} />
-          <Route
-            path="patientappointment"
-            element={<SinglePhysicianDisplay />}
-          />
+          <Route path="patientappointment" element={<SinglePhysicianDisplay />} />
 
           {/* Patient Route */}
           <Route path="docsearch" element={<DoctorSearch />} />
@@ -96,13 +81,6 @@ function App() {
           <Route path="checkout" element={<Checkout />} />
           <Route path="booking-success" element={<Bookingsuccess />} />
           <Route path="invoice-view" element={<Invoiceview />} />
-          <Route path="privacy-policy" element={<Privacypolicy />} />
-          <Route path="terms&con" element={<Termscondition />} />
-          <Route path="loader" element={<Loader />} />
-
-          <Route path="ai2" element={<ai2 />} />
-          <Route path="aboutus" element={<Aboutus />} />
-          <Route path="contactus" element={<Contactus />} />
         </Route>
       </Routes>
       {shouldShowNavbarAndFooter && <Footer />}

@@ -69,27 +69,27 @@ export default function ScheduleTime() {
   };
 
   const handleCopySlotsToAllDays = () => {
+    const mondaySlots = selectedSlots.monday;
+    const updatedTimeSlots = { ...selectedSlots };
+
     if (copyToAllDays) {
-      const mondaySlots = selectedSlots.monday;
-      const updatedTimeSlots = { ...selectedSlots };
+      // Clear slots from all days except Monday and Sunday
       Object.keys(updatedTimeSlots).forEach((day) => {
-        if (day !== "monday" && day !== "sunday") {
-          updatedTimeSlots[day] = [...mondaySlots];
+        if (day !== 'monday') {
+          updatedTimeSlots[day] = [];
         }
       });
-      setSelectedSlots(updatedTimeSlots);
     } else {
-      const mondaySlots = selectedSlots.monday;
-      const updatedTimeSlots = { ...selectedSlots };
-      console.log(updatedTimeSlots);
+      // Copy Monday slots to all days except Monday and Sunday
       Object.keys(updatedTimeSlots).forEach((day) => {
-        if (day !== "monday" && day !== "sunday") {
+        if (day !== 'monday') {
           updatedTimeSlots[day] = [...mondaySlots];
         }
       });
-      setSelectedSlots(updatedTimeSlots);
     }
-    setCopyToAllDays((prevState) => !prevState);
+
+    setSelectedSlots(updatedTimeSlots);
+    setCopyToAllDays(!copyToAllDays);
   };
 
   const handleSubmit = async () => {
@@ -319,7 +319,7 @@ export default function ScheduleTime() {
                             checked={copyToAllDays}
                             onChange={handleCopySlotsToAllDays}
                           />{" "}
-                          Copy Monday slots to all days except Sunday
+                          Copy Monday slots to all days
                           <div className="row">
                             <div className="col-md-12">
                               <div className="card schedule-widget mb-0">

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CreatableSelect from "react-select/creatable";
 
 export default function DoctorProfile() {
   const [uploadedFileName, setUploadedFileName] = useState("");
@@ -60,13 +61,7 @@ export default function DoctorProfile() {
     yearLicenceNumber: "",
   });
 
-  const openFile = () => {
-    const url = `https://healthbackend-3xh2.onrender.com/files/${uploadedFileName}`;
-    const windowFeatures =
-      "width=800,height=600,top=100,left=100,resizable,scrollbars,menubar=no,toolbar=no,location=no,status=no";
-
-    window.open(url, "_blank", windowFeatures);
-  };
+  const [showClinic, setShowClinic] = useState(true);
 
   const countWords = (text) => {
     const wordArray = text.trim().split(/\s+/);
@@ -593,10 +588,56 @@ export default function DoctorProfile() {
     }
   }, []);
 
-  // useState (()=>{
+  const data = {
+    specialists: [
+      { id: 1, name: "Cardiologist" },
+      { id: 2, name: "Dermatologist" },
+      { id: 3, name: "Heart specialists" },
+      { id: 4, name: "Gastroenterologist" },
+      { id: 5, name: "Hematologist" },
+      { id: 6, name: "Neurologist" },
+      { id: 7, name: "Oncologist" },
+      { id: 8, name: "Ophthalmologist" },
+      { id: 9, name: "Orthopedic Surgeon" },
+      { id: 10, name: "Pediatrician" },
+      { id: 11, name: "Plastic Surgeon" },
+      { id: 12, name: "Psychiatrist" },
+      { id: 13, name: "Radiologist" },
+      { id: 14, name: "Rheumatologist" },
+      { id: 15, name: "Cancer Specialist" },
+      { id: 16, name: "Anesthesiologist" },
+      { id: 17, name: "Gynecologist" },
+      { id: 18, name: "Otolaryngologist (ENT Specialist)" },
+      { id: 19, name: "Pathologist" },
+      { id: 20, name: "Pulmonologist" },
+      { id: 21, name: "Dentist" },
+      { id: 22, name: "Cancer Specialist" },
+    ],
+  };
 
-  //   console.log(doctorInfo);
-  // },[doctorInfo])
+  const [selectedSpecialists, setSelectedSpecialists] = useState([]);
+  const [specialists, setSpecialists] = useState(data.specialists);
+
+  const handleSpecialistChange = (selectedOptions) => {
+    setSelectedSpecialists(selectedOptions || []);
+  };
+
+  const handleSpecialistCreate = (inputValue) => {
+    const newSpecialist = { id: specialists.length + 1, name: inputValue };
+    const updatedSpecialists = [...specialists, newSpecialist];
+    setSpecialists(updatedSpecialists);
+    setSelectedSpecialists([
+      ...selectedSpecialists,
+      { label: inputValue, value: inputValue },
+    ]);
+  };
+
+  const specialistOptions = specialists.map((specialist) => ({
+    label: specialist.name,
+    value: specialist.name,
+  }));
+
+  console.log(selectedSpecialists);
 
   return (
     <div className="main-wrapper">
@@ -708,163 +749,182 @@ export default function DoctorProfile() {
               </div>
             </div>
             <div className="col-md-7 col-lg-8 col-xl-9">
-              <form onSubmit={handleFormSubmit}>
-                <div className="card">
-                  <div className="card-body">
-                    <h4 className="card-title">Basic Information</h4>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <div className="mb-3">
-                          <div className="change-avatar">
-                            <div className="profile-img">
-                              <img
-                                src={preview ? preview : pic}
-                                alt="User Image"
+              {/* <form> */}
+              <div className="card">
+                <div className="card-body">
+                  <h4 className="card-title">Basic Information</h4>
+                  <div className="row">
+                    <div className="col-md-12">
+                      <div className="mb-3">
+                        <div className="change-avatar">
+                          <div className="profile-img">
+                            <img
+                              src={preview ? preview : pic}
+                              alt="User Image"
+                            />
+                          </div>
+                          <div className="upload-img">
+                            <div className="change-photo-btn">
+                              <span>
+                                <i className="fa fa-upload" /> Upload Photo
+                              </span>
+                              <input
+                                type="file"
+                                className="upload"
+                                accept=".png, .jpg, .jpeg"
+                                onChange={(e) => uploadImage(e.target.files[0])}
                               />
                             </div>
-                            <div className="upload-img">
-                              <div className="change-photo-btn">
-                                <span>
-                                  <i className="fa fa-upload" /> Upload Photo
-                                </span>
-                                <input
-                                  type="file"
-                                  className="upload"
-                                  accept=".png, .jpg, .jpeg"
-                                  onChange={(e) =>
-                                    uploadImage(e.target.files[0])
-                                  }
-                                />
-                              </div>
-                              <small className="form-text text-muted">
-                                Allowed JPG, PNG and JPEG. Max size of 2MB
-                              </small>
-                            </div>
+                            <small className="form-text text-muted">
+                              Allowed JPG, PNG and JPEG. Max size of 2MB
+                            </small>
                           </div>
                         </div>
                       </div>
+                    </div>
 
-                      <div className="col-md-6">
-                        <div className="mb-3">
-                          <label className="mb-2">
-                            Username <span className="text-danger">*</span>
-                          </label>
-                          <input
-                            type="text"
-                            onChange={(e) => setUserName(e.target.value)}
-                            value={userName}
-                            className="form-control"
-                            readOnly=""
-                          />
-                        </div>
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label className="mb-2">
+                          Username <span className="text-danger">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          onChange={(e) => setUserName(e.target.value)}
+                          value={userName}
+                          className="form-control"
+                          readOnly=""
+                        />
                       </div>
-                      <div className="col-md-6">
-                        <div className="mb-3">
-                          <label className="mb-2">
-                            Email <span className="text-danger">*</span>
-                          </label>
-                          <input
-                            type="email"
-                            onChange={(e) => setEmail(e.target.value)}
-                            value={email}
-                            className="form-control"
-                            readOnly=""
-                          />
-                        </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label className="mb-2">
+                          Email <span className="text-danger">*</span>
+                        </label>
+                        <input
+                          type="email"
+                          onChange={(e) => setEmail(e.target.value)}
+                          value={email}
+                          className="form-control"
+                          readOnly=""
+                        />
                       </div>
+                    </div>
 
-                      <div className="col-md-6">
-                        <div className="mb-3">
-                          <label className="mb-2">
-                            Phone Number<span className="text-danger"> *</span>
-                          </label>
-                          <input
-                            type="text"
-                            onChange={(e) => setPhone(e.target.value)}
-                            value={phone}
-                            className="form-control"
-                          />
-                        </div>
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label className="mb-2">
+                          Phone Number<span className="text-danger"> *</span>
+                        </label>
+                        <input
+                          type="text"
+                          onChange={(e) => setPhone(e.target.value)}
+                          value={phone}
+                          className="form-control"
+                        />
                       </div>
-                      <div className="col-md-6">
-                        <div className="mb-3">
-                          <label className="mb-2">
-                            Gender<span className="text-danger"> *</span>
-                          </label>
-                          <select
-                            onChange={(e) => setGender(e.target.value)}
-                            value={gender}
-                            className="form-select form-control">
-                            <option>Select</option>
-                            <option>Male</option>
-                            <option>Female</option>
-                            <option>Other</option>
-                          </select>
-                          {errors.gender && (
-                            <span style={{ color: "red", fontSize: "13px" }}>
-                              {errors.gender}
-                            </span>
-                          )}
-                        </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="mb-3">
+                        <label className="mb-2">
+                          Gender<span className="text-danger"> *</span>
+                        </label>
+                        <select
+                          onChange={(e) => setGender(e.target.value)}
+                          value={gender}
+                          className="form-select form-control">
+                          <option>Select</option>
+                          <option>Male</option>
+                          <option>Female</option>
+                          <option>Other</option>
+                        </select>
+                        {errors.gender && (
+                          <span style={{ color: "red", fontSize: "13px" }}>
+                            {errors.gender}
+                          </span>
+                        )}
                       </div>
-                      <div className="col-md-6">
-                        <div className="mb-0">
-                          <label className="mb-2">
-                            Date of Birth<span className="text-danger"> *</span>
-                          </label>
-                          <input
-                            type="date"
-                            onChange={(e) => setDOB(e.target.value)}
-                            value={dob}
-                            className="form-control"
-                          />
-                          {errors.dob && (
-                            <span style={{ color: "red", fontSize: "13px" }}>
-                              {errors.dob}
-                            </span>
-                          )}
-                        </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="mb-0">
+                        <label className="mb-2">
+                          Date of Birth<span className="text-danger"> *</span>
+                        </label>
+                        <input
+                          type="date"
+                          onChange={(e) => setDOB(e.target.value)}
+                          value={dob}
+                          className="form-control"
+                        />
+                        {errors.dob && (
+                          <span style={{ color: "red", fontSize: "13px" }}>
+                            {errors.dob}
+                          </span>
+                        )}
                       </div>
-                      <div className="col-md-6">
-                        <div className="mb-0">
-                          <label className="mb-2">
-                            Fees<span className="text-danger"> *</span>
-                          </label>
-                          <input
-                            type="number"
-                            onChange={(e) => setFees(e.target.value)}
-                            value={fees}
-                            className="form-control"
-                          />
-                          {errors.fees && (
-                            <span style={{ color: "red", fontSize: "13px" }}>
-                              {errors.fees}
-                            </span>
-                          )}
-                        </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="mb-0">
+                        <label className="mb-2">
+                          Fees for a half-hour Appointment
+                          <span className="text-danger"> *</span>
+                        </label>
+                        <input
+                          type="number"
+                          onChange={(e) => setFees(e.target.value)}
+                          value={fees}
+                          className="form-control"
+                        />
+                        {errors.fees && (
+                          <span style={{ color: "red", fontSize: "13px" }}>
+                            {errors.fees}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="card">
-                  <div className="card-body">
-                    <h4 className="card-title">About Me</h4>
-                    <div className="mb-0">
-                      <label className="mb-2">Biography</label>
-                      <textarea
-                        className="form-control"
-                        onChange={handleAboutRemainingChange}
-                        value={aboutMe}
-                        rows={5}
-                      />
-                      <p
-                        className=" "
-                        style={{ color: "red", fontSize: "13px" }}>
-                        Words remaining: {remainingWords}
-                      </p>
-                    </div>
+              </div>
+              <div className="card">
+                <div className="card-body">
+                  <h4 className="card-title">About Me</h4>
+                  <div className="mb-0">
+                    <label className="mb-2">
+                      Biography (Your biography will be displayed to the patient
+                      when scheduling an appointment.)
+                    </label>
+                    <textarea
+                      className="form-control"
+                      onChange={handleAboutRemainingChange}
+                      value={aboutMe}
+                      rows={5}
+                    />
+                    <p className=" " style={{ color: "red", fontSize: "13px" }}>
+                      Words remaining: {remainingWords}
+                    </p>
                   </div>
                 </div>
+              </div>
+
+              <div className="button-group mb-3">
+                <button
+                  onClick={() => setShowClinic(true)}
+                  className={`btn mr-2 ${
+                    showClinic ? "text-white prime-btn" : ""
+                  }`}>
+                  Clinic Info
+                </button>
+                <button
+                  onClick={() => setShowClinic(false)}
+                  className={`btn  ${
+                    !showClinic ? "text-white prime-btn" : ""
+                  }`}>
+                  Address
+                </button>
+              </div>
+
+              {showClinic ? (
                 <div className="card">
                   <div className="card-body">
                     <h4 className="card-title">Clinic Info</h4>
@@ -904,6 +964,7 @@ export default function DoctorProfile() {
                     </div>
                   </div>
                 </div>
+              ) : (
                 <div className="card ">
                   <div className="card-body">
                     <h4 className="card-title">Address</h4>
@@ -1016,14 +1077,14 @@ export default function DoctorProfile() {
                     </div>
                   </div>
                 </div>
+              )}
+              <div className="card services-card">
+                <div className="card-body">
+                  <h4 className="card-title">
+                    Specialization<span className="text-danger"> *</span>
+                  </h4>
 
-                <div className="card services-card">
-                  <div className="card-body">
-                    <h4 className="card-title">
-                      Specialization<span className="text-danger"> *</span>
-                    </h4>
-
-                    <div className="mb-0">
+                  {/* <div className="mb-0">
                       <input
                         className="input-tags form-control"
                         type="text"
@@ -1039,310 +1100,331 @@ export default function DoctorProfile() {
                           {errors.specialization}
                         </span>
                       )}
-                    </div>
-                  </div>
-                </div>
-                <div className="card">
-                  <div className="card-body">
-                    <h4 className="card-title">Education</h4>
-                    {education.map((edu, index) => (
-                      <div className="education-info" key={index}>
-                        <div className="row education-cont">
-                          <div className="col-12 col-md-10 col-lg-11">
-                            <div className="row">
-                              <div className="col-12 col-md-6 col-lg-4">
-                                <div className="mb-3">
-                                  <label className="mb-2">
-                                    Qualification
-                                    <span className="text-danger"> *</span>
-                                  </label>
-                                  <input
-                                    type="text"
-                                    className="form-control"
-                                    name="qualification"
-                                    value={edu.qualification}
-                                    onChange={(e) =>
-                                      handleInputChange(index, e)
-                                    }
-                                  />
-                                  {errors.education && (
-                                    <span
-                                      style={{
-                                        color: "red",
-                                        fontSize: "13px",
-                                      }}>
-                                      {errors.education}
-                                    </span>
-                                  )}
-                                </div>
-                              </div>
-                              <div className="col-12 col-md-6 col-lg-4">
-                                <div className="mb-3">
-                                  <label className="mb-2">
-                                    College/Institute
-                                    <span className="text-danger"> *</span>
-                                  </label>
-                                  <input
-                                    type="text"
-                                    className="form-control"
-                                    name="collegeName"
-                                    value={edu.collegeName}
-                                    onChange={(e) =>
-                                      handleInputChange(index, e)
-                                    }
-                                  />
-                                </div>
-                              </div>
-                              <div className="col-12 col-md-6 col-lg-4">
-                                <div className="mb-3">
-                                  <label className="mb-2">
-                                    Year of Completion
-                                    <span className="text-danger"> *</span>
-                                  </label>
-                                  <input
-                                    type="text"
-                                    className="form-control"
-                                    name="yearOfCompletion"
-                                    value={edu.yearOfCompletion}
-                                    onChange={(e) =>
-                                      handleInputChange(index, e)
-                                    }
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        {index !== 0 && ( // Condition to render the Remove button only for slots after the first one
-                          <div className="remove-education">
-                            <a onClick={() => handleRemoveEducation(index)}>
-                              <i className="fa fa-minus-circle" /> Remove
-                            </a>
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                    <div className="add-more mt-2">
-                      <a className="add-education" onClick={handleAddEducation}>
-                        <i className="fa fa-plus-circle" /> Add More
-                      </a>
-                    </div>
-                  </div>
-                </div>
+                    </div> */}
 
-                <div className="card">
-                  <div className="card-body">
-                    <h4 className="card-title">Experience</h4>
-                    {/* {experiences.map((experience, index) => ( */}
-                    <div className="experience-info">
-                      <div className="row experience-cont">
+                  <div
+                    className=" search-input search-line cursor-hover"
+                    style={{ width: "100%" }}>
+                    <div className="mx-auto" style={{ position: "relative" }}>
+                      {/* <i
+                        className="feather-search bficon cursor-hover"
+                        style={{ position: "absolute", left: 10, top: 10 }}
+                      /> */}
+                      <CreatableSelect
+                        isMulti
+                        classNamePrefix="select"
+                        value={selectedSpecialists}
+                        onChange={handleSpecialistChange}
+                        onCreateOption={handleSpecialistCreate}
+                        options={specialistOptions}
+                        placeholder="Specialization"
+                        styles={{
+                          container: (base) => ({
+                            ...base,
+                            marginLeft: "1px",
+                          }),
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="card">
+                <div className="card-body">
+                  <h4 className="card-title">Education</h4>
+                  {education.map((edu, index) => (
+                    <div className="education-info" key={index}>
+                      <div className="row education-cont">
                         <div className="col-12 col-md-10 col-lg-11">
                           <div className="row">
                             <div className="col-12 col-md-6 col-lg-4">
                               <div className="mb-3">
                                 <label className="mb-2">
-                                  Years of Experience
+                                  Qualification
                                   <span className="text-danger"> *</span>
                                 </label>
                                 <input
                                   type="text"
                                   className="form-control"
-                                  name="hospitalName"
-                                  value={yearOfExperience}
-                                  onChange={(e) =>
-                                    setYearOfExperience(e.target.value)
-                                  }
-                                  // onChange={(event) =>
-                                  //   handleInputChange(index, event)
-                                  // }
+                                  name="qualification"
+                                  value={edu.qualification}
+                                  onChange={(e) => handleInputChange(index, e)}
                                 />
-                                {errors.yearOfExperience && (
+                                {errors.education && (
                                   <span
-                                    style={{ color: "red", fontSize: "13px" }}>
-                                    {errors.yearOfExperience}
+                                    style={{
+                                      color: "red",
+                                      fontSize: "13px",
+                                    }}>
+                                    {errors.education}
                                   </span>
                                 )}
                               </div>
                             </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    {/* ))} */}
-                  </div>
-                </div>
-
-                <div className="card">
-                  <div className="card-body">
-                    <h4 className="card-title">Awards & Achievements</h4>
-                    {awards.map((award, index) => (
-                      <div key={index} className="awards-info">
-                        <div className="row awards-cont">
-                          <div className="col-12 col-md-5">
-                            <div className="mb-3">
-                              <label className="mb-2">Awards</label>
-                              <input
-                                type="text"
-                                className="form-control"
-                                name="name"
-                                value={award.name}
-                                onChange={(event) =>
-                                  handleAwardChange(index, event)
-                                }
-                              />
-                            </div>
-                          </div>
-                          <div className="col-12 col-md-5">
-                            <div className="mb-3">
-                              <label className="mb-2">Year</label>
-                              <input
-                                type="text"
-                                className="form-control"
-                                name="year"
-                                value={award.year}
-                                onChange={(event) =>
-                                  handleAwardChange(index, event)
-                                }
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        {index !== 0 && (
-                          <div className="row">
-                            <div className="col-12">
+                            <div className="col-12 col-md-6 col-lg-4">
                               <div className="mb-3">
-                                <a onClick={() => handleRemoveAward(index)}>
-                                  <i className="fa fa-minus-circle" /> Remove
-                                </a>
+                                <label className="mb-2">
+                                  College/Institute
+                                  <span className="text-danger"> *</span>
+                                </label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  name="collegeName"
+                                  value={edu.collegeName}
+                                  onChange={(e) => handleInputChange(index, e)}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-12 col-md-6 col-lg-4">
+                              <div className="mb-3">
+                                <label className="mb-2">
+                                  Year of Completion
+                                  <span className="text-danger"> *</span>
+                                </label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  name="yearOfCompletion"
+                                  value={edu.yearOfCompletion}
+                                  onChange={(e) => handleInputChange(index, e)}
+                                />
                               </div>
                             </div>
                           </div>
-                        )}
-                      </div>
-                    ))}
-                    <div className="add-more">
-                      <a
-                        href="javascript:void(0);"
-                        className="add-experience"
-                        onClick={handleAddAward}>
-                        <i className="fa fa-plus-circle" /> Add More
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div className="card">
-                  <div className="card-body">
-                    <h4 className="card-title">Licence </h4>
-                    <div className="registrations-info">
-                      <div className="row reg-cont">
-                        <div className="col-12 col-md-5">
-                          <div className="mb-3">
-                            <label className="mb-2">
-                              Licence number
-                              <span className="text-danger"> *</span>
-                            </label>
-                            <input
-                              type="text"
-                              onChange={(e) => setLicenceNumber(e.target.value)}
-                              value={licenceNumber}
-                              className="form-control"
-                            />
-                            {errors.licenceNumber && (
-                              <span style={{ color: "red", fontSize: "13px" }}>
-                                {errors.licenceNumber}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                        <div className="col-12 col-md-5">
-                          <div className="mb-3">
-                            <label className="mb-2">
-                              Year of issue
-                              <span className="text-danger"> *</span>
-                            </label>
-                            <input
-                              type="text"
-                              onChange={(e) =>
-                                setYearLicenceNumber(e.target.value)
-                              }
-                              value={yearLicenceNumber}
-                              className="form-control"
-                            />
-                            {errors.yearOfIssued && (
-                              <span style={{ color: "red", fontSize: "13px" }}>
-                                {errors.yearOfIssued}
-                              </span>
-                            )}
-                          </div>
                         </div>
                       </div>
+                      {index !== 0 && ( // Condition to render the Remove button only for slots after the first one
+                        <div className="remove-education">
+                          <a onClick={() => handleRemoveEducation(index)}>
+                            <i className="fa fa-minus-circle" /> Remove
+                          </a>
+                        </div>
+                      )}
                     </div>
+                  ))}
+                  <div className="add-more mt-2">
+                    <a className="add-education" onClick={handleAddEducation}>
+                      <i className="fa fa-plus-circle" /> Add More
+                    </a>
                   </div>
                 </div>
-                <div className="card">
-                  <div className="card-body">
-                    <a onClick={openFile}> see uploaded file</a>
-                    <h4 className="card-title">
-                      Certificate<span className="text-danger"> *</span>
-                    </h4>
-                    <div className="row">
-                      <div className="col-lg-12">
-                        <div className="mb-3">
-                          <div className="relative-form">
-                            <label htmlFor="certificateUpload">
-                              Upload Certificate Here
-                            </label>
-                            <div className="relative-file-upload">
+              </div>
+
+              <div className="card">
+                <div className="card-body">
+                  <h4 className="card-title">Experience</h4>
+                  {/* {experiences.map((experience, index) => ( */}
+                  <div className="experience-info">
+                    <div className="row experience-cont">
+                      <div className="col-12 col-md-10 col-lg-11">
+                        <div className="row">
+                          <div className="col-12 col-md-6 col-lg-4">
+                            <div className="mb-3">
+                              <label className="mb-2">
+                                Years of Experience
+                                <span className="text-danger"> *</span>
+                              </label>
                               <input
-                                type="file"
-                                id="certificateUpload"
-                                onChange={handleFileChange}
-                                accept=".pdf"
+                                type="text"
+                                className="form-control"
+                                name="hospitalName"
+                                value={yearOfExperience}
+                                onChange={(e) =>
+                                  setYearOfExperience(e.target.value)
+                                }
+                                // onChange={(event) =>
+                                //   handleInputChange(index, event)
+                                // }
                               />
-                              <span>
-                                {fileName
-                                  ? `Selected File: ${fileName}`
-                                  : "Choose File"}
-                              </span>
+                              {errors.yearOfExperience && (
+                                <span
+                                  style={{ color: "red", fontSize: "13px" }}>
+                                  {errors.yearOfExperience}
+                                </span>
+                              )}
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                    {/* {filePreview && (
-                      <div>
-                        <h5>Preview</h5>
-                        {fileName.toLowerCase().endsWith(".pdf") ? (
-                          <embed
-                            src={filePreview}
-                            type="application/pdf"
-                            width="100%"
-                            height="500px"
-                          />
-                        ) : (
-                          <img
-                            src={filePreview}
-                            alt="Preview"
-                            style={{ maxWidth: "100%" }}
-                          />
-                        )}
+                  </div>
+                  {/* ))} */}
+                </div>
+              </div>
+
+              <div className="card">
+                <div className="card-body">
+                  <h4 className="card-title">Awards & Achievements</h4>
+                  {awards.map((award, index) => (
+                    <div key={index} className="awards-info">
+                      <div className="row awards-cont">
+                        <div className="col-12 col-md-5">
+                          <div className="mb-3">
+                            <label className="mb-2">Awards</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="name"
+                              value={award.name}
+                              onChange={(event) =>
+                                handleAwardChange(index, event)
+                              }
+                            />
+                          </div>
+                        </div>
+                        <div className="col-12 col-md-5">
+                          <div className="mb-3">
+                            <label className="mb-2">Year</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="year"
+                              value={award.year}
+                              onChange={(event) =>
+                                handleAwardChange(index, event)
+                              }
+                            />
+                          </div>
+                        </div>
                       </div>
-                    )} */}
-                    <iframe
-                      style={{ width: "100%", height: "600px" }}
-                      src={`https://healthbackend-3xh2.onrender.com/files/${uploadedFileName}`}></iframe>
+                      {index !== 0 && (
+                        <div className="row">
+                          <div className="col-12">
+                            <div className="mb-3">
+                              <a onClick={() => handleRemoveAward(index)}>
+                                <i className="fa fa-minus-circle" /> Remove
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  <div className="add-more">
+                    <a
+                      href="javascript:void(0);"
+                      className="add-experience"
+                      onClick={handleAddAward}>
+                      <i className="fa fa-plus-circle" /> Add More
+                    </a>
                   </div>
                 </div>
-
-                <div className="submit-section submit-btn-bottom">
-                  <button
-                    type="submit"
-                    // onClick={handleSubmit}
-                    className="btn btn-primary prime-btn">
-                    Save Changes
-                  </button>
+              </div>
+              <div className="card">
+                <div className="card-body">
+                  <h4 className="card-title">Licence </h4>
+                  <div className="registrations-info">
+                    <div className="row reg-cont">
+                      <div className="col-12 col-md-5">
+                        <div className="mb-3">
+                          <label className="mb-2">
+                            Licence number
+                            <span className="text-danger"> *</span>
+                          </label>
+                          <input
+                            type="text"
+                            onChange={(e) => setLicenceNumber(e.target.value)}
+                            value={licenceNumber}
+                            className="form-control"
+                          />
+                          {errors.licenceNumber && (
+                            <span style={{ color: "red", fontSize: "13px" }}>
+                              {errors.licenceNumber}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="col-12 col-md-5">
+                        <div className="mb-3">
+                          <label className="mb-2">
+                            Year of issue
+                            <span className="text-danger"> *</span>
+                          </label>
+                          <input
+                            type="text"
+                            onChange={(e) =>
+                              setYearLicenceNumber(e.target.value)
+                            }
+                            value={yearLicenceNumber}
+                            className="form-control"
+                          />
+                          {errors.yearOfIssued && (
+                            <span style={{ color: "red", fontSize: "13px" }}>
+                              {errors.yearOfIssued}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </form>
+              </div>
+              <div className="card">
+                <div className="card-body">
+                  <h4 className="card-title">
+                    Certificate<span className="text-danger"> *</span>
+                  </h4>
+                  <label className="mb-2">
+                    Please ensure your certifications are up-to-date and
+                    relevant to your role as a physician, prioritizing the most
+                    recent qualifications and achievements.
+                  </label>
+                  <div className="row">
+                    <div className="col-lg-12">
+                      <div className="mb-3">
+                        <div className="relative-form">
+                          <label htmlFor="certificateUpload">
+                            Upload Certificate Here
+                          </label>
+                          <div className="relative-file-upload">
+                            <input
+                              type="file"
+                              id="certificateUpload"
+                              onChange={handleFileChange}
+                              accept=".pdf"
+                            />
+                            <span>
+                              {fileName
+                                ? `Selected File: ${fileName}`
+                                : "Choose File"}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {filePreview && (
+                    <div>
+                      <h5>Preview</h5>
+                      {fileName.toLowerCase().endsWith(".pdf") ? (
+                        <embed
+                          src={filePreview}
+                          type="application/pdf"
+                          width="100%"
+                          height="500px"
+                        />
+                      ) : (
+                        <img
+                          src={filePreview}
+                          alt="Preview"
+                          style={{ maxWidth: "100%" }}
+                        />
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="submit-section submit-btn-bottom">
+                <button
+                  type="submit"
+                  onClick={handleFormSubmit}
+                  className="btn btn-primary prime-btn">
+                  Save Changes
+                </button>
+              </div>
+              {/* </form> */}
             </div>
           </div>
         </div>
