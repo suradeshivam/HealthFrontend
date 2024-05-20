@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { OrderState } from '../../Contexts';
 
@@ -27,6 +27,7 @@ export default function Info() {
   
 
     const [inputSymptoms, setInputSymptoms] = useState('');
+    const [patientInfo, setPatientInfo] = useState('');
    
     const addSymptom = ()=>{
        if (inputSymptoms.trim() !== '') {
@@ -95,6 +96,11 @@ export default function Info() {
             to { opacity: 1; }
         }
     `;
+
+    useEffect (() =>{
+        const patientInfo = JSON.parse(localStorage.getItem("patientInfo"));
+        setPatientInfo(patientInfo);
+    },[])
 
     return (
         <div className="main-wrapper">
@@ -225,7 +231,7 @@ export default function Info() {
                                         borderRadius: '5px',
                                         border: '1px solid #ccc'
                                     }} 
-                                    value={patientName} 
+                                    value={patientInfo?.userId?.name} 
                                     onChange={(e) => setPatientName(e.target.value)}
                                     placeholder='Enter Patient Name' 
                                 />, 

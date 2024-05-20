@@ -21,6 +21,7 @@ export default function Profilesettings() {
     bloodType: "",
     gender: "", //
     mobile: "",
+    emergengymobile: "",
     height: "", //
     weight: "", //
     allergies: [""],
@@ -561,6 +562,20 @@ export default function Profilesettings() {
                               className="form-control"
                               name="mobile"
                               value={formData.mobile}
+                              onChange={handleChange}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-12 col-md-6">
+                          <div className="mb-3">
+                            <label className="mb-2">
+                             Emergency Mobile No.
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="emergengymobile"
+                              value={formData.emergengymobile}
                               onChange={handleChange}
                             />
                           </div>
