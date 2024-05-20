@@ -107,7 +107,7 @@ export default function Patientprofile() {
       console.log("1");
 
       const response = await axios.put(
-        "https://healthbackend-3xh2.onrender.com/appointment/prescription",
+        "http://localhost:5000/appointment/prescription",
         {
           appointmentId: selectedPatient._id,
           newPrescription: prescriptions,
@@ -158,7 +158,7 @@ export default function Patientprofile() {
     console.log("askahu");
     const isAuthenticated = localStorage.getItem("token");
     const response = await axios.get(
-      `https://healthbackend-3xh2.onrender.com/appointment/${selectedPatient._id}`,
+      `http://localhost:5000/appointment/${selectedPatient._id}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -183,7 +183,7 @@ export default function Patientprofile() {
     const isAuthenticated = localStorage.getItem("token");
     try {
       const observationres = await axios.put(
-        `https://healthbackend-3xh2.onrender.com/appointment/observation/`,
+        `http://localhost:5000/appointment/observation/`,
         {
           appointmentId: appointmentId,
           newObservations: observations,
@@ -210,7 +210,7 @@ export default function Patientprofile() {
       });
 
       const appointment = await axios.get(
-        `https://healthbackend-3xh2.onrender.com/appointment/${appointmentId}`,
+        `http://localhost:5000/appointment/${appointmentId}`,
         {
           headers: {
             "Content-Type": "application/json",

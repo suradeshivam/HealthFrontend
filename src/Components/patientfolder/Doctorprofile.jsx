@@ -108,7 +108,7 @@ export default function Doctorprofile() {
   const getSingleDoctorProfile = async () => {
     const isAuthenticated = localStorage.getItem("token");
     const doctor = await axios.get(
-      `https://healthbackend-3xh2.onrender.com/patient/search/${selectedDoctor.userId._id}`,
+      `http://localhost:5000/patient/search/${selectedDoctor.userId._id}`,
       {
         headers: {
           authorization: isAuthenticated,

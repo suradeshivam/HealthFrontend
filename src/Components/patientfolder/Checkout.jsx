@@ -116,7 +116,7 @@ export default function Checkout() {
 
     try {
       const result = await axios.post(
-        `https://healthbackend-3xh2.onrender.com/appointment/create`,
+        `http://localhost:5000/appointment/create`,
         {
           patientId: patientInfo._id,
           doctorId: selectedDoctor._id,

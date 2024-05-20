@@ -75,14 +75,14 @@ export default function ScheduleTime() {
     if (copyToAllDays) {
       // Clear slots from all days except Monday and Sunday
       Object.keys(updatedTimeSlots).forEach((day) => {
-        if (day !== 'monday') {
+        if (day !== "monday") {
           updatedTimeSlots[day] = [];
         }
       });
     } else {
       // Copy Monday slots to all days except Monday and Sunday
       Object.keys(updatedTimeSlots).forEach((day) => {
-        if (day !== 'monday') {
+        if (day !== "monday") {
           updatedTimeSlots[day] = [...mondaySlots];
         }
       });
@@ -97,7 +97,7 @@ export default function ScheduleTime() {
 
     try {
       const response = await axios.put(
-        `https://healthbackend-3xh2.onrender.com/doctor/${schedule.userId._id}/update`,
+        `http://localhost:5000/doctor/${schedule.userId._id}/update`,
         {
           schedules: selectedSlots,
         },
@@ -124,7 +124,7 @@ export default function ScheduleTime() {
       });
 
       const doctor = await axios.get(
-        `https://healthbackend-3xh2.onrender.com/doctor/${schedule.userId._id}`,
+        `http://localhost:5000/doctor/${schedule.userId._id}`,
 
         {
           headers: {

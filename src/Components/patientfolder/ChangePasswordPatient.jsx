@@ -66,7 +66,7 @@ export default function ChangePasswordPatient() {
     }
 
     const result = await axios.put(
-      `https://healthbackend-3xh2.onrender.com/patient/${userId}/updatePassword`,
+      `http://localhost:5000/patient/${userId}/updatePassword`,
       {
         oldPassword,
         newPassword,
