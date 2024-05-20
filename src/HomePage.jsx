@@ -34,7 +34,7 @@ export default function Homepage() {
     specialists: [
       { id: 1, name: "Cardiologist" },
       { id: 2, name: "Dermatologist" },
-      { id: 3, name: "Endocrinologist" },
+      { id: 3, name: "Heart specialists" },,
       { id: 4, name: "Gastroenterologist" },
       { id: 5, name: "Hematologist" },
       { id: 6, name: "Neurologist" },
@@ -76,7 +76,7 @@ export default function Homepage() {
       { id: 15, city: "Jalgoan" },
       { id: 16, city: "Kanpur" },
       { id: 17, city: "Kolkata" },
-      { id: 18, city: "Kopergoan" },
+      { id: 18, city: "Kopargaon" },
       { id: 19, city: "London" },
       { id: 20, city: "Los Angeles" },
       { id: 21, city: "Lucknow" },
