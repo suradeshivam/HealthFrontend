@@ -87,7 +87,7 @@ export default function LoginDoctor() {
       } catch (error) {
         setIsLoading(false); // Reset loading state upon error
         console.error("Error submitting form:", error);
-        toast.error(error.response.data.message, {
+        toast.error(error.message, {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,

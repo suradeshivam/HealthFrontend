@@ -229,9 +229,7 @@ export default function Homepage() {
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    to="/login"
-                    className="btn btn-primary log-btn">
+                  <Link to="/login" className="btn btn-primary log-btn">
                     <i className="feather-lock  " />
                     Login
                   </Link>

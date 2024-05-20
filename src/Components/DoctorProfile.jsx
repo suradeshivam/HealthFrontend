@@ -41,6 +41,7 @@ export default function DoctorProfile() {
 
   const [fileName, setFileName] = useState("");
   const [filePreview, setFilePreview] = useState("");
+  const [staticFilePreview, setStaticFilePreview] = useState("");
   const [errors, setErrors] = useState({
     userName: "",
     yearOfExperience: "",
@@ -58,6 +59,14 @@ export default function DoctorProfile() {
     licenceNumber: "",
     yearLicenceNumber: "",
   });
+
+  const openFile = () => {
+    const url = `https://healthbackend-3xh2.onrender.com/files/${uploadedFileName}`;
+    const windowFeatures =
+      "width=800,height=600,top=100,left=100,resizable,scrollbars,menubar=no,toolbar=no,location=no,status=no";
+
+    window.open(url, "_blank", windowFeatures);
+  };
 
   const countWords = (text) => {
     const wordArray = text.trim().split(/\s+/);
@@ -1272,6 +1281,7 @@ export default function DoctorProfile() {
                 </div>
                 <div className="card">
                   <div className="card-body">
+                    <a onClick={openFile}> see uploaded file</a>
                     <h4 className="card-title">
                       Certificate<span className="text-danger"> *</span>
                     </h4>
@@ -1299,7 +1309,7 @@ export default function DoctorProfile() {
                         </div>
                       </div>
                     </div>
-                    {filePreview && (
+                    {/* {filePreview && (
                       <div>
                         <h5>Preview</h5>
                         {fileName.toLowerCase().endsWith(".pdf") ? (
@@ -1317,7 +1327,10 @@ export default function DoctorProfile() {
                           />
                         )}
                       </div>
-                    )}
+                    )} */}
+                    <iframe
+                      style={{ width: "100%", height: "600px" }}
+                      src={`https://healthbackend-3xh2.onrender.com/files/${uploadedFileName}`}></iframe>
                   </div>
                 </div>
 

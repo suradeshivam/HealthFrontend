@@ -103,9 +103,6 @@ export default function Profilesettings() {
             console.log(res.data.result);
           }
 
-
-
-
           toast(res.data.message);
         } catch (error) {
           toast.error(error.message, {

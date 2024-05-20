@@ -24,7 +24,6 @@ export default function Accounts() {
   const [dataRevenues, setDataRevenues] = useState(null);
   const [income, setIncome] = useState();
 
-
   const docInfo = JSON.parse(localStorage.getItem("docInfo"));
 
   const fees = docInfo?.fees;
@@ -208,7 +207,12 @@ export default function Accounts() {
         );
 
         console.log(response.data.result);
-        const { appointmentCounts,income,canceledAppointments,totalAppointmentsAttended } = response.data.result;
+        const {
+          appointmentCounts,
+          income,
+          canceledAppointments,
+          totalAppointmentsAttended,
+        } = response.data.result;
         setIncome(income);
         // const updatedCounts = {};
 
@@ -384,7 +388,7 @@ export default function Accounts() {
                               <div className="info-list">
                                 <div className="title">Account Name</div>
                                 <div className="text" id="account_name">
-                                 Dr. {docInfo?.userId?.name}
+                                  Dr. {docInfo?.userId?.name}
                                 </div>
                               </div>
                             </div>
@@ -423,16 +427,15 @@ export default function Accounts() {
                         <div className="row">
                           <div className="col-lg-6">
                             <div className="account-card bg-success-light">
-                              <span>₹{income }</span> Earned
+                              <span>₹{income}</span> Earned
                             </div>
                           </div>
-                         
+
                           <div className="col-lg-6">
                             <div className="account-card bg-purple-light">
                               <span>₹90.48</span> Balance
                             </div>
                           </div>
-                        
                         </div>
                       </div>
                     </div>
