@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { OrderState } from "../../Contexts";
 import axios from "axios";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 export default function Info() {
   const [uploadedFileName, setUploadedFileName] = useState("");
   const [fileName, setFileName] = useState("");
+  const [patientInfo, setPatientInfo] = useState("");
+
+  const navigate = useNavigate();
 
   const {
     symptoms,
@@ -116,6 +120,10 @@ export default function Info() {
       reportFiles.map(({ file }) => file)
     );
     console.log("PDF Files:", pdfRefs);
+
+    navigate("/checkout");
+
+
   };
 
   const handleAgree = () => {
@@ -138,6 +146,13 @@ export default function Info() {
             to { opacity: 1; }
         }
     `;
+
+    useEffect (() => {
+
+      const patientInfo = JSON.parse(localStorage.getItem("patientInfo"));
+      setPatientInfo(patientInfo);
+
+    }, []);
 
   return (
     <div className="main-wrapper">
@@ -264,23 +279,25 @@ export default function Info() {
                       style={{ marginLeft: "10px" }}
                       htmlFor="terms_accept">
                       I have read and accept{" "}
-                      <button
+                      <a
                         className="btn btn-link"
                         onClick={() => setShowModal(true)}>
                         Consent Form
-                      </button>
+                      </a>
                     </label>
                   </div>
                 </div>
                 {/* Submit Button */}
-                <Link to="/checkout">
+                {/* <Link to="/checkout"> */}
                   <button
                     type="submit"
                     className="btn btn-primary submit-btn my-3"
-                    disabled={!isCheckboxChecked}>
+                    disabled={!isCheckboxChecked}
+                   
+                    >
                     Submit
                   </button>
-                </Link>
+                {/* </Link> */}
               </form>
             </div>
             <div className="col-md-6">
@@ -362,12 +379,12 @@ export default function Info() {
                       borderRadius: "5px",
                       border: "1px solid #ccc",
                     }}
-                    value={patientName}
+                    value={patientInfo?.userId?.name}
                     onChange={(e) => setPatientName(e.target.value)}
                     placeholder="Enter Patient Name"
                   />
                   , hereby consent to [Procedure/Service] to be performed at
-                  TwinsDoc Pvt Ltd on [Date].
+                  TwinsDoc Pvt Ltd on {new Date().toDateString()}.
                   <br />
                   <br />
                   I understand the nature of the procedure/service, its purpose,

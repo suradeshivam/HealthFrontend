@@ -23,7 +23,7 @@ export default function Invoiceview() {
           <div className="container">
             <div className="row align-items-center inner-banner">
               <div className="col-md-12 col-12 text-center">
-                <h2 className="breadcrumb-title">Invoice View</h2>
+                <h2 className="breadcrumb-title">Invoice</h2>
                 <nav aria-label="breadcrumb" className="page-breadcrumb">
                   <ol className="breadcrumb">
 

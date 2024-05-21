@@ -14,7 +14,7 @@ export default function Doctorprofile() {
     selectedDate,
     setSelectedDate,
   } = OrderState();
-  const [singleDoctor, setSingleDoctor] = useState([]);
+  const [singleDoctor, setSingleDoctor] = useState();
   const [selectedSlot, setSelectedSlot] = useState(null);
 
   const handleSlotSelect = (index, slot, selectedDay) => {
@@ -494,6 +494,7 @@ export default function Doctorprofile() {
                                   <div className="col-md-12">
                                     <div className="time-slot">
                                       <ul className="clearfix">
+                                        
                                         {selectedDay &&
                                           singleDoctor?.schedules[
                                             selectedDay?.toLowerCase()

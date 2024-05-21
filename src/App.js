@@ -33,6 +33,8 @@ import AppointmentDetails from "./Components/patientfolder/AppointmentDetails"
 import SinglePhysicianDisplay from "./Components/patientfolder/PatientAppointment"
 import Privacypolicy from "./Components/PrivacyPolicy";
 import Termscondition from "./Components/TermsConditions";
+import Aboutus from "./Aboutus";
+import Contactus from "./Contactus";
 
 // App changed
 function App() {
@@ -65,6 +67,7 @@ function App() {
           <Route path="privacypolicy" element={<Privacypolicy />} />
           <Route path="termscondition" element={<Termscondition />} />
 
+
           {/* Patient DashBoard Routs */}
           <Route path="user" element={<Patientdashboard />} />
           <Route path="dependent" element={<Dependent />} />
@@ -81,6 +84,9 @@ function App() {
           <Route path="checkout" element={<Checkout />} />
           <Route path="booking-success" element={<Bookingsuccess />} />
           <Route path="invoice-view" element={<Invoiceview />} />
+
+          <Route path="aboutus" element={<Aboutus />} />
+          <Route path="contactus" element={<Contactus />} />
         </Route>
       </Routes>
       {shouldShowNavbarAndFooter && <Footer />}

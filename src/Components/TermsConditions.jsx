@@ -1,7 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { OrderState } from "../Contexts";
 
 export default function Termscondition() {
+
+  const {selectedDoctor} = OrderState();
+
   return (
     <div>
       <div className="main-wrapper">
@@ -123,6 +127,7 @@ export default function Termscondition() {
                     </p>
                   </div>
                 </div>
+                {selectedDoctor ?
                 <div className="terms-btn">
                   <Link
                     to="/checkout"
@@ -135,6 +140,15 @@ export default function Termscondition() {
                     I agree with terms
                   </Link>
                 </div>
+               : 
+               <div className="terms-btn">
+               <Link
+                    to="/"
+                    className="btn btn-right-now">
+                    Go To Home Page
+                  </Link>
+                  </div>
+               }
               </div>
             </div>
           </div>
