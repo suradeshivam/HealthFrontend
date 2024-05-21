@@ -75,7 +75,7 @@ export default function Checkout() {
     // Your payment handling logic
     const options = {
       key: "rzp_test_24yRxkxuRbu0WP",
-      amount: (selectedDoctor?.fees*100) + (10 + 50)*100,
+      amount: selectedDoctor?.fees * 100 + (10 + 50) * 100,
       currency: "INR",
       name: "TwinsisTech",
       description: "Fees",

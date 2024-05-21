@@ -149,10 +149,10 @@ export default function Footer() {
                 <div className="copyright-menu">
                   <ul className="policy-menu">
                     <li>
-                      <Link to="privacy-policy">Privacy Policy</Link>
+                      <Link to="/privacypolicy">Privacy Policy</Link>
                     </li>
                     <li>
-                      <Link to="/terms&con">Terms and Conditions</Link>
+                      <Link to="/termscondition">Terms and Conditions</Link>
                     </li>
                   </ul>
                 </div>

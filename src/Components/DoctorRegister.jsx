@@ -6,8 +6,8 @@ import axios from "axios";
 
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 export default function DoctorRegister() {
   const location = useLocation();
@@ -158,18 +158,15 @@ export default function DoctorRegister() {
                               },
                             })}
                             className="form-control pass-input"
-                            
-                          /> 
-                          <span
-                           
-                          onClick={() => setShowPassword(!showPassword)}
-                          className="toggle-password">
-                            <FontAwesomeIcon icon={showPassword ? 
-                            faEyeSlash : faEye}
                           />
-                          
-                        </span>
-                         
+                          <span
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="toggle-password">
+                            <FontAwesomeIcon
+                              icon={showPassword ? faEyeSlash : faEye}
+                            />
+                          </span>
+
                           {errors.password && (
                             <p className="text-red-500 text-xs italic">
                               {errors.password.message}
@@ -192,14 +189,13 @@ export default function DoctorRegister() {
                             className="form-control pass-input"
                           />
                           <span
-                           
                             onClick={() =>
                               setShowConfirmPassword((prev) => !prev)
                             }
                             className="toggle-password">
-                            <FontAwesomeIcon icon={showConfirmPassword ? (faEyeSlash)
-                             : (faEye)}
-                          />
+                            <FontAwesomeIcon
+                              icon={showConfirmPassword ? faEyeSlash : faEye}
+                            />
                           </span>
                           {errors.confirmPassword && (
                             <p className="text-red-500 text-xs italic">

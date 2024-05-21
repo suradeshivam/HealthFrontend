@@ -75,6 +75,7 @@ export default function Doctorprofile() {
   console.log(currentDate.getDay());
 
   const handleDayClick = (day, index) => {
+    console.log(day);
     setSelectedDay(day);
     setSelectedDate(dates[index]);
   };
@@ -115,7 +116,7 @@ export default function Doctorprofile() {
       }
     );
     // console.log(doctor);
-    setSingleDoctor(doctor.data.result.doctor);
+    setSingleDoctor(doctor?.data?.result?.doctor);
   };
 
   console.log(singleDoctor);
@@ -387,8 +388,7 @@ export default function Doctorprofile() {
                     <div className="widget review-listing">
                       <ul className="comment-list">
                         {console.log(singleDoctor)}
-                        {
-                          singleDoctor?.reviews &&
+                        {singleDoctor?.reviews &&
                           singleDoctor?.reviews.map((comment, index) => (
                             <li key={index}>
                               <div className="comment">
@@ -462,11 +462,13 @@ export default function Doctorprofile() {
                                                 index
                                               )
                                             }
-                                          
+
                                             // className={selectedDay != null ? "selected" : ""}
                                           >
-                                            <a className=" name"> 
-                                            <span>{renderDayName(index)}</span>
+                                            <a className=" name">
+                                              <span>
+                                                {renderDayName(index)}
+                                              </span>
                                             </a>
 
                                             <span className="slot-date">
@@ -491,7 +493,7 @@ export default function Doctorprofile() {
                                 <div className="row">
                                   <div className="col-md-12">
                                     <div className="time-slot">
-                                      <ul className="clearfix" >
+                                      <ul className="clearfix">
                                         {selectedDay &&
                                           singleDoctor?.schedules[
                                             selectedDay?.toLowerCase()

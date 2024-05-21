@@ -52,8 +52,10 @@ const FilterDisplay = ({ filterData }) => {
                         Dr. {doctor.userId?.name}
                       </a>
                       <i className="fas fa-circle-check" />
-                    </h4>
-                    <p className="doc-speciality">{doctor.specialization}</p>
+                    </h4><br/>
+                    {doctor?.specialization.map((spec,index ) => (  
+                    <span className="doc-speciality" key={index}>{spec} {" "}</span>
+                    ))}
                     <div className="clinic-details">
                       <p className="doc-location">
                         <i className="feather-map-pin" />

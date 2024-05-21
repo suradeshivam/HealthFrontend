@@ -34,7 +34,8 @@ export default function Homepage() {
     specialists: [
       { id: 1, name: "Cardiologist" },
       { id: 2, name: "Dermatologist" },
-      { id: 3, name: "Heart specialists" },,
+      { id: 3, name: "Heart specialists" },
+      ,
       { id: 4, name: "Gastroenterologist" },
       { id: 5, name: "Hematologist" },
       { id: 6, name: "Neurologist" },
@@ -131,15 +132,12 @@ export default function Homepage() {
   const getAllDoctors = async () => {
     const isAuthenticated = localStorage.getItem("token");
     try {
-      const response = await axios.get(
-        "https://healthbackend-3xh2.onrender.com/patient/search",
-        {
-          headers: {
-            isvalidrequest: "twinsistech",
-            authorization: isAuthenticated,
-          },
-        }
-      );
+      const response = await axios.get("https://healthbackend-3xh2.onrender.com/patient/search", {
+        headers: {
+          isvalidrequest: "twinsistech",
+          authorization: isAuthenticated,
+        },
+      });
 
       console.log(response);
       // setDocFilter(response.data.result);
@@ -229,9 +227,7 @@ export default function Homepage() {
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    to="/login"
-                    className="btn btn-primary log-btn">
+                  <Link to="/login" className="btn btn-primary log-btn">
                     <i className="feather-lock  " />
                     Login
                   </Link>

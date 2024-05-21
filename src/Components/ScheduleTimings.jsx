@@ -75,14 +75,14 @@ export default function ScheduleTime() {
     if (copyToAllDays) {
       // Clear slots from all days except Monday and Sunday
       Object.keys(updatedTimeSlots).forEach((day) => {
-        if (day !== 'monday') {
+        if (day !== "monday") {
           updatedTimeSlots[day] = [];
         }
       });
     } else {
       // Copy Monday slots to all days except Monday and Sunday
       Object.keys(updatedTimeSlots).forEach((day) => {
-        if (day !== 'monday') {
+        if (day !== "monday") {
           updatedTimeSlots[day] = [...mondaySlots];
         }
       });

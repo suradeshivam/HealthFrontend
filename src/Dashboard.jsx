@@ -621,19 +621,17 @@ export default function Dashboard() {
                                                     )
                                                   : "Time not available"}
                                               </span> */}
-                                             
 
-{new Date(patient.date).toLocaleString(
-                                          "en-US",
-                                          {
-                                            year: "numeric",
-                                            month: "short",
-                                            day: "numeric",
-                                            hour: "numeric",
-                                            minute: "numeric",
-                                            hour12: true,
-                                          }
-                                        )}
+                                              {new Date(
+                                                patient.date
+                                              ).toLocaleString("en-US", {
+                                                year: "numeric",
+                                                month: "short",
+                                                day: "numeric",
+                                                hour: "numeric",
+                                                minute: "numeric",
+                                                hour12: true,
+                                              })}
                                             </td>
 
                                             <td style={{ textAlign: "center" }}>
@@ -743,19 +741,16 @@ export default function Dashboard() {
                                                   patient.date
                                                 )}{" "}
                                                 <span className="d-block text-info">
-                                                 
-
-{new Date(patient.date).toLocaleString(
-                                          "en-US",
-                                          {
-                                            year: "numeric",
-                                            month: "short",
-                                            day: "numeric",
-                                            hour: "numeric",
-                                            minute: "numeric",
-                                            hour12: true,
-                                          }
-                                        )}
+                                                  {new Date(
+                                                    patient.date
+                                                  ).toLocaleString("en-US", {
+                                                    year: "numeric",
+                                                    month: "short",
+                                                    day: "numeric",
+                                                    hour: "numeric",
+                                                    minute: "numeric",
+                                                    hour12: true,
+                                                  })}
                                                 </span>
                                               </td>
                                               <td

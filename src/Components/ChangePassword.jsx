@@ -5,8 +5,8 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 export default function ChangePassword() {
   const {
@@ -159,7 +159,7 @@ export default function ChangePassword() {
                           <span>Dashboard</span>
                         </Link>
                       </li>
-                   
+
                       <li>
                         <Link to="/schedule">
                           <i className="fas fa-hourglass-start" />
@@ -225,11 +225,11 @@ export default function ChangePassword() {
                             className="form-control pass-input"
                           />
                           <span
-                           
                             onClick={() => setShowOldPassword(!showOldPassword)}
                             className="toggle-password">
-                            <FontAwesomeIcon icon={showOldPassword ? 
-                            faEyeSlash : faEye}/>
+                            <FontAwesomeIcon
+                              icon={showOldPassword ? faEyeSlash : faEye}
+                            />
                           </span>
                           {errors.password && (
                             <p className="text-red-500 text-xs italic">
@@ -257,10 +257,11 @@ export default function ChangePassword() {
                             className="form-control pass-input"
                           />
                           <span
-                          
                             onClick={() => setShowPassword(!showPassword)}
                             className="toggle-password">
-                            <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                            <FontAwesomeIcon
+                              icon={showPassword ? faEyeSlash : faEye}
+                            />
                           </span>
                           {errors.password && (
                             <p className="text-red-500 text-xs italic">
@@ -288,12 +289,13 @@ export default function ChangePassword() {
                             className="form-control pass-input"
                           />
                           <span
-                            
                             onClick={() =>
                               setShowConfirmPassword(!showConfirmPassword)
                             }
                             className="toggle-password">
-                           <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} />
+                            <FontAwesomeIcon
+                              icon={showConfirmPassword ? faEyeSlash : faEye}
+                            />
                           </span>
                           {errors.password && (
                             <p className="text-red-500 text-xs italic">

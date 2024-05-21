@@ -21,7 +21,7 @@ export default function Patientprofile() {
   const [doctorInfo, setDoctorInfo] = useState("");
   const [showPrediction, setshowPrediction] = useState(false);
 
-  console.log(selectedPatient)
+  console.log(selectedPatient);
 
   const [observations, setObservations] = useState([]);
 
@@ -457,7 +457,7 @@ export default function Patientprofile() {
                   <ul className="list-group list-group-flush">
                     <li className="list-group-item">
                       <div class="submit-section mt-2 text-center">
-                      <input
+                        <input
                           type="text"
                           id="prompt"
                           value={selectedPatient?.symptoms}
@@ -465,7 +465,7 @@ export default function Patientprofile() {
                           required
                           className="hidden d-none"
                         />
-                         <form id="chatForm" onSubmit={handleSubmit}>
+                        <form id="chatForm" onSubmit={handleSubmit}>
                           <button
                             type="submit"
                             id="submitButton"
@@ -474,11 +474,9 @@ export default function Patientprofile() {
                             data-bs-target="#ai-prediction"
                             onClick={() => {
                               setshowPrediction(true);
-                            }}
-                          >
+                            }}>
                             Click to Predict
                           </button>
-                          
                         </form>
                         {/* <button
                           type="submit"
@@ -1815,9 +1813,7 @@ export default function Patientprofile() {
                       (medhis, index) => (
                         <tr>
                           <td key={index}>{index + 1}</td>
-                          <td>
-                            {medhis?.year}
-                          </td>
+                          <td>{medhis?.year}</td>
                           <td>{medhis?.diseaseName}</td>
                         </tr>
                       )
@@ -1922,13 +1918,9 @@ export default function Patientprofile() {
                   style={{ display: isResultVisible ? "block" : "none" }}>
                   <h5>Response:</h5>
                   <strong>
-                  {showPrediction && (
-                    <p id="generatedText">
-                      
-                      {generatedText}
-                      
-                      </p>
-                      )}
+                    {showPrediction && (
+                      <p id="generatedText">{generatedText}</p>
+                    )}
                   </strong>
                 </div>
                 <div id="errorMessage" className="error-message">
