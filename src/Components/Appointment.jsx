@@ -14,7 +14,7 @@ export default function Patientprofile() {
   // const location = useLocation();
   // const [patient, setPatient] = useState(location.state?.patient);
   const [singleAppointment, setSingleAppointment] = useState();
-  const { selectedPatient } = OrderState();
+  const { selectedPatient,notification, setNotification } = OrderState();
   const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
 
@@ -122,12 +122,17 @@ export default function Patientprofile() {
 
       console.log(response);
       const updatedPatient = response.data?.result;
-      // Update the patient state with the updated patient data
-      // setPatient(updatedPatient);
-      // localStorage.setItem(
-      //   "docInfo",
-      //   JSON.stringify(updatedDoctor.data.result)
-      // );
+
+      const newNotification = {
+        id: Date.now(),
+        physicianName : "Dr. "+ doctorInfo?.userId?.name,
+        patientName : selectedPatient?.patient?.userId?.name,
+        time : new Date().toLocaleTimeString(),
+        image: selectedPatient?.patient?.profilePicture, 
+      }
+
+      setNotification ((prevNotifications) => [newNotification, ...prevNotifications]);
+
       toast("Prescription Added Successfully", {
         position: "top-right",
         autoClose: 3000,
@@ -342,6 +347,8 @@ export default function Patientprofile() {
     return generatedText;
   };
 
+  // console.log(selectedPatient)
+
   return (
     <div>
       <div className="main-wrapper">
@@ -387,7 +394,7 @@ export default function Patientprofile() {
                       <div className="profile-info-widget">
                         <a href="#" className="booking-doc-img">
                           <img
-                            src="assets/img/patients/patient.jpg"
+                            src= {selectedPatient?.patient?.profilePicture|| "assets/img/patients/patient.jpg"}
                             alt="User Image"
                           />
                         </a>

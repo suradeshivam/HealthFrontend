@@ -44,7 +44,7 @@ const Context = ({ children }) => {
   const [reportFiles, setReportFiles] = useState([]);
   const [pdfRefs, setPdfRefs] = useState([]);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
-
+  const [notification, setNotification] = useState([]);
   
 
   useEffect(() => {
@@ -102,7 +102,9 @@ const Context = ({ children }) => {
             selectedDate, 
             setSelectedDate,
             selectedAppointment,
-            setSelectedAppointment
+            setSelectedAppointment,
+            notification,
+            setNotification,
 
       }}>
       {children}

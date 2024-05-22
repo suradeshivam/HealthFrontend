@@ -1,7 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { OrderState } from "../Contexts";
 
 export default function Navbar() {
+
+  const {notification} = OrderState();
+
   return (
     <header className="header header-custom header-fixed header-one">
       <div className="container">
@@ -58,120 +62,44 @@ export default function Navbar() {
           <ul className="nav header-navbar-rht">
             <li className="nav-item dropdown noti-nav me-3 pe-0">
               <a
-                href="#"
                 className="dropdown-toggle nav-link p-0"
                 data-bs-toggle="dropdown">
                 <i className="fa-solid fa-bell" />{" "}
-                <span className="badge">5</span>
+                <span className="badge">{notification?.length}</span>
               </a>
               <div className="dropdown-menu notifications dropdown-menu-end ">
                 <div className="topnav-dropdown-header">
                   <span className="notification-title">Notifications</span>
                 </div>
-                <div className="noti-content">
+                <div className="noti-contenlt">
                   <ul className="notification-list">
-                    <li className="notification-message">
-                      <a href="#">
+                    {notification?.map ((noti) => ( 
+                    <li className="notification-message" key={noti.id}>
+                      <a >
                         <div className="notify-block d-flex">
                           <span className="avatar">
                             <img
                               className="avatar-img"
                               alt="Ruby perin"
-                              src="assets/img/clients/client-01.jpg"
+                              src={noti.image ||"assets/img/clients/client-01.jpg"}
                             />
                           </span>
                           <div className="media-body">
                             <h6>
-                              Travis Tremble{" "}
+                            {noti.patientName}{" "}
                               <span className="notification-time">
-                                18.30 PM
+                              {noti.time}
                               </span>
                             </h6>
                             <p className="noti-details">
-                              Sent a amount of $210 for his Appointment{" "}
-                              <span className="noti-title">Dr.Ruby perin </span>
+                            Prescription added by  {" "}
+                              <span className="noti-title">{noti.physicianName}</span>
                             </p>
                           </div>
                         </div>
                       </a>
                     </li>
-                    <li className="notification-message">
-                      <a href="#">
-                        <div className="notify-block d-flex">
-                          <span className="avatar">
-                            <img
-                              className="avatar-img"
-                              alt="Hendry Watt"
-                              src="assets/img/clients/client-02.jpg"
-                            />
-                          </span>
-                          <div className="media-body">
-                            <h6>
-                              Travis Tremble{" "}
-                              <span className="notification-time">
-                                12 Min Ago
-                              </span>
-                            </h6>
-                            <p className="noti-details">
-                              {" "}
-                              has booked her appointment to{" "}
-                              <span className="noti-title">
-                                Dr. Hendry Watt
-                              </span>
-                            </p>
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                    <li className="notification-message">
-                      <a href="#">
-                        <div className="notify-block d-flex">
-                          <div className="avatar">
-                            <img
-                              className="avatar-img"
-                              alt="Maria Dyen"
-                              src="assets/img/clients/client-03.jpg"
-                            />
-                          </div>
-                          <div className="media-body">
-                            <h6>
-                              Travis Tremble{" "}
-                              <span className="notification-time">
-                                6 Min Ago
-                              </span>
-                            </h6>
-                            <p className="noti-details">
-                              {" "}
-                              Sent a amount $210 for his Appointment{" "}
-                              <span className="noti-title">Dr.Maria Dyen</span>
-                            </p>
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                    <li className="notification-message">
-                      <a href="#">
-                        <div className="notify-block d-flex">
-                          <div className="avatar avatar-sm">
-                            <img
-                              className="avatar-img"
-                              alt="client-image"
-                              src="assets/img/clients/client-04.jpg"
-                            />
-                          </div>
-                          <div className="media-body">
-                            <h6>
-                              Travis Tremble{" "}
-                              <span className="notification-time">8.30 AM</span>
-                            </h6>
-                            <p className="noti-details">
-                              {" "}
-                              Send a message to his Physician
-                            </p>
-                          </div>
-                        </div>
-                      </a>
-                    </li>
+                    ))}
                   </ul>
                 </div>
               </div>

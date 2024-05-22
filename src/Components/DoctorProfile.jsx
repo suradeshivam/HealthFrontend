@@ -1082,23 +1082,7 @@ export default function DoctorProfile() {
                     Specialization<span className="text-danger"> *</span>
                   </h4>
 
-                  {/* <div className="mb-0">
-                      <input
-                        className="input-tags form-control"
-                        type="text"
-                        data-role="tagsinput"
-                        placeholder="Enter Specialization"
-                        name="specialist"
-                        id="specialist"
-                        onChange={(e) => setSpecialization(e.target.value)}
-                        value={specialization}
-                      />
-                      {errors.specialization && (
-                        <span style={{ color: "red", fontSize: "13px" }}>
-                          {errors.specialization}
-                        </span>
-                      )}
-                    </div> */}
+
 
                   <div
                     className=" search-input search-line cursor-hover"
