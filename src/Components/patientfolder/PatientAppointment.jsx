@@ -196,7 +196,7 @@ export default function SinglePhysicianDisplay() {
 
     try {
       const appointment = await axios.get(
-        `http://localhost:5000/appointment/${appointmentId}`,
+        `https://healthbackend-3xh2.onrender.com/appointment/${appointmentId}`,
         {
           headers: {
             "Content-Type": "application/json",

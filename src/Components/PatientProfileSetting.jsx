@@ -85,7 +85,7 @@ export default function Profilesettings() {
         setPreview(reader.result); // Set preview image
         try {
           const res = await axios.post(
-            "http://localhost:5000/service/uploadImage",
+            "https://healthbackend-3xh2.onrender.com/service/uploadImage",
             {
               imageUrl: reader.result, // Use reader.result directly here
             },
@@ -309,7 +309,7 @@ export default function Profilesettings() {
     try {
       if (patientInfo) {
         const updatedPatient = await axios.put(
-          `http://localhost:5000/patient/${patientInfo?.userId?._id}`,
+          `https://healthbackend-3xh2.onrender.com/patient/${patientInfo?.userId?._id}`,
           formData,
           {
             headers: {
@@ -339,7 +339,7 @@ export default function Profilesettings() {
         });
       } else {
         const user = await axios.post(
-          `http://localhost:5000/patient/create`,
+          `https://healthbackend-3xh2.onrender.com/patient/create`,
           formData,
           {
             headers: {

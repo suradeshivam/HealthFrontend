@@ -56,7 +56,7 @@ export default function DoctorRegister() {
 
       // Send form data to backend
       const response = await axios.post(
-        "http://localhost:5000/user/signup",
+        "https://healthbackend-3xh2.onrender.com/user/signup",
         data,
         {
           headers: {

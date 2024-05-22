@@ -131,12 +131,15 @@ export default function Search2() {
   const getAllDoctors = async () => {
     const isAuthenticated = localStorage.getItem("token");
     try {
-      const response = await axios.get("http://localhost:5000/patient/search", {
-        headers: {
-          isvalidrequest: "twinsistech",
-          authorization: isAuthenticated,
-        },
-      });
+      const response = await axios.get(
+        "https://healthbackend-3xh2.onrender.com/patient/search",
+        {
+          headers: {
+            isvalidrequest: "twinsistech",
+            authorization: isAuthenticated,
+          },
+        }
+      );
 
       console.log(response);
       // setDocFilter(response.data.result);

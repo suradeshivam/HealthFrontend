@@ -14,7 +14,7 @@ export default function Patientprofile() {
   // const location = useLocation();
   // const [patient, setPatient] = useState(location.state?.patient);
   const [singleAppointment, setSingleAppointment] = useState();
-  const { selectedPatient,notification, setNotification } = OrderState();
+  const { selectedPatient, notification, setNotification } = OrderState();
   const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
 
@@ -107,7 +107,7 @@ export default function Patientprofile() {
       console.log("1");
 
       const response = await axios.put(
-        "http://localhost:5000/appointment/prescription",
+        "https://healthbackend-3xh2.onrender.com/appointment/prescription",
         {
           appointmentId: selectedPatient._id,
           newPrescription: prescriptions,
@@ -125,13 +125,16 @@ export default function Patientprofile() {
 
       const newNotification = {
         id: Date.now(),
-        physicianName : "Dr. "+ doctorInfo?.userId?.name,
-        patientName : selectedPatient?.patient?.userId?.name,
-        time : new Date().toLocaleTimeString(),
-        image: selectedPatient?.patient?.profilePicture, 
-      }
+        physicianName: "Dr. " + doctorInfo?.userId?.name,
+        patientName: selectedPatient?.patient?.userId?.name,
+        time: new Date().toLocaleTimeString(),
+        image: selectedPatient?.patient?.profilePicture,
+      };
 
-      setNotification ((prevNotifications) => [newNotification, ...prevNotifications]);
+      setNotification((prevNotifications) => [
+        newNotification,
+        ...prevNotifications,
+      ]);
 
       toast("Prescription Added Successfully", {
         position: "top-right",
@@ -163,7 +166,7 @@ export default function Patientprofile() {
     console.log("askahu");
     const isAuthenticated = localStorage.getItem("token");
     const response = await axios.get(
-      `http://localhost:5000/appointment/${selectedPatient._id}`,
+      `https://healthbackend-3xh2.onrender.com/appointment/${selectedPatient._id}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -188,7 +191,7 @@ export default function Patientprofile() {
     const isAuthenticated = localStorage.getItem("token");
     try {
       const observationres = await axios.put(
-        `http://localhost:5000/appointment/observation/`,
+        `https://healthbackend-3xh2.onrender.com/appointment/observation/`,
         {
           appointmentId: appointmentId,
           newObservations: observations,
@@ -215,7 +218,7 @@ export default function Patientprofile() {
       });
 
       const appointment = await axios.get(
-        `http://localhost:5000/appointment/${appointmentId}`,
+        `https://healthbackend-3xh2.onrender.com/appointment/${appointmentId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -394,7 +397,10 @@ export default function Patientprofile() {
                       <div className="profile-info-widget">
                         <a href="#" className="booking-doc-img">
                           <img
-                            src= {selectedPatient?.patient?.profilePicture|| "assets/img/patients/patient.jpg"}
+                            src={
+                              selectedPatient?.patient?.profilePicture ||
+                              "assets/img/patients/patient.jpg"
+                            }
                             alt="User Image"
                           />
                         </a>

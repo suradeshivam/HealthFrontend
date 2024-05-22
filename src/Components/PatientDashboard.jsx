@@ -62,7 +62,7 @@ export default function Patientdashboard() {
     console.log(id);
     try {
       const data = await axios.post(
-        "http://localhost:5000/appointment/patientappointments",
+        "https://healthbackend-3xh2.onrender.com/appointment/patientappointments",
         {
           patientId: id,
         },

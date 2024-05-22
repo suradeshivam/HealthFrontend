@@ -50,7 +50,7 @@ export default function Info() {
         console.log(fileName, file);
 
         const result = await axios.post(
-          "http://localhost:5000/service/uploadPdf",
+          "https://healthbackend-3xh2.onrender.com/service/uploadPdf",
           formData,
           {
             headers: {
@@ -260,7 +260,7 @@ export default function Info() {
                 {uploadedFileName && (
                   <iframe
                     style={{ width: "100%", height: "600px" }}
-                    src={`http://localhost:5000/files/${uploadedFileName}`}></iframe>
+                    src={`https://healthbackend-3xh2.onrender.com/files/${uploadedFileName}`}></iframe>
                 )}
                 {/* Terms & Conditions */}
                 <div className="terms-accept">

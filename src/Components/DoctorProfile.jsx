@@ -108,7 +108,7 @@ export default function DoctorProfile() {
         console.log(fileName, file);
 
         const result = await axios.post(
-          "http://localhost:5000/service/uploadPdf",
+          "https://healthbackend-3xh2.onrender.com/service/uploadPdf",
           formData,
           {
             headers: {
@@ -390,7 +390,7 @@ export default function DoctorProfile() {
       if (docInfo) {
         console.log("1");
         const updatedDoctor = await axios.put(
-          `http://localhost:5000/doctor/${docInfo.userId._id}/update`,
+          `https://healthbackend-3xh2.onrender.com/doctor/${docInfo.userId._id}/update`,
           {
             userId: docInfo.userId._id,
             name: userName,
@@ -441,7 +441,7 @@ export default function DoctorProfile() {
         });
       } else {
         const user = await axios.post(
-          `http://localhost:5000/doctor/create`,
+          `https://healthbackend-3xh2.onrender.com/doctor/create`,
           {
             userId: userInfo._id,
             name: userName,
@@ -515,7 +515,7 @@ export default function DoctorProfile() {
         setPreview(reader.result); // Set preview image
         try {
           const res = await axios.post(
-            "http://localhost:5000/service/uploadImage",
+            "https://healthbackend-3xh2.onrender.com/service/uploadImage",
             {
               imageUrl: reader.result, // Use reader.result directly here
             },
@@ -583,7 +583,7 @@ export default function DoctorProfile() {
 
       if (uploadedFileName) {
         const file = await axios.post(
-          `http://localhost:5000/service/files`,
+          `https://healthbackend-3xh2.onrender.com/service/files`,
           {
             fileName: uploadedFileName,
           },
@@ -1119,8 +1119,6 @@ export default function DoctorProfile() {
                   <h4 className="card-title">
                     Specialization<span className="text-danger"> *</span>
                   </h4>
-
-
 
                   <div
                     className=" search-input search-line cursor-hover"

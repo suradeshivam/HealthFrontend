@@ -30,7 +30,7 @@ export default function Prescriptions() {
     try {
       console.log("here first");
       const response = await axios.get(
-        `http://localhost:5000/appointment/prescriptions/${patientInfo?._id}`,
+        `http://localhost:5000/appointment/prescriptions/${patientInfo._id}`,
         {
           headers: {
             "Content-type": "application/json",
@@ -53,8 +53,11 @@ export default function Prescriptions() {
   useEffect(() => {
     const patient = JSON.parse(localStorage.getItem("patientInfo"));
     setPatientInfo(patient);
-    getAllPrescriptions();
   }, []);
+
+  useEffect(() => {
+    getAllPrescriptions();
+  }, [patientInfo]);
 
   const [prescriptions, setPrescriptions] = useState([
     {
