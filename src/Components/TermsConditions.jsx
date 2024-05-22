@@ -25,7 +25,7 @@ export default function Termscondition() {
                 <div className="terms-content">
                   <div className="terms-text">
                     <p>
-                      By registering as a doctor on our online healthcare
+                      By registering as a Physician on our online healthcare
                       platform, you agree to abide by the following terms and
                       conditions:
                     </p>
@@ -33,7 +33,7 @@ export default function Termscondition() {
                   <div className="terms-text terms-list">
                     <p>
                       <i className="fas fa-circle-check" /> As a registered
-                      doctor, you must provide accurate and up-to-date
+                      Physician, you must provide accurate and up-to-date
                       information about your credentials, qualifications, and
                       expertise.
                     </p>

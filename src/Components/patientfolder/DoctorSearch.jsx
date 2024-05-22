@@ -164,20 +164,20 @@ useEffect(() => {
     <>
   
   
-  <title>TwinDoc</title>
+  <title>Twinsdoc</title>
   <div className="main-wrapper search-page">
     <div className="breadcrumb-bar-two">
       <div className="container">
         <div className="row align-items-center inner-banner">
           <div className="col-md-12 col-12 text-center">
-            <h2 className="breadcrumb-title">Search Doctors</h2>
+            <h2 className="breadcrumb-title">Search Physicians</h2>
             <nav aria-label="breadcrumb" className="page-breadcrumb">
               <ol className="breadcrumb">
                 <li className="breadcrumb-item">
                   <a href="index.html">Home</a>
                 </li>
                 <li className="breadcrumb-item" aria-current="page">
-                  Search Doctors
+                  Search Physicians
                 </li>
               </ol>
             </nav>
@@ -438,7 +438,7 @@ useEffect(() => {
                     <div>
                       <div className="doctors-found">
                         <p>
-                          <span>100 Doctors found ...</span>
+                          <span>100 Physicians found ...</span>
                         </p>
                       </div>
                      
@@ -454,7 +454,7 @@ useEffect(() => {
                           value={selectedSpecialist}
                          onChange={handleSpecialistChange}
                           >
-                          <option className="doctor-filter-option" value="">Search doctors, specialists</option>
+                          <option className="doctor-filter-option" value="">Search Physicians, specialists</option>
                           {data1.specialists.map((specialist) => (
                             <option key={specialist.id} value={specialist.name}>
                               {specialist.name}

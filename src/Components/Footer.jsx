@@ -20,7 +20,7 @@ export default function Footer() {
                 </div>
                 <div className="footer-about-content">
                   <p>
-                    Discover seamless online doctor appointments with TwinsDoc.
+                    Discover seamless online Physician appointments with TwinsDoc.
                     Book trusted professionals instantly and prioritize your
                     well-being from home.
                   </p>
@@ -34,7 +34,7 @@ export default function Footer() {
                     <h2 className="footer-title">For Patients</h2>
                     <ul>
                       <li>
-                        <Link to="/docsearch">Search for Doctors</Link>
+                        <Link to="/docsearch">Search for Physicians</Link>
                       </li>
 
                       <li>
@@ -48,13 +48,13 @@ export default function Footer() {
                 </div>
                 <div className="col-lg-3 col-md-4">
                   <div className="footer-widget footer-menu">
-                    <h2 className="footer-title">For Doctors</h2>
+                    <h2 className="footer-title">For Physicians</h2>
                     <ul>
                       <li>
                         <Link to="/login">Login</Link>
                       </li>
                       <li>
-                        <Link to="/signup?role=doctor">Doctor Register</Link>
+                        <Link to="/signup?role=doctor">Physician Register</Link>
                       </li>
                     </ul>
                   </div>

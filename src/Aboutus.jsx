@@ -68,7 +68,7 @@ export default function Aboutus() {
                 <div className="about-content">
                   <div className="about-content-details">
                     <p>
-                      Welcome to our comprehensive online doctor appointment
+                      Welcome to our comprehensive online Physician appointment
                       platform, where your health and well-being are our top
                       priority. We are committed to delivering the highest
                       quality medical care, ensuring you receive the best
@@ -211,7 +211,7 @@ export default function Aboutus() {
                   <div className="section-inner-header way-inner-header mb-0">
                     <h2>Be on Your Way to Feeling Better with the Twinsdoc</h2>
                     <p>
-                      Our platform connects you with top-rated doctors for
+                      Our platform connects you with top-rated Physicians for
                       convenient and reliable online appointments, ensuring you
                       receive the best medical care from the comfort of your
                       home. Experience hassle-free healthcare tailored to your
@@ -240,7 +240,7 @@ export default function Aboutus() {
             <div className="row">
               <div className="col-md-6">
                 <div className="section-header-one section-header-slider">
-                  <h2 className="section-title">Best Doctors</h2>
+                  <h2 className="section-title">Best Physicians</h2>
                 </div>
               </div>
               <div className="col-md-6 text-end">
@@ -683,7 +683,7 @@ export default function Aboutus() {
                           data-bs-target="#collapseOne"
                           aria-expanded="true"
                           aria-controls="collapseOne">
-                          How do I schedule an appointment with a doctor through
+                          How do I schedule an appointment with a Physician through
                           the portal?
                         </a>
                       </h2>
@@ -795,7 +795,7 @@ export default function Aboutus() {
                           data-bs-target="#collapseFive"
                           aria-expanded="false"
                           aria-controls="collapseFive">
-                          Can I request a specific doctor for my consultation?
+                          Can I request a specific Physician for my consultation?
                         </a>
                       </h2>
                       <div
@@ -806,7 +806,7 @@ export default function Aboutus() {
                         <div className="accordion-body">
                           <div className="accordion-content">
                             <p>
-                              Absolutely, you can request a specific doctor for
+                              Absolutely, you can request a specific Physician for
                               your consultation based on availability.{" "}
                             </p>
                           </div>

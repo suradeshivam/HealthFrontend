@@ -132,7 +132,7 @@ export default function Doctorprofile() {
           <div className="container">
             <div className="row align-items-center inner-banner">
               <div className="col-md-12 col-12 text-center">
-                <h2 className="breadcrumb-title">Doctor Profile</h2>
+                <h2 className="breadcrumb-title">Physician Profile</h2>
               </div>
             </div>
           </div>

@@ -313,7 +313,7 @@ export default function Medicalrecords() {
                                         <th>#</th>
                                         <th>Name</th>
                                         <th>Date</th>
-                                        <th>Doctor</th>
+                                        <th>Physician</th>
                                         <th>Description</th>
                                         <th>Attachment</th>
                                         <th>Orderd By</th>
@@ -425,13 +425,13 @@ export default function Medicalrecords() {
                     <div className="col-12">
                       <div className="mb-3">
                         <label className="mb-2">
-                          Doctor Name (Treatment done by)
+                        Physician Name (Treatment done by)
                         </label>
                         <input
                           type="text"
                           name="doctor"
                           className="form-control"
-                          placeholder="Enter Doctor name here.."
+                          placeholder="Enter Physician name here.."
                           value={formData.doctor}
                           onChange={handleInputChange}
                         />

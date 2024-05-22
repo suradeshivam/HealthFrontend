@@ -453,7 +453,7 @@
 		})
 	}
 
-	// Our Doctor
+	// Our doctor
 	if ($('.owl-carousel.our-slider-thirteen').length > 0) {
 		$('.owl-carousel.our-slider-thirteen').owlCarousel({
 			loop: true,
@@ -484,7 +484,7 @@
 		})
 	}
 
-	// Doctor Slider
+	// doctor Slider
 
 	if ($('.owl-carousel.doctor-slider-fifteen').length > 0) {
 		$('.owl-carousel.doctor-slider-fifteen').owlCarousel({
@@ -547,7 +547,7 @@
 		})
 	}
 
-	// Doctor Slider
+	// doctor Slider
 
 	if ($('.owl-carousel.pharmacy-slider-fifteen').length > 0) {
 		$('.owl-carousel.pharmacy-slider-fifteen').owlCarousel({
@@ -704,7 +704,7 @@
 		})
 	}
 
-	// Doctors Slider
+	// doctors Slider
 
 	if ($('.owl-carousel.doctor-slider-one').length > 0) {
 		$('.owl-carousel.doctor-slider-one').owlCarousel({
@@ -2471,7 +2471,7 @@
 	$(document).on("click",".delete_schedule",function () {
 		$(this).parent().hide();
 	});
-	// Doctor Signup Wizard
+	// doctor Signup Wizard
 
 	let progressVal = 0;
 	let businessType = 0;
@@ -2622,7 +2622,7 @@
 		})
 	}
 
-	// Doctor Consulting Slider
+	// doctor Consulting Slider
 
 	if ($('.doctor-consulting-slider').length > 0) {
 		$('.doctor-consulting-slider').owlCarousel({

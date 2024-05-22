@@ -166,7 +166,7 @@ export default function Navbar() {
                             </h6>
                             <p className="noti-details">
                               {" "}
-                              Send a message to his doctor
+                              Send a message to his Physician
                             </p>
                           </div>
                         </div>

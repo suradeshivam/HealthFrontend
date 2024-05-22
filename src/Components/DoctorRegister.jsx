@@ -95,9 +95,9 @@ export default function DoctorRegister() {
                     <div className="login-header">
                       <h3>
                         {role === "doctor"
-                          ? "Doctor Register"
+                          ? "Physician Register"
                           : "Patient Register"}
-                        <a href="register.html"></a>
+                        {/* <a href="register.html"></a> */}
                       </h3>
                     </div>
                     <form onSubmit={handleSubmit(onSubmit)}>

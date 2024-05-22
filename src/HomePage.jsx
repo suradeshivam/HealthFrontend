@@ -334,7 +334,7 @@ export default function Homepage() {
                           className="form-control mx-2 border-0"
                           value={selectedSpecialist}
                           onChange={handleSpecialistChange}>
-                          <option value="">Search doctors, specialists</option>
+                          <option value="">Search Physicians, specialists</option>
                           {data.specialists.map((specialist) => (
                             <option key={specialist.id} value={specialist.name}>
                               {specialist.name}
@@ -381,7 +381,7 @@ export default function Homepage() {
                           <input
                             type="text"
                             className="form-control"
-                            placeholder="Search Doctor by your symptoms"
+                            placeholder="Search Physician by your symptoms"
                             id="prompt"
                             maxLength="100"
                             required
@@ -548,7 +548,7 @@ export default function Homepage() {
             <div className="row">
               <div className="col-md-6">
                 <div className="section-header-one section-header-slider">
-                  <h2 className="section-title">Best Doctors</h2>
+                  <h2 className="section-title">Best Physicians</h2>
                 </div>
               </div>
               <div className="col-md-6 text-end">
@@ -874,7 +874,7 @@ export default function Homepage() {
                         </span>
                       </div>
                       <div className="work-content">
-                        <h5>Search Doctor</h5>
+                        <h5>Search Physican</h5>
                         <p>Find the Right Healthcare Professional for You.</p>
                       </div>
                     </div>
@@ -890,7 +890,7 @@ export default function Homepage() {
                         </span>
                       </div>
                       <div className="work-content">
-                        <h5>Check Doctor Profile</h5>
+                        <h5>Check Physican Profile</h5>
                         <p>
                           Discover Specialties, Experience, and Reviews. Start
                           Your Health Journey Today!
@@ -1012,7 +1012,7 @@ export default function Homepage() {
                           data-bs-target="#collapseOne"
                           aria-expanded="true"
                           aria-controls="collapseOne">
-                          How do I schedule an appointment with a doctor through
+                          How do I schedule an appointment with a Physician through
                           the portal?
                         </a>
                       </h2>
@@ -1109,7 +1109,7 @@ export default function Homepage() {
                           <div className="accordion-content">
                             <p>
                               Choose video consultations for personalized
-                              communication with our doctors.{" "}
+                              communication with our Physicians.{" "}
                             </p>
                           </div>
                         </div>
@@ -1124,7 +1124,7 @@ export default function Homepage() {
                           data-bs-target="#collapseFive"
                           aria-expanded="false"
                           aria-controls="collapseFive">
-                          Can I request a specific doctor for my consultation?
+                          Can I request a specific Physician for my consultation?
                         </a>
                       </h2>
                       <div
@@ -1135,7 +1135,7 @@ export default function Homepage() {
                         <div className="accordion-body">
                           <div className="accordion-content">
                             <p>
-                              Absolutely, you can request a specific doctor for
+                              Absolutely, you can request a specific Physician for
                               your consultation based on availability.{" "}
                             </p>
                           </div>

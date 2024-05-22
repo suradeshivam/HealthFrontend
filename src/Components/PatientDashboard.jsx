@@ -140,68 +140,7 @@ export default function Patientdashboard() {
 
   return (
     <>
-      {/* Mirrored from TwinsisTech.dreamstechnologies.com/html/template/patient-dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 16 Apr 2024 16:46:18 GMT */}
-      <meta charSet="utf-8" />
-      <title>TwinsisTech</title>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta
-        name="description"
-        content="The responsive professional TwinsisTech template offers many features, like scheduling appointments with  top doctors, clinics, and hospitals via voice, video call & chat."
-      />
-      <meta
-        name="keywords"
-        content="practo clone, TwinsisTech, doctor appointment, Practo clone html template, doctor booking template"
-      />
-      <meta
-        name="author"
-        content="Practo Clone HTML Template - Doctor Booking Template"
-      />
-      <meta
-        property="og:url"
-        content="https://TwinsisTech.dreamstechnologies.com/html/"
-      />
-      <meta property="og:type" content="website" />
-      <meta
-        property="og:title"
-        content="Doctors Appointment HTML Website Templates | TwinsisTech"
-      />
-      <meta
-        property="og:description"
-        content="The responsive professional TwinsisTech template offers many features, like scheduling appointments with  top doctors, clinics, and hospitals via voice, video call & chat."
-      />
-      <meta property="og:image" content="assets/img/preview-banner.jpg" />
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta
-        property="twitter:domain"
-        content="https://TwinsisTech.dreamstechnologies.com/html/"
-      />
-      <meta
-        property="twitter:url"
-        content="https://TwinsisTech.dreamstechnologies.com/html/"
-      />
-      <meta
-        name="twitter:title"
-        content="Doctors Appointment HTML Website Templates | TwinsisTech"
-      />
-      <meta
-        name="twitter:description"
-        content="The responsive professional TwinsisTech template offers many features, like scheduling appointments with  top doctors, clinics, and hospitals via voice, video call & chat."
-      />
-      <meta name="twitter:image" content="assets/img/preview-banner.jpg" />
-      <link href="assets/img/favicon.png" rel="icon" />
-      <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
-      <link
-        rel="stylesheet"
-        href="assets/plugins/fontawesome/css/fontawesome.min.css"
-      />
-      <link
-        rel="stylesheet"
-        href="assets/plugins/fontawesome/css/all.min.css"
-      />
-      <link rel="stylesheet" href="assets/css/feather.css" />
-      <link rel="stylesheet" href="assets/plugins/apex/apexcharts.css" />
-      <link rel="stylesheet" href="assets/css/custom.css" />
-
+   
       <div className="main-wrapper">
         <div className="breadcrumb-bar-two">
           <div className="container">
@@ -472,7 +411,7 @@ export default function Patientdashboard() {
                               <table className="table table-hover table-center mb-0">
                                 <thead>
                                   <tr>
-                                    <th>Doctor</th>
+                                    <th>Physician</th>
                                     <th>Apt Date & Time</th>
                                     <th>Action</th>
                                   </tr>
@@ -557,7 +496,7 @@ export default function Patientdashboard() {
                               <table className="table table-hover table-center mb-0">
                                 <thead>
                                   <tr>
-                                    <th>Doctor</th>
+                                    <th>Physician</th>
                                     <th>Appt. Date and Time</th>
                                     {/* <th>Action</th> */}
                                   </tr>
@@ -634,7 +573,7 @@ export default function Patientdashboard() {
                               <table className="table table-hover table-center mb-0">
                                 <thead>
                                   <tr>
-                                    <th>Doctor</th>
+                                    <th>Physician</th>
                                     <th>Appointment Date and Time</th>
                                     <th>Action</th>
                                   </tr>

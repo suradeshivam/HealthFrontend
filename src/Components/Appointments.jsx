@@ -128,7 +128,7 @@ export default function Appointments() {
                           <h5>
                             <i className="fas fa-envelope" />{" "}
                             <a
-                              href="https://TwinDoc.dreamstechnologies.com/cdn-cgi/l/email-protection"
+                             
                               className="__cf_email__"
                               data-cfemail="abd9c2c8c3cad9cfebced3cac6dbc7ce85c8c4c6">
                               [email&nbsp;protected]
@@ -185,7 +185,7 @@ export default function Appointments() {
                           <h5>
                             <i className="fas fa-envelope" />{" "}
                             <a
-                              href="https://TwinDoc.dreamstechnologies.com/cdn-cgi/l/email-protection"
+                              
                               className="__cf_email__"
                               data-cfemail="cfaca7aebda3aaa1aabdaaaaab8faab7aea2bfa3aae1aca0a2">
                               [email&nbsp;protected]
@@ -242,7 +242,7 @@ export default function Appointments() {
                           <h5>
                             <i className="fas fa-envelope" />{" "}
                             <a
-                              href="https://TwinDoc.dreamstechnologies.com/cdn-cgi/l/email-protection"
+                              
                               className="__cf_email__"
                               data-cfemail="fc888e9d8a958f888e95919e9099bc99849d918c9099d29f9391">
                               [email&nbsp;protected]
@@ -299,7 +299,7 @@ export default function Appointments() {
                           <h5>
                             <i className="fas fa-envelope" />{" "}
                             <a
-                              href="https://TwinDoc.dreamstechnologies.com/cdn-cgi/l/email-protection"
+                              
                               className="__cf_email__"
                               data-cfemail="98fbf9eaf4f3fdf4f4e1d8fde0f9f5e8f4fdb6fbf7f5">
                               [email&nbsp;protected]
@@ -356,7 +356,7 @@ export default function Appointments() {
                           <h5>
                             <i className="fas fa-envelope" />{" "}
                             <a
-                              href="https://TwinDoc.dreamstechnologies.com/cdn-cgi/l/email-protection"
+                              
                               className="__cf_email__"
                               data-cfemail="5835313b303d34343d3e39312a3e3920183d20393528343d763b3735">
                               [email&nbsp;protected]
@@ -413,7 +413,7 @@ export default function Appointments() {
                           <h5>
                             <i className="fas fa-envelope" />{" "}
                             <a
-                              href="https://TwinDoc.dreamstechnologies.com/cdn-cgi/l/email-protection"
+                              
                               className="__cf_email__"
                               data-cfemail="afc8c6c1cec2c0c0ddcaefcad7cec2dfc3ca81ccc0c2">
                               [email&nbsp;protected]
@@ -470,7 +470,7 @@ export default function Appointments() {
                           <h5>
                             <i className="fas fa-envelope" />{" "}
                             <a
-                              href="https://TwinDoc.dreamstechnologies.com/cdn-cgi/l/email-protection"
+                             
                               className="__cf_email__"
                               data-cfemail="abcec7d8c2ceccc2c7c7ced2ebced3cac6dbc7ce85c8c4c6">
                               [email&nbsp;protected]
@@ -527,7 +527,7 @@ export default function Appointments() {
                           <h5>
                             <i className="fas fa-envelope" />{" "}
                             <a
-                              href="https://TwinDoc.dreamstechnologies.com/cdn-cgi/l/email-protection"
+                             
                               className="__cf_email__"
                               data-cfemail="96fcf9f7f8f1f7e4f2f8f3e4d6f3eef7fbe6faf3b8f5f9fb">
                               [email&nbsp;protected]
@@ -584,7 +584,7 @@ export default function Appointments() {
                           <h5>
                             <i className="fas fa-envelope" />{" "}
                             <a
-                              href="https://TwinDoc.dreamstechnologies.com/cdn-cgi/l/email-protection"
+                              
                               className="__cf_email__"
                               data-cfemail="5a3e3b34333f363d28333c3c33343d1a3f223b372a363f74393537">
                               [email&nbsp;protected]
@@ -641,7 +641,7 @@ export default function Appointments() {
                           <h5>
                             <i className="fas fa-envelope" />{" "}
                             <a
-                              href="https://TwinDoc.dreamstechnologies.com/cdn-cgi/l/email-protection"
+                              
                               className="__cf_email__"
                               data-cfemail="14637578607166667b767166677b7a54716c75796478713a777b79">
                               [email&nbsp;protected]
@@ -698,7 +698,7 @@ export default function Appointments() {
                           <h5>
                             <i className="fas fa-envelope" />{" "}
                             <a
-                              href="https://TwinDoc.dreamstechnologies.com/cdn-cgi/l/email-protection"
+                            
                               className="__cf_email__"
                               data-cfemail="14667b76716660667c7b70716754716c75796478713a777b79">
                               [email&nbsp;protected]
@@ -755,7 +755,7 @@ export default function Appointments() {
                           <h5>
                             <i className="fas fa-envelope" />{" "}
                             <a
-                              href="https://TwinDoc.dreamstechnologies.com/cdn-cgi/l/email-protection"
+                              
                               className="__cf_email__"
                               data-cfemail="127a7360606b657b7e7e7b737f6152776a737f627e773c717d7f">
                               [email&nbsp;protected]

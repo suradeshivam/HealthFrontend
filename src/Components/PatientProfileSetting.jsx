@@ -325,7 +325,6 @@ export default function Profilesettings() {
         );
         // setDoctorInfo(updatedDoctor.data.result);
         // console.log(doctorInfo);
-        console.log("doctor updated success navigatingto docprofile");
 
         toast("Profile Updated Successfully", {
           position: "top-right",

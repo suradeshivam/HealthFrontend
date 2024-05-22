@@ -120,13 +120,13 @@ export default function LoginDoctor() {
                     <img
                       src="assets/img/bg/pic.jpg"
                       className="img-fluid my-5 "
-                      alt="TwinDoc Login"
+                      alt="TwinsDoc Login"
                     />
                   </div>
                   <div className="col-md-12 col-lg-6 login-right">
                     <div className="login-header">
                       <h3>
-                        Login <span>TwinDoc</span>
+                        Login <span>TwinsDoc</span>
                       </h3>
                     </div>
                     <form onSubmit={handleSubmit(onSubmit)}>
@@ -207,7 +207,7 @@ export default function LoginDoctor() {
                           <Link
                             to="/signup?role=doctor" // Include role parameter for Doctor signup
                             className="m-2">
-                            <FaUserMd className="" /> Sign up as a Doctor
+                            <FaUserMd className="" /> Sign up as a Physician
                           </Link>
                           <Link
                             to="/signup?role=user" // Include role parameter for Patient signup
