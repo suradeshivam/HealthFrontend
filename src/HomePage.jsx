@@ -9,11 +9,11 @@ import Data from "./Components/patientfolder/data";
 import { OrderState } from "./Contexts";
 
 export default function Homepage() {
-  const [generatedText, setGeneratedText] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [generatedText, setGeneratedText] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [isResultVisible, setResultVisible] = useState(false);
 
-  const handleSubmit = async event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const promptInput = document.getElementById("prompt").value.trim();
@@ -27,30 +27,37 @@ export default function Homepage() {
         const response = await generateText(promptInput);
         setGeneratedText(response);
       } catch (error) {
-        setErrorMessage("Error: Failed to generate content. Please try again later.");
+        setErrorMessage(
+          "Error: Failed to generate content. Please try again later."
+        );
       }
     }
-  }
+  };
 
-  const generateText = async prompt => {
-    const url = "https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=AIzaSyAOw_9JeI-xld7WL3pEtFotq9HyuC9pBiw"; // Replace with your API key
+  const generateText = async (prompt) => {
+    const url =
+      "https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=AIzaSyAOw_9JeI-xld7WL3pEtFotq9HyuC9pBiw"; // Replace with your API key
     const data = {
-      "contents": [
+      contents: [
         {
-          "role": "user",
-          "parts": [
-            { "text": prompt + 'I want the name of the specialist doctor from this symptoms i want only one word response and choose the specialist from this list of specialist :Cardiologist, Dermatologist, Heart specialists, Gastroenterologist, Hematologist, Neurologist, Oncologist, Ophthalmologist, Orthopedic Surgeon, Pediatrician, Plastic Surgeon, Psychiatrist, Radiologist, Rheumatologist, Cancer Specialist, Anesthesiologist, Gynecologist, Otolaryngologist (ENT Specialist), Pathologist, Pulmonologist, Dentist' }
-          ]
-        }
-      ]
+          role: "user",
+          parts: [
+            {
+              text:
+                prompt +
+                "I want the name of the specialist doctor from this symptoms i want only one word response and choose the specialist from this list of specialist :Cardiologist, Dermatologist, Heart specialists, Gastroenterologist, Hematologist, Neurologist, Oncologist, Ophthalmologist, Orthopedic Surgeon, Pediatrician, Plastic Surgeon, Psychiatrist, Radiologist, Rheumatologist, Cancer Specialist, Anesthesiologist, Gynecologist, Otolaryngologist (ENT Specialist), Pathologist, Pulmonologist, Dentist",
+            },
+          ],
+        },
+      ],
     };
 
-    const headers = { 'Content-Type': 'application/json' };
+    const headers = { "Content-Type": "application/json" };
 
     const response = await fetch(url, {
-      method: 'POST',
+      method: "POST",
       headers: headers,
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     });
 
     if (!response.ok) {
@@ -58,11 +65,11 @@ export default function Homepage() {
     }
 
     const result = await response.json();
-    let generatedText = result['candidates'][0]['content']['parts'][0]['text'];
+    let generatedText = result["candidates"][0]["content"]["parts"][0]["text"];
     // Remove or trim stars from the generated text
-    generatedText = generatedText.replace(/\*/g, '').trim();
+    generatedText = generatedText.replace(/\*/g, "").trim();
     return generatedText;
-  }
+  };
   // search filter
   // const [selectedSpecialist, setSelectedSpecialist] = useState('');
   // const [selectedLocation, setSelectedLocation] = useState('');
@@ -88,7 +95,8 @@ export default function Homepage() {
     specialists: [
       { id: 1, name: "Cardiologist" },
       { id: 2, name: "Dermatologist" },
-      { id: 3, name: "Heart specialists" }, ,
+      { id: 3, name: "Heart specialists" },
+      ,
       { id: 4, name: "Gastroenterologist" },
       { id: 5, name: "Hematologist" },
       { id: 6, name: "Neurologist" },
@@ -185,15 +193,12 @@ export default function Homepage() {
   const getAllDoctors = async () => {
     const isAuthenticated = localStorage.getItem("token");
     try {
-      const response = await axios.get(
-        "https://healthbackend-3xh2.onrender.com/patient/search",
-        {
-          headers: {
-            isvalidrequest: "twinsistech",
-            authorization: isAuthenticated,
-          },
-        }
-      );
+      const response = await axios.get("http://localhost:5000/patient/search", {
+        headers: {
+          isvalidrequest: "twinsistech",
+          authorization: isAuthenticated,
+        },
+      });
 
       console.log(response);
       // setDocFilter(response.data.result);
@@ -283,9 +288,7 @@ export default function Homepage() {
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    to="/login"
-                    className="btn btn-primary log-btn">
+                  <Link to="/login" className="btn btn-primary log-btn">
                     <i className="feather-lock  " />
                     Login
                   </Link>
@@ -334,7 +337,9 @@ export default function Homepage() {
                           className="form-control mx-2 border-0"
                           value={selectedSpecialist}
                           onChange={handleSpecialistChange}>
-                          <option value="">Search Physicians, specialists</option>
+                          <option value="">
+                            Search Physicians, specialists
+                          </option>
                           {data.specialists.map((specialist) => (
                             <option key={specialist.id} value={specialist.name}>
                               {specialist.name}
@@ -389,12 +394,15 @@ export default function Homepage() {
                         </div>
                       </div>
                       <div className="col-auto form-search-btn">
-                        <button className="btn" type="submit">Search</button>
+                        <button className="btn" type="submit">
+                          Search
+                        </button>
                       </div>
                     </div>
                   </form>
-                  <div className="result my-3" style={{ display: isResultVisible ? 'block' : 'none' }}>
-
+                  <div
+                    className="result my-3"
+                    style={{ display: isResultVisible ? "block" : "none" }}>
                     <p>{generatedText}</p>
                   </div>
                   <div className="error-message">{errorMessage}</div>
@@ -1012,8 +1020,8 @@ export default function Homepage() {
                           data-bs-target="#collapseOne"
                           aria-expanded="true"
                           aria-controls="collapseOne">
-                          How do I schedule an appointment with a Physician through
-                          the portal?
+                          How do I schedule an appointment with a Physician
+                          through the portal?
                         </a>
                       </h2>
                       <div
@@ -1124,7 +1132,8 @@ export default function Homepage() {
                           data-bs-target="#collapseFive"
                           aria-expanded="false"
                           aria-controls="collapseFive">
-                          Can I request a specific Physician for my consultation?
+                          Can I request a specific Physician for my
+                          consultation?
                         </a>
                       </h2>
                       <div
@@ -1135,8 +1144,8 @@ export default function Homepage() {
                         <div className="accordion-body">
                           <div className="accordion-content">
                             <p>
-                              Absolutely, you can request a specific Physician for
-                              your consultation based on availability.{" "}
+                              Absolutely, you can request a specific Physician
+                              for your consultation based on availability.{" "}
                             </p>
                           </div>
                         </div>

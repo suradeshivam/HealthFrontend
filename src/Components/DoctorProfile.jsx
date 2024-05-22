@@ -27,6 +27,7 @@ export default function DoctorProfile() {
   const [yearOfExperience, setYearOfExperience] = useState("");
   const [pic, setPic] = useState("assets/img/doctors/doctor-thumb-02.jpg");
   const [preview, setPreview] = useState();
+  const [blob, setBlob] = useState();
   const [education, setEducation] = useState([
     { qualification: "", collegeName: "", yearOfCompletion: "" },
   ]);
@@ -107,7 +108,7 @@ export default function DoctorProfile() {
         console.log(fileName, file);
 
         const result = await axios.post(
-          "https://healthbackend-3xh2.onrender.com/service/uploadPdf",
+          "http://localhost:5000/service/uploadPdf",
           formData,
           {
             headers: {
@@ -118,6 +119,7 @@ export default function DoctorProfile() {
 
         console.log(result);
         setUploadedFileName(result.data.result);
+        console.log(uploadedFileName);
 
         toast(result.data.message);
       } else {
@@ -240,13 +242,16 @@ export default function DoctorProfile() {
     const isAuthenticated = localStorage.getItem("token");
     const docInfo = JSON.parse(localStorage.getItem("docInfo"));
 
+    console.log("docInfo:", docInfo); // Log the entire docInfo object
+
     if (docInfo) {
       const userId = docInfo.userId._id;
       setUserName(docInfo.userId?.name || "");
       setPic(
         docInfo?.profilePicture || "assets/img/doctors/doctor-thumb-02.jpg"
       );
-      setUploadedFileName(docInfo?.certificate || "");
+      console.log("docInfo.certificate:", docInfo.certificate); // Log the certificate value
+      setUploadedFileName(docInfo?.certificate);
       setEmail(docInfo.userId?.email || "");
       setPhone(docInfo.userId?.mobileNumber || "");
       setGender(docInfo?.gender || "");
@@ -255,12 +260,14 @@ export default function DoctorProfile() {
       setAwards(docInfo?.achievement);
       setLicenceNumber(docInfo?.licenseNumber);
       setYearLicenceNumber(docInfo?.yearOfIssued);
+
       const dobDate = new Date(docInfo?.dob);
       const day = dobDate.getDate().toString().padStart(2, "0");
       const month = (dobDate.getMonth() + 1).toString().padStart(2, "0");
       const year = dobDate.getFullYear();
       const formattedDate = `${day}-${month}-${year}`;
       setDOB(formattedDate);
+
       setFees(docInfo?.fees || "");
       setAboutMe(docInfo?.about || "");
       setClinicName(docInfo?.clinicName || "");
@@ -273,6 +280,9 @@ export default function DoctorProfile() {
       setPostalCode(docInfo?.zip || "");
       setSpecialization(docInfo?.specialization || "");
       setYearOfExperience(docInfo?.yearOfExperience || "");
+
+      console.log("uploadedFileName:", docInfo?.certificate || ""); // Log the final value being set
+      console.log(uploadedFileName);
     } else {
       const userInfo = JSON.parse(localStorage.getItem("userInfo"));
       setUserName(userInfo?.name);
@@ -313,7 +323,7 @@ export default function DoctorProfile() {
     if (!postalCode) {
       errorsObj.postalCode = "Postal Code is required";
     }
-    if (!specialization || !specialization.trim()) {
+    if (!specialization) {
       errorsObj.specialization = "Specialization is required";
     }
     const isEducationValid = education.some(
@@ -380,7 +390,7 @@ export default function DoctorProfile() {
       if (docInfo) {
         console.log("1");
         const updatedDoctor = await axios.put(
-          `https://healthbackend-3xh2.onrender.com/doctor/${docInfo.userId._id}/update`,
+          `http://localhost:5000/doctor/${docInfo.userId._id}/update`,
           {
             userId: docInfo.userId._id,
             name: userName,
@@ -431,7 +441,7 @@ export default function DoctorProfile() {
         });
       } else {
         const user = await axios.post(
-          `https://healthbackend-3xh2.onrender.com/doctor/create`,
+          `http://localhost:5000/doctor/create`,
           {
             userId: userInfo._id,
             name: userName,
@@ -505,7 +515,7 @@ export default function DoctorProfile() {
         setPreview(reader.result); // Set preview image
         try {
           const res = await axios.post(
-            "https://healthbackend-3xh2.onrender.com/service/uploadImage",
+            "http://localhost:5000/service/uploadImage",
             {
               imageUrl: reader.result, // Use reader.result directly here
             },
@@ -567,24 +577,52 @@ export default function DoctorProfile() {
   };
 
   const getPdf = async () => {
-    const pdf =
-      "https://healthbackend-3xh2.onrender.com/files/1715146045722-149767159Project Management (1).pdf";
+    try {
+      const isAuthenticated = localStorage.getItem("token");
+      console.log(uploadedFileName);
 
-    setFilePreview(pdf);
+      if (uploadedFileName) {
+        const file = await axios.post(
+          `http://localhost:5000/service/files`,
+          {
+            fileName: uploadedFileName,
+          },
+          {
+            headers: {
+              authorization: isAuthenticated,
+            },
+            responseType: "blob",
+          }
+        );
+        console.log(file);
+        const url = URL.createObjectURL(file.data);
+        console.log(url);
+
+        setBlob(url);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  useEffect(() => {
-    getDocInfo();
-    getPdf();
-  }, []);
+  // useEffect(() => {
+  //   getDocInfo();
+  //   getPdf();
+  // }, []);
 
   useEffect(() => {
     const doctorInfo = JSON.parse(localStorage.getItem("docInfo"));
     // Error in _id
     if (doctorInfo) {
-      setDoctorInfo(doctorInfo);
+      // setDoctorInfo(doctorInfo);
+      getDocInfo();
     }
   }, []);
+
+  useEffect(() => {
+    console.log("uploadedFileName has been updated:", uploadedFileName);
+    getPdf();
+  }, [uploadedFileName]);
 
   const data = {
     specialists: [
@@ -1414,7 +1452,7 @@ export default function DoctorProfile() {
                   {uploadedFileName && (
                     <iframe
                       style={{ width: "100%", height: "600px" }}
-                      src={`https://healthbackend-3xh2.onrender.com/files/${uploadedFileName}`}></iframe>
+                      src={blob}></iframe>
                   )}
                 </div>
               </div>

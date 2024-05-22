@@ -24,7 +24,7 @@ export default function LoginDoctor() {
       toast("Please wait while we are fetching your data");
       try {
         const response = await axios.post(
-          "https://healthbackend-3xh2.onrender.com/user/signin",
+          "http://localhost:5000/user/signin",
           data,
           {
             headers: {
@@ -40,7 +40,7 @@ export default function LoginDoctor() {
 
         if (user.createdProfile && user.role === "doctor") {
           const doctor = await axios.get(
-            `https://healthbackend-3xh2.onrender.com/doctor/${user._id}`,
+            `http://localhost:5000/doctor/${user._id}`,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -56,7 +56,7 @@ export default function LoginDoctor() {
           );
         } else if (user.createdProfile && user.role === "user") {
           const patient = await axios.get(
-            `https://healthbackend-3xh2.onrender.com/patient/${user._id}`,
+            `http://localhost:5000/patient/${user._id}`,
             {
               headers: {
                 "Content-Type": "application/json",

@@ -50,7 +50,7 @@ export default function Info() {
         console.log(fileName, file);
 
         const result = await axios.post(
-          "https://healthbackend-3xh2.onrender.com/service/uploadPdf",
+          "http://localhost:5000/service/uploadPdf",
           formData,
           {
             headers: {
@@ -122,8 +122,6 @@ export default function Info() {
     console.log("PDF Files:", pdfRefs);
 
     navigate("/checkout");
-
-
   };
 
   const handleAgree = () => {
@@ -147,12 +145,10 @@ export default function Info() {
         }
     `;
 
-    useEffect (() => {
-
-      const patientInfo = JSON.parse(localStorage.getItem("patientInfo"));
-      setPatientInfo(patientInfo);
-
-    }, []);
+  useEffect(() => {
+    const patientInfo = JSON.parse(localStorage.getItem("patientInfo"));
+    setPatientInfo(patientInfo);
+  }, []);
 
   return (
     <div className="main-wrapper">
@@ -264,7 +260,7 @@ export default function Info() {
                 {uploadedFileName && (
                   <iframe
                     style={{ width: "100%", height: "600px" }}
-                    src={`https://healthbackend-3xh2.onrender.com/files/${uploadedFileName}`}></iframe>
+                    src={`http://localhost:5000/files/${uploadedFileName}`}></iframe>
                 )}
                 {/* Terms & Conditions */}
                 <div className="terms-accept">
@@ -289,14 +285,12 @@ export default function Info() {
                 </div>
                 {/* Submit Button */}
                 {/* <Link to="/checkout"> */}
-                  <button
-                    type="submit"
-                    className="btn btn-primary submit-btn my-3"
-                    disabled={!isCheckboxChecked}
-                   
-                    >
-                    Submit
-                  </button>
+                <button
+                  type="submit"
+                  className="btn btn-primary submit-btn my-3"
+                  disabled={!isCheckboxChecked}>
+                  Submit
+                </button>
                 {/* </Link> */}
               </form>
             </div>
