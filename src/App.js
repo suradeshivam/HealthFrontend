@@ -29,12 +29,13 @@ import Doctorprofile from "./Components/patientfolder/Doctorprofile";
 import Checkout from "./Components/patientfolder/Checkout";
 import Bookingsuccess from "./Components/patientfolder/BookingSuccess";
 import Invoiceview from "./Components/patientfolder/InvoiceView";
-import AppointmentDetails from "./Components/patientfolder/AppointmentDetails"
-import SinglePhysicianDisplay from "./Components/patientfolder/PatientAppointment"
+import AppointmentDetails from "./Components/patientfolder/AppointmentDetails";
+import SinglePhysicianDisplay from "./Components/patientfolder/PatientAppointment";
 import Privacypolicy from "./Components/PrivacyPolicy";
 import Termscondition from "./Components/TermsConditions";
 import Aboutus from "./Aboutus";
 import Contactus from "./Contactus";
+import Priscriptions from "./Components/Prescription";
 
 // App changed
 function App() {
@@ -67,7 +68,6 @@ function App() {
           <Route path="privacypolicy" element={<Privacypolicy />} />
           <Route path="termscondition" element={<Termscondition />} />
 
-
           {/* Patient DashBoard Routs */}
           <Route path="user" element={<Patientdashboard />} />
           <Route path="dependent" element={<Dependent />} />
@@ -75,7 +75,10 @@ function App() {
           <Route path="orders" element={<Orders />} />
           <Route path="profile-settings" element={<Profilesettings />} />
           <Route path="change-password" element={<ChangePasswordPatient />} />
-          <Route path="patientappointment" element={<SinglePhysicianDisplay />} />
+          <Route
+            path="patientappointment"
+            element={<SinglePhysicianDisplay />}
+          />
 
           {/* Patient Route */}
           <Route path="docsearch" element={<DoctorSearch />} />
@@ -84,6 +87,7 @@ function App() {
           <Route path="checkout" element={<Checkout />} />
           <Route path="booking-success" element={<Bookingsuccess />} />
           <Route path="invoice-view" element={<Invoiceview />} />
+          <Route path="prescriptions" element={<Priscriptions />} />
 
           <Route path="aboutus" element={<Aboutus />} />
           <Route path="contactus" element={<Contactus />} />
