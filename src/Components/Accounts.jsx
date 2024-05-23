@@ -14,6 +14,7 @@ import {
   Bar,
   Legend,
 } from "recharts";
+import { OrderState } from "../Contexts";
 
 export default function Accounts() {
   const [accountName, setAccountName] = useState("Dr. Darren Elder");
@@ -23,10 +24,28 @@ export default function Accounts() {
   const [doctorInfo, setDoctorInfo] = useState("");
   const [dataRevenues, setDataRevenues] = useState(null);
   const [income, setIncome] = useState();
+  const { setIsLoggedIn } = OrderState();
 
   const docInfo = JSON.parse(localStorage.getItem("docInfo"));
 
   const fees = docInfo?.fees;
+
+  const handleLogout = () => {
+    console.log("in here");
+    const userInfo = localStorage.getItem("userInfo");
+    if (userInfo) {
+      localStorage.removeItem("userInfo");
+    }
+    const token = localStorage.getItem("token");
+    if (token) {
+      localStorage.removeItem("token");
+    }
+    const docInfo = localStorage.getItem("docInfo");
+    if (docInfo) {
+      localStorage.removeItem("docInfo");
+    }
+    setIsLoggedIn(false);
+  };
 
   const handleUpiIdChange = (e) => {
     const upiIdValue = e.target.value;
@@ -348,7 +367,7 @@ export default function Accounts() {
                           </Link>
                         </li>
                         <li>
-                          <Link to="/login">
+                          <Link to="/login" onClick={handleLogout}>
                             <i className="fas fa-sign-out-alt" />
                             <span>Logout</span>
                           </Link>

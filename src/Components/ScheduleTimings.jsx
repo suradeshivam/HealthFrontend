@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { OrderState } from "../Contexts";
 
 const generateTimeSlots = () => {
   const slots = [];
@@ -27,6 +28,7 @@ const generateTimeSlots = () => {
 };
 
 export default function ScheduleTime() {
+  const { setIsLoggedIn } = OrderState();
   const [slotDuration, setSlotDuration] = useState("30 mins");
   const [copyToAllDays, setCopyToAllDays] = useState(false);
   const [schedule, setSchedule] = useState({});
@@ -167,6 +169,7 @@ export default function ScheduleTime() {
     if (docInfo) {
       localStorage.removeItem("docInfo");
     }
+    setIsLoggedIn(false);
   };
 
   useEffect(() => {

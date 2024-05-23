@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { OrderState } from "../../Contexts";
 
 export default function Medicalrecords() {
   const [patientInfo, setPatientInfo] = useState("");
   const [userInfo, setUserInfo] = useState("");
+  const { setIsLoggedIn } = OrderState();
 
   const handleLogout = () => {
     console.log("in here");
@@ -19,6 +21,7 @@ export default function Medicalrecords() {
     if (patientInfo) {
       localStorage.removeItem("patientInfo");
     }
+    setIsLoggedIn(false);
   };
 
   const [tableData, setTableData] = useState([
@@ -223,31 +226,28 @@ export default function Medicalrecords() {
                   <div className="dashboard-widget">
                     <nav className="dashboard-menu">
                       <ul>
-                        <li>
+                        <li className="">
                           <Link to="/user">
                             <i className="fas fa-columns" />
                             <span>Dashboard</span>
                           </Link>
                         </li>
-
                         <li>
-                          <Link to="/dependent">
-                            <i className="fas fa-users" />
-                            <span>Dependent</span>
+                          <Link to="/labreports">
+                            <i className="fas fa-list-alt" />
+                            <span>Lab Reports</span>
                           </Link>
                         </li>
-
                         <li>
-                          <Link to="/orders">
-                            <i className="fas fa-list-alt" />
-                            <span>Orders</span>
-                            <small className="unread-msg">7</small>
+                          <Link to="/prescriptions">
+                            <i className="fas fa-file-invoice" />
+                            <span>Prescriptions</span>
                           </Link>
                         </li>
                         <li className="active">
                           <Link to="/medical-records">
                             <i className="fas fa-clipboard" />
-                            <span>Add Medical Records</span>
+                            <span>Medical Records</span>
                           </Link>
                         </li>
 
@@ -425,7 +425,7 @@ export default function Medicalrecords() {
                     <div className="col-12">
                       <div className="mb-3">
                         <label className="mb-2">
-                        Physician Name (Treatment done by)
+                          Physician Name (Treatment done by)
                         </label>
                         <input
                           type="text"

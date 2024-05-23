@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import axios from "axios";
+import { OrderState } from "../Contexts";
 
 export default function Prescriptions() {
   const [singleAppointmentDetails, setSingleAppointmentDetails] = useState();
   const [patientInfo, setPatientInfo] = useState();
+  const { setIsLoggedIn } = OrderState();
   const handleLogout = () => {
     console.log("in here");
     const userInfo = localStorage.getItem("userInfo");
@@ -20,6 +22,7 @@ export default function Prescriptions() {
     if (patientInfo) {
       localStorage.removeItem("patientInfo");
     }
+    setIsLoggedIn(false);
   };
 
   const getAllPrescriptions = async () => {

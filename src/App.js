@@ -36,6 +36,7 @@ import Termscondition from "./Components/TermsConditions";
 import Aboutus from "./Aboutus";
 import Contactus from "./Contactus";
 import Priscriptions from "./Components/Prescription";
+import LabReports from "./Components/patientfolder/LabReports";
 
 // App changed
 function App() {
@@ -56,7 +57,6 @@ function App() {
           <Route path="changepassword" element={<ChangePassword />} />
 
           <Route path="orders" element={<Orders />} />
-          <Route path="patientprofile" element={<PatientProfileSetting />} />
           <Route path="profile" element={<DoctorProfile />} />
           <Route path="reviews" element={<Reviews />} />
           <Route path="schedule" element={<ScheduleTime />} />
@@ -88,6 +88,7 @@ function App() {
           <Route path="booking-success" element={<Bookingsuccess />} />
           <Route path="invoice-view" element={<Invoiceview />} />
           <Route path="prescriptions" element={<Priscriptions />} />
+          <Route path="labreports" element={<LabReports />} />
 
           <Route path="aboutus" element={<Aboutus />} />
           <Route path="contactus" element={<Contactus />} />

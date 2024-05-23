@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { OrderState } from "../Contexts";
 
 export default function Reviews() {
   const [doctorInfo, setDoctorInfo] = useState("");
@@ -60,6 +61,8 @@ export default function Reviews() {
     },
   ];
 
+  const { setIsLoggedIn } = OrderState();
+
   const [review, setReview] = useState([]);
 
   // Function to render stars based on review count
@@ -107,6 +110,7 @@ export default function Reviews() {
     if (docInfo) {
       localStorage.removeItem("docInfo");
     }
+    setIsLoggedIn(false);
   };
 
   // useEffect(()=>{
@@ -153,7 +157,10 @@ export default function Reviews() {
                   <div className="profile-info-widget">
                     <a href="#" className="booking-doc-img">
                       <img
-                         src={doctorInfo?.profilePicture || "assets/img/doctors/doctor-thumb-02.jpg"}
+                        src={
+                          doctorInfo?.profilePicture ||
+                          "assets/img/doctors/doctor-thumb-02.jpg"
+                        }
                         alt="assets/img/doctors/doctor-thumb-02.jpg"
                       />
                     </a>

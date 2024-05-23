@@ -68,7 +68,7 @@ export default function Aboutus() {
                 <div className="about-content">
                   <div className="about-content-details">
                     <p>
-                      Welcome to our comprehensive online Physician appointment
+                      Welcome to our comprehensive online doctor appointment
                       platform, where your health and well-being are our top
                       priority. We are committed to delivering the highest
                       quality medical care, ensuring you receive the best
@@ -103,9 +103,20 @@ export default function Aboutus() {
                 </div>
               </div>
             </div>
+
             <div className="row">
+              <style>
+                {`
+          .unique-border-card:hover {
+            border-color: #3498db !important;
+            border-width: 2px !important;
+            border-style: solid !important;
+          }
+        `}
+              </style>
+
               <div className="col-lg-3 col-md-6 d-flex">
-                <div className="card why-choose-card w-100">
+                <div className="card why-choose-card w-100 unique-border-card">
                   <div className="card-body">
                     <div className="why-choose-icon">
                       <span>
@@ -118,16 +129,17 @@ export default function Aboutus() {
                     <div className="why-choose-content">
                       <h4>Qualified Staff of Doctors</h4>
                       <p>
-                        Lorem ipsum sit amet consectetur incididunt ut labore et
-                        exercitation ullamco laboris nisi dolore magna enim
-                        veniam aliqua.{" "}
+                        Connect with our skilled team for expert medical
+                        guidance. Experience personalized care and a seamless
+                        online appointment.{" "}
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
+
               <div className="col-lg-3 col-md-6 d-flex">
-                <div className="card why-choose-card w-100">
+                <div className="card why-choose-card w-100 unique-border-card ">
                   <div className="card-body">
                     <div className="why-choose-icon">
                       <span>
@@ -138,18 +150,18 @@ export default function Aboutus() {
                       </span>
                     </div>
                     <div className="why-choose-content">
-                      <h4>Qualified Staff of Doctors</h4>
+                      <h4>24/7 Service</h4>
                       <p>
-                        Lorem ipsum sit amet consectetur incididunt ut labore et
-                        exercitation ullamco laboris nisi dolore magna enim
-                        veniam aliqua.{" "}
+                        24/7 access for immediate care. Get assistance anytime,
+                        ensuring peace of mind and continuity.{" "}
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
+
               <div className="col-lg-3 col-md-6 d-flex">
-                <div className="card why-choose-card w-100">
+                <div className="card why-choose-card w-100 unique-border-card">
                   <div className="card-body">
                     <div className="why-choose-icon">
                       <span>
@@ -160,7 +172,7 @@ export default function Aboutus() {
                       </span>
                     </div>
                     <div className="why-choose-content">
-                      <h4>Qualified Staff of Doctors</h4>
+                      <h4>Labs and Reports</h4>
                       <p>
                         Lorem ipsum sit amet consectetur incididunt ut labore et
                         exercitation ullamco laboris nisi dolore magna enim
@@ -170,8 +182,9 @@ export default function Aboutus() {
                   </div>
                 </div>
               </div>
+
               <div className="col-lg-3 col-md-6 d-flex">
-                <div className="card why-choose-card w-100">
+                <div className="card why-choose-card w-100 unique-border-card">
                   <div className="card-body">
                     <div className="why-choose-icon">
                       <span>
@@ -182,11 +195,11 @@ export default function Aboutus() {
                       </span>
                     </div>
                     <div className="why-choose-content">
-                      <h4>Qualified Staff of Doctors</h4>
+                      <h4>Online consulation</h4>
                       <p>
-                        Lorem ipsum sit amet consectetur incididunt ut labore et
-                        exercitation ullamco laboris nisi dolore magna enim
-                        veniam aliqua.{" "}
+                        Online consultation offers remote access to professional
+                        advice via digital platforms, providing convenience and
+                        accessibility from anywhere.{" "}
                       </p>
                     </div>
                   </div>
@@ -195,6 +208,7 @@ export default function Aboutus() {
             </div>
           </div>
         </section>
+
         <section className="way-section">
           <div className="container">
             <div className="way-bg">
@@ -211,13 +225,13 @@ export default function Aboutus() {
                   <div className="section-inner-header way-inner-header mb-0">
                     <h2>Be on Your Way to Feeling Better with the Twinsdoc</h2>
                     <p>
-                      Our platform connects you with top-rated Physicians for
+                      Our platform connects you with top-rated doctors for
                       convenient and reliable online appointments, ensuring you
                       receive the best medical care from the comfort of your
                       home. Experience hassle-free healthcare tailored to your
                       needs with Twinsdoc.
                     </p>
-                    <Link to="/contactus" className="btn btn-primary">
+                    <Link to="/contactus" className="btn  ">
                       Contact With Us
                     </Link>
                   </div>
@@ -240,7 +254,7 @@ export default function Aboutus() {
             <div className="row">
               <div className="col-md-6">
                 <div className="section-header-one section-header-slider">
-                  <h2 className="section-title">Best Physicians</h2>
+                  <h2 className="section-title">Best Doctors</h2>
                 </div>
               </div>
               <div className="col-md-6 text-end">
@@ -478,7 +492,9 @@ export default function Aboutus() {
             </OwlCarousel>
           </div>
         </section>
-        <section className="testimonial-section">
+
+        {/* happy clinents seaction */}
+        {/* <section className="testimonial-section">
           <div className="testimonial-shape-img">
             <div className="testimonial-shape-left">
               <img src="assets/img/shape-04.png" alt="shape-image" />
@@ -650,7 +666,8 @@ export default function Aboutus() {
               </div>
             </div>
           </div>
-        </section>
+        </section> */}
+
         <section className="faq-section">
           <div className="container">
             <div className="row">
@@ -683,7 +700,7 @@ export default function Aboutus() {
                           data-bs-target="#collapseOne"
                           aria-expanded="true"
                           aria-controls="collapseOne">
-                          How do I schedule an appointment with a Physician through
+                          How do I schedule an appointment with a doctor through
                           the portal?
                         </a>
                       </h2>
@@ -795,7 +812,7 @@ export default function Aboutus() {
                           data-bs-target="#collapseFive"
                           aria-expanded="false"
                           aria-controls="collapseFive">
-                          Can I request a specific Physician for my consultation?
+                          Can I request a specific doctor for my consultation?
                         </a>
                       </h2>
                       <div
@@ -806,7 +823,7 @@ export default function Aboutus() {
                         <div className="accordion-body">
                           <div className="accordion-content">
                             <p>
-                              Absolutely, you can request a specific Physician for
+                              Absolutely, you can request a specific doctor for
                               your consultation based on availability.{" "}
                             </p>
                           </div>

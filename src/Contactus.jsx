@@ -1,6 +1,121 @@
-import React from "react";
+import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import emailjs from "emailjs-com";
 
 export default function Contactus() {
+  const [formData, setFormData] = useState({
+    user_name: "",
+    user_email: "",
+    subject: "",
+    message: "",
+  });
+
+  const [formErrors, setFormErrors] = useState({
+    user_name: "",
+    user_email: "",
+    subject: "",
+    message: "",
+  });
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [focusedField, setFocusedField] = useState(null);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const validateForm = () => {
+    let valid = true;
+    const errors = {};
+
+    // Validate user name
+    if (formData.user_name.trim() === "") {
+      errors.user_name = "Name is required";
+      valid = false;
+    }
+
+    // Validate user email
+    if (!/^\S+@\S+\.\S+$/.test(formData.user_email)) {
+      errors.user_email = "Valid email is required";
+      valid = false;
+    }
+
+    // Validate subject
+    if (formData.subject.trim() === "") {
+      errors.subject = "Subject is required";
+      valid = false;
+    }
+
+    // Validate message
+    if (formData.message.trim() === "") {
+      errors.message = "Message is required";
+      valid = false;
+    }
+
+    setFormErrors(errors);
+    return valid;
+  };
+
+  const sendEmail = () => {
+    emailjs
+      .send(
+        "service_9vvxymo",
+        "template_0eii7ec",
+        formData,
+        "169BywfXpHfQ26JI1"
+      )
+      .then((result) => {
+        console.log(result.text);
+
+        // Show a success notification
+        toast.success("We've dispatched your message. Thanks a bunch!");
+
+        // Clear the form fields
+        setFormData({
+          user_name: "",
+          user_email: "",
+          subject: "",
+          message: "",
+        });
+      })
+      .catch((error) => {
+        console.error("Error submitting form:", error);
+
+        // Show an error notification
+        toast.error("An error occurred while sending the message.");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (validateForm()) {
+      // Show loading state
+      setIsLoading(true);
+
+      // Simulate a delay (replace with actual form submission)
+      setTimeout(sendEmail, 100); // Simulated 2-second delay for demonstration
+    } else {
+      // Display validation errors
+      toast.error("Please correct the errors in the form.");
+    }
+  };
+
+  const handleFocus = (fieldName) => {
+    setFocusedField(fieldName);
+  };
+
+  const handleBlur = () => {
+    setFocusedField(null);
+  };
   return (
     <>
       <div className="main-wrapper">
@@ -14,6 +129,7 @@ export default function Contactus() {
           </div>
         </div>
         <section className="contact-section">
+          <ToastContainer />
           <div className="container">
             <div className="row">
               <div className="col-lg-5 col-md-12">
@@ -58,39 +174,95 @@ export default function Contactus() {
               <div className="col-lg-7 col-md-12 d-flex">
                 <div className="card contact-form-card w-100">
                   <div className="card-body">
-                    <form action="#">
+                    <form action="#" onSubmit={handleSubmit}>
                       <div className="row">
                         <div className="col-md-6">
                           <div className="mb-3">
-                            <label className="mb-2">Name</label>
+                            <label
+                              htmlFor="name"
+                              className={
+                                focusedField === "user_name mb-2" ||
+                                formData.user_name !== ""
+                                  ? "active"
+                                  : ""
+                              }>
+                              Name
+                            </label>
                             <input
                               type="text"
-                              className="form-control"
                               placeholder="Enter Your Name"
+                              name="user_name"
+                              className={`form-control ${
+                                formErrors.user_name && "is-invalid"
+                              }`}
+                              id="name"
+                              required
+                              value={formData.user_name}
+                              onChange={handleChange}
+                              onFocus={() => handleFocus("user_name")}
+                              onBlur={handleBlur}
                             />
                           </div>
+                          <div className="invalid-feedback">
+                            {formErrors.user_name}
+                          </div>
                         </div>
+
                         <div className="col-md-6">
                           <div className="mb-3">
                             <label className="mb-2">Email Address</label>
                             <input
-                              type="text"
-                              className="form-control"
                               placeholder="Enter Email Address"
+                              type="email"
+                              name="user_email"
+                              className={`form-control ${
+                                formErrors.user_email && "is-invalid"
+                              }`}
+                              id="email"
+                              required
+                              value={formData.user_email}
+                              onChange={handleChange}
+                              onFocus={() => handleFocus("user_email")}
+                              onBlur={handleBlur}
                             />
                           </div>
+                          <div className="invalid-feedback">
+                            {formErrors.user_email}
+                          </div>
                         </div>
+
                         <div className="col-md-6">
                           <div className="mb-3">
-                            <label className="mb-2">Phone Number</label>
+                            <label
+                              htmlFor="subject"
+                              className={
+                                focusedField === "subject mb-2" ||
+                                formData.subject !== ""
+                                  ? "active"
+                                  : ""
+                              }>
+                              Phone Number
+                            </label>
                             <input
                               type="text"
-                              className="form-control"
                               placeholder="Enter Phone Number"
+                              className={`form-control ${
+                                formErrors.subject && "is-invalid"
+                              }`}
+                              name="subject"
+                              id="subject"
+                              required
+                              value={formData.subject}
+                              onChange={handleChange}
+                              onFocus={() => handleFocus("subject")}
+                              onBlur={handleBlur}
                             />
                           </div>
+                          <div className="invalid-feedback">
+                            {formErrors.subject}
+                          </div>
                         </div>
-                        <div className="col-md-6">
+                        {/* <div className="col-md-6">
                           <div className="mb-3">
                             <label className="mb-2">Services</label>
                             <input
@@ -99,23 +271,51 @@ export default function Contactus() {
                               placeholder="Enter Services"
                             />
                           </div>
-                        </div>
+                        </div> */}
                         <div className="col-md-12">
                           <div className="mb-3">
-                            <label className="mb-2">Message</label>
+                            <label
+                              htmlFor="message"
+                              className={
+                                focusedField === "message mb-2" ||
+                                formData.message !== ""
+                                  ? "active"
+                                  : ""
+                              }>
+                              Message
+                            </label>
                             <textarea
-                              className="form-control"
                               placeholder="Enter your comments"
                               defaultValue={""}
+                              className={`form-control ${
+                                formErrors.message && "is-invalid"
+                              }`}
+                              name="message"
+                              rows="10"
+                              required
+                              value={formData.message}
+                              onChange={handleChange}
+                              onFocus={() => handleFocus("message")}
+                              onBlur={handleBlur}
                             />
                           </div>
+                          <div className="invalid-feedback">
+                            {formErrors.message}
+                          </div>
+                        </div>
+                        <div className="my-3">
+                          <div className="loading">
+                            {isLoading ? "Loading" : ""}
+                          </div>
+                          <div className="error-message"></div>
                         </div>
                         <div className="col-md-12">
                           <div className="form-group-btn mb-0">
                             <button
                               type="submit"
-                              className="btn btn-primary prime-btn">
-                              Send Message
+                              className="btn btn-primary  prime-btn"
+                              disabled={isLoading}>
+                              {isLoading ? "Sending..." : "Send Message"}
                             </button>
                           </div>
                         </div>

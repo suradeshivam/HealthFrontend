@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { OrderState } from "../Contexts";
 
 export default function LoginDoctor() {
   const {
@@ -17,6 +18,7 @@ export default function LoginDoctor() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // State for loading indicator
+  const { setIsLoggedIn } = OrderState();
 
   const onSubmit = useCallback(
     async (data) => {
@@ -76,6 +78,9 @@ export default function LoginDoctor() {
         await localStorage.setItem("userInfo", JSON.stringify(user));
         const role = user.role;
         console.log(role);
+        if (user) {
+          setIsLoggedIn(true);
+        }
         if (role === "doctor") {
           await navigate("/doctor");
         } else if (role === "user" && user.createdProfile) {

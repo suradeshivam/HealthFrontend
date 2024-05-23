@@ -3,12 +3,14 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { OrderState } from "../Contexts";
 
 export default function Profilesettings() {
   const [pic, setPic] = useState("assets/img/doctors/doctor-thumb-02.jpg");
   const [preview, setPreview] = useState();
   const [patientInfo, setPatientInfo] = useState("");
   const [userInfo, setUserInfo] = useState("");
+  const { setIsLoggedIn } = OrderState();
 
   // const userInfo = JSON.parse( localStorage.getItem("userInfo"));
 
@@ -48,6 +50,7 @@ export default function Profilesettings() {
     if (patientInfo) {
       localStorage.removeItem("patientInfo");
     }
+    setIsLoggedIn(false);
   };
 
   const [errors, setErrors] = useState({
@@ -441,36 +444,33 @@ export default function Profilesettings() {
                   <div className="dashboard-widget">
                     <nav className="dashboard-menu">
                       <ul>
-                        <li>
+                        <li className="">
                           <Link to="/user">
                             <i className="fas fa-columns" />
                             <span>Dashboard</span>
                           </Link>
                         </li>
-
                         <li>
-                          <Link to="/dependent">
-                            <i className="fas fa-users" />
-                            <span>Dependent</span>
+                          <Link to="/labreports">
+                            <i className="fas fa-list-alt" />
+                            <span>Lab Reports</span>
                           </Link>
                         </li>
-
                         <li>
-                          <Link to="/orders">
-                            <i className="fas fa-list-alt" />
-                            <span>Orders</span>
-                            <small className="unread-msg">7</small>
+                          <Link to="/prescriptions">
+                            <i className="fas fa-file-invoice" />
+                            <span>Prescriptions</span>
                           </Link>
                         </li>
                         <li>
                           <Link to="/medical-records">
                             <i className="fas fa-clipboard" />
-                            <span>Add Medical Records</span>
+                            <span>Medical Records</span>
                           </Link>
                         </li>
 
                         <li className="active">
-                          <Link to="/patientprofile">
+                          <Link to="/profile-settings">
                             <i className="fas fa-user-cog" />
                             <span>Profile Settings</span>
                           </Link>

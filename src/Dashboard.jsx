@@ -33,6 +33,7 @@ export default function Dashboard() {
   let [todayCount, setTodayCount] = useState(0);
   let [upcomingCount, setUpcomingCount] = useState(0);
   let [totalCount, setTotalCount] = useState(0);
+  const { setIsLoggedIn } = OrderState();
   // console.log(upcoming)
   // console.log(upcoming)
 
@@ -50,6 +51,7 @@ export default function Dashboard() {
     if (docInfo) {
       localStorage.removeItem("docInfo");
     }
+    setIsLoggedIn(false);
   };
 
   const isRescheduleEnabled = (patient) => {

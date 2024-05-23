@@ -7,6 +7,7 @@ import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { OrderState } from "../Contexts";
 
 export default function ChangePassword() {
   const {
@@ -23,6 +24,7 @@ export default function ChangePassword() {
   const userId = docInfo?.userId?._id;
   const isAuthenticated = localStorage.getItem("token");
   const [doctorInfo, setDoctorInfo] = useState("");
+  const { setIsLoggedIn } = OrderState();
 
   const handleSubmit = async () => {
     if (newPassword.length < 3) {
@@ -87,6 +89,7 @@ export default function ChangePassword() {
     if (docInfo) {
       localStorage.removeItem("docInfo");
     }
+    setIsLoggedIn(false);
   };
 
   useEffect(() => {

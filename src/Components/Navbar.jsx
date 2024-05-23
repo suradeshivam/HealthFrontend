@@ -1,10 +1,53 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { OrderState } from "../Contexts";
 
 export default function Navbar() {
+  const { notification, isLoggedIn, setIsLoggedIn } = OrderState();
+  const [dashboardRoute, setDashboardRoute] = useState("");
+  const [profileSettingRoute, setProfileSettingRoute] = useState("");
+  const [userInfo, setUserInfo] = useState();
 
-  const {notification} = OrderState();
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("userInfo"));
+    if (user) {
+      setIsLoggedIn(true);
+      if (user?.createdProfile) {
+        if (user.role === "doctor") {
+          const doctor = JSON.parse(localStorage.getItem("docInfo"));
+          setUserInfo(doctor);
+          setDashboardRoute("/doctor");
+          setProfileSettingRoute("/profile");
+        } else {
+          const patient = JSON.parse(localStorage.getItem("patientInfo"));
+          setUserInfo(patient);
+          setDashboardRoute("/user");
+          setProfileSettingRoute("/profile-settings");
+        }
+      }
+    }
+  }, [isLoggedIn]);
+
+  const handleLogOut = () => {
+    console.log("in here");
+    const userInfo = localStorage.getItem("userInfo");
+    if (userInfo) {
+      localStorage.removeItem("userInfo");
+    }
+    const token = localStorage.getItem("token");
+    if (token) {
+      localStorage.removeItem("token");
+    }
+    const patientInfo = localStorage.getItem("patientInfo");
+    if (patientInfo) {
+      localStorage.removeItem("patientInfo");
+    }
+    const docInfo = localStorage.getItem("docInfo");
+    if (docInfo) {
+      localStorage.removeItem("docInfo");
+    }
+    setIsLoggedIn(false);
+  };
 
   return (
     <header className="header header-custom header-fixed header-one">
@@ -59,91 +102,116 @@ export default function Navbar() {
               </li>
             </ul>
           </div>
-          <ul className="nav header-navbar-rht">
-            <li className="nav-item dropdown noti-nav me-3 pe-0">
-              <a
-                className="dropdown-toggle nav-link p-0"
-                data-bs-toggle="dropdown">
-                <i className="fa-solid fa-bell" />{" "}
-                <span className="badge">{notification?.length}</span>
-              </a>
-              <div className="dropdown-menu notifications dropdown-menu-end ">
-                <div className="topnav-dropdown-header">
-                  <span className="notification-title">Notifications</span>
-                </div>
-                <div className="noti-contenlt">
-                  <ul className="notification-list">
-                    {notification?.map ((noti) => ( 
-                    <li className="notification-message" key={noti.id}>
-                      <a >
-                        <div className="notify-block d-flex">
-                          <span className="avatar">
-                            <img
-                              className="avatar-img"
-                              alt="Ruby perin"
-                              src={noti.image ||"assets/img/clients/client-01.jpg"}
-                            />
-                          </span>
-                          <div className="media-body">
-                            <h6>
-                            {noti.patientName}{" "}
-                              <span className="notification-time">
-                              {noti.time}
+          {isLoggedIn ? (
+            <ul className="nav header-navbar-rht">
+              <li className="nav-item dropdown noti-nav me-3 pe-0">
+                <a
+                  className="dropdown-toggle nav-link p-0"
+                  data-bs-toggle="dropdown">
+                  <i className="fa-solid fa-bell" />{" "}
+                  <span className="badge">{notification?.length}</span>
+                </a>
+                <div className="dropdown-menu notifications dropdown-menu-end ">
+                  <div className="topnav-dropdown-header">
+                    <span className="notification-title">Notifications</span>
+                  </div>
+                  <div className="noti-contenlt">
+                    <ul className="notification-list">
+                      {notification?.map((noti) => (
+                        <li className="notification-message" key={noti.id}>
+                          <a>
+                            <div className="notify-block d-flex">
+                              <span className="avatar">
+                                <img
+                                  className="avatar-img"
+                                  alt="Ruby perin"
+                                  src={
+                                    noti.image ||
+                                    "assets/img/clients/client-01.jpg"
+                                  }
+                                />
                               </span>
-                            </h6>
-                            <p className="noti-details">
-                            Prescription added by  {" "}
-                              <span className="noti-title">{noti.physicianName}</span>
-                            </p>
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                    ))}
-                  </ul>
+                              <div className="media-body">
+                                <h6>
+                                  {noti.patientName}{" "}
+                                  <span className="notification-time">
+                                    {noti.time}
+                                  </span>
+                                </h6>
+                                <p className="noti-details">
+                                  Prescription added by{" "}
+                                  <span className="noti-title">
+                                    {noti.physicianName}
+                                  </span>
+                                </p>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
-              </div>
-            </li>
-            <li className="nav-item dropdown has-arrow logged-item">
-              <a
-                href="#"
-                className="dropdown-toggle nav-link"
-                data-bs-toggle="dropdown">
-                <span className="user-img">
-                  <img
-                    className="rounded-circle"
-                    src="assets/img/patients/patient.jpg"
-                    width={31}
-                    alt="Darren Elder"
-                  />
-                </span>
-              </a>
-              <div className="dropdown-menu dropdown-menu-end">
-                <div className="user-header">
-                  <div className="avatar avatar-sm">
+              </li>
+              <li className="nav-item dropdown has-arrow logged-item">
+                <a
+                  href="#"
+                  className="dropdown-toggle nav-link"
+                  data-bs-toggle="dropdown">
+                  <span className="user-img">
                     <img
-                      src="assets/img/patients/patient.jpg"
-                      alt="User Image"
-                      className="avatar-img rounded-circle"
+                      className="rounded-circle"
+                      src={userInfo?.profilePicture}
+                      width={31}
+                      alt="Darren Elder"
                     />
+                  </span>
+                </a>
+                <div className="dropdown-menu dropdown-menu-end">
+                  <div className="user-header">
+                    <div className="avatar avatar-sm">
+                      <img
+                        src={userInfo?.profilePicture}
+                        alt="User Image"
+                        className="avatar-img rounded-circle"
+                      />
+                    </div>
+                    <div className="user-text">
+                      <h6>Richard Wilson</h6>
+                      <p className="text-muted mb-0">Patient</p>
+                    </div>
                   </div>
-                  <div className="user-text">
-                    <h6>Richard Wilson</h6>
-                    <p className="text-muted mb-0">Patient</p>
-                  </div>
+                  <Link className="dropdown-item" to={dashboardRoute}>
+                    Dashboard
+                  </Link>
+                  <Link className="dropdown-item" to={profileSettingRoute}>
+                    Profile Settings
+                  </Link>
+                  <Link
+                    className="dropdown-item"
+                    onClick={handleLogOut}
+                    to="/login">
+                    Logout
+                  </Link>
                 </div>
-                <Link className="dropdown-item" to="/user">
-                  Dashboard
+              </li>
+            </ul>
+          ) : (
+            <ul className="nav header-navbar-rht">
+              <li className="register-btn">
+                <Link to="/signup" className="btn reg-btn">
+                  <i className="feather-user" />
+                  Register
                 </Link>
-                <Link className="dropdown-item" to="/profile-settings">
-                  Profile Settings
+              </li>
+              <li>
+                <Link to="/login" className="btn btn-primary log-btn">
+                  <i className="feather-lock  " />
+                  Login
                 </Link>
-                <Link className="dropdown-item" href="/login">
-                  Logout
-                </Link>
-              </div>
-            </li>
-          </ul>
+              </li>
+            </ul>
+          )}
         </nav>
       </div>
     </header>

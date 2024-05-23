@@ -227,7 +227,7 @@ export default function Homepage() {
 
       <div className="main-wrapper">
         {/* This header is temperary just for demonstration */}
-        <header className="header header-custom header-fixed header-one">
+        {/* <header className="header header-custom header-fixed header-one">
           <div className="container">
             <nav className="navbar navbar-expand-lg header-nav">
               <div className="navbar-header">
@@ -299,7 +299,7 @@ export default function Homepage() {
               </ul>
             </nav>
           </div>
-        </header>
+        </header> */}
         <section className="banner-section">
           <div className="container">
             <div className="row align-items-center">

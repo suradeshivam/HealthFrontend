@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CreatableSelect from "react-select/creatable";
+import { OrderState } from "../Contexts";
 
 export default function DoctorProfile() {
   const [uploadedFileName, setUploadedFileName] = useState("");
@@ -61,6 +62,8 @@ export default function DoctorProfile() {
     licenceNumber: "",
     yearLicenceNumber: "",
   });
+
+  const { setIsLoggedIn } = OrderState();
 
   const [showClinic, setShowClinic] = useState(true);
 
@@ -574,6 +577,7 @@ export default function DoctorProfile() {
     if (docInfo) {
       localStorage.removeItem("docInfo");
     }
+    setIsLoggedIn(false);
   };
 
   const getPdf = async () => {

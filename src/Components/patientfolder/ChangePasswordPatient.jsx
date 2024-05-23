@@ -6,6 +6,7 @@ import axios from "axios";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { OrderState } from "../../Contexts";
 
 export default function ChangePasswordPatient() {
   const [patientInfo, setPatientInfo] = useState("");
@@ -19,6 +20,7 @@ export default function ChangePasswordPatient() {
   const docInfo = JSON.parse(localStorage.getItem("docInfo"));
   const [userId, setUserId] = useState("");
   const isAuthenticated = localStorage.getItem("token");
+  const { setIsLoggedIn } = OrderState();
   useEffect(() => {
     const patientInfo = JSON.parse(localStorage.getItem("patientInfo"));
     if (patientInfo) {
@@ -94,10 +96,11 @@ export default function ChangePasswordPatient() {
     if (token) {
       localStorage.removeItem("token");
     }
-    const docInfo = localStorage.getItem("docInfo");
-    if (docInfo) {
-      localStorage.removeItem("docInfo");
+    const patientInfo = localStorage.getItem("patientInfo");
+    if (patientInfo) {
+      localStorage.removeItem("patientInfo");
     }
+    setIsLoggedIn(false);
   };
 
   // useEffect(() => {
@@ -158,31 +161,28 @@ export default function ChangePasswordPatient() {
                   <div className="dashboard-widget">
                     <nav className="dashboard-menu">
                       <ul>
-                        <li>
+                        <li className="">
                           <Link to="/user">
                             <i className="fas fa-columns" />
                             <span>Dashboard</span>
                           </Link>
                         </li>
-
                         <li>
-                          <Link to="/dependent">
-                            <i className="fas fa-users" />
-                            <span>Dependent</span>
+                          <Link to="/labreports">
+                            <i className="fas fa-list-alt" />
+                            <span>Lab Reports</span>
                           </Link>
                         </li>
-
                         <li>
-                          <Link to="/orders">
-                            <i className="fas fa-list-alt" />
-                            <span>Orders</span>
-                            <small className="unread-msg">7</small>
+                          <Link to="/prescriptions">
+                            <i className="fas fa-file-invoice" />
+                            <span>Prescriptions</span>
                           </Link>
                         </li>
                         <li>
                           <Link to="/medical-records">
                             <i className="fas fa-clipboard" />
-                            <span>Add Medical Records</span>
+                            <span>Medical Records</span>
                           </Link>
                         </li>
 
@@ -199,7 +199,7 @@ export default function ChangePasswordPatient() {
                           </Link>
                         </li>
                         <li>
-                          <Link to="/login">
+                          <Link to="/login" onClick={handleLogout}>
                             <i className="fas fa-sign-out-alt" />
                             <span>Logout</span>
                           </Link>

@@ -14,7 +14,7 @@ export default function Patientdashboard() {
   const [upcoming, setUpcoming] = useState([]);
   const [today, setToday] = useState([]);
 
-  const { setSelectedAppointment } = OrderState();
+  const { setSelectedAppointment, setIsLoggedIn } = OrderState();
 
   const navigate = useNavigate();
 
@@ -32,6 +32,7 @@ export default function Patientdashboard() {
     if (patientInfo) {
       localStorage.removeItem("patientInfo");
     }
+    setIsLoggedIn(false);
   };
 
   const todayStartIndex = (currentPageToday - 1) * itemsPerPage;
@@ -194,37 +195,22 @@ export default function Patientdashboard() {
                             <span>Dashboard</span>
                           </Link>
                         </li>
-
                         <li>
-                          <Link to="/dependent">
-                            <i className="fas fa-users" />
-                            <span>Dependent</span>
+                          <Link to="/labreports">
+                            <i className="fas fa-list-alt" />
+                            <span>Lab Reports</span>
                           </Link>
                         </li>
-                        {/* <li>
-                      <a href="chat.html">
-                        <i className="fas fa-comments" />
-                        <span>Message</span>
-                        <small className="unread-msg">23</small>
-                      </a>
-                    </li> */}
-                        {/* <li>
-                      <Link to="/patient-accounts">
-                        <i className="fas fa-file-invoice-dollar" />
-                        <span>Accounts</span>
-                      </Link>
-                    </li> */}
                         <li>
-                          <Link to="/orders">
-                            <i className="fas fa-list-alt" />
-                            <span>Orders</span>
-                            <small className="unread-msg">7</small>
+                          <Link to="/prescriptions">
+                            <i className="fas fa-file-invoice" />
+                            <span>Prescriptions</span>
                           </Link>
                         </li>
                         <li>
                           <Link to="/medical-records">
                             <i className="fas fa-clipboard" />
-                            <span>Add Medical Records</span>
+                            <span>Medical Records</span>
                           </Link>
                         </li>
 
